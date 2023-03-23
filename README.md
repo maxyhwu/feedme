@@ -7,10 +7,10 @@ They will hopefully *yarn* (install packages) for you.
 
 
 Added packages:  
-    Frontend:  
-        axios  
-    Backend:  
-        Babel  
-        cors  
-        express  
-        nodemon  
+* Frontend
+  * axios  
+* Backend
+  * Babel  
+  * cors  
+  * express  
+  * nodemon  
