@@ -5,10 +5,10 @@
 3. To start backend, simply run script *yarn server* at feedme directory.  
 4. They will hopefully *yarn* (install packages) for you.  
 5. Added packages:  
-  * Frontend
-    * axios  
-  * Backend
-    * Babel  
-    * cors  
-    * express  
-    * nodemon  
+    * Frontend
+      * axios  
+    * Backend
+      * Babel  
+      * cors  
+      * express  
+      * nodemon  
