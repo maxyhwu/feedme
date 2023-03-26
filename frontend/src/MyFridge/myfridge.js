@@ -1,4 +1,5 @@
 import React from "react";
+import './myfridge.css'
 import { data } from "./fridgedata";
 
 
@@ -52,11 +53,11 @@ class FridgeFilterButton extends React.Component {
         const { active } = this.state;
 
         return (
-            <div className="col">
+            <div className="col-auto">
                 <button 
                     type="button"
-                    className="btn btn-secondary"
-                    style={{ backgroundColor: active ? buttonColor : '#CCCCCC' }}
+                    className="btn btn-secondary fridge-functional-button"
+                    style={{ backgroundColor: active ? buttonColor : '#DDDDDD' }}
                     onClick={this.toggleActive}
                 >
                     {category}
@@ -75,13 +76,13 @@ class FridgeOrderButton extends React.Component {
     render() {
         const { orderBy, isActive, onClick } = this.props;
         const buttonStyle = {
-            backgroundColor: isActive ? "#88BBD8" : "#CCCCCC"
+            backgroundColor: isActive ? "#B5D6E9" : "#DDDDDD"
         };
         return (
-            <div className="col">
+            <div className="col-auto">
                 <button 
                     type="button"
-                    className="btn btn-secondary"
+                    className="btn btn-secondary fridge-functional-button"
                     style={buttonStyle}
                     onClick={this.handleClick}
                 >
@@ -92,14 +93,54 @@ class FridgeOrderButton extends React.Component {
     }
 }
 
+class FridgeRenderButton extends React.Component {
+    render() {
+        const { ingredient } = this.props;
+        let bgColor;
+        switch(ingredient.category) {
+            case "Vegetables":
+                bgColor = "#F6C478";
+                break;
+            case "Meat and Poultry":
+                bgColor = "#E9A894";
+                break;
+            case "Seafood":
+                bgColor = "#F0C9D6";
+                break;
+            case "Grains":
+                bgColor = "#AAC2B4";
+                break;
+            case "Fruits":
+                bgColor = "#C2BBE3";
+                break;
+            case "Dairy":
+                bgColor = "#B4C8E4";
+                break;
+            case "Nuts and Seeds":
+                bgColor = "#DDBFA5";
+                break;
+            default:
+                bgColor = "gray";
+        }
+        return (
+            <div className="col-auto mt-2">
+                <button type="button" className="btn" style={{ backgroundColor: bgColor, width: "14rem" }}>
+                    <span style={{ float: "left" }}>{ingredient.name}</span>
+                    <span style={{ float: "right" }}>{ingredient.quantity}</span>
+                </button>
+            </div>
+        );
+    }
+}
+
 class FridgeRenderBlock extends React.Component {
     render() {
         const { title, ingredients } = this.props;
         return (
-            <div>
+            <div className="row mt-2 mb-2">
                 <h5>{title}</h5>
                 {ingredients.map((ingredient, index) => (
-                    <button type="button" className="btn btn-secondary">{ingredient.name} ({ingredient.quantity})</button>
+                    <FridgeRenderButton ingredient={ingredient} />
                 ))}
             </div>
         );
@@ -209,36 +250,36 @@ class MyFridge extends React.Component {
             <div className="container m-5">
                 <div className="row">
                     <div className="col-2">
-                        My Refrigerator
+                        <h4>My Refrigerator</h4>
                     </div>
                     <div className="col-auto">
-                        <button type="button" className="btn btn-secondary">Fridge Setting</button>
+                        <button type="button" className="btn btn-secondary fridge-functional-button">Fridge Setting</button>
                     </div>
                     <div className="col-auto">
-                        <button type="button" className="btn btn-secondary">Suggested Recipe</button>
+                        <button type="button" className="btn btn-secondary fridge-functional-button">Suggested Recipe</button>
                     </div>
                     <FridgeSearchBar searchBarValue={this.state.searchBarValue} setSearchBarValue={this.setSearchBarValue}/>
 
-                    <div className="row mt-2 mb-5 p-3">
+                    <div className="row mt-3 mb-3 p-3 fridge-condition-section">
                         <div className="row">
                             <div className="col">
-                                <h4>Filters</h4>
+                                <h5>Filters</h5>
                             </div>
                         </div>
 
                         <div className="row mt-2 mb-4">
-                            <FridgeFilterButton category="Vegetables" buttonColor="#F0AC45" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
-                            <FridgeFilterButton category="Meat and Poultry" buttonColor="#E58364" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
-                            <FridgeFilterButton category="Seafood" buttonColor="#E58364" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
-                            <FridgeFilterButton category="Grains" buttonColor="#55AC80" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
-                            <FridgeFilterButton category="Fruits" buttonColor="#F0AC45" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
-                            <FridgeFilterButton category="Dairy" buttonColor="#E58364" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
-                            <FridgeFilterButton category="Nuts and Seeds" buttonColor="#55AC80" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
+                            <FridgeFilterButton category="Vegetables" buttonColor="#F6C478" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
+                            <FridgeFilterButton category="Meat and Poultry" buttonColor="#E9A894" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
+                            <FridgeFilterButton category="Seafood" buttonColor="#F0C9D6" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
+                            <FridgeFilterButton category="Grains" buttonColor="#AAC2B4" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
+                            <FridgeFilterButton category="Fruits" buttonColor="#C2BBE3" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
+                            <FridgeFilterButton category="Dairy" buttonColor="#B4C8E4" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
+                            <FridgeFilterButton category="Nuts and Seeds" buttonColor="#DDBFA5" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
                         </div>
 
                         <div className="row">
                             <div className="col">
-                                <h4>Order By</h4>
+                                <h5>Order By</h5>
                             </div>
                         </div>
 
