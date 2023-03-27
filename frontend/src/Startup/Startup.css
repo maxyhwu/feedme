@@ -1,0 +1,21 @@
+.main-container {
+    background: white;
+}
+
+.main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* .meet_main {
+    width: 65%;
+    height: 90%;
+    float: left;
+    position: relative;
+
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    flex-wrap: wrap;
+} */
