@@ -1,0 +1,13 @@
+{
+  "name": "feedme",
+  "version": "1.0.0",
+  "description": "SDM Group 5",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd frontend && yarn && yarn start",
+    "server": "cd backend && yarn && yarn start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
