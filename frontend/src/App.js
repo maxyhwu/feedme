@@ -4,6 +4,7 @@ import HomePage from './HomePage/HomePage';
 import MyFridge from './MyFridge/myfridge';
 import Recipe from './Recipe/recipe';
 import LoginPage from './Login/LoginPage';
+import Recipe_search_result from './Recipe/recipe-search-result';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path='/myfridge' element={ <MyFridge/> } />
         <Route path='/recipe' element={ <Recipe/> } />
         <Route path='/login' element={ <LoginPage/> } />
+        <Route path='/recipe-search-result' element={ <Recipe_search_result/> } />
       </Routes>
     </Router>
   );
