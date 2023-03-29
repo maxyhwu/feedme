@@ -7,6 +7,8 @@ import LoginPage from './Login/LoginPage';
 import SignupPage from './Signup/SignupPage';
 import SetPassword from './SetPassword/SetPassword';
 import Header from "./Header/Header";
+import Detail from "./Recipe/detail";
+import Recipe_search_result from './Recipe/recipe-search-result';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -33,6 +35,8 @@ function App() {
           <Route path='/login' element={ <LoginPage/> } />
           <Route path='/Signup' element={ <SignupPage/> } />
           <Route path='/SetPassword' element={ <SetPassword/> } />
+          <Route path="/modal" element={ <Detail/> }/>
+          <Route path='/recipe-search-result' element={ <Recipe_search_result/> } />
         </Routes>
       </Router>
      </ Wrapper>

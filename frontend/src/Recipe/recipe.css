@@ -1,35 +1,3 @@
-.search-bar{
-    width: 80%;
-    height: 30px;
-    font-size: 20px;
-}
-
-.search-btn{
-    height: 30px;
-    width: 30px;
-}
-
-.search{
-    width: 100%;
-    text-align:center;
-}
-    
-.popular-food{
-    width:500px; 
-    height:150px; 
-    border:1px solid;
-    display: flex;
-}
-
-.popular-food-describe{
-    display: flex;
-    justify-content: space-around;
-}
-
-
-
-
-
 .bottom {
     display: flex;
     flex-direction: column;
