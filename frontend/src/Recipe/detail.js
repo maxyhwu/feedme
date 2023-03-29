@@ -1,6 +1,6 @@
 import "./detail.css"
-import { FiHeart, FiBookmark, FiShare } from 'react-icons/fi';
 import { IoCloseCircleOutline } from 'react-icons/io5';
+import ActionBar from "./Components/ActionBar";
 
 const Detail = () => {
     return(
@@ -19,7 +19,8 @@ const Detail = () => {
                         </div>
                     </div>
                 </div>
-                <div className="action-bar">
+                <ActionBar />
+                {/* <div className="action-bar">
                     <div className="action">
                         <div className="icon">
                             <FiHeart />
@@ -38,7 +39,7 @@ const Detail = () => {
                         </div>
                         <div className="text">Share</div>
                     </div>
-                </div>
+                </div> */}
                 <div className="ingredients">
                     <div className="topic">Ingredients</div>
                     <div className="content">
