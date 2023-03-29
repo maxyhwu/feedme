@@ -26,7 +26,7 @@ export default function LoginPage () {
     }
 
     return (
-        <div className="wrapper">
+        <div className="container">
             <div className="body">
                 <div id='logo'>
                     <img src={FeedMe} alt='feedme' id="feedmelogo"/>

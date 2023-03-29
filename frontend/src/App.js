@@ -10,12 +10,17 @@ import Header from "./Header/Header";
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
+  position: fixed;
+  width:100%;
+  height:100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  overflow:scroll;
 `
 
+// align-items: center;
+//   justify-content: center;
 function App() {
   return (
     <Wrapper>
@@ -30,7 +35,7 @@ function App() {
           <Route path='/SetPassword' element={ <SetPassword/> } />
         </Routes>
       </Router>
-    </ Wrapper>
+     </ Wrapper>
   );
 }
 

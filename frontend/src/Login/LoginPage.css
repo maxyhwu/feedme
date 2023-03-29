@@ -121,8 +121,8 @@ textarea:focus, input:focus{
     justify-content: center;
 }
 
-.wrapper {
-    position:fixed;
+.container {
+    /* position:fixed; */
     width:100%;
     height:100%;
     display: flex;
