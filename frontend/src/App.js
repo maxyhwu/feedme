@@ -4,8 +4,9 @@ import HomePage from './HomePage/HomePage';
 import MyFridge from './MyFridge/myfridge';
 import Recipe from './Recipe/recipe';
 import LoginPage from './Login/LoginPage';
-import Detail from "./Recipe/detail";
 import Header from "./Header/Header";
+import Detail from "./Recipe/detail";
+import Recipe_search_result from './Recipe/recipe-search-result';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -26,6 +27,7 @@ function App() {
           <Route path='/recipe' element={ <Recipe/> } />
           <Route path='/login' element={ <LoginPage/> } />
           <Route path="/modal" element={ <Detail/> }/>
+          <Route path='/recipe-search-result' element={ <Recipe_search_result/> } />
         </Routes>
       </Router>
     </ Wrapper>
