@@ -2,21 +2,35 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from './HomePage/HomePage';
 import MyFridge from './MyFridge/myfridge';
+import Recipe from './Recipe/recipe';
 import LoginPage from './Login/LoginPage';
 import SignupPage from './Signup/SignupPage';
 import SetPassword from './SetPassword/SetPassword';
+import Header from "./Header/Header";
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path='/' element={ <HomePage/> } />
-        <Route path='/myfridge' element={ <MyFridge/> } />
-        <Route path='/login' element={ <LoginPage/> } />
-        <Route path='/signup' element={ <SignupPage/> } />
-        <Route path='/setpassword' element={ <SetPassword/> } />
-      </Routes>
-    </Router>
+    <Wrapper>
+      <Router>
+        <Header/>
+        <Routes>
+          <Route path='/' element={ <HomePage/> } />
+          <Route path='/myfridge' element={ <MyFridge/> } />
+          <Route path='/recipe' element={ <Recipe/> } />
+          <Route path='/login' element={ <LoginPage/> } />
+          <Route path='/Signup' element={ <SignupPage/> } />
+          <Route path='/SetPassword' element={ <SetPassword/> } />
+        </Routes>
+      </Router>
+    </ Wrapper>
   );
 }
 
