@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './LoginPage.css';
+import './SignupPage.css';
 import FeedMe from '../assets/FeedMe.jpg';
 import twitterLogo from '../assets/twitterLogo.png';
 import TwitterLogin from 'react-twitter-auth';
@@ -11,7 +11,7 @@ import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
 import { onSuccess, onFailed } from '../utils/getTwittertoken';
 
-export default function LoginPage () {
+export default function SignupPage () {
 
     const redirect_uri = process.env?.REACT_APP_GOOGLE_OAUTH_REDIRECT
     const clientID = process.env?.REACT_APP_GOOGLE_OAUTH_CLIENT_ID
@@ -32,13 +32,12 @@ export default function LoginPage () {
                     <img src={FeedMe} alt='feedme' id="feedmelogo"/>
                 </div>
                 <form id="info">
-                    <div className="infos" id="welcome">Welcome</div>
+                    <div className="infos" id="welcome">Signup</div>
                     <input type="text" placeholder='Email ID' className="input infos" autoComplete={checkbox?'email':'off'}/>
                     <input type="password" placeholder='Password' className="input infos" autoComplete={checkbox?'current-password':'off'}/>
                     <div id="passwordCtrl" className="infos">
                         <input type="checkbox" id="checkbox" className="checkbox-round" checked={checkbox} onChange={handleClickCheckbox}/>
                         <label htmlFor="remember" onClick={handleClickCheckbox}>Remember me</label>
-                        <Link to="/setpassword" id="setpsw">Forget password?</Link>
                     </div>
                     <input type="submit" value="Login" className="infos" id="login"/>
                     <div id='dashLine' className="infos">
