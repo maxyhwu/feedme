@@ -1,38 +1,58 @@
-.main-container {
-    background: white;
-}
-
 .main {
-    top: 5vw;
-    height: 80vw;
+    height: 90vh;
     width: 100vw;
 
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
 }
 
-.feild{
-    height: 100%;
-    width: 100%;
+.feild {
+    height: 30vh;
+    width: 100vw;
+
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    /* align-content: space-evenly; */
 }
 
-.keyin{
+.setting-bar-button{
+    left: 5vw;
+    height: 5vh;
+    width: 20vw;
+    border-radius: 10px;
+    background-color: lightgray;
+
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.setting-bar-button-text{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+.keyin {
+    height: 25vh;
+    width: 100vw;
+
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-content: center;
 }
 
-.flex_container{
-    width: 70vw;
-    top: 2vw;
+.flex_container {
+    width: 60vw;
     left: 20vw;
 
     position: relative;
@@ -41,16 +61,60 @@
     justify-content: space-between;
 }
 
-.login-input-bar {
-    right: 5vw;
-    width: 50vw;
-    background: #FFFFFF;
-    opacity: 0.9;
-    box-shadow: 0px 4px 16px gray;
+#username {
+    width: 40vw;
     border-radius: 15px;
     border: 1px solid gray;
     padding: 1.5%;
 
     position: relative;
-    justify-content: start;
+    justify-content: flex-start;
+
+    height: 6vh;
+}
+
+#categories {
+    width: 40vw;
+    border-radius: 15px;
+    border: 1px solid gray;
+    padding: 1.5%;
+
+    position: relative;
+    justify-content: flex-start;
+
+    height: 10vh;
+}
+
+#fridge {
+    width: 40vw;
+    border-radius: 15px;
+    border: 1px solid gray;
+    padding: 1.5%;
+
+    position: relative;
+    justify-content: flex-start;
+
+    height: 18vh;
+}
+
+#not_on {
+    display: block;
+    height: 3vh;
+    width: 3vh;
+}
+
+.submit-container {
+    height: 3vh;
+    width: 90vw;
+    bottom: 8vh;
+
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.submit-button {
+    border-radius: 8px;
+    background-color: lightgrey;
 }
