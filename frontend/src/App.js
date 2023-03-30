@@ -38,7 +38,7 @@ function App() {
           <Route path='/SetPassword' element={ <SetPassword/> } />
           <Route path="/modal" element={ <Detail/> }/>
           <Route path='/recipe-search-result' element={ <Recipe_search_result/> } />
-          <Route path='/' element={ <Startup/> } />
+          <Route path='/startup' element={ <Startup/> } />
         </Routes>
       </Router>
      </ Wrapper>
