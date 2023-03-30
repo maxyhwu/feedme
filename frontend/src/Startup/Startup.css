@@ -1,0 +1,56 @@
+.main-container {
+    background: white;
+}
+
+.main {
+    top: 5vw;
+    height: 80vw;
+    width: 100vw;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.feild{
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    /* align-content: space-evenly; */
+}
+
+.keyin{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.flex_container{
+    width: 70vw;
+    top: 2vw;
+    left: 20vw;
+
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.login-input-bar {
+    right: 5vw;
+    width: 50vw;
+    background: #FFFFFF;
+    opacity: 0.9;
+    box-shadow: 0px 4px 16px gray;
+    border-radius: 15px;
+    border: 1px solid gray;
+    padding: 1.5%;
+
+    position: relative;
+    justify-content: start;
+}

@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from './HomePage/HomePage';
 import MyFridge from './MyFridge/myfridge';
+import Startup from './Startup/Startup';
 import Recipe from './Recipe/recipe';
 import LoginPage from './Login/LoginPage';
 import SignupPage from './Signup/SignupPage';
@@ -37,6 +38,7 @@ function App() {
           <Route path='/SetPassword' element={ <SetPassword/> } />
           <Route path="/modal" element={ <Detail/> }/>
           <Route path='/recipe-search-result' element={ <Recipe_search_result/> } />
+          <Route path='/' element={ <Startup/> } />
         </Routes>
       </Router>
      </ Wrapper>
