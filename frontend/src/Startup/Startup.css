@@ -3,56 +3,54 @@
 }
 
 .main {
-    height: 0%;
-    width: 100%;
+    top: 5vw;
+    height: 80vw;
+    width: 100vw;
 
     position: relative;
     display: flex;
     flex-direction: column;
+    justify-content: start;
 }
 
 .feild{
+    height: 100%;
+    width: 100%;
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-evenly;
+    /* align-content: space-evenly; */
 }
 
 .keyin{
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
 }
 
 .flex_container{
+    width: 70vw;
+    top: 2vw;
+    left: 20vw;
+
     position: relative;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
 }
 
 .login-input-bar {
-    width: 35%;
+    right: 5vw;
+    width: 50vw;
     background: #FFFFFF;
     opacity: 0.9;
     box-shadow: 0px 4px 16px gray;
     border-radius: 15px;
     border: 1px solid gray;
-    padding: 2%;
+    padding: 1.5%;
 
     position: relative;
-    text-align: start;
+    justify-content: start;
 }
-
-/* .meet_main {
-    width: 65%;
-    height: 90%;
-    float: left;
-    position: relative;
-
-    display: flex;
-    flex-direction: row-reverse;
-    flex-wrap: wrap;
-    justify-content: space-between;
-} */

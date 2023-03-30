@@ -10,7 +10,7 @@ const Startup = () => {
       {/* Main Frame */}
       <div className="main">
         {/* Edit Profile */}
-        <div className="feild1">
+        <div className="feild">
           <button className="setting-bar-button">
             <div className="setting-bar-button-icon"></div>
             <div className="setting-bar-button-text">Edit Profile</div>
@@ -38,40 +38,47 @@ const Startup = () => {
         </div>
 
         {/* Notification Setting */}
-        {/* <div className="feild2">
+        <div className="feild">
           <button className="setting-bar-button">
             <div className="setting-bar-button-icon"></div>
             <div className="setting-bar-button-text">Notification Setting</div>
             <div className="setting-bar-button-expand"></div>
           </button>
-          <div>
-            <div>New recipe notification</div>
-            <div className="bell"></div>
+          <div className="keyin">
+            <div className="flex_container">
+              <div>New recipe notification</div>
+              <div className="bell"></div>
+            </div>
+            <div className="flex_container">
+              <div>Ingredient expire</div>
+              <div className="bell"></div>
+            </div>
           </div>
-          <div>
-            <div>Ingredient expire</div>
-            <div className="bell"></div>
-          </div>
-        </div> */}
+        </div>
 
         {/* Fridge Setting */}
-        {/* <div className="feild3">
+        <div className="feild">
           <button className="setting-bar-button">
             <div className="setting-bar-button-icon"></div>
             <div className="setting-bar-button-text">Fridge Setting</div>
             <div className="setting-bar-button-expand"></div>
           </button>
-          <div>
-            <div>Update your fridge</div>
-            <input type="text" className="login-input-bar">
-              What’s in your fridge? (e.g. 1 carrot, 3 eggs ......)
-            </input>
+          <div className="keyin">
+            <div className="flex_container">
+              <div>Update your fridge</div>
+              <input
+                type="text"
+                className="login-input-bar"
+                defaultValue="What’s in your fridge? (e.g. 1 carrot, 3 eggs ......)"
+              />
+            </div>
           </div>
-        </div> */}
+        </div>
 
         {/* Submit */}
         <button className="submit-button">Submit</button>
       </div>
+      
       {/* Footer */}
       <div className="footer"></div>
     </div>
