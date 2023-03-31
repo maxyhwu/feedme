@@ -1,7 +1,5 @@
 .input {
     box-sizing: border-box;
-
-
     border: 1px solid #AEAEAE;
     border-radius: 20px;
     font-family: Poppins;
@@ -20,6 +18,7 @@ textarea:focus, input:focus{
 }
 
 #welcome {
+    display: inline-block;
     font-size:30px;
 }
 
@@ -56,6 +55,14 @@ textarea:focus, input:focus{
     -webkit-appearance: none; */
     /* outline: none; */
     cursor: pointer;
+}
+
+
+#selecter {
+    /* margin-left: auto; 
+    margin-right: 0; */
+    float: right;
+    vertical-align: center;
 }
 
 /* .checkbox-round:checked {

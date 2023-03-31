@@ -21,7 +21,7 @@ const HomePage = () => {
                     </div>
                     <div className="recipes-container">
                         <div className="recipe">
-                             <div className="recipe-header">
+                            <div className="recipe-header">
                                 <div className="recipe-title"> Curry Rice </div>
                                 <FaHeart />
                             </div>

@@ -1,14 +1,19 @@
 import "./Header.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import FeedMe from '../assets/FeedMe.jpg';
 import { BiUserCircle } from 'react-icons/bi'
 import { AiOutlineStar, AiFillStar } from 'react-icons/ai'
 
-/* <Link to="/" style={{textDecoration: 'none'}}>Home Link</Link> */
-
-const Header = () => {
-
+const Header = ({isLoggedIn}) => {
     const navigate = useNavigate();
+
+    const handleUserIcon = () => {
+        if(!isLoggedIn) {
+            navigate('/Login');
+        } else {
+            navigate('/startup');
+        }
+    }
 
     return (
         <div className="navbar">
@@ -22,7 +27,7 @@ const Header = () => {
                 <button className="navbutton" onClick={() => {navigate('/recipe')}}>
                     Recipes
                 </button>
-                <button className="navbutton" onClick={() => {navigate('/')}}>
+                <button className="navbutton" onClick={() => {}}>
                     Forum
                 </button>
                 <button className="navbutton" onClick={() => {navigate('/myfridge')}}>
@@ -32,10 +37,10 @@ const Header = () => {
             <div className="nav-user">
                 <div className="nav-fav">
                     <AiOutlineStar id="favIcon"/>
-                    <AiFillStar id="favIconHover"/>
+                    <AiFillStar id="favIconHover" onClick={() => {navigate('myArchive')}}/>
                 </div>
                 <div className="nav-user-icon">
-                    <BiUserCircle id="userIcon" onClick={() => {navigate('/Login')}}/>
+                    <BiUserCircle id="userIcon" onClick={() => {handleUserIcon()}}/>
                 </div>
             </div>
         </div>
