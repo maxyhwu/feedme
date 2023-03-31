@@ -70,7 +70,7 @@
 
             .setting-bar {
                 // position: relative;
-                // justify-content: left;
+                justify-content: space-around;
                 // align-items: center;
                 font-size: 16px;
                 box-shadow: 3px 3px 6px #d5d5d5;
@@ -91,10 +91,10 @@
                 }
                 
                 .setting-bar-expand {
-                    position: absolute;
+                    // position: absolute;
                     color: #828282;
                     // left: 10%;
-                    margin-left: 130%;
+                    margin-left: 30%;
                     &:hover {
                         color: #a9a9a9;
                         transition: 0.2s;

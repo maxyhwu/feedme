@@ -61,9 +61,9 @@
   top: 20%;
   display: flex;
   flex-direction: column;
-  /* position: relative; */
 }
 .main-mypage .right-section .setting-bar-container .setting-bar {
+  justify-content: space-around;
   font-size: 16px;
   box-shadow: 3px 3px 6px #d5d5d5;
   flex-direction: row;
@@ -83,9 +83,8 @@
   margin-right: 8%;
 }
 .main-mypage .right-section .setting-bar-container .setting-bar .setting-bar-expand {
-  position: absolute;
   color: #828282;
-  margin-left: 130%;
+  margin-left: 30%;
 }
 .main-mypage .right-section .setting-bar-container .setting-bar .setting-bar-expand:hover {
   color: #a9a9a9;
