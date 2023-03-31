@@ -1,0 +1,94 @@
+@charset "UTF-8";
+* {
+  font-family: "Open Sans";
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  margin-top: 10%;
+  margin-left: 5%;
+}
+.main .left-section {
+  width: 50%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.main .left-section .user-info-container {
+  margin-left: 40%;
+  flex-direction: column;
+}
+.main .left-section .user-info-container .user-pic-container {
+  position: relative;
+  margin-top: 10%;
+  margin-bottom: 10%;
+  text-align: center;
+}
+.main .left-section .user-info-container .user-pic-container .user-pic {
+  max-height: 100%;
+  max-width: 100%;
+  text-align: center;
+}
+.main .left-section .user-info-container .user-name-container {
+  position: relative;
+  text-align: center;
+  margin: 5%;
+  clear: both; /*清除浮動*/
+}
+.main .left-section .user-info-container .logout-btn {
+  position: relative;
+  border: none;
+  margin-top: 10%;
+  text-align: center;
+  background-color: none;
+}
+.main .left-section .user-info-container .logout-btn:hover {
+  color: #c7c7c7;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.main .right-section {
+  width: 50%;
+  height: 100%;
+}
+.main .right-section .setting-bar-container {
+  width: 30%;
+  left: 10%;
+  top: 20%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.main .right-section .setting-bar-container .setting-bar {
+  font-size: 16px;
+  box-shadow: 3px 3px 6px #d5d5d5;
+  flex-direction: row;
+  display: inline-flex;
+  border-radius: 6px;
+  width: 270px;
+  height: 40px;
+  padding: 5%;
+  left: 60vw;
+  top: 25vh;
+  margin: 23px;
+  background-color: #c7c7c7;
+}
+.main .right-section .setting-bar-container .setting-bar .setting-bar-icon {
+  color: #828282;
+  margin-left: 5%;
+  margin-right: 8%;
+}
+.main .right-section .setting-bar-container .setting-bar .setting-bar-expand {
+  position: absolute;
+  color: #828282;
+  margin-left: 130%;
+}
+.main .right-section .setting-bar-container .setting-bar .setting-bar-expand:hover {
+  color: #a9a9a9;
+  transition: 0.2s;
+  cursor: pointer;
+}/*# sourceMappingURL=MyPage.css.map */
