@@ -4,7 +4,7 @@ import SearchBar from "./searchbar";
 
 const Recipe = () => {
     return (
-        <div className="recipe">
+        <div className="recipe-container">
             <SearchBar />
             <div className="bottom">
                 <div className="section-title">
