@@ -7,7 +7,7 @@ const HomePage = () => {
         <div className="main-container">
             <div className="main">
                 <div className="top">
-                    <div className="title">
+                    <div className="main-title">
                         A recipe has no soul. You, as a cook, must bring soul to the recipe. -Thomas Keller
                     </div>
                     <div className="subtitle">
