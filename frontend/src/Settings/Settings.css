@@ -6,10 +6,12 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    font-family: Poppins;
+    font-size: 20px;
 }
 
 .feild {
-    height: 30vh;
+    height: 29vh;
     width: 100vw;
 
     position: relative;
@@ -19,9 +21,9 @@
 }
 
 .setting-bar-button{
-    left: 5vw;
-    height: 5vh;
-    width: 20vw;
+    left: 4vw;
+    height: 4vh;
+    width: 15vw;
     border-radius: 10px;
     background-color: lightgray;
 
@@ -32,17 +34,19 @@
     align-items: center;
 }
 
-.setting-bar-button-text{
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-content: center;
+.setting-bar-button-icon{
+    height: 2vh;
+    width: 2vh;
+}
+
+.setting-bar-button-expand{
+    height: 2vh;
+    width: 2vh;
 }
 
 .keyin {
     height: 25vh;
-    width: 100vw;
+    width: 90vw;
 
     position: relative;
     display: flex;
@@ -51,7 +55,7 @@
     align-content: center;
 }
 
-.flex_container {
+.flex-container {
     width: 60vw;
     left: 20vw;
 
@@ -97,14 +101,16 @@
     height: 18vh;
 }
 
-#not_on {
-    display: block;
+#noti {
     height: 3vh;
     width: 3vh;
+    right: 38vw;
+
+    position: relative;
 }
 
 .submit-container {
-    height: 3vh;
+    height: 4vh;
     width: 90vw;
     bottom: 8vh;
 
@@ -112,9 +118,10 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    align-items: center;
 }
 
 .submit-button {
     border-radius: 8px;
-    background-color: lightgrey;
+    background-color: lightblue;
 }
