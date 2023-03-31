@@ -5,7 +5,7 @@ import { FaSignOutAlt, FaAngleRight, FaUserCog, FaRegStar, FaEye, FaBell, FaHead
 
 const MyPage = () => {
   return (
-    <div className='main'>
+    <div className='main-mypage'>
         <section className='left-section'>
             <div className='user-info-container'>
                 {/* <h1>This is mypage</h1> */}
