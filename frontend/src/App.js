@@ -12,6 +12,7 @@ import Detail from "./Recipe/detail";
 import Recipe_search_result from './Recipe/recipe-search-result';
 import MyArchive from "./MyArchive/MyArchive";
 import styled from 'styled-components';
+import MyPage from './MyPage/MyPage';
 import { useState } from "react";
 
 const Wrapper = styled.div`
@@ -42,6 +43,7 @@ function App() {
           <Route path='/recipe-search-result' element={ <Recipe_search_result/> } />
           <Route path='/settings' element={ <Settings/> } />
           <Route path='/myArchive' element={ <MyArchive /> } />
+          <Route path='/mypage' element={ <MyPage /> } />
         </Routes>
       </Router>
     </ Wrapper>
