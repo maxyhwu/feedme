@@ -265,7 +265,7 @@ class MyFridge extends React.Component {
     
     render() {
         return (
-            <div className="container m-5">
+            <div className="container-fluid p-5">
                 <div className="row">
                     <div className="col-auto mb-2">
                         <h4>My Refrigerator</h4>
