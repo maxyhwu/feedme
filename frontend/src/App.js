@@ -2,7 +2,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from './HomePage/HomePage';
 import MyFridge from './MyFridge/myfridge';
-import Startup from './Startup/Startup';
+import Settings from './Settings/Settings';
 import Recipe from './Recipe/recipe';
 import LoginPage from './Login/LoginPage';
 import SignupPage from './Signup/SignupPage';
@@ -22,8 +22,6 @@ const Wrapper = styled.div`
   overflow:scroll;
 `
 
-// align-items: center;
-//   justify-content: center;
 function App() {
   return (
     <Wrapper>
@@ -38,7 +36,7 @@ function App() {
           <Route path='/SetPassword' element={ <SetPassword/> } />
           <Route path="/modal" element={ <Detail/> }/>
           <Route path='/recipe-search-result' element={ <Recipe_search_result/> } />
-          <Route path='/startup' element={ <Startup/> } />
+          <Route path='/settings' element={ <Settings/> } />
         </Routes>
       </Router>
      </ Wrapper>
