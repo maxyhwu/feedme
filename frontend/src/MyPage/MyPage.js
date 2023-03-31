@@ -3,7 +3,7 @@ import FeedMe from '../assets/FeedMe.jpg';
 import './MyPage.css';
 import { FaSignOutAlt, FaAngleRight, FaUserCog, FaRegStar, FaEye, FaBell, FaHeadset } from "react-icons/fa";
 
-export const MyPage = () => {
+const MyPage = () => {
   return (
     <div className='main'>
         <section className='left-section'>
@@ -83,3 +83,4 @@ export const MyPage = () => {
     </div>
   )
 }
+export default MyPage;
