@@ -10,7 +10,9 @@ import SetPassword from './SetPassword/SetPassword';
 import Header from "./Header/Header";
 import Detail from "./Recipe/detail";
 import Recipe_search_result from './Recipe/recipe-search-result';
+import MyArchive from "./MyArchive/MyArchive";
 import styled from 'styled-components';
+import { useState } from "react";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -21,14 +23,16 @@ const Wrapper = styled.div`
   align-items: center;
   overflow:scroll;
 `
-
 // align-items: center;
-//   justify-content: center;
+// justify-content: center;
+
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // you can play with this and click the user icon on the header
+
   return (
-    <Wrapper>
+    <Wrapper id="rootMain">
       <Router>
-        <Header/>
+        <Header isLoggedIn={isLoggedIn}/>
         <Routes>
           <Route path='/' element={ <HomePage/> } />
           <Route path='/myfridge' element={ <MyFridge/> } />
@@ -39,9 +43,10 @@ function App() {
           <Route path="/modal" element={ <Detail/> }/>
           <Route path='/recipe-search-result' element={ <Recipe_search_result/> } />
           <Route path='/startup' element={ <Startup/> } />
+          <Route path='/myArchive' element={ <MyArchive /> } />
         </Routes>
       </Router>
-     </ Wrapper>
+    </ Wrapper>
   );
 }
 
