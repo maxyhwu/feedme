@@ -1,0 +1,9 @@
+{
+    "login.welcome": "Welcome",
+    "login.email": "Email ID",
+    "login.password": "Password",
+    "login.rememberMe": "Remember me",
+    "login.forget": "forget password",
+    "login.login": "login",
+    "login.or": "or"
+}
