@@ -2,13 +2,13 @@
     font-family: 'Open Sans';
 }
 
-.main {
+.main-mypage {
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 100%;
     // justify-content: space-between;
-    margin-top: 10%;
+    margin-top: 5%;
     margin-left: 5%;
     .left-section {
         width: 50%;
@@ -66,11 +66,11 @@
             top: 20%;
             display: flex;
             flex-direction: column;
-            position: relative;
+            // position: relative;
 
             .setting-bar {
                 // position: relative;
-                // justify-content: left;
+                justify-content: space-around;
                 // align-items: center;
                 font-size: 16px;
                 box-shadow: 3px 3px 6px #d5d5d5;
@@ -91,10 +91,10 @@
                 }
                 
                 .setting-bar-expand {
-                    position: absolute;
+                    // position: absolute;
                     color: #828282;
                     // left: 10%;
-                    margin-left: 130%;
+                    margin-left: 30%;
                     &:hover {
                         color: #a9a9a9;
                         transition: 0.2s;

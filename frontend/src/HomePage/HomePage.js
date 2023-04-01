@@ -5,7 +5,7 @@ import { IoIosArrowForward } from 'react-icons/io'
 const HomePage = () => {
     return (
         <div className="main-container">
-            <div className="main">
+            <div className="main-homepage">
                 <div className="top">
                     <div className="main-title">
                         A recipe has no soul. You, as a cook, must bring soul to the recipe. -Thomas Keller

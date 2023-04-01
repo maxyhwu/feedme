@@ -3,9 +3,9 @@ import FeedMe from '../assets/FeedMe.jpg';
 import './MyPage.css';
 import { FaSignOutAlt, FaAngleRight, FaUserCog, FaRegStar, FaEye, FaBell, FaHeadset } from "react-icons/fa";
 
-export const MyPage = () => {
+const MyPage = () => {
   return (
-    <div className='main'>
+    <div className='main-mypage'>
         <section className='left-section'>
             <div className='user-info-container'>
                 {/* <h1>This is mypage</h1> */}
@@ -83,3 +83,4 @@ export const MyPage = () => {
     </div>
   )
 }
+export default MyPage;
