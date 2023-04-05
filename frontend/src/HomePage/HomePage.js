@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
 
     function scrollDown() {
-        var div = document.getElementById("recommend-recipe");
+        var div = document.getElementById("middlePart");
         div.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
@@ -27,7 +27,7 @@ const HomePage = () => {
                     </div>
                     <button onClick={scrollDown}> Discover more </button>
                 </div>
-                <div className="middle">
+                <div className="middle" id="middlePart">
                     <div className="section-title" id="recommend-recipe">
                         Recommended Recipes
                     </div>
