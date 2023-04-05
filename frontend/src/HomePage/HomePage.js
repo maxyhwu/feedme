@@ -1,8 +1,20 @@
 import "./HomePage.css"
 import { FaHeart } from 'react-icons/fa';
 import { IoIosArrowForward } from 'react-icons/io'
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+
+    function scrollDown() {
+        var div = document.getElementById("recommend-recipe");
+        div.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    const navigate = useNavigate();
+    const navigateToDetail = () => {
+        navigate('/modal');
+    }
+
     return (
         <div className="main-container">
             <div className="main-homepage">
@@ -13,10 +25,10 @@ const HomePage = () => {
                     <div className="subtitle">
                         We provide all kinds of functions to serve others innovative cuisines to your table.
                     </div>
-                    <button> Discover more </button>
+                    <button onClick={scrollDown}> Discover more </button>
                 </div>
                 <div className="middle">
-                    <div className="section-title">
+                    <div className="section-title" id="recommend-recipe">
                         Recommended Recipes
                     </div>
                     <div className="recipes-container">
@@ -57,7 +69,7 @@ const HomePage = () => {
                             </div>
                             
                             <div className="learnmore">
-                                <button className="button-learnmore">Learn More</button>
+                                <button className="button-learnmore" onClick={navigateToDetail}>Learn More</button>
                             </div>
                         </div>
                         <div className="recipe">
