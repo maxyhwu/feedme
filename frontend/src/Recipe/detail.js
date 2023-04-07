@@ -1,8 +1,15 @@
 import "./detail.css"
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import ActionBar from "./Components/ActionBar";
+import { useNavigate } from "react-router-dom";
 
 const Detail = () => {
+
+    const navigate = useNavigate();
+    const navigateToRecipe = () => {
+        navigate('/recipe');
+    }
+
     return(
         <div className="background-page">
         <div className="modal-container">
@@ -20,26 +27,6 @@ const Detail = () => {
                     </div>
                 </div>
                 <ActionBar />
-                {/* <div className="action-bar">
-                    <div className="action">
-                        <div className="icon">
-                            <FiHeart />
-                        </div>
-                        <div className="text">Like</div>
-                    </div>
-                    <div className="action">
-                        <div className="icon">
-                            <FiBookmark />
-                        </div>
-                        <div className="text">Save</div>
-                    </div>
-                    <div className="action">
-                        <div className="icon">
-                            <FiShare />
-                        </div>
-                        <div className="text">Share</div>
-                    </div>
-                </div> */}
                 <div className="ingredients">
                     <div className="topic">Ingredients</div>
                     <div className="content">
@@ -59,7 +46,7 @@ const Detail = () => {
             </div>
             <div className="modal-right">
                 <div className="exit">
-                    <IoCloseCircleOutline size={25}/>
+                    <IoCloseCircleOutline size={25} onClick={navigateToRecipe}/>
                 </div>
                 <div className="instructions">
                     <div className="topic">Instructions</div>

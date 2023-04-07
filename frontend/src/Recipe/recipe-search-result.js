@@ -1,11 +1,18 @@
 import "./recipe-search-result.css"
 import ActionBar from "./Components/ActionBar";
+import { useNavigate } from "react-router-dom";
 
 const Recipe_search_result = () => {
+
+    const navigate = useNavigate();
+    const navigateToDetail = () => {
+        navigate('/modal');
+    }
+
     return (
         <div className="recipe-result-page">
             <div className="Recipe-result-container">
-                <div className="recipe-result">
+                <div className="recipe-result" onClick={navigateToDetail}>
                     <div className="result-Img">
                         <img src="https://sudachirecipes.com/wp-content/uploads/2022/08/beef-curry-rice-thumbnail.jpg" alt="" />
                     </div>
@@ -21,7 +28,7 @@ const Recipe_search_result = () => {
                     </div>
                     <ActionBar />
                 </div>
-                <div className="recipe-result">
+                <div className="recipe-result" onClick={navigateToDetail}>
                     <div className="result-Img">
                         <img src="https://www.deliciousmagazine.co.uk/wp-content/uploads/2018/08/302612-1-eng-GB_thyme-roasted-rib-of-beef.jpg" alt="" />
                     </div>
