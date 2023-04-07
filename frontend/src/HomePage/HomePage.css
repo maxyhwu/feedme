@@ -154,6 +154,10 @@
     align-items: center;
 }
 
+.popRecipe:hover {
+    cursor: pointer;
+}
+
 .poptitle {
     font-size: small;
     font-weight: 500;
