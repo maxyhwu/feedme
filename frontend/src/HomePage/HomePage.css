@@ -56,6 +56,10 @@
     margin: 3%;
 }
 
+.heart-active {
+    color: red;
+}
+
 .recipes-container {
     display: flex;
     justify-content: center;

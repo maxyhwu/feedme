@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./HomePage.css"
 import { FaHeart } from 'react-icons/fa';
 import { IoIosArrowForward } from 'react-icons/io'
@@ -13,6 +14,12 @@ const HomePage = () => {
     const navigate = useNavigate();
     const navigateToDetail = () => {
         navigate('/modal');
+    }
+
+    const [activeHeart, setActiveHeart] = useState(false);
+    const handleHeartOnClick = () => {
+        setActiveHeart(!activeHeart);
+        // console.log('heart clicked.');
     }
 
     return (
@@ -35,7 +42,7 @@ const HomePage = () => {
                         <div className="recipe">
                             <div className="recipe-header">
                                 <div className="recipe-title"> Curry Rice </div>
-                                <FaHeart />
+                                <FaHeart className={ activeHeart? 'heart-active':'heart' } onClick={handleHeartOnClick}/>
                             </div>
                             <div className="view-block">
                                 
@@ -75,7 +82,7 @@ const HomePage = () => {
                         <div className="recipe">
                             <div className="recipe-header">
                                     <div className="recipe-title"> Scrambled Egg </div>
-                                    <FaHeart />
+                                    <FaHeart className={ activeHeart? 'heart-active':'heart' } onClick={handleHeartOnClick}/>
                                 </div>
                             <div className="view-block">
             
