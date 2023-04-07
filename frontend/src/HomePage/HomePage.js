@@ -17,8 +17,15 @@ const HomePage = () => {
     }
 
     const [activeHeart, setActiveHeart] = useState(false);
-    const handleHeartOnClick = () => {
+    const [activeHeart1, setActiveHeart1] = useState(false);
+
+    const toggle = () => {
         setActiveHeart(!activeHeart);
+        // console.log('heart clicked.');
+    }
+
+    const toggle1 = () => {
+        setActiveHeart1(!activeHeart1);
         // console.log('heart clicked.');
     }
 
@@ -42,7 +49,7 @@ const HomePage = () => {
                         <div className="recipe">
                             <div className="recipe-header">
                                 <div className="recipe-title"> Curry Rice </div>
-                                <FaHeart className={ activeHeart? 'heart-active':'heart' } onClick={handleHeartOnClick}/>
+                                <FaHeart style={{ color: activeHeart ? 'red' : '' }} onClick={toggle}/>
                             </div>
                             <div className="view-block">
                                 
@@ -82,7 +89,7 @@ const HomePage = () => {
                         <div className="recipe">
                             <div className="recipe-header">
                                     <div className="recipe-title"> Scrambled Egg </div>
-                                    <FaHeart className={ activeHeart? 'heart-active':'heart' } onClick={handleHeartOnClick}/>
+                                    <FaHeart style={{ color: activeHeart1 ? 'red' : '' }} onClick={toggle1}/>
                                 </div>
                             <div className="view-block">
             
