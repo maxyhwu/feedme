@@ -22,24 +22,19 @@ const SearchBar = () => {
     });
   }
 
-  return (
-    <div className="searchbar">
-      <div className="searchText">
-        <input
+  return <div className="searchbar">
+      <div className="searchline">
+        <input className="searchText"
           type="text"
           placeholder="Search recipe"
           onChange={handleChange}
           value={searchInput} />
       </div>
       <div className="search-ingredients">
-        {ingredients.map((recipe_ingre, index) => {
-          <div className="search-ingredient">
-            { ingredients.name };
-          </div>
-        })}
+
       </div>
     </div>
-  )
-}
+
+};
 
 export default SearchBar;
