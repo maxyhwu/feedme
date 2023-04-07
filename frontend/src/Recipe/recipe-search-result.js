@@ -1,4 +1,5 @@
 import "./recipe-search-result.css"
+import ActionBar from "./Components/ActionBar";
 
 const Recipe_search_result = () => {
     return (
@@ -18,6 +19,7 @@ const Recipe_search_result = () => {
                         <button type="button" className="vegetable">Carrot</button>
                         <button type="button" className="grains">Japanese Rice</button>
                     </div>
+                    <ActionBar />
                 </div>
                 <div className="recipe-result">
                     <div className="result-Img">
@@ -28,6 +30,7 @@ const Recipe_search_result = () => {
                         <button type="button" className="meat-and-poultry">Pork</button>
                         <button type="button" className="vegetable">Potato</button>
                     </div>
+                    <ActionBar />
                 </div>
             </div>
         </div>
