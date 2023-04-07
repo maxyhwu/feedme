@@ -33,14 +33,14 @@ const MyPage = () => {
             </section>
             <section className='right-section'>
                 <section className='setting-bar-container'>
-                    <div className='setting-bar'>
+                    <div className='setting-bar' onClick={handleSetting}>
                         <div className="setting-bar-icon" id='edit-profile'>
                             <FaUserCog/>
                         </div>
                         <div className="setting-bar-text">
                             Edit Profile
                         </div>
-                        <div className="setting-bar-expand" onClick={handleSetting}>
+                        <div className="setting-bar-expand">
                             <FaAngleRight/>
                         </div>
                     </div>
@@ -66,14 +66,14 @@ const MyPage = () => {
                             <FaAngleRight/>
                         </div>
                     </div> */}
-                    <div className='setting-bar'>
+                    <div className='setting-bar' onClick={handleSetting}>
                         <div className="setting-bar-icon" id='notification'>
                             <FaBell/>
                         </div>
                         <div className="setting-bar-text">
                             Notification
                         </div>
-                        <div className="setting-bar-expand" onClick={handleSetting}>
+                        <div className="setting-bar-expand">
                             <FaAngleRight/>
                         </div>
                     </div>
