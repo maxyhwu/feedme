@@ -14,7 +14,7 @@ export default function SetLogin () {
                 </div>
                 <form id="info">
                 <div className="infos" id="title">Reset Password</div>
-                    <input type="text" placeholder='Phone Number' className="input infos" autoComplete='off'/>
+                    <input type="text" placeholder='Email' className="input infos" autoComplete='off'/>
                     <div className="d-flex" >
                         <input type="text" placeholder='Verify Code' className="input infos mr-auto p-2" id="code" autoComplete='off'/>
                         <button id="send" className="p-2" type="button">Get Verification Code</button>
