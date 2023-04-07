@@ -44,8 +44,8 @@ const MyPage = () => {
                             <FaAngleRight/>
                         </div>
                     </div>
-                    <div className='setting-bar'>
-                        <div className="setting-bar-icon" id='archive' onClick={handleClickingMyArchive}>
+                    <div className='setting-bar' onClick={handleClickingMyArchive}>
+                        <div className="setting-bar-icon" id='archive'>
                             <FaRegStar/>
                         </div>
                         <div className="setting-bar-text">
@@ -55,7 +55,7 @@ const MyPage = () => {
                             <FaAngleRight/>
                         </div>
                     </div>
-                    <div className='setting-bar'>
+                    {/* <div className='setting-bar'>
                         <div className="setting-bar-icon" id='view-history'>
                             <FaEye/>
                         </div>
@@ -65,7 +65,7 @@ const MyPage = () => {
                         <div className="setting-bar-expand">
                             <FaAngleRight/>
                         </div>
-                    </div>
+                    </div> */}
                     <div className='setting-bar'>
                         <div className="setting-bar-icon" id='notification'>
                             <FaBell/>
@@ -73,7 +73,7 @@ const MyPage = () => {
                         <div className="setting-bar-text">
                             Notification
                         </div>
-                        <div className="setting-bar-expand">
+                        <div className="setting-bar-expand" onClick={handleSetting}>
                             <FaAngleRight/>
                         </div>
                     </div>
