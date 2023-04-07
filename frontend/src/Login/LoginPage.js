@@ -5,7 +5,8 @@ import twitterLogo from '../assets/twitterLogo.png';
 import TwitterLogin from 'react-twitter-auth';
 import {
     Link,
-    useLocation
+    useLocation,
+    useNavigate
   } from "react-router-dom";
 import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
@@ -23,6 +24,7 @@ export default function LoginPage () {
     let from = ((location.state)?.from?.pathname) || '/';
     const [lang, setLang] = useState('en')
     const [locale, setLocale] = useState(undefined)
+    const navigate = useNavigate()
 
     useEffect(() => {
         async function fetchLang () {
@@ -40,6 +42,10 @@ export default function LoginPage () {
 
     const handleClickCheckbox = () => {
         setCheckbox(!checkbox)
+    }
+
+    const handleSubmit = () => {
+        navigate('/mypage')
     }
 
     return (
@@ -75,7 +81,7 @@ export default function LoginPage () {
                         <Link to="/setpassword" id="setpsw"><FormattedMessage id="login.forget" defaultMessage="forget password" />?</Link>
                     </div>
                     <FormattedMessage id="login.login" defaultMessage="Log in" >
-                        {(msg) => (<input type="submit" value={msg} className="infos" id="login"/>)}
+                        {(msg) => (<input type="submit" value={msg} className="infos" id="login" onClick={handleSubmit}/>)}
                     </FormattedMessage>
                     <div id='dashLine' className="infos">
                         <div id="line"></div>
