@@ -141,7 +141,7 @@ class FridgeRenderButton extends React.Component {
                 </span>
                 <button type="button" className="btn" style={{ backgroundColor: bgColor, width: "14rem" }}>
                     <span style={{ float: "left" }}>{ingredient.name}</span>
-                    <span style={{ float: "right" }}>{ingredient.quantity}</span>
+                    <span style={{ float: "right" }}>{ingredient.quantity}g</span>
                 </button>
             </div>
         );
