@@ -151,7 +151,7 @@ const Settings = () => {
         </div>
 
         {/* Fridge Setting */}
-        <div className="feild">
+        {/* <div className="feild">
           <div className="setting-bar-button">
             <BiFridge className="setting-bar-button-icon" />
             <div className="setting-bar-button-text">Fridge Setting</div>
@@ -169,7 +169,7 @@ const Settings = () => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Submit */}
         <div className="submit-container">
