@@ -54,6 +54,7 @@
 .main-mypage .right-section {
   width: 50%;
   height: 100%;
+  margin-top: 5%;
 }
 .main-mypage .right-section .setting-bar-container {
   width: 30%;
@@ -77,6 +78,16 @@
   margin: 23px;
   background-color: #c7c7c7;
 }
+.main-mypage .right-section .setting-bar-container .setting-bar:hover {
+  background-color: #9b9b9b;
+  color: #fff;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.main-mypage .right-section .setting-bar-container .setting-bar:hover .setting-bar-icon {
+  color: #fff;
+  transition: 0.3s;
+}
 .main-mypage .right-section .setting-bar-container .setting-bar .setting-bar-icon {
   color: #828282;
   margin-left: 5%;
@@ -87,7 +98,6 @@
   margin-left: 30%;
 }
 .main-mypage .right-section .setting-bar-container .setting-bar .setting-bar-expand:hover {
-  color: #a9a9a9;
-  transition: 0.2s;
-  cursor: pointer;
+  transform: rotate(359deg);
+  transition: 0.5s;
 }/*# sourceMappingURL=MyPage.css.map */

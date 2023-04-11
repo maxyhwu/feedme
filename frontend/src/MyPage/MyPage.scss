@@ -59,6 +59,7 @@
     .right-section {
         width: 50%;
         height: 100%;
+        margin-top: 5%;
 
         .setting-bar-container {
             width: 30%;
@@ -84,6 +85,17 @@
                 top: 25vh;
                 margin: 23px;
                 background-color: #c7c7c7;
+                &:hover {
+                    background-color: #9b9b9b;
+                    color: #fff;
+                    transition: 0.3s;
+                    cursor: pointer;
+                    .setting-bar-icon {
+                        color: #fff;
+                        transition: 0.3s;
+                    }
+                }
+
                 .setting-bar-icon {
                     color: #828282;
                     margin-left: 5%;
@@ -96,9 +108,8 @@
                     // left: 10%;
                     margin-left: 30%;
                     &:hover {
-                        color: #a9a9a9;
-                        transition: 0.2s;
-                        cursor: pointer;
+                        transform: rotate(359deg);
+                        transition: 0.5s;
                     }
                 }
             }

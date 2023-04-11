@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 // icons
 import {
   IoIosArrowForward,
@@ -13,13 +14,15 @@ import "./Settings.css";
 
 const Settings = () => {
   // username hook
-  const [UserName, setUserName] = useState("");
+  const [UserName, setUserName] = useState("abcdefg");
   // interested categories hook
-  const [Categories, setCategories] = useState("");
+  const [Categories, setCategories] = useState(
+    "Taiwanese Food, Rice, Desserts"
+  );
   // fridge items hook
-  const [FridgeItems, setFridgeItems] = useState("");
+  const [FridgeItems, setFridgeItems] = useState("1 carrot, 3 eggs");
   // notification hooks
-  const [RecipeNoti, setRecipeNoti] = useState(true);
+  const [RecipeNoti, setRecipeNoti] = useState(false);
   const [IngredNoti, setIngredNoti] = useState(true);
 
   // handleChange function
@@ -29,6 +32,11 @@ const Settings = () => {
     // console.log(Categories);
     // console.log(FridgeItems);
   };
+
+  const navigate = useNavigate()
+  const changePage = () => {
+    navigate('/mypage')
+  }
 
   // // handleQueryChange function
   // const handleQueryChange = async () => {
@@ -165,8 +173,8 @@ const Settings = () => {
 
         {/* Submit */}
         <div className="submit-container">
-          <button className="submit-button">
-          {/* onClick={handleQueryChange} */}
+          <button className="submit-button" onClick={changePage}>
+            {/* onClick={handleQueryChange} */}
             Submit
           </button>
         </div>
