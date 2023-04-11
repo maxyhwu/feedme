@@ -3,16 +3,18 @@ import { useNavigate } from "react-router-dom";
 import FeedMe from '../assets/FeedMe.jpg';
 import { BiUserCircle } from 'react-icons/bi'
 import { AiOutlineStar, AiFillStar } from 'react-icons/ai'
+import { UseLoginContext } from "../Context/LoginCnt";
+import { UseLangContext } from "../Context/LangCnt";
+import AccountMenu from "../Components/menu";
 
-const Header = ({isLoggedIn}) => {
+const Header = () => {
     const navigate = useNavigate();
+    const {lang,changeLang} = UseLangContext()
+    const {login} = UseLoginContext()
+
 
     const handleUserIcon = () => {
-        if(!isLoggedIn) {
-            navigate('/Login');
-        } else {
-            navigate('/startup');
-        }
+        navigate('/Login');
     }
 
     return (
@@ -34,13 +36,25 @@ const Header = ({isLoggedIn}) => {
                     My Fridge
                 </button>
             </div>
+            <div>
+                <select
+                    value={lang}
+                    onChange={(evt) => {
+                        changeLang(evt.target.value);
+                    }}
+                    id="selecter"
+                    >
+                    <option value="en">English</option>
+                    <option value="cn">中文</option>
+                </select>
+            </div>
             <div className="nav-user">
                 <div className="nav-fav">
                     <AiOutlineStar id="favIcon"/>
                     <AiFillStar id="favIconHover" onClick={() => {navigate('myArchive')}}/>
                 </div>
                 <div className="nav-user-icon">
-                    <BiUserCircle id="userIcon" onClick={() => {handleUserIcon()}}/>
+                    {login? <AccountMenu/>:<BiUserCircle id="userIcon" onClick={() => {handleUserIcon()}}/>}
                 </div>
             </div>
         </div>
