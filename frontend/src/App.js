@@ -74,7 +74,7 @@ function App() {
                  <ProtectedRoutes>
                     <Settings/>
                   </ProtectedRoutes>} /> */}
-          <Route path='/mmyArchive' element={<MyArchive/>} />
+          <Route path='/myArchive' element={<MyArchive/>} />
           {/* <Route path='/myArchive' element={
                  <ProtectedRoutes>
                     <MyArchive/>
