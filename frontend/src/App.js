@@ -13,7 +13,12 @@ import Recipe_search_result from './Recipe/recipe-search-result';
 import MyArchive from "./MyArchive/MyArchive";
 import styled from 'styled-components';
 import MyPage from './MyPage/MyPage';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import ProtectedRoutes from "./ProtectedRoutes/ProtectedRoutes";
+import {LoginContextProvider} from './Context/LoginCnt'
+import { IntlProvider } from "react-intl";
+import { UseLangContext } from "./Context/LangCnt";
+import { LangContextProvider } from "./Context/LangCnt";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -26,26 +31,60 @@ const Wrapper = styled.div`
 `
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // you can play with this and click the user icon on the header
+  // const [isLoggedIn, setIsLoggedIn] = useState(false); // you can play with this and click the user icon on the header
+  const [locale, setLocale] = useState(undefined)
+  const {lang} = UseLangContext()
+
+  useEffect(() => {
+    async function fetchLang () {
+        try {
+            const resp = await fetch(`./lang/${lang}.json`)
+            const data = await resp.json()
+            console.log(data)
+            setLocale(data)
+          } catch (error) {
+            console.error(`Error fetching translation file for ${lang}:`, error)
+          }
+    }
+    fetchLang()
+  },[lang])
 
   return (
     <Wrapper id="rootMain">
+      <IntlProvider locale="en" messages={locale}>
+      <LangContextProvider>
+      <LoginContextProvider>
       <Router>
-        <Header isLoggedIn={isLoggedIn}/>
+        <Header/>
         <Routes>
           <Route path='/' element={ <HomePage/> } />
-          <Route path='/myfridge' element={ <MyFridge/> } />
+          <Route path='/myfridge' element={
+                  <ProtectedRoutes>
+                    <MyFridge/>
+                  </ProtectedRoutes>} />
           <Route path='/recipe' element={ <Recipe/> } />
           <Route path='/login' element={ <LoginPage/> } />
           <Route path='/Signup' element={ <SignupPage/> } />
           <Route path='/SetPassword' element={ <SetPassword/> } />
           <Route path="/modal" element={ <Detail/> }/>
           <Route path='/recipe-search-result' element={ <Recipe_search_result/> } />
-          <Route path='/settings' element={ <Settings/> } />
-          <Route path='/myArchive' element={ <MyArchive /> } />
-          <Route path='/mypage' element={ <MyPage /> } />
+          <Route path='/settings' element={
+                 <ProtectedRoutes>
+                    <Settings/>
+                  </ProtectedRoutes>} />
+          <Route path='/myArchive' element={
+                 <ProtectedRoutes>
+                    <MyArchive/>
+                  </ProtectedRoutes>} />
+          <Route path='/mypage' element={
+                 <ProtectedRoutes>
+                    <MyPage/>
+                  </ProtectedRoutes>}/>
         </Routes>
       </Router>
+      </LoginContextProvider>
+      </LangContextProvider>
+      </IntlProvider>
     </ Wrapper>
   );
 }

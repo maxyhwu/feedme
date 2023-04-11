@@ -12,6 +12,8 @@ import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
 import { onSuccess, onFailed } from '../utils/getTwittertoken';
 import { FormattedMessage, IntlProvider } from "react-intl";
+import {UseLoginContext} from '../Context/LoginCnt'
+import { UseLangContext } from '../Context/LangCnt';
 
 export default function LoginPage () {
 
@@ -22,9 +24,10 @@ export default function LoginPage () {
     const location = useLocation();
     const [checkbox, setCheckbox] = useState(false);
     let from = ((location.state)?.from?.pathname) || '/';
-    const [lang, setLang] = useState('en')
     const [locale, setLocale] = useState(undefined)
     const navigate = useNavigate()
+    const {changeLogin} = UseLoginContext();
+    const {lang} = UseLangContext();
 
     useEffect(() => {
         async function fetchLang () {
@@ -45,6 +48,7 @@ export default function LoginPage () {
     }
 
     const handleSubmit = () => {
+        changeLogin(true)
         navigate('/mypage')
     }
 
@@ -58,16 +62,6 @@ export default function LoginPage () {
                 <form id="info">
                     <div id="header">
                         <div className="infos" id="welcome"><FormattedMessage id="login.welcome" defaultMessage="Welcome" /></div>
-                        <select
-                            value={lang}
-                            onChange={(evt) => {
-                                setLang(evt.target.value);
-                            }}
-                            id="selecter"
-                            >
-                            <option value="en">English</option>
-                            <option value="cn">中文</option>
-                        </select>
                     </div>
                     <FormattedMessage id="login.email" defaultMessage="Email ID" >
                         {(msg) => (<input type="text" placeholder={msg} className="input infos" autoComplete={checkbox?'email':'off'}/>)}
