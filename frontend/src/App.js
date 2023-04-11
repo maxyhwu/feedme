@@ -58,28 +58,32 @@ function App() {
         <Header/>
         <Routes>
           <Route path='/' element={ <HomePage/> } />
-          <Route path='/myfridge' element={
+          <Route path='/myfridge' element={<MyFridge/>} />
+          {/* <Route path='/myfridge' element={
                   <ProtectedRoutes>
                     <MyFridge/>
-                  </ProtectedRoutes>} />
+                  </ProtectedRoutes>} /> */}
           <Route path='/recipe' element={ <Recipe/> } />
           <Route path='/login' element={ <LoginPage/> } />
           <Route path='/Signup' element={ <SignupPage/> } />
           <Route path='/SetPassword' element={ <SetPassword/> } />
           <Route path="/modal" element={ <Detail/> }/>
           <Route path='/recipe-search-result' element={ <Recipe_search_result/> } />
-          <Route path='/settings' element={
+          <Route path='/settings' element={<Settings/>} />
+          {/* <Route path='/settings' element={
                  <ProtectedRoutes>
                     <Settings/>
-                  </ProtectedRoutes>} />
-          <Route path='/myArchive' element={
+                  </ProtectedRoutes>} /> */}
+          <Route path='/mmyArchive' element={<MyArchive/>} />
+          {/* <Route path='/myArchive' element={
                  <ProtectedRoutes>
                     <MyArchive/>
-                  </ProtectedRoutes>} />
-          <Route path='/mypage' element={
+                  </ProtectedRoutes>} /> */}
+          <Route path='/mypage' element={<MyPage/>} />
+          {/* <Route path='/mypage' element={
                  <ProtectedRoutes>
                     <MyPage/>
-                  </ProtectedRoutes>}/>
+                  </ProtectedRoutes>}/> */}
         </Routes>
       </Router>
       </LoginContextProvider>
