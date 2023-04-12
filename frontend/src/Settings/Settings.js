@@ -9,6 +9,7 @@ import {
 } from "react-icons/io";
 import { BsPerson } from "react-icons/bs";
 import { TbBellRinging } from "react-icons/tb";
+import { FormattedMessage } from "react-intl";
 // import { BiFridge } from "react-icons/bi";
 
 //import css
@@ -86,30 +87,58 @@ const Settings = () => {
         <div className="feild">
           <div className="setting-bar-button">
             <BsPerson className="setting-bar-button-icon" />
-            <div className="setting-bar-button-text">Edit Profile</div>
+            <FormattedMessage
+              id="settings.editprofile"
+              defaultMessage="Edit Profile"
+            >
+              {(msg) => <div className="setting-bar-button-text">{msg}</div>}
+            </FormattedMessage>
             <IoIosArrowForward className="setting-bar-button-expand" />
           </div>
           <div className="keyin">
             <div className="flex-container">
-              <div>Username</div>
-              <input
-                type="text"
-                placeholder="Username"
-                id="username"
-                value={UserName}
-                onChange={handleChange(setUserName)}
-              />
+              <FormattedMessage
+                id="settings.username"
+                defaultMessage="Username"
+              >
+                {(msg) => <div>{msg}</div>}
+              </FormattedMessage>
+              <FormattedMessage
+                id="settings.initUsername"
+                defaultMessage="e.g. abc"
+              >
+                {(msg) => (
+                  <input
+                    type="text"
+                    placeholder={msg}
+                    id="username"
+                    value={UserName}
+                    onChange={handleChange(setUserName)}
+                  />
+                )}
+              </FormattedMessage>
             </div>
             <div className="flex-container">
-              <div>Interested categories</div>
-              <textarea
-                type="textarea"
-                placeholder="Such as Taiwanese Food, Rice or Desserts (At most five
-                categories)"
-                id="categories"
-                value={Categories}
-                onChange={handleChange(setCategories)}
-              />
+              <FormattedMessage
+                id="settings.interestedCategories"
+                defaultMessage="InterestedCategories"
+              >
+                {(msg) => <div>{msg}</div>}
+              </FormattedMessage>
+              <FormattedMessage
+                id="settings.initInterestedCategories"
+                defaultMessage="e.g. Taiwanese Food, Rice or Desserts (At most five categories)"
+              >
+                {(msg) => (
+                  <textarea
+                    type="textarea"
+                    placeholder={msg}
+                    id="categories"
+                    value={Categories}
+                    onChange={handleChange(setCategories)}
+                  />
+                )}
+              </FormattedMessage>
             </div>
           </div>
         </div>
@@ -118,19 +147,34 @@ const Settings = () => {
         <div className="feild">
           <div className="setting-bar-button">
             <TbBellRinging className="setting-bar-button-icon" />
-            <div className="setting-bar-button-text">Notification Setting</div>
+            <FormattedMessage
+              id="settings.notificationSetting"
+              defaultMessage="Notification Setting"
+            >
+              {(msg) => <div className="setting-bar-button-text">{msg}</div>}
+            </FormattedMessage>
             <IoIosArrowForward className="setting-bar-button-expand" />
           </div>
           <div className="keyin">
             <div className="flex-container">
-              <div>New recipe notification</div>
+              <FormattedMessage
+                id="settings.NRNotification"
+                defaultMessage="New recipe"
+              >
+                {(msg) => <div>{msg}</div>}
+              </FormattedMessage>
               {IngredNoti ? (
                 <div className="notiBlock">
                   <IoIosNotifications
                     id="noti"
                     onClick={() => setIngredNoti(false)}
                   />
-                  <div id="hints">(Click to close notification.)</div>
+                  <FormattedMessage
+                    id="settings.closeNotification"
+                    defaultMessage="(Click to close notification.)"
+                  >
+                    {(msg) => <div id="hints">{msg}</div>}
+                  </FormattedMessage>
                 </div>
               ) : (
                 <div className="notiBlock">
@@ -138,19 +182,34 @@ const Settings = () => {
                     id="noti"
                     onClick={() => setIngredNoti(true)}
                   />
-                  <div id="hints">(Click to open notification.)</div>
+                  <FormattedMessage
+                    id="settings.openNotification"
+                    defaultMessage="(Click to open notification.)"
+                  >
+                    {(msg) => <div id="hints">{msg}</div>}
+                  </FormattedMessage>
                 </div>
               )}
             </div>
             <div className="flex-container">
-              <div>Ingredient expire</div>
+              <FormattedMessage
+                id="settings.IENotification"
+                defaultMessage="Ingredient expire"
+              >
+                {(msg) => <div>{msg}</div>}
+              </FormattedMessage>
               {RecipeNoti ? (
                 <div className="notiBlock">
                   <IoIosNotifications
                     id="noti"
                     onClick={() => setRecipeNoti(false)}
                   />
-                  <div id="hints">(Click to close notification.)</div>
+                  <FormattedMessage
+                    id="settings.closeNotification"
+                    defaultMessage="(Click to close notification.)"
+                  >
+                    {(msg) => <div id="hints">{msg}</div>}
+                  </FormattedMessage>
                 </div>
               ) : (
                 <div className="notiBlock">
@@ -158,7 +217,12 @@ const Settings = () => {
                     id="noti"
                     onClick={() => setRecipeNoti(true)}
                   />
-                  <div id="hints">(Click to open notification.)</div>
+                  <FormattedMessage
+                    id="settings.openNotification"
+                    defaultMessage="(Click to open notification.)"
+                  >
+                    {(msg) => <div id="hints">{msg}</div>}
+                  </FormattedMessage>
                 </div>
               )}
             </div>
@@ -188,10 +252,14 @@ const Settings = () => {
 
         {/* Submit */}
         <div className="submit-container">
-          <button className="submit-button" onClick={changePage}>
-            {/* onClick={handleQueryChange} */}
-            Submit
-          </button>
+          <FormattedMessage id="settings.submit" defaultMessage="Submit">
+            {(msg) => (
+              <button className="submit-button" onClick={changePage}>
+                {/* onClick={handleQueryChange} */}
+                {msg}
+              </button>
+            )}
+          </FormattedMessage>
         </div>
       </div>
     </div>
