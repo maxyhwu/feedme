@@ -6,11 +6,19 @@ import { AiOutlineStar, AiFillStar } from 'react-icons/ai'
 import { UseLoginContext } from "../Context/LoginCnt";
 import { UseLangContext } from "../Context/LangCnt";
 import AccountMenu from "../Components/menu";
+import { useEffect } from "react"
 
 const Header = () => {
     const navigate = useNavigate();
     const {lang,changeLang} = UseLangContext()
     const {login} = UseLoginContext()
+
+    const handleSelectChange = (evt) => {
+        changeLang(evt.target.value);
+    }
+    useEffect(()=>{
+        console.log(lang)
+    }, [lang])
 
 
     const handleUserIcon = () => {
@@ -40,7 +48,7 @@ const Header = () => {
                 <select
                     value={lang}
                     onChange={(evt) => {
-                        changeLang(evt.target.value);
+                        handleSelectChange(evt);
                     }}
                     id="selecter"
                     >
