@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 // icons
 import {
   IoIosArrowForward,
@@ -8,8 +9,9 @@ import {
 } from "react-icons/io";
 import { BsPerson } from "react-icons/bs";
 import { TbBellRinging } from "react-icons/tb";
-import { BiFridge } from "react-icons/bi";
-// import css
+// import { BiFridge } from "react-icons/bi";
+
+//import css
 import "./Settings.css";
 
 const Settings = () => {
@@ -20,7 +22,7 @@ const Settings = () => {
     "Taiwanese Food, Rice, Desserts"
   );
   // fridge items hook
-  const [FridgeItems, setFridgeItems] = useState("1 carrot, 3 eggs");
+  // const [FridgeItems, setFridgeItems] = useState("1 carrot, 3 eggs");
   // notification hooks
   const [RecipeNoti, setRecipeNoti] = useState(false);
   const [IngredNoti, setIngredNoti] = useState(true);
@@ -33,10 +35,11 @@ const Settings = () => {
     // console.log(FridgeItems);
   };
 
-  const navigate = useNavigate()
+  // change page
+  const navigate = useNavigate();
   const changePage = () => {
-    navigate('/mypage')
-  }
+    navigate("/mypage");
+  };
 
   // // handleQueryChange function
   // const handleQueryChange = async () => {
@@ -122,29 +125,41 @@ const Settings = () => {
             <div className="flex-container">
               <div>New recipe notification</div>
               {IngredNoti ? (
-                <IoIosNotifications
-                  id="noti"
-                  onClick={() => setIngredNoti(false)}
-                />
+                <div className="notiBlock">
+                  <IoIosNotifications
+                    id="noti"
+                    onClick={() => setIngredNoti(false)}
+                  />
+                  <div id="hints">(Click to close notification.)</div>
+                </div>
               ) : (
-                <IoIosNotificationsOff
-                  id="noti"
-                  onClick={() => setIngredNoti(true)}
-                />
+                <div className="notiBlock">
+                  <IoIosNotificationsOff
+                    id="noti"
+                    onClick={() => setIngredNoti(true)}
+                  />
+                  <div id="hints">(Click to open notification.)</div>
+                </div>
               )}
             </div>
             <div className="flex-container">
               <div>Ingredient expire</div>
               {RecipeNoti ? (
-                <IoIosNotifications
-                  id="noti"
-                  onClick={() => setRecipeNoti(false)}
-                />
+                <div className="notiBlock">
+                  <IoIosNotifications
+                    id="noti"
+                    onClick={() => setRecipeNoti(false)}
+                  />
+                  <div id="hints">(Click to close notification.)</div>
+                </div>
               ) : (
-                <IoIosNotificationsOff
-                  id="noti"
-                  onClick={() => setRecipeNoti(true)}
-                />
+                <div className="notiBlock">
+                  <IoIosNotificationsOff
+                    id="noti"
+                    onClick={() => setRecipeNoti(true)}
+                  />
+                  <div id="hints">(Click to open notification.)</div>
+                </div>
               )}
             </div>
           </div>
