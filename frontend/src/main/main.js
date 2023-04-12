@@ -1,5 +1,8 @@
 // import './App.css';
-import { BrowserRouter as Route, Routes } from "react-router-dom";
+import {
+    Routes,
+    Route,
+  } from "react-router";
 import HomePage from '../HomePage/HomePage';
 import MyFridge from '../MyFridge/myfridge';
 import Settings from '../Settings/Settings';
@@ -40,32 +43,32 @@ function Main() {
       <IntlProvider locale="en" messages={locale}>
         <Routes>
           <Route path='/' element={ <HomePage/> } />
-          <Route path='myfridge' element={<MyFridge/>} />
-          {/* <Route path='/myfridge' element={
-                  <ProtectedRoutes>
-                    <MyFridge/>
-                  </ProtectedRoutes>} /> */}
           <Route path='recipe' element={ <Recipe/> } />
           <Route path='login' element={ <LoginPage/> } />
           <Route path='Signup' element={ <SignupPage/> } />
           <Route path='SetPassword' element={ <SetPassword/> } />
           <Route path="modal" element={ <Detail/> }/>
           <Route path='recipe-search-result' element={ <Recipe_search_result/> } />
-          <Route path='settings' element={<Settings/>} />
-          {/* <Route path='/settings' element={
+          {/* <Route path='/myfridge' element={
+                  <ProtectedRoutes>
+                    <MyFridge/>
+                  </ProtectedRoutes>} />
+          <Route path='/settings' element={
                  <ProtectedRoutes>
                     <Settings/>
-                  </ProtectedRoutes>} /> */}
-          <Route path='myArchive' element={<MyArchive/>} />
-          {/* <Route path='/myArchive' element={
+                  </ProtectedRoutes>} />
+          <Route path='/myArchive' element={
                  <ProtectedRoutes>
                     <MyArchive/>
-                  </ProtectedRoutes>} /> */}
-          <Route path='mypage' element={<MyPage/>} />
-          {/* <Route path='/mypage' element={
+                  </ProtectedRoutes>} />
+          <Route path='/mypage' element={
                  <ProtectedRoutes>
                     <MyPage/>
                   </ProtectedRoutes>}/> */}
+            <Route path='myfridge' element={<MyFridge/>} />
+            <Route path='settings' element={<Settings/>} />
+            <Route path='myArchive' element={<MyArchive/>} />
+            <Route path='mypage' element={<MyPage/>} />
         </Routes>
     </IntlProvider>
   );
