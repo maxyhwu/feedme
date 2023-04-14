@@ -7,11 +7,11 @@
     flex-direction: column;
     justify-content: flex-start;
     font-family: Poppins;
-    font-size: 20px;
+    font-size: 1.3vw;
 }
 
 .feild {
-    height: 40vh;
+    height: 45vh;
     width: 100vw;
 
     position: relative;
@@ -104,9 +104,25 @@
 #noti {
     height: 3vh;
     width: 3vh;
-    right: 38vw;
+    /* right: 38vw; */
 
     position: relative;
+}
+
+#hints {
+    left: 1vw;
+
+    position: relative;
+}
+
+.notiBlock{
+    right: 24vw;
+
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 .submit-container {
