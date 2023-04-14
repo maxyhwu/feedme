@@ -5,5 +5,17 @@
     "login.rememberMe": "Remember me",
     "login.forget": "forget password",
     "login.login": "Log in",
-    "login.or": "or"
+    "login.or": "or",
+
+    "settings.editprofile": "Edit Profile",
+    "settings.username": "Username",
+    "settings.interestedCategories": "Interested categories",
+    "settings.initUsername": "e.g. abc",
+    "settings.initInterestedCategories": "e.g. Taiwanese Food, Rice or Desserts (At most five categories)",
+    "settings.notificationSetting": "Notification Setting",
+    "settings.NRNotification": "New recipe",
+    "settings.IENotification": "Ingredient expire",
+    "settings.openNotification": "(Click to open notification.)",
+    "settings.closeNotification": "(Click to close notification.)",
+    "settings.submit": "Submit"
 }

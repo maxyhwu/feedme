@@ -5,5 +5,17 @@
     "login.rememberMe": "記住密碼",
     "login.forget": "忘記密碼",
     "login.login": "登入",
-    "login.or": "或"
+    "login.or": "或",
+
+    "settings.editprofile": "修改個人資料",
+    "settings.username": "使用者名稱",
+    "settings.interestedCategories": "感興趣的類別",
+    "settings.initUsername": "例如： abc",
+    "settings.initInterestedCategories": "例如： Taiwanese Food, Rice or Desserts (最多五個)",
+    "settings.notificationSetting": "通知設定",
+    "settings.NRNotification": "新食譜通知",
+    "settings.IENotification": "食材過期通知",
+    "settings.openNotification": "（點擊鈴鐺開啟通知）",
+    "settings.closeNotification": "（點擊鈴鐺關閉通知）",
+    "settings.submit": "提交更新"
 }
