@@ -1,6 +1,7 @@
 import React from "react";
 import './myfridge.css'
 import { data } from "./fridgedata";
+import FridgeAddIngredientModal from  "./fridgeadd"
 
 
 const paletteCategory2Color = {
@@ -268,11 +269,9 @@ class MyFridge extends React.Component {
             <div className="container-fluid p-5">
                 <div className="row">
                     <div className="col-auto mb-2">
-                        <h4>My Refrigerator</h4>
+                        <h4>My Fridge</h4>
                     </div>
-                    <div className="col-auto mb-2">
-                        <button type="button" className="btn btn-secondary fridge-functional-button">Fridge Setting</button>
-                    </div>
+                    <FridgeAddIngredientModal />
                     <div className="col-auto mb-2">
                         <button type="button" className="btn btn-secondary fridge-functional-button">Suggested Recipes</button>
                     </div>
