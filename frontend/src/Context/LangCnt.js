@@ -1,10 +1,11 @@
 import React, {useContext, useState} from 'react'
 
 const LangContext = React.createContext({
-    lang: [],
+    lang: "en",
     changeLang: () => {}
     }
 );
+
 
 
 const LangContextProvider = (props) => {

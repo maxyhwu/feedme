@@ -11,7 +11,7 @@ import {
 import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
 import { onSuccess, onFailed } from '../utils/getTwittertoken';
-import { FormattedMessage, IntlProvider } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import {UseLoginContext} from '../Context/LoginCnt'
 import { UseLangContext } from '../Context/LangCnt';
 
@@ -24,24 +24,12 @@ export default function LoginPage () {
     const location = useLocation();
     const [checkbox, setCheckbox] = useState(false);
     let from = ((location.state)?.from?.pathname) || '/';
-    const [locale, setLocale] = useState(undefined)
     const navigate = useNavigate()
     const {changeLogin} = UseLoginContext();
-    const {lang} = UseLangContext();
+    const {lang} = UseLangContext()
 
-    useEffect(() => {
-        async function fetchLang () {
-            try {
-                const resp = await fetch(`./lang/${lang}.json`)
-                const data = await resp.json()
-                console.log(data)
-                setLocale(data)
-              } catch (error) {
-                console.error(`Error fetching translation file for ${lang}:`, error)
-              }
-        }
-        fetchLang()
-      },[lang])
+    useEffect(()=>{console.log(lang)}, [lang])
+
 
     const handleClickCheckbox = () => {
         setCheckbox(!checkbox)
@@ -53,7 +41,6 @@ export default function LoginPage () {
     }
 
     return (
-        <IntlProvider locale="en" messages={locale}>
         <div className="container">
             <div className="body">
                 <div id='logo'>
@@ -100,6 +87,5 @@ export default function LoginPage () {
                 </form>
             </div>
         </div>
-        </IntlProvider>
     )
 }
