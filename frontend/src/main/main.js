@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import ProtectedRoutes from "../ProtectedRoutes/ProtectedRoutes";
 import { IntlProvider } from "react-intl";
 import { UseLangContext } from "../Context/LangCnt";
+import Preference from "../Signup/PreferencePage";
 
 function Main() {
   // const [isLoggedIn, setIsLoggedIn] = useState(false); // you can play with this and click the user icon on the header
@@ -69,6 +70,7 @@ function Main() {
             <Route path='settings' element={<Settings/>} />
             <Route path='myArchive' element={<MyArchive/>} />
             <Route path='mypage' element={<MyPage/>} />
+            <Route path="preference" element={ <Preference/> }/>
         </Routes>
     </IntlProvider>
   );
