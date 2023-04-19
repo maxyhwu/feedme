@@ -24,6 +24,7 @@
     display: flex;
     justify-content: center; 
     margin-bottom: 4%;
+    flex-direction: column;
 }
 
 .prefer-title {
@@ -114,6 +115,11 @@
     justify-content: flex-end;
     padding: 3%;
     align-items: center;
+}
+
+.error-hint {
+    width: 65%;
+    color: red;
 }
 
 .confirm {
