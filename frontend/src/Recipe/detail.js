@@ -67,6 +67,16 @@ const Detail = () => {
                 </div>
             </div>
         </div>
+        <div className="comment-container">
+            <div className="comment">Comments</div>
+            <div className="single-comment-container">Very impressive!</div>
+            <div className="single-comment-container">This looks soooooo delicious.</div>
+            <div className="single-comment-container">I love curry~</div>
+            <div className="comment-input">
+                <input classname= "input-text" type = "text" placeholder="leave your comment..."/>
+                <input classname= "submit-text" type = "submit"/>
+            </div>
+        </div>
         </div>
     )
 }
