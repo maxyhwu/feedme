@@ -1,99 +1,48 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 import { FaTrashAlt } from 'react-icons/fa';
 import './myfridge.css';
+import { allIngredients } from './fridgedata'
 
 Modal.setAppElement('#root');
 
-class FridgeAddIngredientRow extends Component {
+
+class FridgeAddIngredientRow extends React.Component {
     render() {
-        const { minId, rowId, ingredient, quantity, purchaseDate, expirationDate, onInputChange, onDelete } = this.props;
+        const { minId, rowId, ingredient, matchingIngredients, quantity, purchaseDate, expirationDate, onInputChange, onDelete } = this.props;
+        const datalistId = `matching-ingredients-${rowId}`;
 
         return (
-            <div className='row'>
-                <div className='col-auto'>
-                    <div className='row mb-3'>
-                        <div className='col-auto'>
-                            {rowId === minId && (
-                                <strong>Ingredient</strong>
-                            )}  
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-auto'>
-                            <input className='fridge-add-ing-input' type="text" name="ingredient" value={ingredient} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                        </div>
-                    </div>
-                </div>
-                
-                <div className='col-auto'>
-                    <div className='row mb-3'>
-                        <div className='col-auto'>
-                            {rowId === minId && (
-                                <strong>Quantity</strong>
-                            )}
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-auto'>
-                            <input className='fridge-add-ing-input' type="text" name="quantity" value={quantity} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                        </div>
-                    </div>
-                </div>
-                
-                <div className='col-auto'>
-                    <div className='row mb-3'>
-                        <div className='col-auto'>
-                            {rowId === minId && (
-                                <strong>Purchase Date</strong>
-                            )}
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-auto'>
-                            <input  className='fridge-add-ing-input' type="date" name="purchaseDate" value={purchaseDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                        </div>
-                    </div>
-                </div>
-                
-                <div className='col-auto'>
-                    <div className='row mb-3'>
-                        <div className='col-auto'>
-                            {rowId === minId && (
-                                <strong>Expiration Date</strong>
-                            )}
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-auto'>
-                            <input className='fridge-add-ing-input' type="date" name="expirationDate" value={expirationDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                        </div>
-                    </div>
-                </div>
-
-                <div className='col-auto'>
-                    <div className='row mb-3'>
-                        <div className='col-auto'>
-                            {rowId === minId && (
-                                <strong>Delete</strong>
-                            )}
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-auto'>
-                            <button className='btn btn-secondary fridge-add-ing-delete-button' type="button" onClick={e => onDelete(rowId)}>
-                                <FaTrashAlt />
-                            </button>
-                        </div>
-                    </div>
-                </div>              
-            </div>
+            <tr>
+                <td>
+                    <input className='fridge-add-ing-input' list={datalistId} type="text" name="ingredient" value={ingredient} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                    <datalist id={datalistId}>
+                        {matchingIngredients.map(ingredient => (
+                            <option key={ingredient} value={ingredient} />
+                        ))}
+                    </datalist>
+                </td>
+                <td>
+                    <input className='fridge-add-ing-input' type="number" min="0" name="quantity" value={quantity} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                </td>
+                <td>
+                    <input  className='fridge-add-ing-input' type="date" name="purchaseDate" value={purchaseDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                </td>
+                <td>
+                    <input className='fridge-add-ing-input' type="date" name="expirationDate" value={expirationDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                </td>
+                <td>
+                    <button className='btn btn-secondary fridge-add-ing-delete-button' type="button" onClick={e => onDelete(rowId)}>
+                        <FaTrashAlt />
+                    </button>
+                </td>
+            </tr>
         );
     }
 }
 
 
-class FridgeAddIngredientModal extends Component {
+class FridgeAddIngredientModal extends React.Component {
     state = {
         modalIsOpen: false,
         minID: 0,
@@ -101,7 +50,8 @@ class FridgeAddIngredientModal extends Component {
         data: [{
             id: 0,
             ingredient: '',
-            quantity: '',
+            matchingIngredients: [],
+            quantity: 0,
             purchaseDate: '',
             expirationDate: '',
         }],
@@ -121,14 +71,22 @@ class FridgeAddIngredientModal extends Component {
     handleInputChange = (rowId, fieldName, value) => {
         // Modify the data in state based on the input change
         const newData = this.state.data.map((row) => {
-          if (row.id === rowId) {
-            return {
-              ...row,
-              [fieldName]: value,
-            };
-          } else {
-            return row;
-          }
+            if (row.id === rowId) {
+                if (fieldName === 'ingredient') {
+                    const matchingIngredients = allIngredients.filter(ingredient => ingredient.toLowerCase().includes(value.toLowerCase()));
+                    return {
+                        ...row,
+                        [fieldName]: value,
+                        'matchingIngredients': matchingIngredients.slice(0, 5),
+                    };
+                }
+                return {
+                    ...row,
+                    [fieldName]: value,
+                };
+            } else {
+                return row;
+            }
         });
     
         this.setState({ data: newData });
@@ -139,7 +97,8 @@ class FridgeAddIngredientModal extends Component {
         const newRow = {
             id: this.state.nextID,
             ingredient: '',
-            quantity: '',
+            matchingIngredients: [],
+            quantity: 0,
             purchaseDate: '',
             expirationDate: '',
         };
@@ -182,19 +141,33 @@ class FridgeAddIngredientModal extends Component {
                     </div>
                 </div>
 
-                {this.state.data.map((row) => (
-                    <FridgeAddIngredientRow
-                        key={row.id}
-                        minId={this.state.minID}
-                        rowId={row.id}
-                        ingredient={row.ingredient}
-                        quantity={row.quantity}
-                        purchaseDate={row.purchaseDate}
-                        expirationDate={row.expirationDate}
-                        onInputChange={this.handleInputChange}
-                        onDelete={this.handleRemoveRow}
-                    />
-                ))}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Ingredient</th>
+                            <th scope="col">Quantity (gram)</th>
+                            <th scope="col">Purchase Date</th>
+                            <th scope="col">Expiration Date</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.data.map((row) => (
+                            <FridgeAddIngredientRow
+                                key={row.id}
+                                minId={this.state.minID}
+                                rowId={row.id}
+                                ingredient={row.ingredient}
+                                matchingIngredients={row.matchingIngredients}
+                                quantity={row.quantity}
+                                purchaseDate={row.purchaseDate}
+                                expirationDate={row.expirationDate}
+                                onInputChange={this.handleInputChange}
+                                onDelete={this.handleRemoveRow}
+                            />
+                        ))}
+                    </tbody>
+                </table>
 
                 <div className='row mt-3'>
                     <div className='col-auto'>
