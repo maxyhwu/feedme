@@ -6,7 +6,6 @@ import TwitterLogin from 'react-twitter-auth';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
-import { onSuccess, onFailed } from '../utils/getTwittertoken';
 import { FormattedMessage } from "react-intl";
 import {UseLoginContext} from '../Context/LoginCnt'
 import { UseLangContext } from '../Context/LangCnt';
@@ -49,6 +48,24 @@ const RegisterPage = () => {
         changeLogin(true)
         navigate('/mypage')
     }
+
+    const onSuccess = (response) => {
+        // window.close()
+        navigate('/')
+        window.location.reload(true)
+        const token = response.headers.get('x-auth-token');
+        console.log('token')
+        response.json().then(user => {
+          if (token) {
+            console.log(user)
+          }
+        });
+      };
+
+    const onFailed = (error) => {
+        alert(error);
+    };
+
     const register = async (e) => {
         e.preventDefault();
 
