@@ -69,21 +69,9 @@ export default function LoginPage () {
                         <div id="text"><FormattedMessage id="login.or" defaultMessage="or" /></div>
                         <div id="line"></div>
                     </div>
-                    <div id="external" className="infos">
-                        <Link 
-                            href={getGoogleUrl(from, redirect_uri, clientID)}
-                            id="google-icon"
-                        >
-                            <GoogleLogo  id="googlelogo"/>    
-                        </Link> 
-                        <TwitterLogin loginUrl={redirect_login}
-                            onFailure={onFailed} onSuccess={onSuccess}
-                            requestTokenUrl={request_token}
-                            className="twitter-button"
-                            >
-                                <img src={twitterLogo} alt="Twitter Logo" />
-                            </TwitterLogin>
-                    </div>
+                    <FormattedMessage id="login.signup" defaultMessage="Sign up" >
+                        {(msg) => (<input type="submit" value={msg} className="infos" id="signup" onClick={navigate('/register')}/>)}
+                    </FormattedMessage>
                 </form>
             </div>
         </div>
