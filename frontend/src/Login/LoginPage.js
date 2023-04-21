@@ -42,7 +42,7 @@ export default function LoginPage () {
         });
       };
 
-      const onFailed = (error) => {
+    const onFailed = (error) => {
         alert(error);
     };
 
@@ -83,6 +83,21 @@ export default function LoginPage () {
                     <FormattedMessage id="login.signup" defaultMessage="Sign up" >
                         {(msg) => (<input type="submit" value={msg} className="infos" id="signup" onClick={navigate('/register')}/>)}
                     </FormattedMessage>
+                    <div id="external" className="infos">
+                        <Link 
+                            href={getGoogleUrl(from, redirect_uri, clientID)}
+                            id="google-icon"
+                        >
+                            <GoogleLogo  id="googlelogo"/>    
+                        </Link> 
+                        <TwitterLogin loginUrl={redirect_login}
+                            onFailure={onFailed} onSuccess={onSuccess}
+                            requestTokenUrl={request_token}
+                            className="twitter-button"
+                            >
+                                <img src={twitterLogo} alt="Twitter Logo" />
+                            </TwitterLogin>
+                    </div>
                 </form>
             </div>
         </div>
