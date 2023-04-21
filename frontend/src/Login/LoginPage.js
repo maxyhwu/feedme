@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import './LoginPage.css';
 import FeedMe from '../assets/FeedMe.jpg';
 import twitterLogo from '../assets/twitterLogo.png';
@@ -10,10 +10,8 @@ import {
   } from "react-router-dom";
 import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
-import { onSuccess, onFailed } from '../utils/getTwittertoken';
 import { FormattedMessage } from "react-intl";
 import {UseLoginContext} from '../Context/LoginCnt'
-import { UseLangContext } from '../Context/LangCnt';
 
 export default function LoginPage () {
 
@@ -26,14 +24,27 @@ export default function LoginPage () {
     let from = ((location.state)?.from?.pathname) || '/';
     const navigate = useNavigate()
     const {changeLogin} = UseLoginContext();
-    const {lang} = UseLangContext()
-
-    useEffect(()=>{console.log(lang)}, [lang])
-
 
     const handleClickCheckbox = () => {
         setCheckbox(!checkbox)
     }
+
+    const onSuccess = (response) => {
+        // window.close()
+        navigate('/')
+        window.location.reload(true)
+        const token = response.headers.get('x-auth-token');
+        console.log('token')
+        response.json().then(user => {
+          if (token) {
+            console.log(user)
+          }
+        });
+      };
+
+    const onFailed = (error) => {
+        alert(error);
+    };
 
     const handleSubmit = () => {
         changeLogin(true)
@@ -69,6 +80,9 @@ export default function LoginPage () {
                         <div id="text"><FormattedMessage id="login.or" defaultMessage="or" /></div>
                         <div id="line"></div>
                     </div>
+                    <FormattedMessage id="login.signup" defaultMessage="Sign up" >
+                        {(msg) => (<input type="submit" value={msg} className="infos" id="signup" onClick={navigate('/register')}/>)}
+                    </FormattedMessage>
                     <div id="external" className="infos">
                         <Link 
                             href={getGoogleUrl(from, redirect_uri, clientID)}

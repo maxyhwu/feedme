@@ -1,7 +1,11 @@
 import React from "react";
+import Modal from 'react-modal';
+import { FaTrashAlt } from 'react-icons/fa';
 import './myfridge.css'
 import { data } from "./fridgedata";
 import FridgeAddIngredientModal from  "./fridgeadd"
+
+Modal.setAppElement('#root');
 
 
 const paletteCategory2Color = {
@@ -107,7 +111,40 @@ class FridgeOrderButton extends React.Component {
 }
 
 
+class FridgeEditIngredientRow extends React.Component {
+    render() {
+        const { rowId, quantity, purchaseDate, expirationDate, onInputChange, onDelete } = this.props;
+
+        return (
+            <tr>
+                <td>
+                    <input className='fridge-add-ing-input' type="number" min="0" name="quantity" value={quantity} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                </td>
+                <td>
+                    <input  className='fridge-add-ing-input' type="date" name="purchaseDate" value={purchaseDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                </td>
+                <td>
+                    <input className='fridge-add-ing-input' type="date" name="expirationDate" value={expirationDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                </td>
+                <td>
+                    <button className='btn btn-secondary fridge-add-ing-delete-button' type="button" onClick={e => onDelete(rowId)}>
+                         <FaTrashAlt />
+                     </button>
+                </td>
+            </tr>
+        );
+    }
+}
+
+
 class FridgeRenderButton extends React.Component {
+    state = {
+        modalIsOpen: false,
+        nextID: 20000,
+        data: this.props.ingredient.raw,
+        dataCopy: this.props.ingredient.raw,
+    };
+
     checkExpirationStatus = (expirationDate) => {
         let expirationStatus = {
             statusLabel: ".",
@@ -130,6 +167,61 @@ class FridgeRenderButton extends React.Component {
         return expirationStatus;
     }
 
+    handleOpenModal = () => {
+        this.setState({ modalIsOpen: true });
+        console.log(this.state.data);
+    }
+
+    handleCloseModal = () => {
+        const confirmed = window.confirm('Are you sure you want to discard all changes?');
+        if (confirmed) {
+            this.setState({ modalIsOpen: false, data: this.state.dataCopy });
+        }   
+    }
+
+    handleSave = () => {
+        const confirmed = window.confirm('Are you sure you want to save all changes?');
+        if (confirmed) {
+            this.setState({ modalIsOpen: false, dataCopy: this.state.data });
+        }
+    }
+
+    handleInputChange = (rowId, fieldName, value) => {
+        // Modify the data in state based on the input change
+        const newData = this.state.data.map((row) => {
+            if (row.userIngredientID === rowId) {
+                return {
+                    ...row,
+                    [fieldName]: value,
+                };
+            } else {
+                return row;
+            }
+        });
+    
+        this.setState({ data: newData });
+    }
+
+    handleRemoveRow = (rowId) => {
+        const newData = this.state.data.filter(row => row.userIngredientID !== rowId)
+        this.setState({ data: newData });
+    }
+
+    handleAddRow = () => {
+        // Add a new row to the data array in state
+        const newRow = {
+            userIngredientID: this.state.nextID,
+            quantity: 0,
+            purchaseDate: '',
+            expirationDate: '',
+        };
+
+        this.setState({
+            data: [...this.state.data, newRow],
+            nextID: this.state.nextID + 1,
+        });
+    }
+
     render() {
         const { ingredient } = this.props;
         const bgColor = paletteCategory2Color[ingredient.category];
@@ -140,10 +232,53 @@ class FridgeRenderButton extends React.Component {
                 <span style={{ display: "block", textAlign: "right", fontSize: "0.3rem", color: statusColor }}>
                     {statusLabel}
                 </span>
-                <button type="button" className="btn" style={{ backgroundColor: bgColor, width: "14rem" }}>
+                <button type="button" className="btn" style={{ backgroundColor: bgColor, width: "14rem" }} onClick={this.handleOpenModal}>
                     <span style={{ float: "left" }}>{ingredient.name}</span>
                     <span style={{ float: "right" }}>{ingredient.quantity}g</span>
                 </button>
+                <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.handleCloseModal} style={{ content: {borderRadius: '0.5rem', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'} }}>
+                    <div className='row mb-5'>
+                        <div className='col-auto' style={{ flexGrow: 1 }}>
+                            <h4>{ingredient.name}</h4>
+                        </div>
+                        <div className='col-auto ml-auto'>
+                            <button type="button" className="btn btn-secondary fridge-functional-button" onClick={this.handleSave}>Save</button>
+                        </div>
+                        <div className='col-auto'>
+                            <button type="button" className="btn btn-secondary" style={{ boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }} onClick={this.handleCloseModal}>Cancel</button>
+                        </div>
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Quantity (gram)</th>
+                                <th scope="col">Purchase Date</th>
+                                <th scope="col">Expiration Date</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.data.map((row) => (
+                                <FridgeEditIngredientRow
+                                    key={row.userIngredientID}
+                                    rowId={row.userIngredientID}
+                                    quantity={row.quantity}
+                                    purchaseDate={row.purchaseDate}
+                                    expirationDate={row.expirationDate}
+                                    onInputChange={this.handleInputChange}
+                                    onDelete={this.handleRemoveRow}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+
+                    <div className='row mt-3'>
+                        <div className='col-auto'>
+                            <button type="button" className="btn btn-secondary fridge-functional-button" onClick={this.handleAddRow}>+</button>
+                        </div>
+                    </div>
+                </Modal>
             </div>
         );
     }

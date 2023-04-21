@@ -8,7 +8,9 @@ import MyFridge from '../MyFridge/myfridge';
 import Settings from '../Settings/Settings';
 import Recipe from '../Recipe/recipe';
 import LoginPage from '../Login/LoginPage';
-import SignupPage from '../Signup/SignupPage';
+// import SignupPage from '../Signup/SignupPage';
+import RegisterPage from "../RegisterPage/RegisterPage";
+import Contact from "../Contact/Contact";
 import SetPassword from '../SetPassword/SetPassword';
 import Detail from "../Recipe/detail";
 import Recipe_search_result from '../Recipe/recipe-search-result';
@@ -28,10 +30,8 @@ function Main() {
   useEffect(() => {
     async function fetchLang () {
         try {
-            console.log(lang)
             const resp = await fetch(`./lang/${lang}.json`)
             const data = await resp.json()
-            console.log(data)
             setLocale(data)
           } catch (error) {
             console.error(`Error fetching translation file for ${lang}:`, error)
@@ -46,7 +46,10 @@ function Main() {
           <Route path='/' element={ <HomePage/> } />
           <Route path='recipe' element={ <Recipe/> } />
           <Route path='login' element={ <LoginPage/> } />
-          <Route path='Signup' element={ <SignupPage/> } />
+          <Route path='register' element={ <RegisterPage/> } />
+          <Route path='contactus' element={ <Contact/> } />
+          {/* <Route path='Signup' element={ <SignupPage/> } /> */}
+          {/* <Route path = 'registerr' element = {<Register/>} /> */}
           <Route path='SetPassword' element={ <SetPassword/> } />
           <Route path="modal" element={ <Detail/> }/>
           <Route path='recipe-search-result' element={ <Recipe_search_result/> } />

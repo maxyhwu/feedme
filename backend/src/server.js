@@ -1,5 +1,7 @@
 require('dotenv').config();
 const db = require('./Model')
+const oauthRoutes = require('./Routes/oauthRoutes')
+const userRoutes = require('./Routes/userRoutes')
 
 
 
@@ -9,11 +11,20 @@ const PORT = process.env.PORT ||8000
 const express = require("express");
 const app = express();
 const cors = require('cors');
-app.use(cors());
+var corsOption = {
+  origin: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  exposedHeaders: ['x-auth-token']
+};
+app.use(cors(corsOption));
 
 
 app.use(express.json())
 app.use(express.urlencoded())
+
+app.use('/api/oauth', oauthRoutes)
+app.use('api/user', userRoutes)
 
 db.sequelize.sync().then(() => {    //drop table if exists
     console.log("db has been sync")
