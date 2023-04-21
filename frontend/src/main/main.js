@@ -30,10 +30,8 @@ function Main() {
   useEffect(() => {
     async function fetchLang () {
         try {
-            console.log(lang)
             const resp = await fetch(`./lang/${lang}.json`)
             const data = await resp.json()
-            console.log(data)
             setLocale(data)
           } catch (error) {
             console.error(`Error fetching translation file for ${lang}:`, error)
