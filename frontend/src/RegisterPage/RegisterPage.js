@@ -11,6 +11,10 @@ import { FormattedMessage } from "react-intl";
 import {UseLoginContext} from '../Context/LoginCnt'
 import { UseLangContext } from '../Context/LangCnt';
 import { toast } from "react-toastify";
+import { validateEmail } from "../services/authService";
+import { useDispatch } from "react-redux";
+
+
 
 const initialState = {
     name: "",
@@ -31,6 +35,7 @@ const RegisterPage = () => {
     const navigate = useNavigate();
     const {changeLogin} = UseLoginContext();
     // const {lang} = UseLangContext();
+
     const [formData, setformData] = useState(initialState);
     const { name, email, password, password2 } = formData;
 
@@ -49,6 +54,11 @@ const RegisterPage = () => {
         changeLogin(true)
         navigate('/mypage')
     }
+
+    const handleToLogin = () => {
+        navigate('/login')
+    }
+
     const register = async (e) => {
         e.preventDefault();
 
@@ -58,9 +68,9 @@ const RegisterPage = () => {
         if (password.length < 6) {
             return toast.error("Passwords must be up to 6 characters");
         }
-        // if (!validateEmail(email)) {
-        //     return toast.error("Please enter a valid email");
-        // }
+        if (!validateEmail(email)) {
+            return toast.error("Please enter a valid email");
+        }
         if (password !== password2) {
             return toast.error("Passwords do not match");
         }
@@ -74,54 +84,53 @@ const RegisterPage = () => {
 
     return (
         <div className="container">
-            <div className="body">
-                <div id='logo'>
+            <div id='logo'>
                     <img src={FeedMe} alt='feedme' id="feedmelogo"/>
                 </div>
-                <form id="info" onSubmit={register}>
-                    <div id="header">
-                        <div className="infos" id="register"><FormattedMessage id="register.register" defaultMessage="Register" /></div>
-                    </div>
-                    <FormattedMessage id="register.name" defaultMessage="Username" >
-                        {(msg) => (<input 
-                                                type="text" 
-                                                placeholder={msg} 
-                                                className="input infos" 
-                                                // autoComplete={checkbox?'email':'off'} 
-                                                value = {name} 
-                                                onchange = {handleInputChange}
-                                            />)}
-                    </FormattedMessage>
-                    <FormattedMessage id="register.email" defaultMessage="Email ID" >
-                        {(msg) => (<input 
-                                                type="text" 
-                                                placeholder={msg} 
-                                                className="input infos" 
-                                                autoComplete={checkbox?'email':'off'} 
-                                                value = {email} 
-                                                onchange = {handleInputChange}
-                                            />)}
-                    </FormattedMessage>
-                    <FormattedMessage id="register.password1" defaultMessage="Password" >
-                        {(msg) => (<input 
-                                                type="password" 
-                                                placeholder={msg} 
-                                                className="input infos" 
-                                                autoComplete={checkbox?'current-password':'off'}
-                                                value = {password}
-                                                onChange = {handleInputChange}
-                                            />)}
-                    </FormattedMessage>
-                    <FormattedMessage id="register.password2" defaultMessage="Confirm Password" >
-                        {(msg) => (<input 
-                                                type="password" 
-                                                placeholder={msg} 
-                                                className="input infos" 
-                                                autoComplete={checkbox?'current-password':'off'}
-                                                value = {password2}
-                                                onChange = {handleInputChange}
-                                            />)}
-                    </FormattedMessage>
+            <div className="body">
+                
+                <form onSubmit={register} id="info">
+                <div id="header">
+                    <h2 className="infos" style={{margin:"5px"}}>Welcome, newbie!</h2>
+                </div>
+                    <input
+                        type="text"
+                        className="input infos" 
+                        placeholder="Name"
+                        required
+                        name="name"
+                        value={name}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        type="email"
+                        className="input infos" 
+                        placeholder="Email"
+                        // autoComplete={checkbox?'email':'off'}
+                        required
+                        name="email"
+                        value={email}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        type="password"
+                        className="input infos" 
+                        placeholder="Password"
+                        // autoComplete={checkbox?'current-password':'off'}
+                        required
+                        name="password"
+                        value={password}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        type="password"
+                        className="input infos" 
+                        placeholder="Confirm Password"
+                        required
+                        name="password2"
+                        value={password2}
+                        onChange={handleInputChange}
+                    />
                     <div id="external" className="infos">
                         <Link 
                             href={getGoogleUrl(from, redirect_uri, clientID)}
@@ -135,21 +144,22 @@ const RegisterPage = () => {
                             className="twitter-button"
                             >
                                 <img src={twitterLogo} alt="Twitter Logo" />
-                            </TwitterLogin>
+                        </TwitterLogin>
                     </div>
-                    <FormattedMessage id="signup.signup" defaultMessage="Sign up" >
-                        {(msg) => (<input type="submit" value={msg} className="infos" id="signup" onSubmit = {handleSubmit}/>)}
-                    </FormattedMessage>
+                    <button type="submit" className="infos" id="signup">
+                        Sign up
+                    </button>
                     <div id='dashLine' className="infos">
                         <div id="line"></div>
-                        <div id="text"><FormattedMessage id="register.or" defaultMessage="or" /></div>
+                        <div id="text"><FormattedMessage id="login.or" defaultMessage="or" /></div>
                         <div id="line"></div>
                     </div>
-                    <FormattedMessage id="register.login" defaultMessage="Log in" >
-                        {(msg) => (<input type="submit" value={msg} className="infos" id="login" onSubmit={navigate('/login')}/>)}
-                    </FormattedMessage>
-                    
                 </form>
+                <span style={{display:"flex", justifyContent:"center", marginTop:"5px"}}>
+                    <p style={{fontSize:"14px"}}> &nbsp; &nbsp; &nbsp; Already have an account? &nbsp; &nbsp; &nbsp;</p>
+                    <Link style={{fontSize:"13px"}} to = "/login">Log in</Link>
+                </span>
+                
             </div>
         </div>
     )

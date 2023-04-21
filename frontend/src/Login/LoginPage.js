@@ -42,13 +42,13 @@ export default function LoginPage () {
 
     return (
         <div className="container">
+            <div id='logo'>
+                <img src={FeedMe} alt='feedme' id="feedmelogo"/>
+            </div>
             <div className="body">
-                <div id='logo'>
-                    <img src={FeedMe} alt='feedme' id="feedmelogo"/>
-                </div>
                 <form id="info">
                     <div id="header">
-                        <div className="infos" id="welcome"><FormattedMessage id="login.welcome" defaultMessage="Welcome" /></div>
+                        <h2 className="infos" style={{margin:"3px"}}>Welcome back!</h2>
                     </div>
                     <FormattedMessage id="login.email" defaultMessage="Email ID" >
                         {(msg) => (<input type="text" placeholder={msg} className="input infos" autoComplete={checkbox?'email':'off'}/>)}
@@ -69,10 +69,14 @@ export default function LoginPage () {
                         <div id="text"><FormattedMessage id="login.or" defaultMessage="or" /></div>
                         <div id="line"></div>
                     </div>
-                    <FormattedMessage id="login.signup" defaultMessage="Sign up" >
+                    {/* <FormattedMessage id="login.signup" defaultMessage="Sign up" >
                         {(msg) => (<input type="submit" value={msg} className="infos" id="signup" onClick={navigate('/register')}/>)}
-                    </FormattedMessage>
+                    </FormattedMessage> */}
                 </form>
+                <span style={{display:"flex", justifyContent:"center", marginTop:"5px"}}>
+                    <p style={{fontSize:"14px"}}> &nbsp; &nbsp; &nbsp; Don't have an account?  &nbsp; &nbsp; &nbsp;</p>
+                    <Link style={{fontSize:"13px"}} to = "/register">Sign up</Link>
+                </span>
             </div>
         </div>
     )
