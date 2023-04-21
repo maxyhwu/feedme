@@ -1,7 +1,7 @@
 import React from 'react'
 import FeedMe from '../assets/FeedMe.jpg';
 import './MyPage.css';
-import { FaSignOutAlt, FaAngleRight, FaUserCog, FaRegStar, FaEye, FaBell, FaHeadset } from "react-icons/fa";
+import { FaSignOutAlt, FaAngleRight, FaUserCog, FaRegStar, FaHeadset } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
@@ -12,6 +12,9 @@ const MyPage = () => {
     };
     const handleClickingMyArchive = () => {
         navigate('/myArchive')
+    };
+    const handleClickingHelpCenter = () => {
+        navigate('/contactus')
     };
 
     return (
@@ -55,34 +58,12 @@ const MyPage = () => {
                             <FaAngleRight/>
                         </div>
                     </div>
-                    {/* <div className='setting-bar'>
-                        <div className="setting-bar-icon" id='view-history'>
-                            <FaEye/>
-                        </div>
-                        <div className="setting-bar-text">
-                            View History
-                        </div>
-                        <div className="setting-bar-expand">
-                            <FaAngleRight/>
-                        </div>
-                    </div> */}
-                    {/* <div className='setting-bar' onClick={handleSetting}>
-                        <div className="setting-bar-icon" id='notification'>
-                            <FaBell/>
-                        </div>
-                        <div className="setting-bar-text">
-                            Notification
-                        </div>
-                        <div className="setting-bar-expand">
-                            <FaAngleRight/>
-                        </div>
-                    </div> */}
-                    <div className='setting-bar'>
-                        <div className="setting-bar-icon" id='help-center'>
+                    <div className='setting-bar' onClick={handleClickingHelpCenter}>
+                        <div className="setting-bar-icon" id='contact us'>
                             <FaHeadset/>
                         </div>
                         <div className="setting-bar-text">
-                            Help Center
+                            Contact Us
                         </div>
                         <div className="setting-bar-expand">
                             <FaAngleRight/>
