@@ -6,7 +6,6 @@ import { AiOutlineStar, AiFillStar } from 'react-icons/ai'
 import { UseLoginContext } from "../Context/LoginCnt";
 import { UseLangContext } from "../Context/LangCnt";
 import AccountMenu from "../Components/menu";
-import { useEffect } from "react"
 
 const Header = () => {
     const navigate = useNavigate();
@@ -16,9 +15,6 @@ const Header = () => {
     const handleSelectChange = (evt) => {
         changeLang(evt.target.value);
     }
-    useEffect(()=>{
-        console.log(lang)
-    }, [lang])
 
 
     const handleUserIcon = () => {
