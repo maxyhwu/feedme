@@ -40,23 +40,33 @@ const raw_data = [
 
 export const data = raw_data.reduce((accumulator, currentIngredient) => {
     const existingIngredient = accumulator.find(ingredient => ingredient.name === currentIngredient.name);
-    
+
     if (existingIngredient) {
-      existingIngredient.raw.push(currentIngredient)
-      existingIngredient.quantity += currentIngredient.quantity;
+        existingIngredient.raw.push({...currentIngredient})
+        existingIngredient.quantity += currentIngredient.quantity;
       
-      if (currentIngredient.purchaseDate < existingIngredient.purchaseDate) {
-        existingIngredient.purchaseDate = currentIngredient.purchaseDate;
-      }
+        if (currentIngredient.purchaseDate < existingIngredient.purchaseDate) {
+            existingIngredient.purchaseDate = currentIngredient.purchaseDate;
+        }
       
-      if (currentIngredient.expirationDate < existingIngredient.expirationDate) {
-        existingIngredient.expirationDate = currentIngredient.expirationDate;
-      }
+        if (currentIngredient.expirationDate < existingIngredient.expirationDate) {
+            existingIngredient.expirationDate = currentIngredient.expirationDate;
+        }
     } else {
-      currentIngredient.raw = [currentIngredient];
-      accumulator.push(currentIngredient);
+        currentIngredient.raw = [{...currentIngredient}];
+        accumulator.push({...currentIngredient});
     }
     
     return accumulator;
-  }, []
-); 
+}, []); 
+
+export const allIngredients = [
+    'Apple',
+    'Banana',
+    'Cherry',
+    'Chicken',
+    'Corn',
+    'Carrots',
+    'Coconut',
+    'Cinnamon',
+];
