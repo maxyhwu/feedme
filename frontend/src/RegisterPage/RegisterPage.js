@@ -43,6 +43,22 @@ const RegisterPage = () => {
         setformData({ ...formData, [name]: value });
     };
     // useEffect(()=>{console.log(lang)}, [lang])
+    const onSuccess = (response) => {
+        // window.close()
+        navigate('/')
+        window.location.reload(true)
+        const token = response.headers.get('x-auth-token');
+        console.log('token')
+        response.json().then(user => {
+          if (token) {
+            console.log(user)
+          }
+        });
+      };
+
+    const onFailed = (error) => {
+        alert(error);
+    };
 
 
     const handleClickCheckbox = () => {

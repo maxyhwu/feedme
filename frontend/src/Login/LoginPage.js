@@ -75,14 +75,6 @@ export default function LoginPage () {
                     <FormattedMessage id="login.login" defaultMessage="Log in" >
                         {(msg) => (<input type="submit" value={msg} className="infos" id="login" onClick={handleSubmit}/>)}
                     </FormattedMessage>
-                    <div id='dashLine' className="infos">
-                        <div id="line"></div>
-                        <div id="text"><FormattedMessage id="login.or" defaultMessage="or" /></div>
-                        <div id="line"></div>
-                    </div>
-                    <FormattedMessage id="login.signup" defaultMessage="Sign up" >
-                        {(msg) => (<input type="submit" value={msg} className="infos" id="signup" onClick={navigate('/register')}/>)}
-                    </FormattedMessage>
                     <div id="external" className="infos">
                         <Link 
                             href={getGoogleUrl(from, redirect_uri, clientID)}
@@ -97,6 +89,11 @@ export default function LoginPage () {
                             >
                                 <img src={twitterLogo} alt="Twitter Logo" />
                             </TwitterLogin>
+                    </div>
+                    <div id='dashLine' className="infos">
+                        <div id="line"></div>
+                        <div id="text"><FormattedMessage id="login.or" defaultMessage="or" /></div>
+                        <div id="line"></div>
                     </div>
                 </form>
                 <span style={{display:"flex", justifyContent:"center", marginTop:"5px"}}>
