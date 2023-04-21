@@ -6,7 +6,6 @@ import TwitterLogin from 'react-twitter-auth';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
-import { onSuccess, onFailed } from '../utils/getTwittertoken';
 import { FormattedMessage } from "react-intl";
 import {UseLoginContext} from '../Context/LoginCnt'
 import { UseLangContext } from '../Context/LangCnt';
@@ -54,11 +53,6 @@ const RegisterPage = () => {
         changeLogin(true)
         navigate('/mypage')
     }
-
-    const handleToLogin = () => {
-        navigate('/login')
-    }
-
     const register = async (e) => {
         e.preventDefault();
 
