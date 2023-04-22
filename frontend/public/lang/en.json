@@ -15,7 +15,7 @@
     "settings.notificationSetting": "Notification Setting",
     "settings.NRNotification": "New recipe",
     "settings.IENotification": "Ingredient expire",
-    "settings.openNotification": "(Click to open notification.)",
-    "settings.closeNotification": "(Click to close notification.)",
+    "settings.openNotification": "(Click to turn on notification.)",
+    "settings.closeNotification": "(Click to turn off notification.)",
     "settings.submit": "Submit"
 }
