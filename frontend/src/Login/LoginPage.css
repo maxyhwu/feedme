@@ -2,7 +2,7 @@
     box-sizing: border-box;
     border: 1px solid #AEAEAE;
     border-radius: 20px;
-    font-family: Poppins;
+    font-family: Open Sans;
     font-size: 17px;
     font-weight: 500;
     line-height: 30px;
@@ -69,11 +69,11 @@ textarea:focus, input:focus{
     background-color: gray;
 } */
 
-#info {
-    width: 35%;
+.body #info {
+    width: 60%;
     display: flex;
     flex-direction: column;
-    font-family: 'Poppins';
+    font-family: Open Sans;
 }
 
 .infos {
@@ -100,6 +100,8 @@ textarea:focus, input:focus{
     cursor:pointer;
     border:0 none;
     height: 40px;
+    font-family: Open Sans;
+    font-size: 17px;
 }
 
 #google-icon {
@@ -126,6 +128,7 @@ textarea:focus, input:focus{
     height:80%;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 .container {

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import './LoginPage.css';
 import FeedMe from '../assets/FeedMe.jpg';
 import twitterLogo from '../assets/twitterLogo.png';
@@ -10,10 +10,8 @@ import {
   } from "react-router-dom";
 import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
-import { onSuccess, onFailed } from '../utils/getTwittertoken';
 import { FormattedMessage } from "react-intl";
 import {UseLoginContext} from '../Context/LoginCnt'
-import { UseLangContext } from '../Context/LangCnt';
 
 export default function LoginPage () {
 
@@ -26,14 +24,27 @@ export default function LoginPage () {
     let from = ((location.state)?.from?.pathname) || '/';
     const navigate = useNavigate()
     const {changeLogin} = UseLoginContext();
-    const {lang} = UseLangContext()
-
-    useEffect(()=>{console.log(lang)}, [lang])
-
 
     const handleClickCheckbox = () => {
         setCheckbox(!checkbox)
     }
+
+    const onSuccess = (response) => {
+        // window.close()
+        navigate('/')
+        window.location.reload(true)
+        const token = response.headers.get('x-auth-token');
+        console.log('token')
+        response.json().then(user => {
+          if (token) {
+            console.log(user)
+          }
+        });
+      };
+
+    const onFailed = (error) => {
+        alert(error);
+    };
 
     const handleSubmit = () => {
         changeLogin(true)
@@ -42,13 +53,13 @@ export default function LoginPage () {
 
     return (
         <div className="container">
+            <div id='logo'>
+                <img src={FeedMe} alt='feedme' id="feedmelogo"/>
+            </div>
             <div className="body">
-                <div id='logo'>
-                    <img src={FeedMe} alt='feedme' id="feedmelogo"/>
-                </div>
                 <form id="info">
                     <div id="header">
-                        <div className="infos" id="welcome"><FormattedMessage id="login.welcome" defaultMessage="Welcome" /></div>
+                        <h2 className="infos" style={{margin:"3px"}}>Welcome back!</h2>
                     </div>
                     <FormattedMessage id="login.email" defaultMessage="Email ID" >
                         {(msg) => (<input type="text" placeholder={msg} className="input infos" autoComplete={checkbox?'email':'off'}/>)}
@@ -64,15 +75,31 @@ export default function LoginPage () {
                     <FormattedMessage id="login.login" defaultMessage="Log in" >
                         {(msg) => (<input type="submit" value={msg} className="infos" id="login" onClick={handleSubmit}/>)}
                     </FormattedMessage>
+                    <div id="external" className="infos">
+                        <Link 
+                            href={getGoogleUrl(from, redirect_uri, clientID)}
+                            id="google-icon"
+                        >
+                            <GoogleLogo  id="googlelogo"/>    
+                        </Link> 
+                        <TwitterLogin loginUrl={redirect_login}
+                            onFailure={onFailed} onSuccess={onSuccess}
+                            requestTokenUrl={request_token}
+                            className="twitter-button"
+                            >
+                                <img src={twitterLogo} alt="Twitter Logo" />
+                            </TwitterLogin>
+                    </div>
                     <div id='dashLine' className="infos">
                         <div id="line"></div>
                         <div id="text"><FormattedMessage id="login.or" defaultMessage="or" /></div>
                         <div id="line"></div>
                     </div>
-                    <FormattedMessage id="login.signup" defaultMessage="Sign up" >
-                        {(msg) => (<input type="submit" value={msg} className="infos" id="signup" onClick={navigate('/register')}/>)}
-                    </FormattedMessage>
                 </form>
+                <span style={{display:"flex", justifyContent:"center", marginTop:"5px"}}>
+                    <p style={{fontSize:"14px"}}> &nbsp; &nbsp; &nbsp; Don't have an account?  &nbsp; &nbsp; &nbsp;</p>
+                    <Link style={{fontSize:"13px"}} to = "/register">Sign up</Link>
+                </span>
             </div>
         </div>
     )

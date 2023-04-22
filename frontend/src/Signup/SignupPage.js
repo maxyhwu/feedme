@@ -9,7 +9,6 @@ import {
   } from "react-router-dom";
 import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
-import { onSuccess, onFailed } from '../utils/getTwittertoken';
 
 export default function SignupPage () {
 
@@ -20,6 +19,21 @@ export default function SignupPage () {
     const location = useLocation();
     const [checkbox, setCheckbox] = useState(false);
     let from = ((location.state)?.from?.pathname) || '/';
+
+    const onSuccess = (response) => {
+        // window.close()
+        const token = response.headers.get('x-auth-token');
+        console.log('token')
+        response.json().then(user => {
+          if (token) {
+            console.log(user)
+          }
+        });
+      };
+
+      const onFailed = (error) => {
+        alert(error);
+    };
 
     const handleClickCheckbox = () => {
         setCheckbox(!checkbox)
