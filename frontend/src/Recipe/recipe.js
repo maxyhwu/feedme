@@ -2,6 +2,7 @@ import "./recipe.css"
 import { IoIosArrowForward } from 'react-icons/io';
 import SearchBar from "./searchbar";
 import { useNavigate } from "react-router-dom";
+import { RecipeAddButton } from "./recipeadd";
 
 const Recipe = () => {
 
@@ -40,6 +41,7 @@ const Recipe = () => {
                         <IoIosArrowForward/>
                     </div>
                 </div>
+                <RecipeAddButton />
             </div>
         </div>
     )
