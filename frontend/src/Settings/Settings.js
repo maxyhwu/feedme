@@ -171,7 +171,7 @@ const Settings = () => {
                   />
                   <FormattedMessage
                     id="settings.closeNotification"
-                    defaultMessage="(Click to close notification.)"
+                    defaultMessage="(Click to turn off notification.)"
                   >
                     {(msg) => <div id="hints">{msg}</div>}
                   </FormattedMessage>
@@ -184,7 +184,7 @@ const Settings = () => {
                   />
                   <FormattedMessage
                     id="settings.openNotification"
-                    defaultMessage="(Click to open notification.)"
+                    defaultMessage="(Click to turn on notification.)"
                   >
                     {(msg) => <div id="hints">{msg}</div>}
                   </FormattedMessage>
@@ -206,7 +206,7 @@ const Settings = () => {
                   />
                   <FormattedMessage
                     id="settings.closeNotification"
-                    defaultMessage="(Click to close notification.)"
+                    defaultMessage="(Click to turn off notification.)"
                   >
                     {(msg) => <div id="hints">{msg}</div>}
                   </FormattedMessage>
@@ -219,7 +219,7 @@ const Settings = () => {
                   />
                   <FormattedMessage
                     id="settings.openNotification"
-                    defaultMessage="(Click to open notification.)"
+                    defaultMessage="(Click to turn on notification.)"
                   >
                     {(msg) => <div id="hints">{msg}</div>}
                   </FormattedMessage>
