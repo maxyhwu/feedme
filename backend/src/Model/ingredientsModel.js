@@ -8,10 +8,6 @@ module.exports = (sequelize, DataTypes) => {
         expPeriod:{
             type: DataTypes.DATE,
         },
-        provider: {
-            type: DataTypes.STRING,
-            defaultValue: 'local'
-        },
-    }, {timestamps: true})
+    }, {timestamps: false})
     return Ingredients
 }
