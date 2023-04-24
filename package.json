@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "react-modal": "^3.16.1"
+    "react-bootstrap": "^2.7.4",
+    "react-modal": "^3.16.1",
+    "use-sync-external-store": "^1.2.0"
   }
 }

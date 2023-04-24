@@ -1,6 +1,7 @@
 // import './App.css';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./Header/Header";
+import Footer from "./Footer/Footer";
 import styled from 'styled-components';
 import {LoginContextProvider} from './Context/LoginCnt'
 import { LangContextProvider } from "./Context/LangCnt";
@@ -28,6 +29,7 @@ function App() {
             <Routes>
               <Route path='/*' element={ <Main/> } />
             </Routes>
+            <Footer/>
           </Router>
         </ Wrapper>
       </LoginContextProvider>
