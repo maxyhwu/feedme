@@ -32,9 +32,9 @@ db.sequelize.sync({ alter: true }).then(() => {    //drop table if exists
 })
 
 
-app.listen(PORT, function(err){ 
-  if (err) console.log("Error in server setup") 
-  console.log("Server listening on Port", PORT); 
+app.listen(PORT, function(err){
+  if (err) console.log("Error in server setup")
+  console.log("Server listening on Port", PORT);
 })
 
 // const httpServer = http.createServer(app);

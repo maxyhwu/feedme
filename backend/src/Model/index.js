@@ -22,8 +22,8 @@ require('dotenv').config()
     db.ingredients = require('./ingredientsModel') (sequelize, DataTypes)
     db.labels = require('./labelsModel') (sequelize, DataTypes)
     db.users.hasMany(db.recipe, {foreignKey: "userID", targetKey: "id", onDelete: 'cascade'})
-
+    db.categories.hasMany(db.ingredients,{foreignKey: "categoryID", targetKey: "id", onDelete: 'cascade'})
 
 //exporting the module
-module.exports = db 
+module.exports = db
 //new Sequelize(`postgres://${process.env.user}:${process.env.password}@127.0.0.1:${process.env.dbport}/${process.env.databaseName}`, {dialect: process.env.database})
