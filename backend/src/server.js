@@ -2,7 +2,7 @@ require('dotenv').config();
 const db = require('./Model')
 const oauthRoutes = require('./Routes/oauthRoutes')
 const userRoutes = require('./Routes/userRoutes')
-
+const dataRoutes = require('./Routes/dataRoutes')
 
 
 console.log("dotenv = ", process.env.PORT)
@@ -25,15 +25,16 @@ app.use(express.urlencoded())
 
 app.use('/api/oauth', oauthRoutes)
 app.use('api/user', userRoutes)
+app.use('/api/data', dataRoutes)
 
-db.sequelize.sync().then(() => {    //drop table if exists
+db.sequelize.sync({ alter: true }).then(() => {    //drop table if exists
     console.log("db has been sync")
 })
 
 
-app.listen(PORT, function(err){ 
-  if (err) console.log("Error in server setup") 
-  console.log("Server listening on Port", PORT); 
+app.listen(PORT, function(err){
+  if (err) console.log("Error in server setup")
+  console.log("Server listening on Port", PORT);
 })
 
 // const httpServer = http.createServer(app);

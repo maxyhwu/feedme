@@ -5,6 +5,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             unique: true,
         },
-    }, {timestamps: true})
+    }, {timestamps: false})
     return Categories
 }

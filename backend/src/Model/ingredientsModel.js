@@ -1,3 +1,5 @@
+const {INTEGER} = require("sequelize")
+
 module.exports = (sequelize, DataTypes) => {
     const Ingredients = sequelize.define('Ingredients',{
         ingredName: {
@@ -5,13 +7,9 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             unique: true,
         },
-        expPeriod:{
-            type: DataTypes.DATE,
+        expPeriod: {
+            type: DataTypes.INTEGER,
         },
-        provider: {
-            type: DataTypes.STRING,
-            defaultValue: 'local'
-        },
-    }, {timestamps: true})
+    }, {timestamps: false})
     return Ingredients
 }
