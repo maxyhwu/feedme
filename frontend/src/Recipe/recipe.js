@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import "./recipe.css"
 import { IoIosArrowForward } from 'react-icons/io';
-import SearchBar from "./searchbar";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "./Components/SearchBar";
+import { useState } from "react";
 import { RecipeAddButton } from "./recipeadd";
 import { recipe_data } from "./recipedata";
 import { RecipeDetail } from './detail';
@@ -54,14 +55,17 @@ const RecipeObject = ({ recipe }) => {
 
 const Recipe = () => {
 
+    // const [rerender, setRerender] = useState(false);
+
     const navigate = useNavigate();
     const navigateToDetail = () => {
         navigate('/modal');
     }
 
     return (
+    <>
+        <SearchBar/>
         <div className="recipe-container">
-            <SearchBar />
             <div className="bottom">
                 <div className="section-title">
                     Our Popular Recipes
@@ -99,6 +103,7 @@ const Recipe = () => {
                 <RecipeAddButton />
             </div>
         </div>
+    </>
     )
 }
 
