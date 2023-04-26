@@ -20,6 +20,13 @@
     border-radius: 15px;
 }
 
+.modal-container-from-data {
+    height: fit-content;
+    display: flex; 
+    flex-direction: row;
+    padding: 20px;
+}
+
 .modal-left {
     width: 50%;
     display: flex;

@@ -1,5 +1,5 @@
 const express = require('express')
-const { insertCategory, insertIngredient } = require('../Controllers/dataController');
+const { insertCategory, insertIngredient } = require('../Controllers/dataController').default;
 
 const router = express.Router();
 
