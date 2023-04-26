@@ -1,9 +1,12 @@
 import "./recipe.css"
 import { IoIosArrowForward } from 'react-icons/io';
-import SearchBar from "./searchbar";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "./Components/SearchBar";
+import { useState } from "react";
 
 const Recipe = () => {
+
+    // const [rerender, setRerender] = useState(false);
 
     const navigate = useNavigate();
     const navigateToDetail = () => {
@@ -11,8 +14,9 @@ const Recipe = () => {
     }
 
     return (
+    <>
+        <SearchBar/>
         <div className="recipe-container">
-            <SearchBar />
             <div className="bottom">
                 <div className="section-title">
                     Our Popular Recipes
@@ -42,6 +46,7 @@ const Recipe = () => {
                 </div>
             </div>
         </div>
+    </>
     )
 }
 
