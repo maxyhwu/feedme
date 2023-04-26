@@ -3,6 +3,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./Components/SearchBar";
 import { useState } from "react";
+import { RecipeAddButton } from "./recipeadd";
 
 const Recipe = () => {
 
@@ -44,6 +45,7 @@ const Recipe = () => {
                         <IoIosArrowForward/>
                     </div>
                 </div>
+                <RecipeAddButton />
             </div>
         </div>
     </>
