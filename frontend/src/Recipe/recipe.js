@@ -4,7 +4,6 @@ import "./recipe.css"
 import { IoIosArrowForward } from 'react-icons/io';
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./Components/SearchBar";
-import { useState } from "react";
 import { RecipeAddButton } from "./recipeadd";
 import { recipe_data } from "./recipedata";
 import { RecipeDetail } from './detail';
