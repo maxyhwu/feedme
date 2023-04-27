@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import "./recipe.css"
 import { IoIosArrowForward } from 'react-icons/io';
-import SearchBar from "./searchbar";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "./Components/SearchBar";
 import { RecipeAddButton } from "./recipeadd";
 import { recipe_data } from "./recipedata";
 import { RecipeDetail } from './detail';
@@ -28,12 +28,12 @@ const RecipeObject = ({ recipe }) => {
         setShowModal(false);
     };
 
-    const { recipeName } = recipe;
+    const { recipeName, image_link } = recipe;
     return (
         <>
             <div className="popRecipe" onClick={handleOpenModal}>
                 <div className="popImg">
-                    <img src="https://sudachirecipes.com/wp-content/uploads/2022/08/beef-curry-rice-thumbnail.jpg" alt="" />
+                    <img src={image_link} alt="" style={{height: '100%', width: '100%'}} />
                 </div>
                 <div className="poptitle">{recipeName}</div>
                 <IoIosArrowForward/>
@@ -54,14 +54,17 @@ const RecipeObject = ({ recipe }) => {
 
 const Recipe = () => {
 
+    // const [rerender, setRerender] = useState(false);
+
     const navigate = useNavigate();
     const navigateToDetail = () => {
         navigate('/modal');
     }
 
     return (
+    <>
+        <SearchBar/>
         <div className="recipe-container">
-            <SearchBar />
             <div className="bottom">
                 <div className="section-title">
                     Our Popular Recipes
@@ -99,6 +102,7 @@ const Recipe = () => {
                 <RecipeAddButton />
             </div>
         </div>
+    </>
     )
 }
 
