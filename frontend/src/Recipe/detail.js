@@ -84,15 +84,18 @@ const Detail = () => {
 
 
 const RecipeDetail = ({ recipe, handleCloseModal }) => {
-    const { recipeName, serving, ingredients, instructions } = recipe
+    const { recipeName, serving, ingredients, instructions, image_link } = recipe
 
     return(
         <>
+            <div className="exit">
+                <IoCloseCircleOutline size={25} onClick={handleCloseModal}/>
+            </div>
             <div className="modal-container-from-data">
                 <div className="modal-left">
                     <div className="top-part">
                         <div className="image">
-                            <img src="https://sudachirecipes.com/wp-content/uploads/2022/08/beef-curry-rice-thumbnail.jpg" alt="" />
+                            <img src={image_link} alt="" />
                         </div>
                         <div className="description">
                             <div className="title"> {recipeName} </div>
@@ -116,9 +119,6 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                 </div>
 
                 <div className="modal-right">
-                    <div className="exit">
-                        <IoCloseCircleOutline size={25} onClick={handleCloseModal}/>
-                    </div>
                     <div className="instructions">
                         <div className="topic">Instructions</div>
                         <div className="content">
