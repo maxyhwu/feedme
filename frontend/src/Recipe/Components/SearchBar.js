@@ -51,6 +51,13 @@ const SearchBar = () => {
         setToggle(!toggle)
     }
 
+    const handleInputDropdown = () => {
+        // console.log('click input');
+        if (filter != 'Name') {
+            setInputDropdown(!inputDropdown);
+        }
+    }
+
     const handleFilterClickOutside = (event) => {
         if (dropdownRefFilter.current && !dropdownRefFilter.current.contains(event.target)) {
             //if dropdown is opened and do not click on dropdown content
@@ -99,13 +106,14 @@ const SearchBar = () => {
                 <input type="text" 
                     id='search-bar' 
                     placeholder={'Search recipes by ' + filter} 
-                    onClick={() => {setInputDropdown(!inputDropdown)}}/>
+                    onClick={handleInputDropdown}/>
             </div>
             <div className="search-dropdown" style={ inputDropdown? {maxHeight: '50vh'}:{maxHeight: '0'}}>
-                <div className="ingredients" ref={dropdownRefInput}>
+                <div className="search-ingredients" ref={dropdownRefInput}>
                     {
-                        ingredients.map((ingred) => {
-                            return <button type="button" 
+                        ingredients.map((ingred, idx) => {
+                            return <button type="button"
+                                key={idx} 
                                 className="ingredient" 
                                 style={{ background: ingred.color }}>
                                     {ingred.name}

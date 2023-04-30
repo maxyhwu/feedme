@@ -86,6 +86,19 @@ const Detail = () => {
 const RecipeDetail = ({ recipe, handleCloseModal }) => {
     const { recipeName, serving, ingredients, instructions, image_link } = recipe
 
+    const comments = [
+        {
+            name: 'Teresa',
+            content: 'Very impressive.',
+            time: '12:00'
+        },
+        {
+            name: 'Bob',
+            content: 'Delicious~',
+            time: '3:12'
+        }
+    ]
+
     return(
         <>
             <div className="exit">
@@ -100,9 +113,9 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                         <div className="description">
                             <div className="title"> {recipeName} </div>
                             <div className="serving-size"> For {serving} people </div>
-                            <div className="change-btn">
+                            {/* <div className="change-btn">
                                 <button> Change serving size </button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <ActionBar />
@@ -133,13 +146,32 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
             </div>
 
             <div className="comment-container">
-                <div className="comment">Comments</div>
-                <div className="single-comment-container" style={{width: '100%'}}>Very impressive!</div>
-                <div className="single-comment-container" style={{width: '100%'}}>This looks soooooo delicious.</div>
-                <div className="single-comment-container" style={{width: '100%'}}>I love curry~</div>
+                <div className="comments">Comments</div>
+                {
+                    comments.map((comment) => {
+                    return <div className="single-comment-container">
+                        <div className="comment-avatar">
+                            <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
+                        </div>
+                        <div className="comment">
+                            <div className="nameAndTime">
+                                <div className="commenter">{comment.name}</div>
+                                <div className="comment-time">{comment.time}</div>
+                            </div>
+                            <div className="comment-content">{comment.content}</div>
+                        </div>
+                    </div>
+                    })
+                }
+                {/* <div className="single-comment-container" style={{width: '100%'}}>This looks soooooo delicious.</div>
+                <div className="single-comment-container" style={{width: '100%'}}>I love curry~</div> */}
                 <div className="comment-input">
-                    <input classname= "input-text" type = "text" placeholder="leave your comment..." style={{width: '80%'}}/>
-                    <input classname= "submit-text" type = "submit"/>
+                    <div className="comment-avatar">
+                        <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
+                    </div>
+                    <input classname= "input-text" type = "text" placeholder="leave your comment..."/>
+                    <button className="submit-text"> Submit </button>
+                    {/* <input classname= "submit-text" type = "submit">Submit</input> */}
                 </div>
             </div> 
         </>
