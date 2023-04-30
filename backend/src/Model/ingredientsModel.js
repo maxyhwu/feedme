@@ -1,6 +1,6 @@
-const {INTEGER} = require("sequelize")
+import { INTEGER } from "sequelize"
 
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
     const Ingredients = sequelize.define('Ingredients',{
         ingredName: {
             type:DataTypes.STRING,
