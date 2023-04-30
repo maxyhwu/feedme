@@ -36,8 +36,29 @@ const loginsuccess = (req, res) => {
     }
 }
 
+const signup = async (req, res) => {
+    
+}
+
+const editFridge = async (req, _) => {
+    const {logs} = req.query
+    logs.forEach( async (log) => {
+        console.log(log)
+        const {op, data} = log;
+        if (op === "add") {
+
+        } else if (op === "remove") {
+
+        } else if (op === "modify") {
+
+        }
+    });
+}
+
 export {
     logout,
     loginfail,
-    loginsuccess
+    loginsuccess,
+    signup,
+    editFridge
 }

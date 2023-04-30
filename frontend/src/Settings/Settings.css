@@ -1,6 +1,6 @@
 .main {
     height: 90vh;
-    width: 100vw;
+    width: 80vw;
 
     position: relative;
     display: flex;
@@ -12,7 +12,7 @@
 
 .feild {
     height: 45vh;
-    width: 100vw;
+    width: 60vw;
 
     position: relative;
     display: flex;
@@ -46,7 +46,7 @@
 
 .keyin {
     height: 25vh;
-    width: 90vw;
+    width: 80vw;
 
     position: relative;
     display: flex;
@@ -57,7 +57,7 @@
 
 .flex-container {
     width: 60vw;
-    left: 20vw;
+    left: 10vw;
 
     position: relative;
     display: flex;
@@ -129,6 +129,7 @@
     height: 4vh;
     width: 90vw;
     bottom: 8vh;
+    right: 18vw;
 
     position: relative;
     display: flex;

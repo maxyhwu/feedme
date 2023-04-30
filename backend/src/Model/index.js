@@ -17,11 +17,11 @@ dotenv.config();
         db.sequelize = sequelize
 
     //connecting to model
-    db.users = require('./usersModel').default (sequelize, DataTypes);
-    db.recipe = require('./recipesModel').default (sequelize, DataTypes);
-    db.categories = require('./categoriesModel') (sequelize, DataTypes);
-    db.ingredients = require('./ingredientsModel').default (sequelize, DataTypes);
-    db.labels = require('./labelsModel') (sequelize, DataTypes);
+    db.users = require('./usersModel').default (sequelize, DataTypes)
+    db.recipe = require('./recipesModel').default (sequelize, DataTypes)
+    db.categories = require('./categoriesModel') (sequelize, DataTypes)
+    db.ingredients = require('./ingredientsModel').default (sequelize, DataTypes)
+    db.labels = require('./labelsModel') (sequelize, DataTypes)
     db.users.hasMany(db.recipe, {foreignKey: "userID", targetKey: "id", onDelete: 'cascade'})
     db.categories.hasMany(db.ingredients,{foreignKey: "categoryID", targetKey: "id", onDelete: 'cascade'})
 
