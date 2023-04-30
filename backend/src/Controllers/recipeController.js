@@ -22,29 +22,31 @@ dotenv.config();
 
 var conString = process.env.url;
 
-const qeuryByID = (req, res) => {
+const qeuryByID = async (req, res) => {
+    const {id} = req.query;
     const client = new Client(conString);
-
-    client.connect(err => {
-        if (err) throw err;
-        else {
-            const query = `
-                SELECT *
-                FROM "Recipes"
-            `;
-            client
-                .query(query)
-                .then(() => {
-                    console.log('all ingredient query successfully!');
-                    client.end(console.log('Closed client connection'));
-                })
-                .catch(err => console.log(err))
-                .then(() => {
-                    console.log('Finished execution, exiting now');
-                    process.exit();
-                });
-                }
-    });
+    const query = 'SELECT * FROM "Recipes" WHERE id = ' + str(id);
+    try {
+        await client.connect();
+        const {rows} = await client.query(query)
+        res.send({rows})
+    } catch (err) {
+        console.log(err)
+    } finally {
+        client.end();
+    }
 }
 
-export { qeuryByID, qeuryByName, queryByLabel }
+const qeuryByName = async (req, res) => {
+
+}
+
+const queryByLabel = async (req, res) => {
+
+}
+
+const queryTopLikeCount = async (req, res) => {
+
+}
+
+export { qeuryByID, qeuryByName, queryByLabel, queryTopLikeCount }

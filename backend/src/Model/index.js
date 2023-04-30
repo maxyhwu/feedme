@@ -17,7 +17,7 @@ dotenv.config();
         db.sequelize = sequelize
 
     //connecting to model
-    db.users = require('./usersModel').default.default (sequelize, DataTypes)
+    db.users = require('./usersModel').default (sequelize, DataTypes)
     db.recipe = require('./recipesModel').default (sequelize, DataTypes)
     db.categories = require('./categoriesModel') (sequelize, DataTypes)
     db.ingredients = require('./ingredientsModel').default (sequelize, DataTypes)
