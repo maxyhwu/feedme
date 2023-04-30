@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { twitterVerified, authenticate, login, reverse, redirect } from '../Controllers/twitterController';
+
+import { twitterVerified, authenticate, login, reverse } from '../Controllers/twitterController';
 import { googleOauthHandler, googleOauthSignupHandler } from '../Controllers/googleAuthController';
 import { generateToken, sendToken } from '../Middleware/setToken';
 

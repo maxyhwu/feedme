@@ -95,7 +95,7 @@ const insertIngredient = () => {
     });
 }
 
-export default {
+export {
     insertCategory,
     insertIngredient
 }

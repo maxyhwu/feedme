@@ -30,4 +30,4 @@ const allLabel = () => {
 
 }
 
-export default { allIngredient, allCategory, allLabel };
+export { allIngredient, allCategory, allLabel };

@@ -36,7 +36,7 @@ const loginsuccess = (req, res) => {
     }
 }
 
-export default {
+export {
     logout,
     loginfail,
     loginsuccess

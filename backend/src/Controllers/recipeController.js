@@ -30,4 +30,5 @@ const qeuryByID = (req, res) => {
     });
 }
 
-export { qeuryByID, qeuryByName, queryByLabel }
+// export { qeuryByID, qeuryByName, queryByLabel }
+export { qeuryByID }
