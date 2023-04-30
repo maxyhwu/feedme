@@ -27,7 +27,7 @@ app.use('/api/oauth', oauthRoutes)
 app.use('api/user', userRoutes)
 app.use('/api/data', dataRoutes)
 
-db.sequelize.sync({ alter: true }).then(() => {    //drop table if exists
+db.sequelize.sync({alter: true}).then(() => {    //drop table if exists
     console.log("db has been sync")
 })
 
