@@ -1,6 +1,5 @@
 import "./recipe-search-result.css"
 import ActionBar from "./Components/ActionBar";
-import SearchBar from "./searchbar";
 import { useNavigate } from "react-router-dom";
 
 const Recipe_search_result = () => {
