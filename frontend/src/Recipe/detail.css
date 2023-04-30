@@ -20,6 +20,13 @@
     border-radius: 15px;
 }
 
+.modal-container-from-data {
+    height: fit-content;
+    display: flex; 
+    flex-direction: row;
+    padding: 20px;
+}
+
 .modal-left {
     width: 50%;
     display: flex;
@@ -30,6 +37,7 @@
 
 .top-part {
     display: flex;
+    margin-bottom: 2rem;
 }
 
 .image {
@@ -54,6 +62,7 @@
 
 .title {
     font-size: x-large;
+    text-align: center;
 }
 
 .serving-size {
@@ -74,6 +83,10 @@
     height: 35px;
     font-size: small;
     font-weight: 500;
+}
+
+.ingredients {
+    margin-top: 3rem;
 }
 
 .modal-right {
