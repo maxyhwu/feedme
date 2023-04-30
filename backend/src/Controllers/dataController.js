@@ -1,9 +1,12 @@
-const pg = require('pg');
-require('dotenv').config()
+import { Client } from 'pg';
+// require('dotenv').config()
+import dotenv from "dotenv-defaults";
+dotenv.config();
+
 var conString = process.env.url;
 
-function insertCategory() {
-    const client = new pg.Client(conString);
+const insertCategory = () => {
+    const client = new Client(conString);
 
     client.connect(err => {
         if (err) throw err;
@@ -12,7 +15,7 @@ function insertCategory() {
             //INSERT INTO "Categories" ("cateName") VALUES ('banana');
             //TRUNCATE TABLE "Categories" RESTART IDENTITY;
             //`;
-              const query = `
+            const query = `
                 INSERT INTO "Categories" ("cateName")
                 VALUES ('Vegetables'),
                        ('Dairy'),
@@ -21,7 +24,7 @@ function insertCategory() {
                        ('Grains'),
                        ('Fruits'),
                        ('Nuts and Seeds');
-              `;
+            `;
             client
                 .query(query)
                 .then(() => {
@@ -37,8 +40,8 @@ function insertCategory() {
     });
 }
 
-function insertIngredient() {
-    const client = new pg.Client(conString);
+const insertIngredient = () => {
+    const client = new Client(conString);
 
     client.connect(err => {
         if (err) throw err;
@@ -92,7 +95,7 @@ function insertIngredient() {
     });
 }
 
-module.exports = {
+export default {
     insertCategory,
     insertIngredient
 }
