@@ -1,11 +1,10 @@
-import { use, authenticate as _authenticate } from 'passport';
+import passport from 'passport';
 import TwitterTokenStrategy from 'passport-twitter-token';
 import dotenv from "dotenv-defaults";
 dotenv.config();
-import { post } from 'request';
+import { request } from 'request';
 
-
-use(new TwitterTokenStrategy({
+passport.use(new TwitterTokenStrategy({
     consumerKey: process.env.consumerKey,
     consumerSecret: process.env.consumerSecret,
     includeEmail: true
@@ -29,7 +28,7 @@ use(new TwitterTokenStrategy({
 
 const twitterVerified = (req, res, next) => {
   console.log('verified')
-  post({
+  request.post({
     url: `https://api.twitter.com/oauth/access_token?oauth_verifier`,
     oauth: {
       consumer_key: process.env.consumerKey,
@@ -57,7 +56,7 @@ const twitterVerified = (req, res, next) => {
 
 const authenticate = (req, res, next) => {
   try{
-    _authenticate('twitter-token', function(err, user, info) {
+    passport.authenticate('twitter-token', function(err, user, info) {
       if (err) {
         return next(err);
       }
@@ -89,7 +88,7 @@ const login = (req, res, next) => {
 }
 
 const reverse = (req, res) => {
-  post({
+  request.post({
     url: 'https://api.twitter.com/oauth/request_token',
     oauth: {
       oauth_callback: "http%3A%2F%2Flocalhost%3A3000%2Ftwitter-callback",
@@ -107,7 +106,7 @@ const reverse = (req, res) => {
   });
 }
 
-export default {
+export {
   twitterVerified,
   authenticate,
   login,

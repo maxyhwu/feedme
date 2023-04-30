@@ -55,7 +55,7 @@ const editFridge = async (req, _) => {
     });
 }
 
-export default {
+export {
     logout,
     loginfail,
     loginsuccess,

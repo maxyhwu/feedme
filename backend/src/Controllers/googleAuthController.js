@@ -1,12 +1,12 @@
-import { getGoogleOauthToken, getGoogleUser } from '../services/session.service';
+import { getGoogleOauthToken, getGoogleUser } from '../services/session/service';
 import dotenv from "dotenv-defaults";
 dotenv.config();
-import { Sequelize, users } from "../Model";
+import db from "../Model";
 import { sign } from "jsonwebtoken";
 
-const Op = Sequelize.Op
+const Op = db.Sequelize.Op
 
-const User = users;
+const User = db.users;
 import AppError from '../utils/appError';
 
 
@@ -145,7 +145,7 @@ const googleOauthSignupHandler = async (req,res,next) => {
     }
 };
 
-export default {
+export {
     googleOauthHandler,
     googleOauthSignupHandler
 };

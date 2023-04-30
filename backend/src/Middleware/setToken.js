@@ -27,7 +27,7 @@ var createToken = function(auth) {
     }
   };
 
-  export default {
+  export {
     generateToken,
     sendToken,
   };

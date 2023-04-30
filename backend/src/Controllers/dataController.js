@@ -130,7 +130,7 @@ const insertLabel = () => {
     });
 }
 
-export default {
+export {
     insertCategory,
     insertIngredient,
     insertLabel

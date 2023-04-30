@@ -1,7 +1,7 @@
 // require('dotenv').config();
 import dotenv from "dotenv-defaults";
 dotenv.config();
-import { sequelize } from './Model';
+import db from './Model';
 import oauthRoutes from './Routes/oauthRoutes';
 import userRoutes from './Routes/userRoutes';
 import dataRoutes from './Routes/dataRoutes';
@@ -32,7 +32,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/general', generalRoutes);
 app.use('/api/recipe', recipeRoutes);
 
-sequelize.sync({ alter: true }).then(() => {    //drop table if exists
+db.sequelize.sync({ alter: true }).then(() => {    //drop table if exists
     console.log("db has been sync")
 })
 

@@ -49,4 +49,5 @@ const queryTopLikeCount = async (req, res) => {
 
 }
 
-export { qeuryByID, qeuryByName, queryByLabel, queryTopLikeCount }
+// export { qeuryByID, qeuryByName, queryByLabel }
+export { qeuryByID }
