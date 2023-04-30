@@ -9,7 +9,7 @@ import generalRoutes from './Routes/generalRoutes';
 import recipeRoutes from './Routes/recipeRoutes';
 
 console.log("dotenv = ", process.env.PORT)
-const PORT = process.env.PORT ||8000
+const PORT = process.env.PORT || 8000
 
 import express, { json, urlencoded } from "express";
 const app = express();
