@@ -37,6 +37,7 @@
 
 .top-part {
     display: flex;
+    margin-bottom: 2rem;
 }
 
 .image {
@@ -61,6 +62,7 @@
 
 .title {
     font-size: x-large;
+    text-align: center;
 }
 
 .serving-size {
@@ -81,6 +83,10 @@
     height: 35px;
     font-size: small;
     font-weight: 500;
+}
+
+.ingredients {
+    margin-top: 3rem;
 }
 
 .modal-right {
