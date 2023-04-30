@@ -1,9 +1,13 @@
-const express = require('express')
-const { twitterVerified, authenticate, login, reverse, redirect } = require('../Controllers/twitterController');
-const {generateToken, sendToken} = require('../Middleware/setToken');
+import { Router } from 'express';
+import { twitterVerified, authenticate, login, reverse, redirect } from '../Controllers/twitterController';
+import { googleOauthHandler, googleOauthSignupHandler } from '../Controllers/googleAuthController';
+import { generateToken, sendToken } from '../Middleware/setToken';
 
-const router = express.Router();
+const router = Router();
 
 router.post('/auth/twitter/login', twitterVerified, authenticate, login, generateToken, sendToken);
 router.post('/auth/twitter/reverse', reverse)
-module.exports = router
+router.get('/google/login', googleOauthHandler);
+router.get('/google/signup', googleOauthSignupHandler);
+
+export default router
