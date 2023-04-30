@@ -46,8 +46,8 @@ const insertIngredient = () => {
     client.connect(err => {
         if (err) throw err;
         else {
+            //TRUNCATE TABLE "Ingredients" RESTART IDENTITY;
             const query = `
-                TRUNCATE TABLE "Ingredients" RESTART IDENTITY;
                 INSERT INTO "Ingredients" ("ingredName", "expPeriod", "categoryID")
                 VALUES ('Milk', 5, 2),
                        ('Beef', 6, 3),
@@ -95,7 +95,43 @@ const insertIngredient = () => {
     });
 }
 
+const insertLabel = () => {
+    const client = new Client(conString);
+
+    client.connect(err => {
+        if(err) throw err;
+        else {
+            //const query = `
+            //INSERT INTO "Categories" ("cateName") VALUES ('banana');
+            //TRUNCATE TABLE "Categories" RESTART IDENTITY;
+            //`;
+            const query = `
+                INSERT INTO "Labels" ("labelName")
+                VALUES ('Taiwanese'),
+                       ('Japanese'),
+                       ('Korean'),
+                       ('French'),
+                       ('American'),
+                       ('Thai'),
+                       ('Indian');
+            `;
+            client
+                .query(query)
+                .then(() => {
+                    console.log('label insert successfully!');
+                    client.end(console.log('Closed client connection'));
+                })
+                .catch(err => console.log(err))
+                .then(() => {
+                    console.log('Finished execution, exiting now');
+                    process.exit();
+                });
+        }
+    });
+}
+
 export default {
     insertCategory,
-    insertIngredient
+    insertIngredient,
+    insertLabel
 }

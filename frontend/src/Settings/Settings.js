@@ -10,7 +10,6 @@ import {
 import { BsPerson } from "react-icons/bs";
 import { TbBellRinging } from "react-icons/tb";
 import { FormattedMessage } from "react-intl";
-// import { BiFridge } from "react-icons/bi";
 
 //import css
 import "./Settings.css";
@@ -22,8 +21,6 @@ const Settings = () => {
   const [Categories, setCategories] = useState(
     "Taiwanese Food, Rice, Desserts"
   );
-  // fridge items hook
-  // const [FridgeItems, setFridgeItems] = useState("1 carrot, 3 eggs");
   // notification hooks
   const [RecipeNoti, setRecipeNoti] = useState(false);
   const [IngredNoti, setIngredNoti] = useState(true);
@@ -228,27 +225,6 @@ const Settings = () => {
             </div>
           </div>
         </div>
-
-        {/* Fridge Setting */}
-        {/* <div className="feild">
-          <div className="setting-bar-button">
-            <BiFridge className="setting-bar-button-icon" />
-            <div className="setting-bar-button-text">Fridge Setting</div>
-            <IoIosArrowForward className="setting-bar-button-expand" />
-          </div>
-          <div className="keyin">
-            <div className="flex-container">
-              <div>Update your fridge</div>
-              <textarea
-                type="text"
-                placeholder="What’s in your fridge? (e.g. 1 carrot, 3 eggs ......)"
-                id="fridge"
-                value={FridgeItems}
-                onChange={handleChange(setFridgeItems)}
-              />
-            </div>
-          </div>
-        </div> */}
 
         {/* Submit */}
         <div className="submit-container">

@@ -4,7 +4,7 @@ import { qeuryByID, qeuryByName, queryByLabel } from '../Controllers/recipeContr
 const router = Router();
 
 router.get('/query/id', qeuryByID);
-router.get('/query/id', qeuryByName);
+router.get('/query/name', qeuryByName);
 router.get('/query/label', queryByLabel);
 
 export default router;
