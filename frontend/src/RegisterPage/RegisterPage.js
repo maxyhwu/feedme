@@ -95,8 +95,8 @@ const RegisterPage = () => {
     return (
         <div className="container">
             <div id='logo'>
-                    <img src={FeedMe} alt='feedme' id="feedmelogo"/>
-                </div>
+                <img src={FeedMe} alt='feedme' id="feedmelogo"/>
+            </div>
             <div className="body">
                 
                 <form onSubmit={register} id="info">
