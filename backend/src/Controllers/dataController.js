@@ -1,9 +1,12 @@
-const pg = require('pg');
-require('dotenv').config()
+import { Client } from 'pg';
+// require('dotenv').config()
+import dotenv from "dotenv-defaults";
+dotenv.config();
+
 var conString = process.env.url;
 
-function insertCategory() {
-    const client = new pg.Client(conString);
+const insertCategory = () => {
+    const client = new Client(conString);
 
     client.connect(err => {
         if (err) throw err;
@@ -12,7 +15,7 @@ function insertCategory() {
             //INSERT INTO "Categories" ("cateName") VALUES ('banana');
             //TRUNCATE TABLE "Categories" RESTART IDENTITY;
             //`;
-              const query = `
+            const query = `
                 INSERT INTO "Categories" ("cateName")
                 VALUES ('Vegetables'),
                        ('Dairy'),
@@ -21,7 +24,7 @@ function insertCategory() {
                        ('Grains'),
                        ('Fruits'),
                        ('Nuts and Seeds');
-              `;
+            `;
             client
                 .query(query)
                 .then(() => {
@@ -37,14 +40,14 @@ function insertCategory() {
     });
 }
 
-function insertIngredient() {
-    const client = new pg.Client(conString);
+const insertIngredient = () => {
+    const client = new Client(conString);
 
     client.connect(err => {
         if (err) throw err;
         else {
+            //TRUNCATE TABLE "Ingredients" RESTART IDENTITY;
             const query = `
-                TRUNCATE TABLE "Ingredients" RESTART IDENTITY;
                 INSERT INTO "Ingredients" ("ingredName", "expPeriod", "categoryID")
                 VALUES ('Milk', 5, 2),
                        ('Beef', 6, 3),
@@ -92,7 +95,43 @@ function insertIngredient() {
     });
 }
 
-module.exports = {
+const insertLabel = () => {
+    const client = new Client(conString);
+
+    client.connect(err => {
+        if(err) throw err;
+        else {
+            //const query = `
+            //INSERT INTO "Categories" ("cateName") VALUES ('banana');
+            //TRUNCATE TABLE "Categories" RESTART IDENTITY;
+            //`;
+            const query = `
+                INSERT INTO "Labels" ("labelName")
+                VALUES ('Taiwanese'),
+                       ('Japanese'),
+                       ('Korean'),
+                       ('French'),
+                       ('American'),
+                       ('Thai'),
+                       ('Indian');
+            `;
+            client
+                .query(query)
+                .then(() => {
+                    console.log('label insert successfully!');
+                    client.end(console.log('Closed client connection'));
+                })
+                .catch(err => console.log(err))
+                .then(() => {
+                    console.log('Finished execution, exiting now');
+                    process.exit();
+                });
+        }
+    });
+}
+
+export default {
     insertCategory,
-    insertIngredient
+    insertIngredient,
+    insertLabel
 }

@@ -1,10 +1,11 @@
-const passport = require('passport');
-const TwitterTokenStrategy = require('passport-twitter-token');
-require('dotenv').config()
-const request = require('request');
+import { use, authenticate as _authenticate } from 'passport';
+import TwitterTokenStrategy from 'passport-twitter-token';
+import dotenv from "dotenv-defaults";
+dotenv.config();
+import { post } from 'request';
 
 
-passport.use(new TwitterTokenStrategy({
+use(new TwitterTokenStrategy({
     consumerKey: process.env.consumerKey,
     consumerSecret: process.env.consumerSecret,
     includeEmail: true
@@ -26,9 +27,9 @@ passport.use(new TwitterTokenStrategy({
   }
 ));
 
-function twitterVerified(req, res, next) {
+const twitterVerified = (req, res, next) => {
   console.log('verified')
-  request.post({
+  post({
     url: `https://api.twitter.com/oauth/access_token?oauth_verifier`,
     oauth: {
       consumer_key: process.env.consumerKey,
@@ -54,9 +55,9 @@ function twitterVerified(req, res, next) {
   });
 }
 
-function authenticate(req, res, next) {
+const authenticate = (req, res, next) => {
   try{
-    passport.authenticate('twitter-token', function(err, user, info) {
+    _authenticate('twitter-token', function(err, user, info) {
       if (err) {
         return next(err);
       }
@@ -71,7 +72,7 @@ function authenticate(req, res, next) {
   }
 }
 
-function login(req, res, next) {
+const login = (req, res, next) => {
   try{
     if (!req.user) {
       return res.send(401, 'User Not Authenticated');
@@ -87,8 +88,8 @@ function login(req, res, next) {
   }
 }
 
-function reverse(req, res) {
-  request.post({
+const reverse = (req, res) => {
+  post({
     url: 'https://api.twitter.com/oauth/request_token',
     oauth: {
       oauth_callback: "http%3A%2F%2Flocalhost%3A3000%2Ftwitter-callback",
@@ -106,7 +107,7 @@ function reverse(req, res) {
   });
 }
 
-module.exports = {
+export default {
   twitterVerified,
   authenticate,
   login,

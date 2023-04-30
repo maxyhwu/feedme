@@ -1,8 +1,10 @@
-import express from 'express';
-import { getRecipeByName } from '../Controllers/recipeController';
+import { Router } from 'express';
+import { qeuryByID, qeuryByName, queryByLabel } from '../Controllers/recipeController';
 
-const router = express.Router();
-router.get("/getRecipeByName", getRecipeByName);
+const router = Router();
 
+router.get('/query/id', qeuryByID);
+router.get('/query/name', qeuryByName);
+router.get('/query/label', queryByLabel);
 
-module.exports = router
+export default router;

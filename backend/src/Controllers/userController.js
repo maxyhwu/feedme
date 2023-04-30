@@ -1,6 +1,7 @@
-require('dotenv').config()
+import dotenv from "dotenv-defaults";
+dotenv.config();
 
-function logout(req, res) {
+const logout = (req, res) => {
     try{
         req.logout();
         res.redirect(process.env.CLIENT_HOME_PAGE_URL);
@@ -9,7 +10,7 @@ function logout(req, res) {
     }
 }
 
-function loginfail(req, res) {
+const loginfail = (req, res) => {
     try{
         res.status(401).json({
             success: false,
@@ -20,7 +21,7 @@ function loginfail(req, res) {
     }
 }
 
-function loginsuccess(req, res) {
+const loginsuccess = (req, res) => {
     try{
         if (req.user) {
             res.json({
@@ -35,7 +36,7 @@ function loginsuccess(req, res) {
     }
 }
 
-module.exports ={
+export default {
     logout,
     loginfail,
     loginsuccess

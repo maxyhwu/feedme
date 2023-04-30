@@ -1,9 +1,9 @@
-const express = require('express')
-const { logout, loginfail, loginsuccess } = require('../Controllers/userController')
+import { Router } from 'express';
+import { logout, loginfail, loginsuccess } from '../Controllers/userController';
 
-const router = express.Router();
+const router = Router();
 router.get("/login/success", loginsuccess)
 router.get('/login/failed', loginfail)
-router.get('/logout',logout )
+router.get('/logout', logout)
 
-module.exports = router
+export default router

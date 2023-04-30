@@ -1,8 +1,10 @@
-const express = require('express')
-const { insertCategory, insertIngredient } = require('../Controllers/dataController').default;
+import { Router } from 'express';
+import { insertCategory, insertIngredient } from '../Controllers/dataController';
 
-const router = express.Router();
+const router = Router();
 
 router.get('/insert/Category', insertCategory);
 router.get('/insert/Ingredient', insertIngredient);
-module.exports = router
+router.get('/insert/Label', insertLabel);
+
+export default router;
