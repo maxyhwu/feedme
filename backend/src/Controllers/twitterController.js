@@ -2,7 +2,7 @@ import passport from 'passport';
 import TwitterTokenStrategy from 'passport-twitter-token';
 import dotenv from "dotenv-defaults";
 dotenv.config();
-import { request } from 'request';
+import  request from 'request';
 
 passport.use(new TwitterTokenStrategy({
     consumerKey: process.env.consumerKey,

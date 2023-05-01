@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
     const Labels = sequelize.define('Labels',{
         labelName: {
             type:DataTypes.STRING,

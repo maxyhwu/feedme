@@ -21,7 +21,7 @@ var createToken = function(auth) {
     try {
       res.setHeader('x-auth-token', req.token);
       console.log(req.token)
-      return res.status(200).send(JSON.stringify(req.user));
+      return res.status(200).send({success: true, user:req.user});
     } catch (err) {
       console.log('Send token failed')
     }

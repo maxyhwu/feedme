@@ -11,7 +11,8 @@ import {
 import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
 import { FormattedMessage } from "react-intl";
-import {UseLoginContext} from '../Context/LoginCnt'
+import {UseLoginContext} from '../Context/LoginCnt';
+import {Link as MuiLink} from '@mui/material';
 
 export default function LoginPage () {
 
@@ -76,12 +77,12 @@ export default function LoginPage () {
                         {(msg) => (<input type="submit" value={msg} className="infos" id="login" onClick={handleSubmit}/>)}
                     </FormattedMessage>
                     <div id="external" className="infos">
-                        <Link 
+                        <MuiLink
                             href={getGoogleUrl(from, redirect_uri, clientID)}
                             id="google-icon"
                         >
                             <GoogleLogo  id="googlelogo"/>    
-                        </Link> 
+                        </MuiLink> 
                         <TwitterLogin loginUrl={redirect_login}
                             onFailure={onFailed} onSuccess={onSuccess}
                             requestTokenUrl={request_token}

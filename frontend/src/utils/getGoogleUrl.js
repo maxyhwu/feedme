@@ -16,6 +16,8 @@ export const getGoogleUrl = (from, redirect_uri, clientID) => {
     };
   
     const qs = new URLSearchParams(options);
+
+    console.log(`${rootUrl}?${qs.toString()}`)
   
     return `${rootUrl}?${qs.toString()}`;
   };

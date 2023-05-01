@@ -4,7 +4,7 @@ export default (sequelize, DataTypes) => {
         userName: {
             type:DataTypes.STRING,
             allowNull: false,
-            unique: true,
+            // unique: true,
         },
         email: {
             type:DataTypes.STRING,
@@ -13,6 +13,11 @@ export default (sequelize, DataTypes) => {
         },
         password:{
             type: DataTypes.STRING,
+        },
+        photo:{
+            type: DataTypes.STRING,
+            defaultValue: "",
+            allowNull: false
         },
         provider: {
             type: DataTypes.STRING,
