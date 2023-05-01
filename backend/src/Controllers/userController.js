@@ -93,6 +93,5 @@ export {
     login,
     signup,
     editFridge,
-    forgotPw,
     sendEmail
 }
