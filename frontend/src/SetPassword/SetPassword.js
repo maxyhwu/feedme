@@ -55,7 +55,7 @@ const SetLogin = () => {
                 
                 <form id="info">
                 <div id="header">
-                    <h2 className="infos" id="title">Reset Password</h2>
+                    <h2 className="infos" id="title">Forget Password</h2>
                 </div>
                     <input type="text" placeholder='Email' className="input infos" autoComplete='off'/>
                     <div className="d-flex" >

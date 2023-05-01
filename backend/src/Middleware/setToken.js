@@ -5,7 +5,7 @@ var createToken = function(auth) {
     return sign({
       id: auth.id,
       iat: auth.iat,
-      iat, userEmail
+      email: auth.userEmail
     }, process.env.secretKey,
     {
       expiresIn: 1 *24 * 60 * 60 * 1000 
