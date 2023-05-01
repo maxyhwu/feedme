@@ -1,4 +1,4 @@
-import { getGoogleOauthToken, getGoogleUser } from '../services/session/service';
+import { getGoogleOauthToken, getGoogleUser } from '../Services/service.js';
 import dotenv from "dotenv-defaults";
 dotenv.config();
 import db from "../Model";
@@ -8,7 +8,6 @@ const Op = db.Sequelize.Op
 
 const User = db.users;
 import AppError from '../utils/appError';
-
 
 const googleOauthHandler = async (req,res,next) => {
     try {

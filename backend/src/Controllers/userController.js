@@ -1,8 +1,9 @@
 import dotenv from "dotenv-defaults";
-import db from "../Model"
 dotenv.config();
+import db from "../Model"
+import {sendForgetPWEmail} from "../Services/userService"
 const User = db.users;
-const Op = db.Sequelize.Op
+const Op = db.Sequelize
 
 const login = async (req, res, next) => {
     try {
@@ -24,7 +25,6 @@ const login = async (req, res, next) => {
                 //     expiresIn: 1 *24 * 60 * 60 * 1000       //expiresIn 是設定有效期限
                 //     })
                 return next()
-                // return res.status(201).send({success:true, token: token});
             } else {
                 return res.status(201).send({success:false, message: 'Password incorrect'});
             }
@@ -61,6 +61,19 @@ const signup = async (req, res) => {
     }
 }
 
+const sendEmail = async (req, res) => {
+    try{
+        console.log(req.body)
+        const { email } = req.body;
+        const token = req.token
+        let success = await sendForgetPWEmail(email, token)
+        res.status(200).send({success: success})
+    } catch (err) {
+        console.log('sendEmail error');
+        console.log(err);
+    }
+}
+
 const editFridge = async (req, _) => {
     const {logs} = req.query
     logs.forEach( async (log) => {
@@ -79,5 +92,7 @@ const editFridge = async (req, _) => {
 export {
     login,
     signup,
-    editFridge
+    editFridge,
+    forgotPw,
+    sendEmail
 }

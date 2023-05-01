@@ -34,6 +34,7 @@ export default function LoginPage () {
         // window.close()
         navigate('/')
         window.location.reload(true)
+        console.log('wtf')
         const token = response.headers.get('x-auth-token');
         console.log('token')
         response.json().then(user => {
