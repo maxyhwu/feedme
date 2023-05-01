@@ -78,7 +78,9 @@ const login = (req, res, next) => {
     }
     // prepare token for API
     req.auth = {
-      id: req.user.id
+      id: req.user.id,
+      iat: 1645869827, 
+      userEmail:""
     };
 
     return next();
