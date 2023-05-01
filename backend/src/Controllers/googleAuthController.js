@@ -2,7 +2,7 @@ import { getGoogleOauthToken, getGoogleUser } from '../services/session/service'
 import dotenv from "dotenv-defaults";
 dotenv.config();
 import db from "../Model";
-import { sign } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 const Op = db.Sequelize.Op
 
@@ -27,7 +27,7 @@ const googleOauthHandler = async (req,res,next) => {
 
 
     // Use the token to get the User
-    const { name, verified_email, email } = await getGoogleUser({
+    const { name, verified_email, email, photo } = await getGoogleUser({
         id_token,
         access_token,
     });
@@ -47,6 +47,7 @@ const googleOauthHandler = async (req,res,next) => {
     const data = {
         googleName: name,
         provider: 'Google',
+        photo: photo,
     };
 
     User.update(data, {where: {email: email}});
@@ -57,16 +58,16 @@ const googleOauthHandler = async (req,res,next) => {
         },
     });
     if (!user) {
-        return res.redirect(`${process.env.origin}/oauth/error`);
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error`);
     }
-      let token = sign({ id:user.id, iat: 1645869827, userEmail:user.email}, process.env.secretKey, {   //用jwt來為使用者生成token, secretKey是用來為jtw加密
+      let token = jwt.sign({ id:user.id, iat: 1645869827, userEmail:user.email}, process.env.secretKey, {   //用jwt來為使用者生成token, secretKey是用來為jtw加密
         expiresIn: 1 *24 * 60 * 60 * 1000       //expiresIn 是設定有效期限
     })
     res.cookie('token', token);
-    res.redirect(`${process.env.origin}${pathUrl}`);
+    res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}${pathUrl}`);
     } catch (err) {
         console.log('Failed to authorize Google User', err);
-        return res.redirect(`${process.env.origin}/oauth/error`);
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error`);
     }
 };
 
@@ -86,7 +87,7 @@ const googleOauthSignupHandler = async (req,res,next) => {
 
 
     // Use the token to get the User
-    const { name, verified_email, email, picture } = await getGoogleUser({
+    const { name, verified_email, email, photo } = await getGoogleUser({
         id_token,
         access_token,
     });
@@ -108,40 +109,47 @@ const googleOauthSignupHandler = async (req,res,next) => {
     const data = {
         userName: name,
         email: email,
-        googleName: name,
         password: '',
-        photo: picture,
-        verified: verified_email,
         provider: 'Google',
-        authorName: name,
+        photo: photo,
     };
 
     const sameNameUser = await User.findOne({
         where: {
-            [Op.or]: [{userName: name}, {authorName: name}]
+            // [Op.or]: [{userName: name}, {authorName: name}]
+            userName: name,
+            email: email
         }});
-
     if ( sameNameUser !== null){
         console.log('sameuser')
-        return res.redirect(`${process.env.origin}/oauth/error`);
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error`);
     }else{
-
         const userExist = await User.findOne({
             where: {
                 email: email,
+                provider: "local"
             },
         });
         if (userExist !== null) {
             await User.update(data, {where:{email: email}})
         } else {
-            await User.create(data);
+            const emailExist = await User.findOne({
+                where: {
+                    email: email,
+                },
+            });
+            if (emailExist == null) {
+                await User.create(data);
+            } else {
+                return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error`);
+            }
         }
-        res.redirect(`${process.env.origin}${pathUrl}`);
+        res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}${pathUrl}`);
     }
 
     } catch (err) {
         console.log('Failed to authorize Google User', err);
-        return res.redirect(`${process.env.origin}/oauth/error`);
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error`);
     }
 };
 

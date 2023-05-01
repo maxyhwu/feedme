@@ -1,10 +1,14 @@
 import { sign } from "jsonwebtoken";
+import dotenv from "dotenv-defaults";
+dotenv.config();
 var createToken = function(auth) {
     return sign({
-      id: auth.id
-    }, 'my-secret',
+      id: auth.id,
+      iat: auth.iat,
+      iat, userEmail
+    }, process.env.secretKey,
     {
-      expiresIn: 60 * 120
+      expiresIn: 1 *24 * 60 * 60 * 1000 
     });
   };
   
@@ -21,7 +25,7 @@ var createToken = function(auth) {
     try {
       res.setHeader('x-auth-token', req.token);
       console.log(req.token)
-      return res.status(200).send(JSON.stringify(req.user));
+      return res.status(200).send({success: true, user:req.user});
     } catch (err) {
       console.log('Send token failed')
     }

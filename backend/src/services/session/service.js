@@ -1,7 +1,7 @@
 import dotenv from "dotenv-defaults";
 dotenv.config();
-import { post, get } from 'axios';
-import { stringify } from 'qs';
+import axios from 'axios';
+import qs from 'qs';
 
 const getGoogleOauthToken = async ({code, redirect_uri})=> {
     const rootURl = 'https://oauth2.googleapis.com/token';
@@ -14,9 +14,9 @@ const getGoogleOauthToken = async ({code, redirect_uri})=> {
         grant_type: 'authorization_code',
     };
     try {
-        const { data } = await post(
+        const { data } = await axios.post(
             rootURl,
-            stringify(options),
+            qs.stringify(options),
             {
                 headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -33,7 +33,7 @@ const getGoogleOauthToken = async ({code, redirect_uri})=> {
 
 async function getGoogleUser({id_token, access_token,}){
     try {
-        const { data } = await get(
+        const { data } = await axios.get(
         `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
         {
             headers: {
@@ -49,7 +49,7 @@ async function getGoogleUser({id_token, access_token,}){
     }
 }
 
-export default {
+export {
     getGoogleOauthToken,
     getGoogleUser
 }

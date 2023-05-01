@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { logout, loginfail, loginsuccess, signup, editFridge } from '../Controllers/userController';
+import { saveUser } from "../Middleware/userAuth"
+import { login, signup, editFridge } from '../Controllers/userController';
+import { generateToken, sendToken } from '../Middleware/setToken';
 
 const router = Router();
-router.get("/login/success", loginsuccess)
-router.get('/login/failed', loginfail)
-router.get('/logout', logout)
-router.post('/signup', signup)
+router.get("/login", login, generateToken, sendToken)
+router.post('/signup', saveUser, signup)
 router.put('/edit-fridge', editFridge)
 
 export default router

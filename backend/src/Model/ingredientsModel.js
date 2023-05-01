@@ -1,5 +1,3 @@
-import { INTEGER } from "sequelize"
-
 export default (sequelize, DataTypes) => {
     const Ingredients = sequelize.define('Ingredients',{
         ingredName: {
