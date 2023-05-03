@@ -3,7 +3,7 @@ import { saveUser, emailValid, existEmail, checkToken } from "../Middleware/user
 import { login, signup, editFridge, sendEmail, editProfile, uploadImage, getImage } from '../Controllers/userController';
 import { generateToken, sendToken } from '../Middleware/setToken';
 import { generateCode } from '../Middleware/verifyCode';
-const upload = require('../Config/multerConfig')
+import { upload } from '../Config/multerConfig'
 
 const router = Router();
 router.get("/login", login, generateToken, sendToken)
