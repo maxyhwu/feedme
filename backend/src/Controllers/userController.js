@@ -2,6 +2,8 @@ import dotenv from "dotenv-defaults";
 dotenv.config();
 import db from "../Model"
 import {sendForgetPWEmail} from "../Services/userService"
+import { uploads, destroys } from "../Config/cloudinary";
+import fs from 'fs'
 const User = db.users;
 const Op = db.Sequelize
 
@@ -124,19 +126,7 @@ const getImage = async (req, res) => {
     }
 }
 
-const editFridge = async (req, _) => {
-    // const {logs} = req.query
-    // logs.forEach( async (log) => {
-    //     console.log(log)
-    //     const {op, data} = log;
-    //     if (op === "add") {
-
-    //     } else if (op === "remove") {
-
-    //     } else if (op === "modify") {
-
-    //     }
-    // });
+const editCurrentFridge = async (req, res) => {
     try{
         const user = req.user;
         const {fridge} = req.body
@@ -150,15 +140,15 @@ const editFridge = async (req, _) => {
     }
 }
 
-const keepRecipe = async (req, _) => {
+const keepRecipe = async (req, res) => {
     try{
         const articleID = req.body.id;
         const user = req.user;
-        const label = User.findOne({
-            attributes: ['label'],
+        const like = User.findOne({
+            attributes: ['like'],
             where: { id: user.id}
         })
-        label.push(articleID.toString())
+        like.push(articleID.toString())
         User.update({
             label
         },{ where: { id: user.id}})
@@ -169,13 +159,111 @@ const keepRecipe = async (req, _) => {
     }
 }
 
+const uploadToCloud = async (req, res) => {
+    try{
+        const user = req.user
+        const uploader = async(path) => await uploads(path, 'Avatars');
+        const url = ''
+        const file = req.file
+        const {path} = file;
+        const newPath = await uploader(path)
+        url = newPath
+        fs.unlinkSync(path)
+        User.update({
+            photo: url.url,
+            photoID: url.id
+        },{ where: { id: user.id}})
+        res.status(200).send({success: true})
+    } catch (err) {
+        console.log('upload cloud error');
+        console.log(err);
+    }
+}
+
+const deleteFromCloud = async (req, res) => {
+    try{
+        const uploader = async(id) => await destroys(id);
+        const user = req.user
+        const image = await User.findOne({
+            attributes: ['photoPID'],
+        where: {
+            id: user.id
+        }});
+        if(image < 0) {
+            res.status(404);
+            throw new Error("Photo not found");
+        }
+        uploader(image.photoPID)
+        photoData = {
+            photo: "",
+            photoPID: -1
+        }
+        User.update({
+            photoData
+        }, {where: { id: user.id}})
+    } catch (err) {
+        console.log('delete cloud error');
+        console.log(err)
+    }
+}
+
+const updateCloud= async (req, res) => {
+    try{
+        const destroy = async(id) => await destroys(id);
+        const uploader = async(file) => await uploads(file, 'Avatars');
+        const user = req.user
+        const image = await User.findOne({
+            attributes: ['photoPID'],
+        where: {
+            id: user.id
+        }});
+        if ( image < 0){
+            destroy(image.photoPID)
+        }
+        const url = ''
+        const file = req.file
+        const {path} = file;
+        const newPath = await uploader(path)
+        url = newPath
+        fs.unlinkSync(path)
+        User.update({
+            photo: url.url,
+            photoID: url.id
+        },{ where: { id: user.id}})
+        res.status(200).send({success: true})
+    } catch (err) {
+        console.log('delete cloud error');
+        console.log(err)
+    }
+}
+
+const testUpload = async (req, res) => {
+    try{
+        const uploader = async(file) => await uploads(file, 'Avatars');
+        let url = ''
+        const file = req.file
+        const { path } = file
+        const newPath = await uploader(path)
+        url = newPath
+        fs.unlinkSync(path)
+        res.status(200).send({success: true, url: url})
+    } catch (err) {
+        console.log('test error');
+        console.log(err);
+    }
+}
+
 export {
     login,
     signup,
-    editFridge,
+    editCurrentFridge,
     sendEmail,
     editProfile,
     uploadImage,
     getImage,
-    keepRecipe
+    keepRecipe,
+    uploadToCloud,
+    testUpload,
+    deleteFromCloud,
+    updateCloud
 }
