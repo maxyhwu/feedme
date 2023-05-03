@@ -77,12 +77,11 @@ const sendEmail = async (req, res) => {
 const editProfile = async (req, res) => {
     try{
         const user = req.user;
-        const {favorite, notiRec, notiIngre, like} = req.body
+        const {favorite, notiRec, notiIngre} = req.body
         User.update({
             favorite,
             notiRec,
             notiIngre,
-            like
         },{ where: { id: user.id}})
         res.status(200).send({success: true})
     } catch (err) {
@@ -151,6 +150,25 @@ const editFridge = async (req, _) => {
     }
 }
 
+const keepRecipe = async (req, _) => {
+    try{
+        const articleID = req.body.id;
+        const user = req.user;
+        const label = User.findOne({
+            attributes: ['label'],
+            where: { id: user.id}
+        })
+        label.push(articleID.toString())
+        User.update({
+            label
+        },{ where: { id: user.id}})
+        res.status(200).send({success: true})
+    } catch (err) {
+        console.log('keepRecipe error');
+        console.log(err);
+    }
+}
+
 export {
     login,
     signup,
@@ -158,5 +176,6 @@ export {
     sendEmail,
     editProfile,
     uploadImage,
-    getImage
+    getImage,
+    keepRecipe
 }
