@@ -61,8 +61,35 @@ const emailValid = async (req, res, next) => {
     }
 };
 
+const checkToken = async (req, res, next) => {
+    try {
+        const token = req.header('Authorization').replace('Bearer ', '')
+        console.log('token=',token)
+        const decoded = jwt.verify(token, process.env.secretKey)
+        console.log('decoded id =',decoded.id)
+        console.log('decoded user =', decoded.userEmail)
+        const user = await User.findOne({
+            where:{
+                id: decoded.id,
+                email: decoded.userEmail,
+            }
+        });
+        if (user!== null) { console.log('find')}
+        else { throw new Error() }
+        req.token = token
+        req.user = user
+
+        next();
+    } catch (error) {
+        console.log('checkUser error');
+        console.log(error);
+        res.status(401).send({ error: 'Please authenticate.' });
+    }
+};
+
 export {
     saveUser,
     existEmail,
-    emailValid
+    emailValid,
+    checkToken
 };

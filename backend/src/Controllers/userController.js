@@ -18,7 +18,7 @@ const login = async (req, res, next) => {
             if (isSame) {
                 req.auth = {
                     id:user.id, 
-                    iat: 1645869827, 
+                    iat: 10000, 
                     userEmail:user.email
                 }
                 // let token = jwt.sign({ id:user.id, iat: 1645869827, userEmail:user.email}, process.env.secretKey, {   //用jwt來為使用者生成token, secretKey是用來為jtw加密
@@ -30,7 +30,7 @@ const login = async (req, res, next) => {
             }
         }else {
             console.log('Can not find')
-            return res.status(201).send({success:false, message:'User name not found'});
+            return res.status(200).send({success:false, message:'User name not found'});
         }
     }catch (err) {
         console.log('login error');
@@ -74,24 +74,89 @@ const sendEmail = async (req, res) => {
     }
 }
 
-const editFridge = async (req, _) => {
-    const {logs} = req.query
-    logs.forEach( async (log) => {
-        console.log(log)
-        const {op, data} = log;
-        if (op === "add") {
+const editProfile = async (req, res) => {
+    try{
+        const user = req.user;
+        const {favorite, notiRec, notiIngre, like} = req.body
+        User.update({
+            favorite,
+            notiRec,
+            notiIngre,
+            like
+        },{ where: { id: user.id}})
+        res.status(200).send({success: true})
+    } catch (err) {
+        console.log('editProfile error');
+        console.log(err);
+    }
+}
 
-        } else if (op === "remove") {
+const uploadImage = async (req, res) => {
+    try{
+        const user = req.user;
+        const file = req.file;
+        User.update({
+            photo: file.buffer
+        },{ where: { id: user.id}})
+        res.status(200).send({success: true})
+    } catch (err) {
+        console.log('uploadImage error');
+        console.log(err);
+    }
+}
 
-        } else if (op === "modify") {
-
+const getImage = async (req, res) => {
+    try {
+        const user = req.user;
+        const image = await User.findOne({
+            attributes: ['photo'],
+            where: {
+                id: user.id
+            }});
+        if (image) {
+            return res.status(201).send({success:true,image: image});
+        } else {
+            return res.status(201).send({success:false, message: 'Error ID'});
         }
-    });
+        
+    }catch (err) {
+        console.log('getImage error');
+        console.log(err);
+    }
+}
+
+const editFridge = async (req, _) => {
+    // const {logs} = req.query
+    // logs.forEach( async (log) => {
+    //     console.log(log)
+    //     const {op, data} = log;
+    //     if (op === "add") {
+
+    //     } else if (op === "remove") {
+
+    //     } else if (op === "modify") {
+
+    //     }
+    // });
+    try{
+        const user = req.user;
+        const {fridge} = req.body
+        User.update({
+            fridge
+        },{ where: { id: user.id}})
+        res.status(200).send({success: true})
+    } catch (err) {
+        console.log('editFridge error');
+        console.log(err);
+    }
 }
 
 export {
     login,
     signup,
     editFridge,
-    sendEmail
+    sendEmail,
+    editProfile,
+    uploadImage,
+    getImage
 }

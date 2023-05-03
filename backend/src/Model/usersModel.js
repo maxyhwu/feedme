@@ -15,9 +15,7 @@ export default (sequelize, DataTypes) => {
             type: DataTypes.STRING,
         },
         photo:{
-            type: DataTypes.STRING,
-            defaultValue: "",
-            allowNull: false
+            type: DataTypes.BLOB('long')
         },
         provider: {
             type: DataTypes.STRING,
