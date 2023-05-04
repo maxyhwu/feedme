@@ -1,11 +1,12 @@
-import { users } from "../Model";
+import db from "../Model";
 import {isEmailValid} from '../Services/userService'
 import dotenv from "dotenv-defaults";
+import jwt from "jsonwebtoken";
 dotenv.config();
 
-const User = users;
+const User = db.users;
 
-const saveUser = async (req, res, next) => {
+const existUser = async (req, res, next) => {
     try {
         const user = await User.findOne({
             where: {
@@ -14,12 +15,12 @@ const saveUser = async (req, res, next) => {
         });
         // console.log('user',user)
         if (user !== null) {
-            return res.send({success:false,message:"user already exists"});
+            return res.status(400).send({message:"user already exists"});
         }else{
             next();
         }
     } catch (error) {
-        console.log('saveUser error');
+        console.log('existUser error');
         console.log(error);
     }
 };
@@ -34,7 +35,7 @@ const existEmail = async (req, res, next) => {
         // console.log('user',user)
         req.user = user
         if (user == null) {
-            return res.send({success:false,message:"email not exists"});
+            return res.status(400).send({message:"email not exists"});
         }else{
             next();
         }
@@ -46,7 +47,11 @@ const existEmail = async (req, res, next) => {
 
 const emailValid = async (req, res, next) => {
     try {
+        // console.log("body", req.body)
         const {valid, reason, validators} = await isEmailValid(req.body.email)
+        console.log("valid", valid)
+        console.log("reason", reason)
+        console.log("validators", validators)
         if ( valid ) {
             next();
         }else{
@@ -56,7 +61,7 @@ const emailValid = async (req, res, next) => {
             })
         }
     } catch (error) {
-        console.log('saveUser error');
+        console.log('email valid error');
         console.log(error);
     }
 };
@@ -67,11 +72,11 @@ const checkToken = async (req, res, next) => {
         console.log('token=',token)
         const decoded = jwt.verify(token, process.env.secretKey)
         console.log('decoded id =',decoded.id)
-        console.log('decoded user =', decoded.userEmail)
+        console.log('decoded user =', decoded.email)
         const user = await User.findOne({
             where:{
                 id: decoded.id,
-                email: decoded.userEmail,
+                email: decoded.email,
             }
         });
         if (user!== null) { console.log('find')}
@@ -83,12 +88,12 @@ const checkToken = async (req, res, next) => {
     } catch (error) {
         console.log('checkUser error');
         console.log(error);
-        res.status(401).send({ error: 'Please authenticate.' });
+        res.status(400).send({ error: 'Please authenticate.' });
     }
 };
 
 export {
-    saveUser,
+    existUser,
     existEmail,
     emailValid,
     checkToken

@@ -6,6 +6,7 @@ import { AiOutlineStar, AiFillStar } from 'react-icons/ai'
 import { UseLoginContext } from "../Context/LoginCnt";
 import { UseLangContext } from "../Context/LangCnt";
 import AccountMenu from "../Components/menu";
+import GoogleTranslate from "./Translator";
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -28,6 +29,7 @@ const Header = () => {
 
     return (
         <Navbar expand="lg">
+            {/* <GoogleTranslate /> */}
             <Container>
                 {/* LOGO */}
                 <Navbar.Brand>
@@ -38,7 +40,7 @@ const Header = () => {
 
                 {/* Language selector and user icon when screen is xs/sm/md */}
                 <div className="ms-auto d-flex d-lg-none">
-                    <div>
+                    {/* <div>
                         <select
                             value={lang}
                             onChange={(evt) => {
@@ -49,7 +51,8 @@ const Header = () => {
                             <option value="en">English</option>
                             <option value="cn">中文</option>
                         </select>
-                    </div>
+                    </div> */}
+                    {/* <GoogleTranslate /> */}
 
                     <div className="nav-user">
                         <div className="nav-user-icon">
@@ -77,7 +80,7 @@ const Header = () => {
 
                         {/* Language selector and user icon when expanded */}
                         <div className="ms-auto d-none d-lg-flex">
-                            <div>
+                            {/* <div>
                                 <select
                                     value={lang}
                                     onChange={(evt) => {
@@ -88,8 +91,8 @@ const Header = () => {
                                     <option value="en">English</option>
                                     <option value="cn">中文</option>
                                 </select>
-                            </div>
-
+                            </div> */}
+                            <GoogleTranslate />
                             <div className="nav-user">
                                 <div className="nav-user-icon">
                                     {login ? <AccountMenu/> : <BiUserCircle id="userIcon" onClick={() => {handleUserIcon()}}/>}

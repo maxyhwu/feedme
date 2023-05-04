@@ -47,7 +47,15 @@ export default (sequelize, DataTypes) => {
         fridge:{
             type: DataTypes.JSON,
             defaultValue: {}
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            defaultValue: sequelize.literal('NOW()')
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            defaultValue: sequelize.literal('NOW()')
         }
-    }, {timestamps: true})
+    }, {timestamps: true, paranoid: true})
     return Users
 }

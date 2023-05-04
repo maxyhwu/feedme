@@ -1,10 +1,11 @@
-import emailValidator from "deep-email-validator"
+import {validate} from "deep-email-validator"
 import nodemailer from'nodemailer'
 import dotenv from "dotenv-defaults";
 dotenv.config();
 
 const isEmailValid = async (email) => {
-    return emailValidator.validate(email)
+    console.log("email: ", email);
+    return validate(email);
 }
 
 const sendForgetPWEmail = async (email, token) => {
