@@ -26,7 +26,7 @@ const googleOauthHandler = async (req,res,next) => {
 
 
     // Use the token to get the User
-    const { name, verified_email, email, photo } = await getGoogleUser({
+    const { name, verified_email, email } = await getGoogleUser({
         id_token,
         access_token,
     });
@@ -46,7 +46,6 @@ const googleOauthHandler = async (req,res,next) => {
     const data = {
         googleName: name,
         provider: 'Google',
-        photo: photo,
     };
 
     User.update(data, {where: {email: email}});
@@ -86,7 +85,7 @@ const googleOauthSignupHandler = async (req,res,next) => {
 
 
     // Use the token to get the User
-    const { name, verified_email, email, photo } = await getGoogleUser({
+    const { name, verified_email, email } = await getGoogleUser({
         id_token,
         access_token,
     });
@@ -110,7 +109,6 @@ const googleOauthSignupHandler = async (req,res,next) => {
         email: email,
         password: '',
         provider: 'Google',
-        photo: photo,
     };
 
     const sameNameUser = await User.findOne({

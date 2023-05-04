@@ -19,6 +19,11 @@ export default (sequelize, DataTypes) => {
             defaultValue: "",
             allowNull: false
         },
+        photoPID:{
+            type: DataTypes.INTEGER,
+            defaultValue: -1,
+            allowNull: false
+        },
         provider: {
             type: DataTypes.STRING,
             defaultValue: 'local'
