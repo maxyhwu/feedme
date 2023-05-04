@@ -9,9 +9,9 @@ var conString = process.env.url;
 const qeuryByID = async (req, res) => {
   // const client = new Client(conString);
 
-  const { id } = req.query;
+  const id = req.query;
   const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id WHERE id = $1';
-  const values = [int(id)];
+  const values = [parseInt(id)];
 
   try {
     // await client.connect();
@@ -29,9 +29,9 @@ const qeuryByID = async (req, res) => {
 const qeuryByName = async (req, res) => {
   // const client = new Client(conString);
 
-  const { title } = req.query;
+  const title = req.query;
   const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id WHERE title = $1';
-  const values = [str(title)];
+  const values = [title.toString()];
 
   try {
     // await client.connect();
@@ -49,9 +49,9 @@ const qeuryByName = async (req, res) => {
 const queryByLabel = async (req, res) => {
   // const client = new Client(conString);
 
-  const { label } = req.query;
+  const label = req.query;
   const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id WHERE $1 = ANY(labels)';
-  const values = [int(label)];
+  const values = [parseInt(label)];
 
   try {
     // await client.connect();
@@ -69,9 +69,9 @@ const queryByLabel = async (req, res) => {
 const queryTopLikeCount = async (req, res) => {
   // const client = new Client(conString);
 
-  const { page } = req.query;
+  const page = req.query;
   const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id ORDER BY likeCount DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY';
-  const values = [int(page) * 15];
+  const values = [parseInt(page) * 15];
 
   try {
     // await client.connect();
@@ -89,9 +89,9 @@ const queryTopLikeCount = async (req, res) => {
 const queryByIngredients = async (req, res) => {
   // const client = new Client(conString);
 
-  const { ingredient } = req.query;
+  const ingredient = req.query;
   const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id WHERE $1 = ANY(ingredients)';
-  const values = [int(ingredient)];
+  const values = [parseInt(ingredient)];
 
   try {
     // await client.connect();
@@ -111,9 +111,9 @@ const queryByIngredients = async (req, res) => {
 const updateLikeCount = async (req, res) => {
   // const client = new Client(conString);
 
-  const { id } = req.query;
+  const id = req.query;
   const query = 'UPDATE "Recipes" SET likeCount = likeCount + 1 WHERE id = $1';
-  const values = [int(id)];
+  const values = [parseInt(id)];
 
   try {
     // await client.connect();
@@ -132,19 +132,19 @@ const updateLikeCount = async (req, res) => {
 const updateRecipe = async (req, res) => {
   // const client = new Client(conString);
 
-  const { update } = req.query;
+  const update = req.query;
   const query =
     'UPDATE "Recipes" SET title = $1, overview = $2, servingSize = $3, instructions = $4, image = $5, video = $6, labels = $7, ingredients = $8 WHERE id = $9';
   const values = [
-    str(update.title),
-    str(update.overview),
-    int(update.servingSize),
-    str(update.instructions),
-    str(update.image),
-    str(update.video),
+    (update.title).toString(),
+    (update.overview).toString(),
+    parseInt(update.servingSize),
+    (update.instructions).toString(),
+    (update.image).toString(),
+    (update.video).toString(),
     add.labels,
     add.ingredients,
-    int(id),
+    parseInt(id),
   ];
 
   try {
@@ -164,12 +164,12 @@ const updateRecipe = async (req, res) => {
 const addComment = async (req, res) => {
   // const client = new Client(conString);
 
-  const { comment } = req.query;
+  const comment = req.body;
   const query =
     'UPDATE "Recipes" SET comment = $1 WHERE id = $2';
   const values = [
     comment.comment,
-    int(comment.id)
+    parseInt(comment.id)
   ];
 
   try {
@@ -190,18 +190,21 @@ const addComment = async (req, res) => {
 const addRecipe = async (req, res) => {
   // const client = new Client(conString);
 
-  const { add } = req.query;
+  const add = req.body; // { title: , overview: }
+  const user = req.user;
   const query =
     'INSERT INTO "Recipes" ("userID", "title", "overview", "servingSize", "instructions", "image", "video", "likeCount", "labels", "ingredients", "comments") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, DEFAULT)';
   const values = [
-    req.user,
-    str(add.title),
-    str(add.overview),
-    int(add.servingSize),
-    str(add.instructions),
-    str(add.image),
-    str(add.video),
-    int(add.likeCount),
+    user.id,
+    (add.title).toString(),
+    (add.overview).toString(),
+    parseInt(add.servingSize),
+    (add.instructions).toString(),
+    // add.instructions,
+    (add.image).toString(),
+    (add.video).toString(),
+    // parseInt(add.likeCount),
+    0,
     add.labels,
     add.ingredients,
   ];
