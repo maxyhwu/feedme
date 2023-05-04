@@ -10,7 +10,7 @@ const qeuryByID = async (req, res) => {
   // const client = new Client(conString);
 
   const { id } = req.query;
-  const query = 'SELECT * FROM "Recipes" WHERE id = $1';
+  const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id WHERE id = $1';
   const values = [int(id)];
 
   try {
@@ -30,7 +30,7 @@ const qeuryByName = async (req, res) => {
   // const client = new Client(conString);
 
   const { title } = req.query;
-  const query = 'SELECT * FROM "Recipes" WHERE title = $1';
+  const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id WHERE title = $1';
   const values = [str(title)];
 
   try {
@@ -50,7 +50,7 @@ const queryByLabel = async (req, res) => {
   // const client = new Client(conString);
 
   const { label } = req.query;
-  const query = 'SELECT * FROM "Recipes" WHERE $1 = ANY(labels)';
+  const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id WHERE $1 = ANY(labels)';
   const values = [int(label)];
 
   try {
@@ -69,12 +69,14 @@ const queryByLabel = async (req, res) => {
 const queryTopLikeCount = async (req, res) => {
   // const client = new Client(conString);
 
-  const query = 'SELECT * FROM "Recipes" ORDER BY likeCount DESC LIMIT 15';
+  const { page } = req.query;
+  const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id ORDER BY likeCount DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY';
+  const values = [int(page) * 15];
 
   try {
     // await client.connect();
     // const { rows } = await client.query(query);
-    const { rows } = await pool.query(query);
+    const { rows } = await pool.query(query, values);
     res.send({ rows });
   } catch (err) {
     res.send("fail");
@@ -88,7 +90,7 @@ const queryByIngredients = async (req, res) => {
   // const client = new Client(conString);
 
   const { ingredient } = req.query;
-  const query = 'SELECT * FROM "Recipes" WHERE $1 = ANY(ingredients)';
+  const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id WHERE $1 = ANY(ingredients)';
   const values = [int(ingredient)];
 
   try {
@@ -190,8 +192,9 @@ const addRecipe = async (req, res) => {
 
   const { add } = req.query;
   const query =
-    'INSERT INTO "Recipes" ("title", "overview", "servingSize", "instructions", "image", "video", "likeCount", "labels", "ingredients", "comments") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, DEFAULT)';
+    'INSERT INTO "Recipes" ("userID", "title", "overview", "servingSize", "instructions", "image", "video", "likeCount", "labels", "ingredients", "comments") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, DEFAULT)';
   const values = [
+    req.user,
     str(add.title),
     str(add.overview),
     int(add.servingSize),
