@@ -2,8 +2,12 @@ import React from "react";
 import Modal from 'react-modal';
 import { FaTrashAlt } from 'react-icons/fa';
 import './myfridge.css'
+import './fridgeadd.css';
+import '../Recipe/Components/SearchBar.css'
 import { data } from "./fridgedata";
 import FridgeAddIngredientModal from  "./fridgeadd"
+import { IoIosArrowDown } from 'react-icons/io';
+import { IoFilterCircleOutline } from 'react-icons/io5';
 
 Modal.setAppElement('#root');
 
@@ -19,26 +23,40 @@ const paletteCategory2Color = {
     "notActive": "#DDDDDD"
 }
 
+const customModalStyles = {
+    content: {
+        width: '80%',
+        transform: 'translate(10%, 0%)', // Translate the modal to the center of the screen
+        boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.15)',
+        borderRadius: '15px',
+    }
+};
 
 class FridgeSearchBar extends React.Component {
     handleFormSubmit = (event) => {
         event.preventDefault();
     }
+
     render() {
         return (
-            <div className="col-3 mb-2" style={{ marginLeft: 'auto' }}>
-                <form onSubmit={this.handleFormSubmit}>
-                    <div className="input-group">
-                        <input
-                            type="text"
-                            className="form-control"
-                            style={{ borderRadius: '10rem' }}
-                            placeholder="Search"
-                            value={this.props.searchBarValue}
-                            onChange={(e) => this.props.setSearchBarValue(e.target.value)}
-                        />
+            <div className="searchbar-container">
+                <div className="searchbar">
+                    <div className="search-filter">
+                        <div className="default-filter">
+                            <IoFilterCircleOutline />
+                            Ingredients
+                            <IoIosArrowDown />
+                        </div>
                     </div>
-                </form>
+                    
+                    <input
+                        id="fridge-search-bar"
+                        type="text"
+                        placeholder="Search ingredients"
+                        value={this.props.searchBarValue}
+                        onChange={(e) => this.props.setSearchBarValue(e.target.value)}
+                    />
+                </div>
             </div>
         )
     }
@@ -69,7 +87,7 @@ class FridgeFilterButton extends React.Component {
         const buttonColor = paletteCategory2Color[category];
 
         return (
-            <div className="col-auto mb-2">
+            <>
                 <button 
                     type="button"
                     className="btn btn-secondary fridge-functional-button"
@@ -78,7 +96,7 @@ class FridgeFilterButton extends React.Component {
                 >
                     {category}
                 </button>
-            </div>
+            </>
         )
     }
 }
@@ -96,7 +114,7 @@ class FridgeOrderButton extends React.Component {
             backgroundColor: isActive ? "#B5D6E9" : "#DDDDDD"
         };
         return (
-            <div className="col-auto">
+            <>
                 <button 
                     type="button"
                     className="btn btn-secondary fridge-functional-button"
@@ -105,7 +123,7 @@ class FridgeOrderButton extends React.Component {
                 >
                     {orderBy}
                 </button>
-            </div>
+            </>
         )
     }
 }
@@ -116,22 +134,31 @@ class FridgeEditIngredientRow extends React.Component {
         const { rowId, quantity, purchaseDate, expirationDate, onInputChange, onDelete } = this.props;
 
         return (
+            <>
             <tr>
-                <td>
-                    <input className='fridge-add-ing-input' type="number" min="0" name="quantity" value={quantity} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                </td>
-                <td>
-                    <input  className='fridge-add-ing-input' type="date" name="purchaseDate" value={purchaseDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                </td>
-                <td>
-                    <input className='fridge-add-ing-input' type="date" name="expirationDate" value={expirationDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                </td>
-                <td>
-                    <button className='btn btn-secondary fridge-add-ing-delete-button' type="button" onClick={e => onDelete(rowId)}>
-                         <FaTrashAlt />
-                     </button>
-                </td>
+                <div className='d-inline-block'>
+                    <div className='d-inline-block fridgeadd-label'>Quantity</div>
+                    <input className='fridgeadd-input' type="number" min="0" name="quantity" value={quantity} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                </div>
+
+                <div className='d-inline-block'>
+                    <div className='d-inline-block fridgeadd-label'>Purchase Date</div>
+                    <input className='fridgeadd-input' type="date" name="purchaseDate" value={purchaseDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                </div>
+
+                <div className='d-inline-block'>
+                    <div className='d-inline-block fridgeadd-label'>Expiration Date</div>
+                    <input className='fridgeadd-input' type="date" name="expirationDate" value={expirationDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                </div>
+                
+                <div className='d-inline-block'>
+                    <button className='btn btn-secondary fridgeadd-delete-btn' onClick={e => onDelete(rowId)}>
+                        <FaTrashAlt />
+                    </button>
+                </div>
+                <hr />
             </tr>
+            </>
         );
     }
 }
@@ -173,17 +200,21 @@ class FridgeRenderButton extends React.Component {
     }
 
     handleCloseModal = () => {
-        const confirmed = window.confirm('Are you sure you want to discard all changes?');
-        if (confirmed) {
-            this.setState({ modalIsOpen: false, data: this.state.dataCopy });
-        }   
+        // const confirmed = window.confirm('Are you sure you want to discard all changes?');
+        // if (confirmed) {
+        //     this.setState({ modalIsOpen: false, data: this.state.dataCopy });
+        // }
+
+        this.setState({ modalIsOpen: false, data: this.state.dataCopy });
     }
 
     handleSave = () => {
-        const confirmed = window.confirm('Are you sure you want to save all changes?');
-        if (confirmed) {
-            this.setState({ modalIsOpen: false, dataCopy: this.state.data });
-        }
+        // const confirmed = window.confirm('Are you sure you want to save all changes?');
+        // if (confirmed) {
+        //     this.setState({ modalIsOpen: false, dataCopy: this.state.data });
+        // }
+
+        this.setState({ modalIsOpen: false, dataCopy: this.state.data });
     }
 
     handleInputChange = (rowId, fieldName, value) => {
@@ -228,58 +259,54 @@ class FridgeRenderButton extends React.Component {
         const { statusLabel, statusColor } = this.checkExpirationStatus(ingredient.expirationDate);
 
         return (
-            <div className="col-auto mb-2">
-                <span style={{ display: "block", textAlign: "right", fontSize: "0.3rem", color: statusColor }}>
-                    {statusLabel}
-                </span>
-                <button type="button" className="btn" style={{ backgroundColor: bgColor, width: "14rem" }} onClick={this.handleOpenModal}>
-                    <span style={{ float: "left" }}>{ingredient.name}</span>
-                    <span style={{ float: "right" }}>{ingredient.quantity}g</span>
-                </button>
-                <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.handleCloseModal} style={{ content: {borderRadius: '0.5rem', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'} }}>
-                    <div className='row mb-5'>
-                        <div className='col-auto' style={{ flexGrow: 1 }}>
-                            <h4>{ingredient.name}</h4>
-                        </div>
-                        <div className='col-auto ml-auto'>
-                            <button type="button" className="btn btn-secondary fridge-functional-button" onClick={this.handleSave}>Save</button>
-                        </div>
-                        <div className='col-auto'>
-                            <button type="button" className="btn btn-secondary" style={{ boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }} onClick={this.handleCloseModal}>Cancel</button>
-                        </div>
+            <>
+                <div className="fridge-render-card">
+                    <span className="fridge-render-span" style={{ color: statusColor }}>
+                        {statusLabel}
+                    </span>
+                    <button type="button" className="btn fridge-render-button" style={{ backgroundColor: bgColor }} onClick={this.handleOpenModal}>
+                        {ingredient.name}
+                        {/* <span style={{ float: "left" }}>{ingredient.name}</span> */}
+                        {/* <span style={{ float: "right" }}>{ingredient.quantity}g</span> */}
+                    </button>
+                </div>
+                
+                <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.handleCloseModal} style={customModalStyles}>
+                    <div className="modal-header">
+                        <div className='fridge-edit-title'>{ingredient.name}</div>
+                        <button className="modal-close btn btn-secondary fridge-edit-btn" onClick={this.handleCloseModal}>
+                            <span>&times;</span>
+                        </button>
                     </div>
 
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Quantity (gram)</th>
-                                <th scope="col">Purchase Date</th>
-                                <th scope="col">Expiration Date</th>
-                                <th scope="col">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.data.map((row) => (
-                                <FridgeEditIngredientRow
-                                    key={row.userIngredientID}
-                                    rowId={row.userIngredientID}
-                                    quantity={row.quantity}
-                                    purchaseDate={row.purchaseDate}
-                                    expirationDate={row.expirationDate}
-                                    onInputChange={this.handleInputChange}
-                                    onDelete={this.handleRemoveRow}
-                                />
-                            ))}
-                        </tbody>
-                    </table>
+                    <div className="modal-body">
+                        <table class="table recipeadd-table">
+                            <tbody>
+                                {this.state.data.map((row) => (
+                                    <FridgeEditIngredientRow
+                                        key={row.userIngredientID}
+                                        rowId={row.userIngredientID}
+                                        quantity={row.quantity}
+                                        purchaseDate={row.purchaseDate}
+                                        expirationDate={row.expirationDate}
+                                        onInputChange={this.handleInputChange}
+                                        onDelete={this.handleRemoveRow}
+                                    />
+                                ))}
+                            </tbody>
 
-                    <div className='row mt-3'>
-                        <div className='col-auto'>
-                            <button type="button" className="btn btn-secondary fridge-functional-button" onClick={this.handleAddRow}>+</button>
-                        </div>
+                            <div>
+                                <button className="btn btn-secondary fridgeadd-btn" onClick={this.handleAddRow}>Add Ingredient</button>
+                            </div>
+                        </table>
                     </div>
+
+                    <div className="modal-footer">
+                        <button className='btn btn-secondary fridgeadd-btn' onClick={this.handleSave}>Save</button>
+                        <button className='btn btn-secondary fridgeadd-btn' onClick={this.handleCloseModal}>Cancel</button>
+                    </div>                    
                 </Modal>
-            </div>
+            </>
         );
     }
 }
@@ -289,11 +316,12 @@ class FridgeRenderBlock extends React.Component {
     render() {
         const { title, ingredients } = this.props;
         return (
-            <div className="row mt-2 mb-2">
-                <h5>{title}</h5>
+            <div className="fridge-render-block">
+                <div className="fridge-category-title">{title}</div>
                 {ingredients.map((ingredient, index) => (
                     <FridgeRenderButton key={index} ingredient={ingredient} />
                 ))}
+                <hr />
             </div>
         );
     }
@@ -366,7 +394,7 @@ class FridgeRender extends React.Component {
         ));
 
         return (
-            <div className="row">{fridgeBlocks}</div>
+            <div>{fridgeBlocks}</div>
         );
     }
 }
@@ -401,25 +429,14 @@ class MyFridge extends React.Component {
     
     render() {
         return (
-            <div className="container-fluid p-5" style={{ width: '80%' }}>
-                <div className="row">
-                    <div className="col-auto mb-2">
-                        <h4>My Fridge</h4>
-                    </div>
+            <>
+            <FridgeSearchBar searchBarValue={this.state.searchBarValue} setSearchBarValue={this.setSearchBarValue}/>
+            <div className="fridge-container">
+                <div className="fridge-ingredients-container">
                     <FridgeAddIngredientModal />
-                    <div className="col-auto mb-2">
-                        <button type="button" className="btn btn-secondary fridge-functional-button">Suggested Recipes</button>
-                    </div>
-                    <FridgeSearchBar searchBarValue={this.state.searchBarValue} setSearchBarValue={this.setSearchBarValue}/>
-
-                    <div className="row mt-3 mb-3 p-3 fridge-condition-section">
-                        <div className="row">
-                            <div className="col">
-                                <h5>Filters</h5>
-                            </div>
-                        </div>
-
-                        <div className="row mt-2 mb-2">
+                    <div className="fridge-condition-section">
+                        <div className="fridge-category-title">Filters</div>
+                        <div>
                             <FridgeFilterButton category="Vegetables" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
                             <FridgeFilterButton category="Meat and Poultry" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
                             <FridgeFilterButton category="Seafood" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
@@ -429,22 +446,21 @@ class MyFridge extends React.Component {
                             <FridgeFilterButton category="Nuts and Seeds" addRenderFilter={this.addRenderFilter} removeRenderFilter={this.removeRenderFilter} />
                         </div>
 
-                        <div className="row">
-                            <div className="col">
-                                <h5>Order By</h5>
-                            </div>
-                        </div>
+                        <div className="fridge-category-title">Order By</div>
 
-                        <div className="row">
+                        <div>
                             <FridgeOrderButton orderBy="Category" isActive={this.state.renderOrder === "Category"} onClick={this.handleOrderButtonClick}/>
                             <FridgeOrderButton orderBy="Expiration Date" isActive={this.state.renderOrder === "Expiration Date"} onClick={this.handleOrderButtonClick}/>
                             <FridgeOrderButton orderBy="Purchase Date" isActive={this.state.renderOrder === "Purchase Date"} onClick={this.handleOrderButtonClick}/>
                         </div>
                     </div>
                     
-                    <FridgeRender renderCondition={this.state}/>
+                    <div className="fridge-render-section">
+                        <FridgeRender renderCondition={this.state}/>
+                    </div>
                 </div>
             </div>
+            </>
         )
     }
 }
