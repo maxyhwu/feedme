@@ -5,11 +5,13 @@ import {
   queryByLabel,
   queryTopLikeCount,
   queryByIngredients,
+  // queryByFridge,
   updateLikeCount,
   updateRecipe,
   addComment,
   addRecipe,
 } from "../Controllers/recipeController";
+import { checkToken } from "../Middleware/userAuth";
 
 const router = Router();
 
@@ -18,11 +20,12 @@ router.get("/query/name", qeuryByName);
 router.get("/query/label", queryByLabel);
 router.get("/query/top", queryTopLikeCount);
 router.get("/query/ingredient", queryByIngredients);
+// router.get("/query/fridge", queryByFridge);
 
-router.get("/update/likeCount", updateLikeCount);
-router.get("/update/recipe", updateRecipe);
+router.put("/update/likeCount", checkToken, updateLikeCount);
+router.put("/update/recipe", checkToken, updateRecipe);
 
-router.get("/add/new", addRecipe);
-router.get("/add/comment", addComment);
+router.put("/add/new", checkToken, addRecipe);  // postman tested
+router.put("/add/comment", checkToken, addComment);
 
 export default router;

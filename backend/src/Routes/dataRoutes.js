@@ -3,8 +3,8 @@ import { insertCategory, insertIngredient, insertLabel } from '../Controllers/da
 
 const router = Router();
 
-router.get('/insert/Category', insertCategory);
-router.get('/insert/Ingredient', insertIngredient);
-router.get('/insert/Label', insertLabel);
+router.post('/insert/Category', insertCategory);
+router.post('/insert/Ingredient', insertIngredient);
+router.post('/insert/Label', insertLabel);  // postman tested
 
 export default router;

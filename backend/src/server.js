@@ -36,6 +36,10 @@ db.sequelize.sync({ alter: true }).then(() => {    //drop table if exists
     console.log("db has been sync")
 })
 
+// db.sequelize.sync().then(() => {    //drop table if exists
+//   console.log("db has been sync")
+// })
+
 
 app.listen(PORT, function(err){
   if (err) console.log("Error in server setup")
