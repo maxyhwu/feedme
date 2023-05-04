@@ -1,10 +1,5 @@
 export default (sequelize, DataTypes) => {
     const Recipes = sequelize.define('Recipes',{
-        recipeName: {
-            type:DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-        },
         title: {
             type:DataTypes.STRING,
             allowNull: false,
@@ -38,6 +33,9 @@ export default (sequelize, DataTypes) => {
         },
         labels:{
             type: DataTypes.ARRAY(DataTypes.INTEGER),
+        },
+        ingredients:{
+            type: DataTypes.JSON,
         },
         comments:{
             type: DataTypes.JSON,
