@@ -6,8 +6,7 @@ import {
   queryTopLikeCount,
   queryByIngredients,
   updateLikeCount,
-  updateIngredients,
-  updateInstructions,
+  updateRecipe,
   addComment,
   addRecipe,
 } from "../Controllers/recipeController";
