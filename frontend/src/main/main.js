@@ -13,6 +13,7 @@ import RegisterPage from "../RegisterPage/RegisterPage";
 import Contact from "../Contact/Contact";
 import SetPassword from '../SetPassword/SetPassword';
 import Detail from "../Recipe/detail";
+import {RecipeDetailShare} from "../Recipe/detail";
 import Recipe_search_result from '../Recipe/recipe-search-result';
 import MyArchive from "../MyArchive/MyArchive";
 import MyPage from '../MyPage/MyPage';
@@ -52,6 +53,7 @@ function Main() {
           {/* <Route path = 'registerr' element = {<Register/>} /> */}
           <Route path='SetPassword' element={ <SetPassword/> } />
           <Route path="modal" element={ <Detail/> }/>
+          <Route path="detail" element={ <RecipeDetailShare/> }/>
           <Route path='recipe-search-result' element={ <Recipe_search_result/> } />
           {/* <Route path='/myfridge' element={
                   <ProtectedRoutes>
