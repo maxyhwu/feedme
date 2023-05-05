@@ -8,6 +8,7 @@
 .action {
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .icon {

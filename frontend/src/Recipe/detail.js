@@ -2,6 +2,7 @@ import "./detail.css"
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import ActionBar from "./Components/ActionBar";
 import { useNavigate } from "react-router-dom";
+import { recipe_data } from "../Recipe/recipedata";
 
 
 const Detail = () => {
@@ -84,7 +85,7 @@ const Detail = () => {
 
 
 const RecipeDetail = ({ recipe, handleCloseModal }) => {
-    const { recipeName, serving, ingredients, instructions, image_link } = recipe
+    const { recipeID, recipeName, serving, ingredients, instructions, image_link } = recipe
 
     const comments = [
         {
@@ -118,7 +119,7 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                             </div> */}
                         </div>
                     </div>
-                    <ActionBar />
+                    <ActionBar recipeID={recipeID} />
                     <div className="ingredients">
                         <div className="topic">Ingredients</div>
                         <div className="content">
@@ -179,5 +180,65 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
 }
 
 
+const RecipeDetailShare = () => {
+    const recipe = recipe_data[2];
+    const { recipeID, recipeName, serving, ingredients, instructions, image_link } = recipe;
+    const comments = [
+        {
+            name: 'Teresa',
+            content: 'Very impressive.',
+            time: '12:00'
+        },
+        {
+            name: 'Bob',
+            content: 'Delicious~',
+            time: '3:12'
+        }
+    ]
+
+    return(
+        <>
+            <div className="modal-container">
+                <div className="modal-left">
+                    <div className="top-part">
+                        <div className="image">
+                            <img src={image_link} alt="" />
+                        </div>
+                        <div className="description">
+                            <div className="title"> {recipeName} </div>
+                            <div className="serving-size"> For {serving} people </div>
+                        </div>
+                    </div>
+                    <ActionBar recipeID={recipeID} />
+                    <div className="ingredients">
+                        <div className="topic">Ingredients</div>
+                        <div className="content">
+                            <ul>
+                                {ingredients.map((ingredient) => (
+                                    <li>{ingredient[0]}: {ingredient[1]}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div className="modal-right">
+                    <div className="instructions">
+                        <div className="topic">Instructions</div>
+                        <div className="content">
+                            <ol>
+                                {instructions.map((instruction) => (
+                                    <li>{instruction}</li>
+                                ))}
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </> 
+    )
+}
+
+
 export default Detail;
-export { RecipeDetail };
+export { RecipeDetail, RecipeDetailShare };

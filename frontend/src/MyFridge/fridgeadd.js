@@ -1,42 +1,66 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { FaTrashAlt } from 'react-icons/fa';
-import './myfridge.css';
+import './fridgeadd.css';
 import { allIngredients } from './fridgedata'
 
 Modal.setAppElement('#root');
 
 
+const customModalStyles = {
+    content: {
+        width: '80%',
+        transform: 'translate(10%, 0%)', // Translate the modal to the center of the screen
+        boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.15)',
+        borderRadius: '15px',
+    }
+};
+
+
 class FridgeAddIngredientRow extends React.Component {
     render() {
-        const { minId, rowId, ingredient, matchingIngredients, quantity, purchaseDate, expirationDate, onInputChange, onDelete } = this.props;
+        const { rowId, ingredient, matchingIngredients, quantity, purchaseDate, expirationDate, onInputChange, onDelete } = this.props;
         const datalistId = `matching-ingredients-${rowId}`;
 
         return (
+            <>
             <tr>
-                <td>
-                    <input className='fridge-add-ing-input' list={datalistId} type="text" name="ingredient" value={ingredient} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                <div className='d-inline-block'>
+                    <div className='d-inline-block fridgeadd-label'>Ingredient Name</div>
+                    <input className='fridgeadd-input' list={datalistId} type="text" name="ingredient" value={ingredient} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
                     <datalist id={datalistId}>
                         {matchingIngredients.map(ingredient => (
                             <option key={ingredient} value={ingredient} />
                         ))}
                     </datalist>
-                </td>
-                <td>
-                    <input className='fridge-add-ing-input' type="number" min="0" name="quantity" value={quantity} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                </td>
-                <td>
-                    <input  className='fridge-add-ing-input' type="date" name="purchaseDate" value={purchaseDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                </td>
-                <td>
-                    <input className='fridge-add-ing-input' type="date" name="expirationDate" value={expirationDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                </td>
-                <td>
-                    <button className='btn btn-secondary fridge-add-ing-delete-button' type="button" onClick={e => onDelete(rowId)}>
+                </div>
+
+                <div className='d-inline-block'>
+                    <div className='d-inline-block fridgeadd-label'>Quantity</div>
+                    <input className='fridgeadd-input' type="number" min="0" name="quantity" value={quantity} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                </div>
+
+                <div className='m-0 p-0'></div>
+
+                <div className='d-inline-block'>
+                    <div className='d-inline-block fridgeadd-label'>Purchase Date</div>
+                    <input className='fridgeadd-input' type="date" name="purchaseDate" value={purchaseDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                </div>
+
+                <div className='d-inline-block'>
+                    <div className='d-inline-block fridgeadd-label'>Expiration Date</div>
+                    <input className='fridgeadd-input' type="date" name="expirationDate" value={expirationDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                </div>
+                
+                <div className='d-inline-block'>
+                    <button className='btn btn-secondary fridgeadd-delete-btn' onClick={e => onDelete(rowId)}>
                         <FaTrashAlt />
                     </button>
-                </td>
+                </div>
+                
+                <hr />
             </tr>
+            </>
         );
     }
 }
@@ -45,7 +69,6 @@ class FridgeAddIngredientRow extends React.Component {
 class FridgeAddIngredientModal extends React.Component {
     state = {
         modalIsOpen: false,
-        minID: 0,
         nextID: 1,
         data: [{
             id: 0,
@@ -62,10 +85,13 @@ class FridgeAddIngredientModal extends React.Component {
     }
 
     handleCloseModal = () => {
-        const confirmed = window.confirm('Are you sure you want to discard all changes?');
-        if (confirmed) {
-            this.setState({ modalIsOpen: false });
-        }
+        // const confirmed = window.confirm('Are you sure you want to discard all changes?');
+        // if (confirmed) {
+        //     this.setState({ modalIsOpen: false });
+        // }
+
+        this.resetData()
+        this.setState({ modalIsOpen: false });
     }
 
     handleInputChange = (rowId, fieldName, value) => {
@@ -112,67 +138,73 @@ class FridgeAddIngredientModal extends React.Component {
     handleRemoveRow = (rowId) => {
         if (this.state.data.length > 1) {
             const newData = this.state.data.filter(row => row.id !== rowId)
-            this.setState({ data: newData, minID: newData[0].id });
+            this.setState({ data: newData });
+        }
+        else {
+            this.resetData()
         }
     }
 
     handleSave = () => {
-        const confirmed = window.confirm('Are you sure you want to save all changes?');
-        if (confirmed) {
-            console.log(this.state.data);
-            this.setState({ modalIsOpen: false });
-        }
+        // const confirmed = window.confirm('Are you sure you want to save all changes?');
+        // if (confirmed) {
+        //     console.log(this.state.data);
+        //     this.setState({ modalIsOpen: false });
+        // }
+
+        this.setState({ modalIsOpen: false });
+    }
+
+    resetData = () => {
+        this.setState({ data: [{
+            id: 0,
+            ingredient: '',
+            matchingIngredients: [],
+            quantity: 0,
+            purchaseDate: '',
+            expirationDate: '',
+        }]})
     }
 
     render() {
         return (
-        <div className="col-auto mb-2">
-            <button type="button" className="btn btn-secondary fridge-functional-button" onClick={this.handleOpenModal}>Add Ingredients</button>
-            <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.handleCloseModal} style={{ content: {borderRadius: '0.5rem', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'} }}>
-                <div className='row mb-5'>
-                    <div className='col-auto' style={{ flexGrow: 1 }}>
-                        <h4>Add Ingredients</h4>
-                    </div>
-                    <div className='col-auto ml-auto'>
-                        <button type="button" className="btn btn-secondary fridge-functional-button" onClick={this.handleSave}>Save</button>
-                    </div>
-                    <div className='col-auto'>
-                        <button type="button" className="btn btn-secondary" style={{ boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }} onClick={this.handleCloseModal}>Cancel</button>
-                    </div>
+        <div>
+            <button type="button" className="btn btn-secondary fridgeadd-fixed-button" onClick={this.handleOpenModal}>Add Ingredients</button>
+            <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.handleCloseModal} style={customModalStyles}>
+                <div className="modal-header">
+                    <div className='fridgeadd-title'>Add Ingredients</div>
+                    <button className="modal-close btn btn-secondary fridgeadd-btn" onClick={this.handleCloseModal}>
+                        <span>&times;</span>
+                    </button>
                 </div>
 
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Ingredient</th>
-                            <th scope="col">Quantity (gram)</th>
-                            <th scope="col">Purchase Date</th>
-                            <th scope="col">Expiration Date</th>
-                            <th scope="col">Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.data.map((row) => (
-                            <FridgeAddIngredientRow
-                                key={row.id}
-                                minId={this.state.minID}
-                                rowId={row.id}
-                                ingredient={row.ingredient}
-                                matchingIngredients={row.matchingIngredients}
-                                quantity={row.quantity}
-                                purchaseDate={row.purchaseDate}
-                                expirationDate={row.expirationDate}
-                                onInputChange={this.handleInputChange}
-                                onDelete={this.handleRemoveRow}
-                            />
-                        ))}
-                    </tbody>
-                </table>
+                <div className="modal-body">
+                    <table class="table fridgeadd-table">
+                        <tbody>
+                            {this.state.data.map((row) => (
+                                <FridgeAddIngredientRow
+                                    key={row.id}
+                                    rowId={row.id}
+                                    ingredient={row.ingredient}
+                                    matchingIngredients={row.matchingIngredients}
+                                    quantity={row.quantity}
+                                    purchaseDate={row.purchaseDate}
+                                    expirationDate={row.expirationDate}
+                                    onInputChange={this.handleInputChange}
+                                    onDelete={this.handleRemoveRow}
+                                />
+                            ))}
+                        </tbody>
 
-                <div className='row mt-3'>
-                    <div className='col-auto'>
-                        <button type="button" className="btn btn-secondary fridge-functional-button" onClick={this.handleAddRow}>+</button>
-                    </div>
+                        <div>
+                            <button className="btn btn-secondary fridgeadd-btn" onClick={this.handleAddRow}>Add Ingredient</button>
+                        </div>
+                    </table>
+                </div>
+
+                <div className="modal-footer">
+                    <button className='btn btn-secondary fridgeadd-btn' onClick={this.handleSave}>Save Ingredients</button>
+                    <button className='btn btn-secondary fridgeadd-btn' onClick={this.handleCloseModal}>Cancel</button>
                 </div>
             </Modal>
         </div>
