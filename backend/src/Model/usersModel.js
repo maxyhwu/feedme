@@ -19,6 +19,11 @@ export default (sequelize, DataTypes) => {
             defaultValue: "",
             allowNull: false
         },
+        photoPID:{
+            type: DataTypes.INTEGER,
+            defaultValue: -1,
+            allowNull: false
+        },
         provider: {
             type: DataTypes.STRING,
             defaultValue: 'local'
@@ -42,7 +47,15 @@ export default (sequelize, DataTypes) => {
         fridge:{
             type: DataTypes.JSON,
             defaultValue: {}
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            defaultValue: sequelize.literal('NOW()')
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            defaultValue: sequelize.literal('NOW()')
         }
-    }, {timestamps: true})
+    }, {timestamps: true, paranoid: true})
     return Users
 }

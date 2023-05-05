@@ -1,10 +1,5 @@
 export default (sequelize, DataTypes) => {
     const Recipes = sequelize.define('Recipes',{
-        recipeName: {
-            type:DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-        },
         title: {
             type:DataTypes.STRING,
             allowNull: false,
@@ -39,10 +34,21 @@ export default (sequelize, DataTypes) => {
         labels:{
             type: DataTypes.ARRAY(DataTypes.INTEGER),
         },
+        ingredients:{
+            type: DataTypes.JSON,
+        },
         comments:{
             type: DataTypes.JSON,
             defaultValue: {}
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            defaultValue: sequelize.literal('NOW()')
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            defaultValue: sequelize.literal('NOW()')
         }
-    }, {timestamps: true})
+    }, {timestamps: true, paranoid: true})
     return Recipes
 }

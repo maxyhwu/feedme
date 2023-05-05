@@ -192,8 +192,41 @@ const insertLabel = async (req, res) => {
     // });
 }
 
+const insertRecipe = () => {
+    const client = new Client(conString);
+
+    client.connect(err => {
+        if(err) throw err;
+        else {
+            //TRUNCATE TABLE "Recipes" RESTART IDENTITY;
+            const query = `
+                INSERT INTO "Recipes" ("labelName")
+                VALUES ('Taiwanese'),
+                       ('Japanese'),
+                       ('Korean'),
+                       ('French'),
+                       ('American'),
+                       ('Thai'),
+                       ('Indian');
+            `;
+            client
+                .query(query)
+                .then(() => {
+                    console.log('label insert successfully!');
+                    client.end(console.log('Closed client connection'));
+                })
+                .catch(err => console.log(err))
+                .then(() => {
+                    console.log('Finished execution, exiting now');
+                    process.exit();
+                });
+        }
+    });
+}
+
 export {
     insertCategory,
     insertIngredient,
-    insertLabel
+    insertLabel,
+    insertRecipe
 }
