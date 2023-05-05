@@ -5,11 +5,13 @@ import bcrypt from "bcrypt";
 import {sendForgetPWEmail} from "../Services/userService"
 import { uploads, destroys } from "../Config/cloudinary";
 import fs from 'fs'
+import { upload } from '../Config/multerConfig'
 const User = db.users;
 const Op = db.Sequelize.Op
 
 const login = async (req, res, next) => {
     try {
+        console.log(req.body)
         const {userData, password} = req.body;
         const user = await User.findOne({
             where: {
@@ -24,13 +26,14 @@ const login = async (req, res, next) => {
                     id:user.id, 
                     userEmail:user.email
                 }
-                return next()
+                req.user = user
+                next()
             } else {
-                return res.status(400).send({message: 'Password incorrect'});
+                res.status(400).send({message: 'Password incorrect'});
             }
         }else {
             console.log('Can not find')
-            return res.status(400).send({message:'User name not found'});
+            res.status(400).send({message:'User name not found'});
         }
     }catch (err) {
         console.log('login error');
@@ -50,9 +53,9 @@ const signup = async (req, res) => {
         console.log(data)
         const user = await User.create(data);
         if (user !== null) {
-            return res.status(200);
-        }else {
-            return res.status(400).send({message:"Details are not correct"});
+            res.status(200);
+        } else {
+            res.status(400).send({message:"Details are not correct"});
         }
     }catch (err) {
         console.log('signup error');
@@ -61,14 +64,33 @@ const signup = async (req, res) => {
 }
 
 const sendEmail = async (req, res) => {
-    try{
+    try {
         console.log(req.body)
         const { email } = req.body;
         const token = req.token
         let success = await sendForgetPWEmail(email, token)
-        res.status(200).send({success: success})
+        if ( success )
+            res.status(200)
+        else
+            res.status(400)
     } catch (err) {
         console.log('sendEmail error');
+        console.log(err);
+    }
+}
+
+const setPassword = async (req, res) => {
+    try {
+        const {email, password} = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const data = {
+            email,
+            password: hashedPassword,
+        };
+        User.update( data, { where: { email: email}})
+        res.status(200)
+    } catch (err) {
+        console.log('send password error');
         console.log(err);
     }
 }
@@ -82,28 +104,14 @@ const editProfile = async (req, res) => {
             notiRec,
             notiIngre,
         },{ where: { id: user.id}})
-        res.status(200).send({success: true})
+        res.status(200)
     } catch (err) {
         console.log('editProfile error');
         console.log(err);
     }
 }
 
-const uploadImage = async (req, res) => {
-    try{
-        const user = req.user;
-        const file = req.file;
-        User.update({
-            photo: file.buffer
-        },{ where: { id: user.id}})
-        res.status(200).send({success: true})
-    } catch (err) {
-        console.log('uploadImage error');
-        console.log(err);
-    }
-}
-
-const getImage = async (req, res) => {
+const getMyImage = async (req, res) => {
     try {
         const user = req.user;
         const image = await User.findOne({
@@ -112,9 +120,9 @@ const getImage = async (req, res) => {
                 id: user.id
             }});
         if (image) {
-            return res.status(201).send({success:true,image: image});
+            res.status(200).send({image: image});
         } else {
-            return res.status(201).send({success:false, message: 'Error ID'});
+            res.status(400).send({message: 'Error ID'});
         }
         
     }catch (err) {
@@ -130,7 +138,7 @@ const editCurrentFridge = async (req, res) => {
         User.update({
             fridge
         },{ where: { id: user.id}})
-        res.status(200).send({success: true})
+        res.status(200)
     } catch (err) {
         console.log('editFridge error');
         console.log(err);
@@ -141,93 +149,60 @@ const keepRecipe = async (req, res) => {
     try{
         const articleID = req.body.id;
         const user = req.user;
-        const like = User.findOne({
+        let like = User.findOne({
             attributes: ['like'],
-            where: { id: user.id}
+            where: { id: user.id }
         })
         like.push(articleID.toString())
         User.update({
-            label
+            like
         },{ where: { id: user.id}})
-        res.status(200).send({success: true})
+        res.status(200)
     } catch (err) {
         console.log('keepRecipe error');
         console.log(err);
     }
 }
 
-const uploadToCloud = async (req, res) => {
-    try{
-        const user = req.user
-        const uploader = async(path) => await uploads(path, 'Avatars');
-        const url = ''
-        const file = req.file
-        const {path} = file;
-        const newPath = await uploader(path)
-        url = newPath
-        fs.unlinkSync(path)
-        User.update({
-            photo: url.url,
-            photoID: url.id
-        },{ where: { id: user.id}})
-        res.status(200).send({success: true})
-    } catch (err) {
-        console.log('upload cloud error');
-        console.log(err);
-    }
-}
+const destroyImage = async(id) => await destroys(id);
+const uploaderImage = async(file) => await uploads(file, 'Avatars');
 
-const deleteFromCloud = async (req, res) => {
-    try{
-        const uploader = async(id) => await destroys(id);
-        const user = req.user
+const updateCloud = async (req, res) => {
+    try {
+        const user = req.user;
+        const {isDelete} = req.body;
         const image = await User.findOne({
             attributes: ['photoPID'],
-        where: {
-            id: user.id
+            where: {
+                id: user.id
         }});
-        if(image < 0) {
-            res.status(404);
-            throw new Error("Photo not found");
+        const noImage = !req.body.has('file')
+        if (!noImage) { // 有 to 新, 沒有 to 新
+            upload.single('file')
         }
-        uploader(image.photoPID)
-        photoData = {
-            photo: "",
-            photoPID: -1
+        if ( image > 0 && noImage && isDelete ){  // 有 to 沒有
+            destroyImage(image.photoPID)
+            photoData = {
+                photo: "",
+                photoPID: -1
+            }
+            User.update({
+                photoData
+            }, {where: { id: user.id}})
         }
-        User.update({
-            photoData
-        }, {where: { id: user.id}})
-    } catch (err) {
-        console.log('delete cloud error');
-        console.log(err)
-    }
-}
-
-const updateCloud= async (req, res) => {
-    try{
-        const destroy = async(id) => await destroys(id);
-        const uploader = async(file) => await uploads(file, 'Avatars');
-        const user = req.user
-        const image = await User.findOne({
-            attributes: ['photoPID'],
-        where: {
-            id: user.id
-        }});
-        if ( image < 0){
-            destroy(image.photoPID)
+        if ( !noImage ){  // 有 to 新, 沒有 to 有
+            const url = ''
+            const file = req.file
+            const { path } = file;
+            const newPath = await uploaderImage(path)
+            url = newPath
+            fs.unlinkSync(path)
+            User.update({
+                photo: url.url,
+                photoID: url.id
+            },{ where: { id: user.id}})
         }
-        const url = ''
-        const file = req.file
-        const {path} = file;
-        const newPath = await uploader(path)
-        url = newPath
-        fs.unlinkSync(path)
-        User.update({
-            photo: url.url,
-            photoID: url.id
-        },{ where: { id: user.id}})
-        res.status(200).send({success: true})
+        res.status(200)
     } catch (err) {
         console.log('delete cloud error');
         console.log(err)
@@ -243,7 +218,7 @@ const testUpload = async (req, res) => {
         const newPath = await uploader(path)
         url = newPath
         fs.unlinkSync(path)
-        res.status(200).send({success: true, url: url})
+        res.status(200).send({url: url})
     } catch (err) {
         console.log('test error');
         console.log(err);
@@ -256,11 +231,9 @@ export {
     editCurrentFridge,
     sendEmail,
     editProfile,
-    uploadImage,
-    getImage,
     keepRecipe,
-    uploadToCloud,
     testUpload,
-    deleteFromCloud,
-    updateCloud
+    updateCloud,
+    setPassword,
+    getMyImage,
 }

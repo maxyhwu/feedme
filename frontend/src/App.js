@@ -22,18 +22,18 @@ function App() {
 
   return (
     <LangContextProvider>
-      <LoginContextProvider>
-        <Wrapper id="rootMain">
-          <Router>
-            <Header/>
-            <Routes>
-              <Route path='/*' element={ <Main/> } />
-            </Routes>
-            {/* <Footer/> */}
-          </Router>
-        </ Wrapper>
-      </LoginContextProvider>
-      </LangContextProvider>
+    <LoginContextProvider>
+      <Wrapper id="rootMain">
+        <Router>
+          <Header/>
+          <Routes>
+            <Route path='/*' element={ <Main/> } />
+          </Routes>
+          {/* <Footer/> */}
+        </Router>
+      </ Wrapper>
+    </LoginContextProvider>
+    </LangContextProvider>
   );
 }
 
