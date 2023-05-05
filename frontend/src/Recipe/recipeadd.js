@@ -4,6 +4,16 @@ import { FaTrashAlt } from 'react-icons/fa';
 import './recipeadd.css'
 
 
+const customModalStyles = {
+    content: {
+        width: '80%',
+        transform: 'translate(10%, 0%)', // Translate the modal to the center of the screen
+        boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.15)',
+        borderRadius: '15px',
+    }
+};
+
+
 function RecipeAddButton() {
     const [showModal, setShowModal] = useState(false);
     const [recipeName, setRecipeName] = useState("");
@@ -100,14 +110,15 @@ function RecipeAddButton() {
 
     return (
         <>
-            <button className='recipeadd-fixed-button' onClick={handleButtonClick}>+</button>
+            <button className='btn btn-secondary recipeadd-fixed-button' onClick={handleButtonClick}>+</button>
             <Modal
                 isOpen={showModal}
                 onRequestClose={handleCloseModal}
                 contentLabel="Add Recipe Modal"
+                style={customModalStyles}
             >
                 <div className="modal-header">
-                    <h2>Add Recipe</h2>
+                    <div className='recipe-add-title'>Add Recipe</div>
                     <button className="modal-close btn btn-secondary recipeadd-btn" onClick={handleCloseModal}>
                         <span>&times;</span>
                     </button>
@@ -140,7 +151,7 @@ function RecipeAddButton() {
                                 </th>
                                 <td>
                                     {ingredients.map((ingredient, index) => (
-                                        <div key={index} className="ingredient">
+                                        <div key={index} className="recipe-add-ingredient">
                                             <input type="text" placeholder={`Ingredient ${index + 1}`} value={ingredient.name} onChange={(event) => handleIngredientNameChange(event, index)} className='recipeadd-input' />
                                             <input type="text" placeholder="Quantity" value={ingredient.quantity} onChange={(event) => handleIngredientQuantityChange(event, index)} className='recipeadd-input' />
                                             <button type="button" className='btn btn-secondary recipeadd-btn recipeadd-btn' onClick={() => handleRemoveIngredient(index)}><FaTrashAlt /></button>
@@ -156,9 +167,9 @@ function RecipeAddButton() {
                                 </th>
                                 <td>
                                     {instructions.map((instruction, index) => (
-                                        <div key={index} className="instruction">
+                                        <div key={index} className="recipe-add-instruction">
                                             <textarea placeholder={`Step ${index + 1}`} value={instruction} onChange={(event) => handleInstructionChange(event, index)} className='recipeadd-textarea' />
-                                            <button type="button" className='btn btn-secondary recipeadd-btn' onClick={() => handleRemoveInstruction(index)}><FaTrashAlt /></button>
+                                            <button type="button" className='btn btn-secondary recipeadd-instruction-btn' onClick={() => handleRemoveInstruction(index)}><FaTrashAlt /></button>
                                         </div>
                                     ))}
                                     <button type="button" className='btn btn-secondary recipeadd-btn' onClick={handleAddInstruction}>Add Step</button>
