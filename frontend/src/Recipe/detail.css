@@ -184,10 +184,12 @@ ol, ul {
 
 .comment-input input[type="text"] {
     width: 80%;
-    /* border-radius: 10px; */
+    border-radius: 10px;
     height: fit-content;
     padding: 5px;
     margin-left: 1em;
+    border-style: solid;
+    border-color: darkgrey;
 }
 
 .submit-text {

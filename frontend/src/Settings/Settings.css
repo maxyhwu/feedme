@@ -7,7 +7,7 @@
     flex-direction: column;
     justify-content: flex-start;
     font-family: Poppins;
-    font-size: 1.3vw;
+    font-size: 1.5em;
 }
 
 .feild {
@@ -22,10 +22,11 @@
 
 .setting-bar-button{
     left: 4vw;
-    height: 4vh;
+    height: auto;
     width: 15vw;
     border-radius: 10px;
     background-color: lightgray;
+    padding: 1%;
 
     position: relative;
     display: flex;
@@ -62,6 +63,7 @@
     position: relative;
     display: flex;
     flex-direction: row;
+    /* justify-content: flex-start; */
     justify-content: space-between;
 }
 
@@ -116,13 +118,13 @@
 }
 
 .notiBlock{
-    right: 24vw;
-
-    position: relative;
+        /* right: 24vw; */
+    /* position: relative; */
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    /* justify-content: flex-start; */
     align-items: flex-start;
+    margin-left: 2vw;
 }
 
 .submit-container {
@@ -139,6 +141,12 @@
 }
 
 .submit-button {
-    border-radius: 8px;
-    background-color: lightblue;
+    background: #59B1E6;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
+    width: 8vw;
+    height: 5vh;
+    border-style: none;
+    margin-top: 5%;
 }

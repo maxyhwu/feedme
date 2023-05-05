@@ -91,7 +91,7 @@ const SearchBar = () => {
             <div className="searchbar">
                 <div className="search-filter" onClick={handleFilterToggle}>
                     <div className="default-filter">
-                        <IoFilterCircleOutline />
+                        <IoFilterCircleOutline style={{ height: '1.5em' }}/>
                         {filter}
                         <IoIosArrowDown />
                     </div>
