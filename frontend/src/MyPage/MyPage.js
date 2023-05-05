@@ -21,15 +21,19 @@ const MyPage = () => {
         <div className='main-mypage'>
             <section className='left-section'>
                 <div className='user-info-container'>
-                    {/* <h1>This is mypage</h1> */}
-                    <div className="user-pic-container">
-                        <img className='user-pic' src={FeedMe} alt='user-pic'/>
-                    </div>
-                    <div className="user-name-container">
-                        IM Fridge
-                    </div>
-                    <div className="logout-btn">
-                        <FaSignOutAlt/>
+                    <div className="user-middle-container">
+                        <div className="user-pic-container">
+                            <img className='user-pic' src={FeedMe} alt='user-pic'/>
+                        </div>
+                        <div className="user-name-container">
+                            IM Fridge
+                        </div>
+                        <div className="logout-btn">
+                            <div className="logout-text">
+                                Log Out
+                            </div>
+                            <FaSignOutAlt/>
+                        </div>
                     </div>
                 </div>
                 
