@@ -35,7 +35,7 @@ const existEmail = async (req, res, next) => {
         // console.log('user',user)
         req.user = user
         if (user == null) {
-            return res.status(400).send({message:"email not exists"});
+            return res.status(400).send({message:"Email not exists."});
         }else{
             next();
         }

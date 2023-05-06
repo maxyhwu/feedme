@@ -7,11 +7,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
 import { FormattedMessage } from "react-intl";
-import {UseLoginContext} from '../Context/LoginCnt'
-import { UseLangContext } from '../Context/LangCnt';
 import { toast } from "react-toastify";
 import { validateEmail } from "../services/authService";
-import { useDispatch } from "react-redux";
+import { apiSignUp } from '../axios/noToken';
 
 
 
@@ -29,14 +27,69 @@ const RegisterPage = () => {
     const redirect_login = process.env?.REACT_APP_TWITTER_REDIRECT_LOGIN
     const request_token = process.env?.REACT_APP_TWITTER_REQUEST_URL
     const location = useLocation();
-    const [checkbox, setCheckbox] = useState(false);
     let from = ((location.state)?.from?.pathname) || '/';
     const navigate = useNavigate();
-    const {changeLogin} = UseLoginContext();
-    // const {lang} = UseLangContext();
+    const [success, setSuccess] = useState(false);
+    const [hassignup, setHasSignUp] = useState(false);
+    const [incorrect, setIncorrect] = useState(false);
+    const [click, setClick] = useState(false);
+    const [emailinValid, setEmailinValid] = useState(false);
 
     const [formData, setformData] = useState(initialState);
     const { name, email, password, password2 } = formData;
+
+    useEffect ( () => {
+        if (success) {
+            toast.success('註冊成功 ! ', {
+                position:toast.POSITION.TOP_CENTER,
+                className: 'toast-success'
+            })
+            navigate('/login')
+        }
+        if (hassignup) {
+            toast.info('此信箱已用過 ! ', {
+                position:toast.POSITION.TOP_CENTER,
+                className: 'toast-info'
+            })}
+        if (incorrect) {
+            toast.error('資料有誤 ! ', {
+                position:toast.POSITION.TOP_CENTER,
+                className: 'toast-error'
+            })}
+        if (emailinValid) {
+            toast.info('Email有誤 ! ', {
+                position:toast.POSITION.TOP_CENTER,
+                className: 'toast-info'
+            })}
+    }, [success, hassignup, incorrect, click, emailinValid, navigate])
+    
+    const setAlert = (hassign, incorr, succ, invalid) => {
+        setHasSignUp(hassign)
+        setIncorrect(incorr)
+        setSuccess(succ)
+        setEmailinValid(invalid)
+    }
+
+    async function signupUser(credentials) {
+        return apiSignUp(credentials)
+        .then(function(response) {
+            if (response.status === 200) {
+                setAlert(false, false, true, false)
+            }
+         })
+         .catch((reason) => {
+            let response = reason.response
+            if (response.status === 400){
+                if ( response.data.message === "Details are not correct") {
+                    setAlert(false, true, false, false)
+                } else if (response.data.message === 'user already exists') {
+                    setAlert(true, false, false, false)
+                } else if (response.data.message === 'Please provide a valid email address.') {
+                    setAlert(false, false, false, true)
+                }
+            }
+         })
+    }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -61,14 +114,6 @@ const RegisterPage = () => {
     };
 
 
-    const handleClickCheckbox = () => {
-        setCheckbox(!checkbox)
-    }
-
-    const handleSubmit = () => {
-        changeLogin(true)
-        navigate('/mypage')
-    }
     const register = async (e) => {
         e.preventDefault();
 
@@ -86,10 +131,12 @@ const RegisterPage = () => {
         }
 
         const userData = {
-            name,
+            userName: name,
             email,
             password,
         };
+        await signupUser(userData);
+        setClick(!click)
     };
 
     return (
@@ -116,7 +163,6 @@ const RegisterPage = () => {
                         type="email"
                         className="input infos" 
                         placeholder="Email"
-                        // autoComplete={checkbox?'email':'off'}
                         required
                         name="email"
                         value={email}
@@ -126,7 +172,6 @@ const RegisterPage = () => {
                         type="password"
                         className="input infos" 
                         placeholder="Password"
-                        // autoComplete={checkbox?'current-password':'off'}
                         required
                         name="password"
                         value={password}

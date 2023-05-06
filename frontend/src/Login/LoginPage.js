@@ -14,7 +14,7 @@ import { FormattedMessage } from "react-intl";
 import {UseLoginContext} from '../Context/LoginCnt';
 import {Link as MuiLink} from '@mui/material';
 import { toast } from 'react-toastify';
-import { apiLogin } from '../axios/withToken';
+import { apiLogin } from '../axios/noToken';
 import useData from '../Hooks/userData';
 
 export default function LoginPage () {
@@ -36,6 +36,8 @@ export default function LoginPage () {
     const [password, setPassword] = useState();
     const {setData} = useData();
     const formRef = useRef()
+    const emailRef = useRef()
+    const passwordRef = useRef()
 
     const handleClickCheckbox = () => {
         setCheckbox(!checkbox)
@@ -61,33 +63,34 @@ export default function LoginPage () {
             })}
     }, [notfound, success, passworderror, click, navigate,changeLogin,])
 
+    const setAlert = (succ, notf, pass) => {
+        setSuccess(succ)
+        setNotFound(notf)
+        setPassworderError(pass)
+    }
+
     async function loginUser(credentials) {
         return apiLogin(credentials)
         .then(response=> {
             if (response.status === 200) {
                 return response.data
             }
-            else if (response.status === 400) {
-                if (response.message === 'Password incorrect'){
-                    setSuccess(false)
-                    setNotFound(false)
-                    setPassworderError(true)
-                } else if (response.message === 'User name not found'){
-                    setSuccess(false)
-                    setNotFound(true)
-                    setPassworderError(false)
-                }
-            }
         })
         .then(function(response) {
+            console.log('set success')
             console.log(response)
-            setSuccess(true)
-            setNotFound(false)
-            setPassworderError(false)
+            setAlert(true, false, false)
             return response
         })
-        .catch((error) => {
-            console.log('error: ' + error);
+        .catch((reason) => {
+            let response = reason.response
+            if (response.status === 400) {
+                if (response.data.message === 'Password incorrect'){
+                    setAlert(false, false, true)
+                } else if (response.data.message === 'User name not found'){
+                    setAlert(false, true, false)
+                }
+            }
         })
     }
 
@@ -97,9 +100,8 @@ export default function LoginPage () {
             userData: userData,
             password
         });
-        console.log(response)
-        const token = response.headers.get('x-auth-token');
         if (success){
+            const token = response.headers.get('x-auth-token');
             setData({userName: response.userName, email: response.email, token: token, fridge: response.fridge})
             changeLogin(true)
         }
@@ -111,9 +113,7 @@ export default function LoginPage () {
         // window.close()
         navigate('/')
         window.location.reload(true)
-        console.log('wtf')
         const token = response.headers.get('x-auth-token');
-        console.log('token')
         response.json().then(user => {
         if (token) {
             console.log(user)
@@ -125,8 +125,17 @@ export default function LoginPage () {
         alert(error);
     };
 
-    const handleBtnClick = () => {
-        formRef.current.reportValidity();
+    const checkValid = () => {
+        if (emailRef.current.value === ''){
+            emailRef.current.setCustomValidity("Email can not be empty."); 
+        } else {
+            emailRef.current.setCustomValidity("")
+        }
+        if (passwordRef.current.value === ''){
+            passwordRef.current.setCustomValidity("Password can not be empty.");
+        } else {
+            passwordRef.current.setCustomValidity("")
+        }
     }
 
     return (
@@ -139,11 +148,11 @@ export default function LoginPage () {
                     <div id="header">
                         <h2 className="infos" style={{margin:"3px"}}>Welcome back!</h2>
                     </div>
-                    <FormattedMessage id="login.email" defaultMessage="Email ID" >
-                        {(msg) => (<input type="text" placeholder={msg} className="input infos" autoComplete={checkbox?'email':'off'} onChange={e=>setUserData(e.target.value)}/>)}
+                    <FormattedMessage id="login.email" defaultMessage="Email or User Name" >
+                        {(msg) => (<input type="text" ref={emailRef} placeholder={msg} className="input infos" autoComplete={checkbox?'email':'off'} onChange={e=>setUserData(e.target.value)} />)}
                     </FormattedMessage>
                     <FormattedMessage id="login.password" defaultMessage="Password" >
-                        {(msg) => (<input type="password" placeholder={msg} className="input infos" autoComplete={checkbox?'current-password':'off'} onChange={e=>setPassword(e.target.value)}/>)}
+                        {(msg) => (<input type="password" ref={passwordRef} placeholder={msg} className="input infos" autoComplete={checkbox?'current-password':'off'} onChange={e=>setPassword(e.target.value)}/>)}
                     </FormattedMessage>
                     <div id="passwordCtrl" className="infos">
                         <input type="checkbox" id="checkbox" className="checkbox-round" checked={checkbox} onChange={handleClickCheckbox}/>
@@ -151,7 +160,7 @@ export default function LoginPage () {
                         <Link to="/setpassword" id="setpsw"><FormattedMessage id="login.forget" defaultMessage="forget password" />?</Link>
                     </div>
                     <FormattedMessage id="login.login" defaultMessage="Log in" >
-                        {(msg) => (<input type="submit" value={msg} className="infos" id="login" onClick={handleBtnClick}/>)}
+                        {(msg) => (<input type="submit" value={msg} className="infos" id="login" onClick={checkValid}/>)} 
                     </FormattedMessage>
                     <div id="external" className="infos">
                         <MuiLink

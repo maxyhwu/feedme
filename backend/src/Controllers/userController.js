@@ -68,11 +68,18 @@ const sendEmail = async (req, res) => {
         console.log(req.body)
         const { email } = req.body;
         const token = req.token
-        let success = await sendForgetPWEmail(email, token)
+        const secret = req.secret
+        const data = {
+            secretKy: secret
+        }
+        User.update( data, { where: { email: email}})
+        console.log(email, token)
+        const success = await sendForgetPWEmail(email, token)
+        console.log(success)
         if ( success )
             res.status(200)
         else
-            res.status(400)
+            res.status(400).send({message:"Send email error."})
     } catch (err) {
         console.log('sendEmail error');
         console.log(err);
@@ -84,7 +91,6 @@ const setPassword = async (req, res) => {
         const {email, password} = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         const data = {
-            email,
             password: hashedPassword,
         };
         User.update( data, { where: { email: email}})
