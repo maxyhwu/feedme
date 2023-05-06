@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import {LoginContextProvider} from './Context/LoginCnt'
 import { LangContextProvider } from "./Context/LangCnt";
 import Main from "./main/main";
+import { ToastContainer} from 'react-toastify';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -23,6 +24,7 @@ function App() {
   return (
     <LangContextProvider>
     <LoginContextProvider>
+      <ToastContainer />
       <Wrapper id="rootMain">
         <Router>
           <Header/>

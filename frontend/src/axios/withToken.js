@@ -4,10 +4,6 @@ var token = ''
 token = JSON.parse(localStorage.getItem('user')).token
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}` 
 
-const loginRequest = axios.create({
-    baseURL: 'http://localhost:8000/api/oauth/auth'
-});
-
 const userRequest = axios.create({
     baseURL: 'http://localhost:8000/api/user'
 });
@@ -16,12 +12,6 @@ const recipeRequest = axios.create({
     baseURL: 'http://localhost:8000/api/recipe'
 });
 
-
-
-export const apiLoginTwitter = data => loginRequest.post('/twitter', data);
-export const apiLogin = data => userRequest.post('/login', data);
-
-export const apiForgetPW = data => userRequest.post('/forgetpw', data);
 export const apiEditProfile = data => userRequest.post('/edit-profile', data);
 export const apiEditFridge = data => userRequest.put('/edit-fridge', data);
 export const apiKeepRecipes = data => userRequest.put('/keep-recipes', data);

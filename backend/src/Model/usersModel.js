@@ -24,6 +24,9 @@ export default (sequelize, DataTypes) => {
             defaultValue: -1,
             allowNull: false
         },
+        secretKey:{
+            type: DataTypes.STRING,
+        },
         provider: {
             type: DataTypes.STRING,
             defaultValue: 'local'
