@@ -5,6 +5,7 @@ import Footer from "./Footer/Footer";
 import styled from 'styled-components';
 import {LoginContextProvider} from './Context/LoginCnt'
 import { LangContextProvider } from "./Context/LangCnt";
+import { DataContextProvider } from "./Context/useUserData";
 import Main from "./main/main";
 import { ToastContainer} from 'react-toastify';
 
@@ -24,6 +25,7 @@ function App() {
   return (
     <LangContextProvider>
     <LoginContextProvider>
+      <DataContextProvider>
       <ToastContainer />
       <Wrapper id="rootMain">
         <Router>
@@ -34,6 +36,7 @@ function App() {
           {/* <Footer/> */}
         </Router>
       </ Wrapper>
+      </DataContextProvider>
     </LoginContextProvider>
     </LangContextProvider>
   );
