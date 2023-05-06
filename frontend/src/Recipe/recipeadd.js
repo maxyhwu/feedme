@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import { FaTrashAlt } from 'react-icons/fa';
+import { FaTrashAlt, FaJournalWhills } from 'react-icons/fa';
 import './recipeadd.css'
 
 
@@ -16,6 +16,8 @@ const customModalStyles = {
 
 function RecipeAddButton() {
     const [showModal, setShowModal] = useState(false);
+    const [recipeImage, setRecipeImage] = useState(null);
+    const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
     const [recipeName, setRecipeName] = useState("");
     const [servingSize, setServingSize] = useState(0);
     const [ingredients, setIngredients] = useState([{name: "", quantity: ""}]);
@@ -24,6 +26,24 @@ function RecipeAddButton() {
     const handleButtonClick = () => {
         setShowModal(true);
     };
+      
+    const handleImageChange = (event) => {
+        event.preventDefault();
+    
+        const file = event.target.files[0];
+        setRecipeImage(file);
+    
+        // Create a file reader
+        const reader = new FileReader();
+    
+        // Set the file reader onload function
+        reader.onload = () => {
+            setImagePreviewUrl(reader.result);
+        };
+    
+        // Read the file as a data URL
+        reader.readAsDataURL(file);
+    }
 
     const handleRecipeNameChange = (event) => {
         setRecipeName(event.target.value);
@@ -84,10 +104,11 @@ function RecipeAddButton() {
     const handleSaveRecipe = () => {
         // Create an object to store the recipe information
         const recipeData = {
-          name: recipeName,
-          servingSize: servingSize,
-          ingredients: ingredients,
-          instructions: instructions
+            image: recipeImage,
+            name: recipeName,
+            servingSize: servingSize,
+            ingredients: ingredients,
+            instructions: instructions
         };
       
         // Add code to save recipe data
@@ -99,6 +120,8 @@ function RecipeAddButton() {
 
     const handleCloseModal = () => {
         // Reset the state variables to their initial values
+        setRecipeImage(null);
+        setImagePreviewUrl(null);
         setRecipeName("");
         setServingSize("");
         setIngredients([{name: "", quantity: ""}]);
@@ -110,7 +133,10 @@ function RecipeAddButton() {
 
     return (
         <>
-            <button className='btn btn-secondary recipeadd-fixed-button' onClick={handleButtonClick}>+</button>
+            <button className='btn btn-secondary recipeadd-fixed-button' onClick={handleButtonClick}>
+                <div className='recipeadd-icon'><FaJournalWhills /></div>
+                Add Recipe
+            </button>
             <Modal
                 isOpen={showModal}
                 onRequestClose={handleCloseModal}
@@ -175,6 +201,17 @@ function RecipeAddButton() {
                                     <button type="button" className='btn btn-secondary recipeadd-btn' onClick={handleAddInstruction}>Add Step</button>
                                 </td>
                             </tr>
+
+                            <tr>
+                                <th scope="row">
+                                    <label htmlFor="recipe-image">Recipe Image</label>
+                                </th>
+                                <td>
+                                    <input type="file" id="recipe-image" onChange={handleImageChange} />
+                                    {imagePreviewUrl && <div className='recipeadd-preview'><img src={imagePreviewUrl} alt="Preview" className='recipeadd-preview-image' /></div>}
+                                </td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>

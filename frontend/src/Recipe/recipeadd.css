@@ -6,12 +6,18 @@
     border: none;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 0.5rem;
-    background-color: #AAC2B4;
+    background-color: #E3DBF0;
     color: black;
-    font-size: 24pt;
-    font-weight: 900;
+    font-size: small;
+    font-weight: 500;
     cursor: pointer;
     z-index: 999;
+}
+
+.recipeadd-icon {
+    display: inline;
+    margin: 3px 10px 3px 0px;
+    font-size: medium;
 }
 
 .recipe-add-title {
@@ -30,9 +36,22 @@
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
+.recipeadd-preview {
+    width: 80%;
+}
+
+.recipeadd-preview-image {
+    width: 100%;
+    margin: 20px;
+}
+
 .recipeadd-table {
     font-size: small;
     margin: 2%;
+}
+
+.recipeadd-table th {
+    width: 100px;
 }
 
 .recipeadd-input {
