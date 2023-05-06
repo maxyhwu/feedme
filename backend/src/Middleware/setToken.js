@@ -2,7 +2,7 @@ import { sign } from "jsonwebtoken";
 import dotenv from "dotenv-defaults";
 dotenv.config();
 
-var createToken = function(auth) {
+const createToken = (auth) => {
   return sign({
     id: auth.id,
     email: auth.userEmail
@@ -12,22 +12,23 @@ var createToken = function(auth) {
   });
 };
 
-var generateToken = function (req, res, next) {
+const generateToken = (req, _, next) => {
   try {
     req.token = createToken(req.auth);
-    return next();
+    next();
   } catch (err) {
     console.log('Generate token failed')
   }
 };
 
-var sendToken = function (req, res) {
+const sendToken = (req, res) => {
   try {
+    const user = req.user
     res.setHeader('x-auth-token', req.token);
-    console.log(req.token)
-    return res.status(200).send({success: true, user:req.user});
+    res.status(200).send({ userName:user.userName, email: user.email, fridge: user.fridge });
   } catch (err) {
     console.log('Send token failed')
+    console.log(err)
   }
 };
 

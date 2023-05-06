@@ -32,13 +32,13 @@ app.use('/api/user', userRoutes);
 app.use('/api/general', generalRoutes);
 app.use('/api/recipe', recipeRoutes);
 
-db.sequelize.sync({ alter: true }).then(() => {    //drop table if exists
-    console.log("db has been sync")
-})
-
-// db.sequelize.sync().then(() => {    //drop table if exists
-//   console.log("db has been sync")
+// db.sequelize.sync({ alter: true }).then(() => {    //drop table if exists
+//     console.log("db has been sync")
 // })
+
+db.sequelize.sync().then(() => {    //drop table if exists
+  console.log("db has been sync")
+})
 
 
 app.listen(PORT, function(err){

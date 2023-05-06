@@ -1,10 +1,10 @@
-import { Client } from 'pg';
+// import { Client } from 'pg';
 // require('dotenv').config()
 import dotenv from "dotenv-defaults";
 dotenv.config();
 import { pool } from '../Clients/pool'
 
-const insertCategory = async (req, res) => {
+const insertCategory = async (_, res) => {
     const query = `
                 INSERT INTO "Categories" ("cateName")
                 VALUES ('Vegetables'),
@@ -193,7 +193,7 @@ const insertLabel = async (req, res) => {
 }
 
 const insertRecipe = () => {
-    const client = new Client(conString);
+    // const client = new Client(conString);
 
     client.connect(err => {
         if(err) throw err;

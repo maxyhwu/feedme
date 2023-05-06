@@ -3,14 +3,14 @@ import { pool } from "../Clients/pool";
 import dotenv from "dotenv-defaults";
 dotenv.config();
 
-var conString = process.env.url;
+// var conString = process.env.url;
 
 // recipe query
 const qeuryByID = async (req, res) => {
   // const client = new Client(conString);
 
   const id = req.query;
-  const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id WHERE id = $1';
+  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "userID" = "Users".id and "Recipes".id = $1';
   const values = [parseInt(id)];
 
   try {
@@ -30,7 +30,7 @@ const qeuryByName = async (req, res) => {
   // const client = new Client(conString);
 
   const title = req.query;
-  const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id WHERE title = $1';
+  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and "Recipes"."title" = $1';
   const values = [title.toString()];
 
   try {
@@ -50,7 +50,7 @@ const queryByLabel = async (req, res) => {
   // const client = new Client(conString);
 
   const label = req.query;
-  const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id WHERE $1 = ANY(labels)';
+  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and $1 = ANY("Recipes"."labels")';
   const values = [parseInt(label)];
 
   try {
@@ -70,7 +70,7 @@ const queryTopLikeCount = async (req, res) => {
   // const client = new Client(conString);
 
   const page = req.query;
-  const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id ORDER BY likeCount DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY';
+  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id ORDER BY likeCount DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY';
   const values = [parseInt(page) * 15];
 
   try {
@@ -90,7 +90,7 @@ const queryByIngredients = async (req, res) => {
   // const client = new Client(conString);
 
   const ingredient = req.query;
-  const query = 'SELECT * FROM "Recipes" JOIN "Users" ON "Recipes".userID = "Users".id WHERE $1 = ANY(ingredients)';
+  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and $1 = ANY(ingredients)';
   const values = [parseInt(ingredient)];
 
   try {
@@ -161,15 +161,35 @@ const updateRecipe = async (req, res) => {
   }
 };
 
+const getCommentUserData = async (req, res) => {
+  const query = 'SELECT "photo", "userName" FROM "Users" WHERE "id" = $1';
+  try {
+      const { id } = req.query;
+      const values = [
+        parseInt(id)
+      ];
+      const { rows } = await pool.query(query, values);
+      if (rows) {
+          res.status(200).send(rows);
+      } else {
+          res.status(400).send({message: 'Error ID'});
+      }
+      
+  }catch (err) {
+      console.log('getImage error');
+      console.log(err);
+  }
+}
+
 const addComment = async (req, res) => {
   // const client = new Client(conString);
 
-  const comment = req.body;
+  const {comment, Rid} = req.body;
   const query =
     'UPDATE "Recipes" SET comment = $1 WHERE id = $2';
   const values = [
-    comment.comment,
-    parseInt(comment.id)
+    comment,
+    parseInt(Rid)
   ];
 
   try {
@@ -232,4 +252,5 @@ export {
   updateRecipe,
   addComment,
   addRecipe,
+  getCommentUserData
 };
