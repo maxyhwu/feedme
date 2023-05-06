@@ -101,7 +101,7 @@ const ResetPasswordPage = () => {
                 
                 <form onSubmit={reset} id="info">
                 <div id="header">
-                    <h2 className="infos" style={{margin:"5px"}}>Welcome, newbie!</h2>
+                    <h2 className="infos" style={{margin:"5px"}}>Reset Your Password</h2>
                 </div>
                     <input
                         type="password"
@@ -122,34 +122,19 @@ const ResetPasswordPage = () => {
                         value={password2}
                         onChange={handleInputChange}
                     />
-                    <div id="external" className="infos">
-                        <Link 
-                            href={getGoogleUrl(from, redirect_uri, clientID)}
-                            id="google-icon"
-                        >
-                            <GoogleLogo  id="googlelogo"/>    
-                        </Link> 
-                        <TwitterLogin loginUrl={redirect_login}
-                            onFailure={onFailed} onSuccess={onSuccess}
-                            requestTokenUrl={request_token}
-                            className="twitter-button"
-                            >
-                                <img src={twitterLogo} alt="Twitter Logo" />
-                        </TwitterLogin>
-                    </div>
                     <button type="submit" className="infos" id="signup">
-                        Sign up
+                        Reset
                     </button>
-                    <div id='dashLine' className="infos">
+                    {/* <div id='dashLine' className="infos">
                         <div id="line"></div>
                         <div id="text"><FormattedMessage id="login.or" defaultMessage="or" /></div>
                         <div id="line"></div>
-                    </div>
+                    </div> */}
                 </form>
-                <span style={{display:"flex", justifyContent:"center", marginTop:"5px"}}>
+                {/* <span style={{display:"flex", justifyContent:"center", marginTop:"5px"}}>
                     <p style={{fontSize:"14px"}}> &nbsp; &nbsp; &nbsp; Already have an account? &nbsp; &nbsp; &nbsp;</p>
                     <Link style={{fontSize:"13px"}} to = "/login">Log in</Link>
-                </span>
+                </span> */}
                 
             </div>
         </div>

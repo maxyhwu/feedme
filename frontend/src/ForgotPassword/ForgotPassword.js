@@ -3,46 +3,28 @@ import './ForgotPassword.css';
 import FeedMe from '../assets/FeedMe.jpg';
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { resetPassword } from "../services/authService";
+import { forgotPassword, validateEmail } from "../services/authService";
 
-
-const initialState = {
-    password: "",
-    password2: "",
-};
 
 const ForgotPassword = () => {
-    const [formData, setformData] = useState(initialState);
-    const { password, password2 } = formData;
+    const [email, setEmail] = useState("");
 
-    const { resetToken } = useParams();
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setformData({ ...formData, [name]: value });
-    };
-
-    const reset = async (e) => {
+    const forgot = async (e) => {
         e.preventDefault();
-    
-        if (password.length < 6) {
-            return toast.error("Passwords must be up to 6 characters");
+        if (!email) {
+          return toast.error("Please enter an email");
         }
-        if (password !== password2) {
-            return toast.error("Passwords do not match");
+    
+        if (!validateEmail(email)) {
+          return toast.error("Please enter a valid email");
         }
     
         const userData = {
-            password,
-            password2,
+          email,
         };
     
-        try {
-            const data = await resetPassword(userData, resetToken);
-            toast.success(data.message);
-        } catch (error) {
-            console.log(error.message);
-        }
+        await forgotPassword(userData);
+        setEmail("");
     };
 
 

@@ -148,7 +148,7 @@ export default function LoginPage () {
                     <div id="passwordCtrl" className="infos">
                         <input type="checkbox" id="checkbox" className="checkbox-round" checked={checkbox} onChange={handleClickCheckbox}/>
                         <label htmlFor="remember" onClick={handleClickCheckbox}><FormattedMessage id="login.rememberMe" defaultMessage="Remember me" /></label>
-                        <Link to="/setpassword" id="setpsw"><FormattedMessage id="login.forget" defaultMessage="forget password" />?</Link>
+                        <Link to="/forgot" id="setpsw"><FormattedMessage id="login.forgot" defaultMessage="forgot password" />?</Link>
                     </div>
                     <FormattedMessage id="login.login" defaultMessage="Log in" >
                         {(msg) => (<input type="submit" value={msg} className="infos" id="login" onClick={handleBtnClick}/>)}

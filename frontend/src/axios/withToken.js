@@ -2,6 +2,9 @@ import axios from 'axios';
 
 var token = ''
 token = JSON.parse(localStorage.getItem('user')).token
+// var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxMDAwMCwiZW1haWwiOiJhbnRob255LmhjLnd1QGdtYWlsLmNvbSIsImV4cCI6ODY0MTAwMDB9.PTAkcqyMBG6MghBtacCN_9BNU5u68Ll1UVASVjdKNL4'
+
+
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}` 
 
 const loginRequest = axios.create({
