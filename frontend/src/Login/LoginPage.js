@@ -15,7 +15,7 @@ import {UseLoginContext} from '../Context/LoginCnt';
 import {Link as MuiLink} from '@mui/material';
 import { toast } from 'react-toastify';
 import { apiLogin } from '../axios/noToken';
-import useData from '../Hooks/userData';
+import { UseDataContext } from '../Context/useUserData';
 
 export default function LoginPage () {
 
@@ -34,7 +34,7 @@ export default function LoginPage () {
     const [click, setClick] = useState();
     const [userData, setUserData] = useState();
     const [password, setPassword] = useState();
-    const {setData} = useData();
+    const {changeData} = UseDataContext();
     const formRef = useRef()
     const emailRef = useRef()
     const passwordRef = useRef()
@@ -73,16 +73,19 @@ export default function LoginPage () {
         return apiLogin(credentials)
         .then(response=> {
             if (response.status === 200) {
-                return response.data
+                const token = response.headers.get('x-auth-token');
+                return [response.data, token]
             }
         })
         .then(function(response) {
-            console.log('set success')
-            console.log(response)
+            const [data, token] = response
+            console.log('success')
+            changeData({userName: data.userName, email: data.email, token: token, fridge: data.fridge})
+            changeLogin(true)
             setAlert(true, false, false)
-            return response
         })
         .catch((reason) => {
+            console.log(reason)
             let response = reason.response
             if (response.status === 400) {
                 if (response.data.message === 'Password incorrect'){
@@ -96,15 +99,10 @@ export default function LoginPage () {
 
     const handleLogin = async e => {
         e.preventDefault()
-        const response = await loginUser({
+        await loginUser({
             userData: userData,
             password
         });
-        if (success){
-            const token = response.headers.get('x-auth-token');
-            setData({userName: response.userName, email: response.email, token: token, fridge: response.fridge})
-            changeLogin(true)
-        }
         
         setClick(!click)
     }

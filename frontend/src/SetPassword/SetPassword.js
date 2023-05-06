@@ -200,21 +200,21 @@ const SetLogin = () => {
                     <h2 className="infos" id="title">Forget Password</h2>
                 </div>
 
-//                    <input type="text" placeholder='Email' className="input infos" autoComplete='off' onChange={e=>setEmail(e.target.value)}/>
-//                    <div className="d-flex" >
-//                        <input type="text" placeholder='Verify Code' className="input infos mr-auto p-2" id="code" autoComplete='off' onChange={e=>setCode(e.target.value)}/>
-//                        <button id="send" className="infos" type="button" onClick={e=>{checkEmailValid();sendCode(e)}} ref={emailRef}>Get Verification Code</button>
-//                    </div>
- //                   <input type="password" placeholder='New Password' className="input infos" ref={passwordRef} onChange={e=>setNewPassword(e.target.value)}/>
+                    <input type="text" placeholder='Email' className="input infos" autoComplete='off' onChange={e=>setEmail(e.target.value)}/>
+                       <div className="d-flex" >
+                        <input type="text" placeholder='Verify Code' className="input infos mr-auto p-2" id="code" autoComplete='off' onChange={e=>setCode(e.target.value)}/>
+                        <button id="send" className="infos" type="button" onClick={e=>{checkEmailValid();sendCode(e)}} ref={emailRef}>Get Verification Code</button>
+                    </div>
+                    <input type="password" placeholder='New Password' className="input infos" ref={passwordRef} onChange={e=>setNewPassword(e.target.value)}/>
                     {/* <input type="submit" value="Reset" className="infos" id="reset"/> */}
- //                   <button type="submit" className="infos" id="reset" onClick={e=>checkValid(e)}>
-//                        Reset Password
-//                    </button>
+                    <button type="submit" className="infos" id="reset" onClick={e=>checkValid(e)}>
+                        Reset Password
+                    </button>
 
-                <input type="text" placeholder='Email' className="input infos" autoComplete='off'/>
+                {/* <input type="text" placeholder='Email' className="input infos" autoComplete='off'/>
                 <button type="submit" className="infos" id="reset">
                     Sent Reset Email
-                </button>
+                </button> */}
 
                 </form>
             </div>

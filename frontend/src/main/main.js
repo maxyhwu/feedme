@@ -21,11 +21,13 @@ import { useState, useEffect } from "react";
 import ProtectedRoutes from "../ProtectedRoutes/ProtectedRoutes";
 import { IntlProvider } from "react-intl";
 import { UseLangContext } from "../Context/LangCnt";
+import { UseDataContext } from "../Context/useUserData";
 import Preference from "../Signup/PreferencePage";
 
 function Main() {
   // const [isLoggedIn, setIsLoggedIn] = useState(false); // you can play with this and click the user icon on the header
   const [locale, setLocale] = useState(undefined)
+  const {data} = UseDataContext
   const {lang} = UseLangContext()
 
   useEffect(() => {
@@ -40,6 +42,10 @@ function Main() {
     }
     fetchLang()
   }, [lang])
+
+  useEffect(() => {
+    console.log(data)
+  }, [data])
 
   return (
       <IntlProvider locale="en" messages={locale}>
