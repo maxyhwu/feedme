@@ -34,8 +34,8 @@
 }
 
 .fridge-category-title {
-    font-size: medium;
-    font-weight: 500;
+    font-size: large;
+    font-weight: 400;
     margin: 10px;
 }
 
@@ -44,8 +44,8 @@
     background-color: #E3DBF0;
     color: black;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    font-size: small;
-    font-weight: 500;
+    font-size: medium;
+    font-weight: 400;
     width: 150px;
     margin: 10px;
 }
@@ -74,8 +74,8 @@
 
 .fridge-render-button {
     width: 100%;
-    font-size: small;
-    font-weight: 500;
+    font-size: medium;
+    font-weight: 400;
 }
 
 .fridge-edit-title {
