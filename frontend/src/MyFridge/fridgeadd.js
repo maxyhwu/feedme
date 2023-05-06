@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
-import { FaTrashAlt } from 'react-icons/fa';
+import { FaTrashAlt, FaDollyFlatbed } from 'react-icons/fa';
 import './fridgeadd.css';
 import { allIngredients } from './fridgedata'
 
@@ -17,86 +17,80 @@ const customModalStyles = {
 };
 
 
-class FridgeAddIngredientRow extends React.Component {
-    render() {
-        const { rowId, ingredient, matchingIngredients, quantity, purchaseDate, expirationDate, onInputChange, onDelete } = this.props;
-        const datalistId = `matching-ingredients-${rowId}`;
+const FridgeAddIngredientRow = ({ rowId, ingredient, matchingIngredients, quantity, purchaseDate, expirationDate, onInputChange, onDelete }) => {
+    const datalistId = `matching-ingredients-${rowId}`;
 
-        return (
-            <>
-            <tr>
-                <div className='d-inline-block'>
-                    <div className='d-inline-block fridgeadd-label'>Ingredient Name</div>
-                    <input className='fridgeadd-input' list={datalistId} type="text" name="ingredient" value={ingredient} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                    <datalist id={datalistId}>
-                        {matchingIngredients.map(ingredient => (
-                            <option key={ingredient} value={ingredient} />
-                        ))}
-                    </datalist>
-                </div>
+    return (
+        <tr>
+            <div className='d-inline-block'>
+                <div className='d-inline-block fridgeadd-label'>Ingredient Name</div>
+                <input className='fridgeadd-input' list={datalistId} type="text" name="ingredient" value={ingredient} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                <datalist id={datalistId}>
+                    {matchingIngredients.map(ingredient => (
+                        <option key={ingredient} value={ingredient} />
+                    ))}
+                </datalist>
+            </div>
 
-                <div className='d-inline-block'>
-                    <div className='d-inline-block fridgeadd-label'>Quantity</div>
-                    <input className='fridgeadd-input' type="number" min="0" name="quantity" value={quantity} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                </div>
+            <div className='d-inline-block'>
+                <div className='d-inline-block fridgeadd-label'>Quantity</div>
+                <input className='fridgeadd-input' type="number" min="0" name="quantity" value={quantity} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+            </div>
 
-                <div className='m-0 p-0'></div>
+            <div className='m-0 p-0'></div>
 
-                <div className='d-inline-block'>
-                    <div className='d-inline-block fridgeadd-label'>Purchase Date</div>
-                    <input className='fridgeadd-input' type="date" name="purchaseDate" value={purchaseDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                </div>
+            <div className='d-inline-block'>
+                <div className='d-inline-block fridgeadd-label'>Purchase Date</div>
+                <input className='fridgeadd-input' type="date" name="purchaseDate" value={purchaseDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+            </div>
 
-                <div className='d-inline-block'>
-                    <div className='d-inline-block fridgeadd-label'>Expiration Date</div>
-                    <input className='fridgeadd-input' type="date" name="expirationDate" value={expirationDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
-                </div>
-                
-                <div className='d-inline-block'>
-                    <button className='btn btn-secondary fridgeadd-delete-btn' onClick={e => onDelete(rowId)}>
-                        <FaTrashAlt />
-                    </button>
-                </div>
-                
-                <hr />
-            </tr>
-            </>
-        );
-    }
-}
+            <div className='d-inline-block'>
+                <div className='d-inline-block fridgeadd-label'>Expiration Date</div>
+                <input className='fridgeadd-input' type="date" name="expirationDate" value={expirationDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+            </div>
+            
+            <div className='d-inline-block'>
+                <button className='btn btn-secondary fridgeadd-delete-btn' onClick={e => onDelete(rowId)}>
+                    <FaTrashAlt />
+                </button>
+            </div>
+            
+            <hr />
+        </tr>
+    );
+};
 
 
-class FridgeAddIngredientModal extends React.Component {
-    state = {
-        modalIsOpen: false,
-        nextID: 1,
-        data: [{
-            id: 0,
-            ingredient: '',
-            matchingIngredients: [],
-            quantity: 0,
-            purchaseDate: '',
-            expirationDate: '',
-        }],
-    };
+const FridgeAddIngredientModal = () => {
+    const [showModal, setShowModal] = useState(false);
+    const [nextID, setNextID] = useState(1);
+    const [data, setData] = useState([{
+        id: 0,
+        ingredient: '',
+        matchingIngredients: [],
+        quantity: 0,
+        purchaseDate: '',
+        expirationDate: '',
+    }]);
   
-    handleOpenModal = () => {
-        this.setState({ modalIsOpen: true });
+    const handleOpenModal = () => {
+        setShowModal(true);
     }
 
-    handleCloseModal = () => {
+    const handleCloseModal = () => {
         // const confirmed = window.confirm('Are you sure you want to discard all changes?');
         // if (confirmed) {
-        //     this.setState({ modalIsOpen: false });
+        //     resetData();
+        //     setShowModal(false);
         // }
 
-        this.resetData()
-        this.setState({ modalIsOpen: false });
+        resetData();
+        setShowModal(false);
     }
 
-    handleInputChange = (rowId, fieldName, value) => {
+    const handleInputChange = (rowId, fieldName, value) => {
         // Modify the data in state based on the input change
-        const newData = this.state.data.map((row) => {
+        const newData = data.map((row) => {
             if (row.id === rowId) {
                 if (fieldName === 'ingredient') {
                     const matchingIngredients = allIngredients.filter(ingredient => ingredient.toLowerCase().includes(value.toLowerCase()));
@@ -114,66 +108,68 @@ class FridgeAddIngredientModal extends React.Component {
                 return row;
             }
         });
-    
-        this.setState({ data: newData });
+
+        setData(newData);
     }
     
-    handleAddRow = () => {
+    const handleAddRow = () => {
         // Add a new row to the data array in state
         const newRow = {
-            id: this.state.nextID,
+            id: nextID,
             ingredient: '',
             matchingIngredients: [],
             quantity: 0,
             purchaseDate: '',
             expirationDate: '',
         };
-
-        this.setState({
-            data: [...this.state.data, newRow],
-            nextID: this.state.nextID + 1,
-        });
+    
+        setData([...data, newRow]);
+        setNextID(nextID + 1);
     }
 
-    handleRemoveRow = (rowId) => {
-        if (this.state.data.length > 1) {
-            const newData = this.state.data.filter(row => row.id !== rowId)
-            this.setState({ data: newData });
+    const handleRemoveRow = (rowId) => {
+        if (data.length > 1) {
+            const newData = data.filter(row => row.id !== rowId);
+            setData(newData);
         }
         else {
-            this.resetData()
+            resetData();
         }
     }
 
-    handleSave = () => {
+    const handleSave = () => {
         // const confirmed = window.confirm('Are you sure you want to save all changes?');
         // if (confirmed) {
-        //     console.log(this.state.data);
-        //     this.setState({ modalIsOpen: false });
+        //     console.log(data);
+        //     setShowModal(false);
         // }
 
-        this.setState({ modalIsOpen: false });
+        console.log(data);
+        handleCloseModal();
     }
 
-    resetData = () => {
-        this.setState({ data: [{
+    const resetData = () => {
+        setData([{
             id: 0,
             ingredient: '',
             matchingIngredients: [],
             quantity: 0,
             purchaseDate: '',
             expirationDate: '',
-        }]})
+        }]);
     }
 
-    render() {
-        return (
+
+    return (
         <div>
-            <button type="button" className="btn btn-secondary fridgeadd-fixed-button" onClick={this.handleOpenModal}>Add Ingredients</button>
-            <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.handleCloseModal} style={customModalStyles}>
+            <button type="button" className="btn btn-secondary fridgeadd-fixed-button" onClick={handleOpenModal}>
+                <div className='fridgeadd-icon'><FaDollyFlatbed /></div>
+                Add Ingredients
+            </button>
+            <Modal isOpen={showModal} onRequestClose={handleCloseModal} style={customModalStyles}>
                 <div className="modal-header">
                     <div className='fridgeadd-title'>Add Ingredients</div>
-                    <button className="modal-close btn btn-secondary fridgeadd-btn" onClick={this.handleCloseModal}>
+                    <button className="modal-close btn btn-secondary fridgeadd-btn" onClick={handleCloseModal}>
                         <span>&times;</span>
                     </button>
                 </div>
@@ -181,7 +177,7 @@ class FridgeAddIngredientModal extends React.Component {
                 <div className="modal-body">
                     <table class="table fridgeadd-table">
                         <tbody>
-                            {this.state.data.map((row) => (
+                            {data.map((row) => (
                                 <FridgeAddIngredientRow
                                     key={row.id}
                                     rowId={row.id}
@@ -190,26 +186,25 @@ class FridgeAddIngredientModal extends React.Component {
                                     quantity={row.quantity}
                                     purchaseDate={row.purchaseDate}
                                     expirationDate={row.expirationDate}
-                                    onInputChange={this.handleInputChange}
-                                    onDelete={this.handleRemoveRow}
+                                    onInputChange={handleInputChange}
+                                    onDelete={handleRemoveRow}
                                 />
                             ))}
                         </tbody>
 
                         <div>
-                            <button className="btn btn-secondary fridgeadd-btn" onClick={this.handleAddRow}>Add Ingredient</button>
+                            <button className="btn btn-secondary fridgeadd-btn" onClick={handleAddRow}>Add Ingredient</button>
                         </div>
                     </table>
                 </div>
 
                 <div className="modal-footer">
-                    <button className='btn btn-secondary fridgeadd-btn' onClick={this.handleSave}>Save Ingredients</button>
-                    <button className='btn btn-secondary fridgeadd-btn' onClick={this.handleCloseModal}>Cancel</button>
+                    <button className='btn btn-secondary fridgeadd-btn' onClick={handleSave}>Save</button>
+                    <button className='btn btn-secondary fridgeadd-btn' onClick={handleCloseModal}>Cancel</button>
                 </div>
             </Modal>
         </div>
-        );
-    }
-}
+    );
+};
 
 export default FridgeAddIngredientModal;
