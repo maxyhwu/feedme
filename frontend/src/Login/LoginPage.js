@@ -88,9 +88,9 @@ export default function LoginPage () {
             console.log(reason)
             let response = reason.response
             if (response.status === 400) {
-                if (response.data.message === 'Password incorrect'){
+                if (response.data.messege === 'Password incorrect'){
                     setAlert(false, false, true)
-                } else if (response.data.message === 'User name not found'){
+                } else if (response.data.messege === 'User name not found'){
                     setAlert(false, true, false)
                 }
             }

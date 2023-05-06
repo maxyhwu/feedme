@@ -25,7 +25,7 @@ export default (sequelize, DataTypes) => {
             allowNull: false
         },
         secretKey:{
-            type: DataTypes.STRING,
+            type: DataTypes.JSON,
         },
         provider: {
             type: DataTypes.STRING,

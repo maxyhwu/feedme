@@ -53,7 +53,7 @@ const signup = async (req, res) => {
         console.log(data)
         const user = await User.create(data);
         if (user !== null) {
-            res.status(200);
+            res.status(200).send({message:"Sign up successfully."});
         } else {
             res.status(400).send({message:"Details are not correct"});
         }
@@ -65,21 +65,19 @@ const signup = async (req, res) => {
 
 const sendEmail = async (req, res) => {
     try {
-        console.log(req.body)
         const { email } = req.body;
         const token = req.token
         const secret = req.secret
         const data = {
-            secretKy: secret
+            secretKey: secret
         }
         User.update( data, { where: { email: email}})
-        console.log(email, token)
         const success = await sendForgetPWEmail(email, token)
-        console.log(success)
-        if ( success )
-            res.status(200)
-        else
+        if ( success ){
+            res.status(200).send({message:"Email sent successfully."})
+        } else{
             res.status(400).send({message:"Send email error."})
+        }
     } catch (err) {
         console.log('sendEmail error');
         console.log(err);
@@ -93,10 +91,10 @@ const setPassword = async (req, res) => {
         const data = {
             password: hashedPassword,
         };
-        User.update( data, { where: { email: email}})
-        res.status(200)
+        await User.update( data, { where: { email: email}})
+        res.status(200).send({message:"Set Password successfully."})
     } catch (err) {
-        console.log('send password error');
+        console.log('set password error');
         console.log(err);
     }
 }
@@ -110,7 +108,7 @@ const editProfile = async (req, res) => {
             notiRec,
             notiIngre,
         },{ where: { id: user.id}})
-        res.status(200)
+        res.status(200).send({message:"Edit profile successfully."})
     } catch (err) {
         console.log('editProfile error');
         console.log(err);
@@ -144,7 +142,7 @@ const editCurrentFridge = async (req, res) => {
         User.update({
             fridge
         },{ where: { id: user.id}})
-        res.status(200)
+        res.status(200).send({message:"Edit fridge successfully."})
     } catch (err) {
         console.log('editFridge error');
         console.log(err);
@@ -163,7 +161,7 @@ const keepRecipe = async (req, res) => {
         User.update({
             like
         },{ where: { id: user.id}})
-        res.status(200)
+        res.status(200).send({message:"Keep recipe successfully."})
     } catch (err) {
         console.log('keepRecipe error');
         console.log(err);
@@ -208,7 +206,7 @@ const updateCloud = async (req, res) => {
                 photoID: url.id
             },{ where: { id: user.id}})
         }
-        res.status(200)
+        res.status(200).send({message:"Update successfully."})
     } catch (err) {
         console.log('delete cloud error');
         console.log(err)

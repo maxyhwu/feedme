@@ -6,23 +6,24 @@ dotenv.config();
 const User = db.users;
 
 const createCode = () => {
-  const secret = speakeasy.generateSecret({length: 20});
+  const secret = speakeasy.generateSecret({length: 6});
   const token = speakeasy.totp({
-      secret: secret.base32,
-      encoding: 'base32',
-      digits: 6,
-      time: 360,
-    });
+    secret: secret.base32,
+    encoding: 'base32',
+    digits: 6,
+    step: 300 // seconds
+  });
   return [token, secret]
 };
 
-const verifyCode = (userToken, secret) => {
+const verifyCode = (userToken, secretObj) => {
   const isValid = speakeasy.totp.verify({
-    secret: secret.base32,
+    secret: secretObj.base32,
     encoding: 'base32',
     token: userToken, // the code entered by the user
     digits: 6,
-    window: 1
+    step: 300, // seconds
+    window: 2 // allow codes that are 2 time steps (i.e. 10 minutes) old or new
   });
   return isValid
 };
@@ -45,12 +46,14 @@ const verification = async (req, res, next) => {
       where: {
           email: email
       }});
-    if ( secretKey == null) {
-      res.status(400).send({messege:"Invalid"})
+    if ( user.secretKey === null) {
+      cosnole.log("user secret key is null")
+      return res.status(400).send({messege:"Invalid"})
     }
     let valid = verifyCode(token, user.secretKey);
     if ( !valid ) {
-      res.status(400).send({messege:"Invalid"})
+      console.log("Verification failed")
+      return res.status(400).send({messege:"Invalid"})
     }
     const data = {
       secretKey: null
@@ -59,6 +62,7 @@ const verification = async (req, res, next) => {
     next();
   } catch (err) {
     console.log('valid token failed')
+    console.log(err)
   }
 };
 
