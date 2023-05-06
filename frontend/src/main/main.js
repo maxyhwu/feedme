@@ -12,6 +12,7 @@ import LoginPage from '../Login/LoginPage';
 import RegisterPage from "../RegisterPage/RegisterPage";
 import Contact from "../Contact/Contact";
 import ForgotPassword from "../ForgotPassword/ForgotPassword";
+import ResetPasswordPage from "../ResetPassword/ResetPasswordPage";
 // import SetPassword from '../SetPassword/SetPassword';
 import Detail from "../Recipe/detail";
 import {RecipeDetailShare} from "../Recipe/detail";
@@ -52,7 +53,8 @@ function Main() {
           <Route path='contactus' element={ <Contact/> } />
           {/* <Route path='Signup' element={ <SignupPage/> } /> */}
           {/* <Route path = 'registerr' element = {<Register/>} /> */}
-          <Route path='ForgotPassword' element={ <ForgotPassword/> } />
+          <Route path='forgot' element={ <ForgotPassword/> } />
+          <Route path='reset' element={ <ResetPasswordPage/> } />
           <Route path="modal" element={ <Detail/> }/>
           <Route path="detail" element={ <RecipeDetailShare/> }/>
           <Route path='recipe-search-result' element={ <Recipe_search_result/> } />

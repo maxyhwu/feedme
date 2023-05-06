@@ -1,29 +1,27 @@
 import React, {useState, useEffect} from 'react';
-import './RegisterPage.css';
+import './ResetPasswordPage.css';
 import FeedMe from '../assets/FeedMe.jpg';
 import twitterLogo from '../assets/twitterLogo.png';
 import TwitterLogin from 'react-twitter-auth';
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
 import { FormattedMessage } from "react-intl";
 import {UseLoginContext} from '../Context/LoginCnt'
 import { UseLangContext } from '../Context/LangCnt';
 import { toast } from "react-toastify";
-import { validateEmail } from "../services/authService";
+import { resetPassword } from "../services/authService";
 import { useDispatch } from "react-redux";
 
 
 
 const initialState = {
-    name: "",
-    email: "",
     password: "",
     password2: "",
 };
 
 
-const RegisterPage = () => {
+const ResetPasswordPage = () => {
     const redirect_uri = process.env?.REACT_APP_GOOGLE_OAUTH_REDIRECT
     const clientID = process.env?.REACT_APP_GOOGLE_OAUTH_CLIENT_ID
     const redirect_login = process.env?.REACT_APP_TWITTER_REDIRECT_LOGIN
@@ -36,7 +34,9 @@ const RegisterPage = () => {
     // const {lang} = UseLangContext();
 
     const [formData, setformData] = useState(initialState);
-    const { name, email, password, password2 } = formData;
+    const { password, password2 } = formData;
+
+    const { resetToken } = useParams();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -69,27 +69,27 @@ const RegisterPage = () => {
         changeLogin(true)
         navigate('/mypage')
     }
-    const register = async (e) => {
+    const reset = async (e) => {
         e.preventDefault();
-
-        if (!name || !email || !password) {
-            return toast.error("All fields are required");
-        }
+    
         if (password.length < 6) {
-            return toast.error("Passwords must be up to 6 characters");
-        }
-        if (!validateEmail(email)) {
-            return toast.error("Please enter a valid email");
+          return toast.error("Passwords must be up to 6 characters");
         }
         if (password !== password2) {
-            return toast.error("Passwords do not match");
+          return toast.error("Passwords do not match");
         }
-
+    
         const userData = {
-            name,
-            email,
-            password,
+          password,
+          password2,
         };
+    
+        try {
+          const data = await resetPassword(userData, resetToken);
+          toast.success(data.message);
+        } catch (error) {
+          console.log(error.message);
+        }
     };
 
     return (
@@ -99,29 +99,10 @@ const RegisterPage = () => {
             </div>
             <div className="body">
                 
-                <form onSubmit={register} id="info">
+                <form onSubmit={reset} id="info">
                 <div id="header">
                     <h2 className="infos" style={{margin:"5px"}}>Welcome, newbie!</h2>
                 </div>
-                    <input
-                        type="text"
-                        className="input infos" 
-                        placeholder="Name"
-                        required
-                        name="name"
-                        value={name}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        type="email"
-                        className="input infos" 
-                        placeholder="Email"
-                        // autoComplete={checkbox?'email':'off'}
-                        required
-                        name="email"
-                        value={email}
-                        onChange={handleInputChange}
-                    />
                     <input
                         type="password"
                         className="input infos" 
@@ -175,4 +156,4 @@ const RegisterPage = () => {
     )
 }
 
-export default RegisterPage;
+export default ResetPasswordPage;
