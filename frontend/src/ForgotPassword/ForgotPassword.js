@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './SetPassword.css';
+import './ForgotPassword.css';
 import FeedMe from '../assets/FeedMe.jpg';
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -11,7 +11,7 @@ const initialState = {
     password2: "",
 };
 
-const SetLogin = () => {
+const ForgotPassword = () => {
     const [formData, setformData] = useState(initialState);
     const { password, password2 } = formData;
 
@@ -67,4 +67,4 @@ const SetLogin = () => {
     )
 }
 
-export default SetLogin;
+export default ForgotPassword;
