@@ -1,6 +1,6 @@
 FROM node:16-alpine
 
-EXPOSE 8000
+EXPOSE ${PORT}
 
 COPY . /app
 WORKDIR /app
