@@ -1,4 +1,4 @@
-import { getGoogleOauthToken, getGoogleUser } from '../Services/service';
+import { getGoogleOauthToken, getGoogleUser } from '../services/service';
 import dotenv from "dotenv-defaults";
 dotenv.config();
 import db from "../Model";

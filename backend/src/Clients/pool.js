@@ -12,7 +12,8 @@ const pool = new Pool({
   // database: process.env.databaseName,
   // password: process.env.password,
   // port: 5432, // The default port for PostgreSQL is 5432
-  connectionString: conString
+  connectionString: conString,
+  ssl: true
 });
 
 export {

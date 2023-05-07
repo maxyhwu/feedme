@@ -2,7 +2,7 @@ import dotenv from "dotenv-defaults";
 dotenv.config();
 import db from "../Model"
 import bcrypt from "bcrypt";
-import {sendForgetPWEmail} from "../Services/userService"
+import {sendForgetPWEmail} from "../services/userService"
 import { uploads, destroys } from "../Config/cloudinary";
 import fs from 'fs'
 import { upload } from '../Config/multerConfig'

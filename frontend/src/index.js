@@ -11,6 +11,7 @@ import { LoginContextProvider } from './Context/LoginCnt'
 import { LangContextProvider } from "./Context/LangCnt";
 import { DataContextProvider } from "./Context/useUserData";
 import { GeneralContextProvider } from "./Context/generalTables";
+import { EnvContextProvider } from './Context/envCxt';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,7 +20,9 @@ root.render(
     <LoginContextProvider>
     <DataContextProvider>
     <GeneralContextProvider>
+    <EnvContextProvider>
       <App />
+    </EnvContextProvider>
     </GeneralContextProvider>
     </DataContextProvider>
     </LoginContextProvider>
