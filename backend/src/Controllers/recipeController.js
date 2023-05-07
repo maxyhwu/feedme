@@ -90,7 +90,7 @@ const queryByIngredients = async (req, res) => {
   // const client = new Client(conString);
 
   const ingredient = req.query;
-  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and $1 = ANY(ingredients)';
+  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and AND jsonb_exists(ingredients, $1)';
   const values = [parseInt(ingredient)];
 
   try {
