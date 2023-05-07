@@ -1,6 +1,5 @@
 import { Router } from 'express'
-import envController from '../Controllers/envController'
-const { getEnv } = envController
+import { getEnv } from '../Controllers/envController'
 
 const router = Router()
 
