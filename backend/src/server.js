@@ -11,8 +11,14 @@ import recipeRoutes from './Routes/recipeRoutes';
 console.log("dotenv = ", process.env.PORT)
 const PORT = process.env.PORT || 8000
 
+import path from 'path';
 import express, { json, urlencoded } from "express";
 const app = express();
+
+if (process.env.NODE_ENV === "development") {
+	app.use(cors());
+}
+
 import cors from 'cors';
 var corsOption = {
   origin: true,
@@ -31,6 +37,15 @@ app.use('/api/data', dataRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/general', generalRoutes);
 app.use('/api/recipe', recipeRoutes);
+
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "../frontend", "build")));
+  app.get("/*", function (req, res) {
+    res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
+  });
+  console.log(33)
+}
 
 // db.sequelize.sync({ alter: true }).then(() => {    //drop table if exists
 //     console.log("db has been sync")
