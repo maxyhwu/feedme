@@ -43,10 +43,10 @@ db.sequelize.sync().then(() => {    //drop table if exists
 })
 
 
-app.use(express.static(path.join(__dirname, "..", "..", "UI", "build")));
-app.get("/*", (_, res) => {
-  res.sendFile(path.join(__dirname,"..","..", "UI", "build", "index.html"));
-});
+// app.use(express.static(path.join(__dirname, "..", "..", "UI", "build")));
+// app.get("/*", (_, res) => {
+//   res.sendFile(path.join(__dirname,"..","..", "UI", "build", "index.html"));
+// });
 
 app.listen(PORT, function(err){
   if (err) console.log("Error in server setup")
