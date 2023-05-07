@@ -1,4 +1,5 @@
 import React, {useContext, useState} from 'react'
+import { getUserData } from '../Cookies/cookies';
 
 const LoginContext = React.createContext({
     login: [],
@@ -8,7 +9,7 @@ const LoginContext = React.createContext({
 
 
 const LoginContextProvider = (props) => {
-    const hasToken = localStorage.getItem('user')?true:false
+    const hasToken = localStorage.getItem('user')?true:(getUserData()?true:false)
     const [login, setLogin] = useState(hasToken)
     const changeLogin = (input) => {
         setLogin(input)

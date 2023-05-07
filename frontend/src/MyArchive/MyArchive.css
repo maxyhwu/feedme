@@ -11,3 +11,14 @@
     text-align: center;
     color: gray;
 }
+
+.savedRecipes-container {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* justify-content: flex-start; */
+    justify-content: center;
+    padding: 2%;
+    height: auto;
+}
