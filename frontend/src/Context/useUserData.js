@@ -18,9 +18,8 @@ const getData = () =>  {
     if (localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') !== null ){
         const dataString = localStorage.getItem('user');
         userData = JSON.parse(dataString);  // 字串轉換成物件
-    } else if ( getUserData() !== {} ){
-        const dataString = getUserData();
-        userData = JSON.parse(dataString);
+    } else if ( getUserData() !== "{}" ){
+        userData = getUserData();
     }
     return userData     
 }
