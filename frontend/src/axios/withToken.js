@@ -8,12 +8,18 @@ if ( getUserData().token ){
 }
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}` 
 
+const API_ROOT =
+  process.env.NODE_ENV === "production"
+    ? "/"
+    : `http://localhost:8000/`;
+
+
 const userRequest = axios.create({
-    baseURL: 'http://localhost:8000/api/user'
+    baseURL: API_ROOT + 'api/user'
 });
 
 const recipeRequest = axios.create({
-    baseURL: 'http://localhost:8000/api/recipe'
+    baseURL: API_ROOT + 'api/recipe'
 });
 
 export const apiEditProfile = data => userRequest.post('/edit-profile', data);
