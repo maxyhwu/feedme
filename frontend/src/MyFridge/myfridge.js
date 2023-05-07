@@ -7,6 +7,9 @@ import './myfridge.css'
 import './fridgeadd.css';
 import '../Recipe/Components/SearchBar.css'
 import { data } from "./fridgedata";
+import { getNoTokenData } from '../utils/useNoTokenApis'
+import { UseDataContext } from "../Context/useUserData";
+import { apiEditFridge } from '../axios/withToken'
 
 Modal.setAppElement('#root');
 
@@ -133,7 +136,7 @@ const FridgeOrderButton = ({ orderBy, isActive, onClick }) => {
 
 const FridgeEditIngredientRow = ({ rowId, quantity, purchaseDate, expirationDate, onInputChange, onDelete }) => {
     return (
-        <tr>
+        <div>
             <div className='d-inline-block'>
                 <div className='d-inline-block fridgeadd-label'>Quantity</div>
                 <input className='fridgeadd-input' type="number" min="0" name="quantity" value={quantity} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
@@ -155,7 +158,7 @@ const FridgeEditIngredientRow = ({ rowId, quantity, purchaseDate, expirationDate
                 </button>
             </div>
             <hr />
-        </tr>
+        </div>
     );
 };
 
@@ -163,8 +166,8 @@ const FridgeEditIngredientRow = ({ rowId, quantity, purchaseDate, expirationDate
 const FridgeRenderButton = ({ ingredient }) => {
     const [modalIsOpen, setModalOpenState] = useState(false);
     const [nextID, setNextID] = useState(20000);
-    const [data, setData] = useState(ingredient.raw);
-    const [dataCopy, setDataCopy] = useState(ingredient.raw);
+    const [fridgeData, setFridgeData] = useState(ingredient.raw);
+    const [fridgeDataCopy, setFridgeDataCopy] = useState(ingredient.raw);
 
     const checkExpirationStatus = (expirationDate) => {
         let expirationStatus = {
@@ -196,11 +199,11 @@ const FridgeRenderButton = ({ ingredient }) => {
     const handleCloseModal = () => {
         // const confirmed = window.confirm('Are you sure you want to discard all changes?');
         // if (confirmed) {
-        //     setData(dataCopy);
+        //     setFridgeData(fridgeDataCopy);
         //     setModalOpenState(false);
         // }
 
-        setData(dataCopy);
+        setFridgeData(fridgeDataCopy);
         setModalOpenState(false);
         
     }
@@ -208,17 +211,17 @@ const FridgeRenderButton = ({ ingredient }) => {
     const handleSave = () => {
         // const confirmed = window.confirm('Are you sure you want to save all changes?');
         // if (confirmed) {
-        //     setDataCopy(data);
+        //     setFridgeDataCopy(fridgeData);
         //     setModalOpenState(false);
         // }
 
-        setDataCopy(data);
+        setFridgeDataCopy(fridgeData);
         setModalOpenState(false);
     }
 
     const handleInputChange = (rowId, fieldName, value) => {
         // Modify the data in state based on the input change
-        const newData = data.map((row) => {
+        const newData = fridgeData.map((row) => {
             if (row.userIngredientID === rowId) {
                 return {
                     ...row,
@@ -229,12 +232,12 @@ const FridgeRenderButton = ({ ingredient }) => {
             }
         });
 
-        setData(newData);
+        setFridgeData(newData);
     }
 
     const handleRemoveRow = (rowId) => {
-        const newData = data.filter(row => row.userIngredientID !== rowId);
-        setData(newData);
+        const newData = fridgeData.filter(row => row.userIngredientID !== rowId);
+        setFridgeData(newData);
     }
 
     const handleAddRow = () => {
@@ -246,7 +249,7 @@ const FridgeRenderButton = ({ ingredient }) => {
             expirationDate: '',
         };
 
-        setData([...data, newRow]);
+        setFridgeData([...fridgeData, newRow]);
         setNextID(nextID + 1);
     }
 
@@ -275,25 +278,23 @@ const FridgeRenderButton = ({ ingredient }) => {
                 </div>
 
                 <div className="modal-body">
-                    <table class="table recipeadd-table">
-                        <tbody>
-                            {data.map((row) => (
-                                <FridgeEditIngredientRow
-                                    key={row.userIngredientID}
-                                    rowId={row.userIngredientID}
-                                    quantity={row.quantity}
-                                    purchaseDate={row.purchaseDate}
-                                    expirationDate={row.expirationDate}
-                                    onInputChange={handleInputChange}
-                                    onDelete={handleRemoveRow}
-                                />
-                            ))}
-                        </tbody>
+                    <div className="recipeadd-table">
+                        {fridgeData.map((row) => (
+                            <FridgeEditIngredientRow
+                                key={row.userIngredientID}
+                                rowId={row.userIngredientID}
+                                quantity={row.quantity}
+                                purchaseDate={row.purchaseDate}
+                                expirationDate={row.expirationDate}
+                                onInputChange={handleInputChange}
+                                onDelete={handleRemoveRow}
+                            />
+                        ))}
 
                         <div>
                             <button className="btn btn-secondary fridgeadd-btn" onClick={handleAddRow}>Add Ingredient</button>
                         </div>
-                    </table>
+                    </div>
                 </div>
 
                 <div className="modal-footer">
@@ -319,7 +320,7 @@ const FridgeRenderBlock = ({ title, ingredients }) => {
 };
 
 
-const FridgeRender = ({ renderCondition }) => {
+const FridgeRender = ({ fridgeData, renderCondition }) => {
     const groupDataByRenderOrder = (filteredData) => {
         const { renderOrder } = renderCondition;
         const groupedData = {};
@@ -347,7 +348,7 @@ const FridgeRender = ({ renderCondition }) => {
     const { searchBarValue, renderFilter, renderOrder } = renderCondition;
   
     // Filter the data array based on the categories in renderFilter
-    let filteredData = data.filter((ingredient) =>
+    let filteredData = fridgeData.filter((ingredient) =>
         renderFilter.includes(ingredient.category)
     );
   
@@ -389,9 +390,82 @@ const FridgeRender = ({ renderCondition }) => {
 
 
 const MyFridge = () => {
+    // const {data} = UseDataContext();
+    // const {fridge} = data;
+    const [noTokenData, setNoTokenData] = useState({});
+    const [allIngredients, setAllIngredients] = useState([]);
+    const [ingredient2id, setIngredient2Id] = useState([]);
+    const [id2ingredient, setId2Ingredient] = useState([]);
+    const [origData, setOrigData] = useState({});
+    const [fridgeData, setFridgeData] = useState([]);
     const [searchBarValue, setSearchBarValue] = useState('');
     const [renderFilter, setRenderFilter] = useState(allCategories);
     const [renderOrder, setRenderOrder] = useState('Category');
+    const rawData = {
+        "6": [
+            {
+                "count": "3",
+                "purchase_date": "2023-05-03",
+                "expire_date": "2023-05-16"
+            },
+            {
+                "count": "3",
+                "purchase_date": "2023-04-27",
+                "expire_date": "2023-04-28"
+            }
+        ],
+        "25": [
+            {
+                "count": "3",
+                "purchase_date": "2023-05-10",
+                "expire_date": "2023-05-25"
+            }
+        ]
+    }
+
+    useEffect(() => {
+        const promise = getNoTokenData();
+        const transformData = (origFridgeData, id2ingredient, ingredient2category) => {
+            const transformedFridgeData = [];
+            for (const key in origFridgeData) {
+                const ingredientId = parseInt(key);
+                const ingredientName = id2ingredient[ingredientId];
+                const ingredientCategory = ingredient2category[ingredientName];
+                const content = origFridgeData[key].map((item) => ({
+                    quantity: item.count,
+                    purchaseDate: item.purchase_date,
+                    expirationDate: item.expire_date,
+                }));
+                const earliestExpirationDate = Math.min(...origFridgeData[key].map((item) => new Date(item.expire_date)));
+                const earliestExpirationDateString = new Date(earliestExpirationDate).toISOString().substring(0, 10);
+                const earliestPurchasenDate = Math.min(...origFridgeData[key].map((item) => new Date(item.purchase_date)));
+                const earliestPurchasenDateString = new Date(earliestPurchasenDate).toISOString().substring(0, 10);
+
+                transformedFridgeData.push({
+                    ingredientId,
+                    ingredientName,
+                    ingredientCategory,
+                    earliestExpirationDate,
+                    earliestExpirationDateString,
+                    earliestPurchasenDate,
+                    earliestPurchasenDateString,
+                    content,
+                });
+            }
+            return transformedFridgeData;
+        }
+        
+        promise.then((value) => {
+            setNoTokenData(value);
+            setAllIngredients(value.ingredientDataWithCateName.map(row => row.ingredName));
+            setIngredient2Id(value.ingredient2id);
+            setId2Ingredient(value.id2ingredient);
+            setFridgeData(transformData(rawData, value.id2ingredient, value.ingredient2category));
+        })
+    }, [])
+
+    console.log(data)
+    console.log(fridgeData)
 
     const addRenderFilter = (category) => {
         setRenderFilter([...renderFilter, category]);
@@ -439,7 +513,7 @@ const MyFridge = () => {
                 </div>
 
                 <div className="fridge-render-section">
-                    <FridgeRender renderCondition={{ searchBarValue, renderFilter, renderOrder }}/>
+                    <FridgeRender fridgeData={ data } renderCondition={{ searchBarValue, renderFilter, renderOrder }}/>
                 </div>
                 </div>
             </div>

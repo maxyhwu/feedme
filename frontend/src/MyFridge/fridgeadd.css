@@ -54,6 +54,12 @@
     margin: 3px;
 }
 
+.fridgeadd-input-invalid {
+    width: 150px;
+    margin: 3px;
+    border-color: red;
+}
+
 .fridgeadd-delete-btn {
     font-size: small;
     font-weight: 500;
