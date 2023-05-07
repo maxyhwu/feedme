@@ -13,7 +13,7 @@ export default (sequelize, DataTypes) => {
             allowNull: false,
         },
         instructions:{
-            type: DataTypes.STRING,
+            type: DataTypes.ARRAY(DataTypes.STRING),
             allowNull: false,
         },
         image:{

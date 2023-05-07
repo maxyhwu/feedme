@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { existUser, emailValid, existEmail, checkToken } from "../Middleware/userAuth"
-import { login, signup, editCurrentFridge, sendEmail, editProfile, keepRecipe, setPassword, getMyImage, updateCloud } from '../Controllers/userController';
+import { login, signup, editCurrentFridge, sendEmail, editProfile, keepRecipe, setPassword, getMyImage, updateCloud, getUserData } from '../Controllers/userController';
 import { generateToken, sendToken } from '../Middleware/setToken';
 import { generateCode, verification } from '../Middleware/verifyCode';
 
@@ -19,6 +19,7 @@ router.put('/update-image', checkToken, updateCloud)
 router.get("/get-myimage", checkToken, getMyImage)
 router.put('/edit-fridge', checkToken, editCurrentFridge)  // postman tested
 router.put('/keep-recipes', checkToken, keepRecipe)
+router.get('/get-userdata', checkToken, getUserData, generateToken, sendToken)
 
 
 export default router
