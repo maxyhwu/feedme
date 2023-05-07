@@ -1,4 +1,5 @@
 import React, {useContext, useState} from 'react'
+import { getUserData } from '../Cookies/cookies';
 
 const DataContext = React.createContext({
     data: [],
@@ -11,11 +12,15 @@ const getData = () =>  {
         userName:'',
         email:'',
         token:'',
-        fridge: null
+        fridge: null,
+        favorite: []
     }
     if (localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') !== null ){
         const dataString = localStorage.getItem('user');
-        userData = JSON.parse(dataString);  //字串轉換成物件
+        userData = JSON.parse(dataString);  // 字串轉換成物件
+    } else if ( getUserData() !== {} ){
+        const dataString = getUserData();
+        userData = JSON.parse(dataString);
     }
     return userData     
 }

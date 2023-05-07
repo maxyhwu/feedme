@@ -25,7 +25,7 @@ const sendToken = (req, res) => {
   try {
     const user = req.user
     res.setHeader('x-auth-token', req.token);
-    res.status(200).send({ userName:user.userName, email: user.email, fridge: user.fridge });
+    res.status(200).send({ userName:user.userName, email: user.email, fridge: user.fridge, favorite: user.favorite });
   } catch (err) {
     console.log('Send token failed')
     console.log(err)

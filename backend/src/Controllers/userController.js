@@ -29,11 +29,11 @@ const login = async (req, res, next) => {
                 req.user = user
                 next()
             } else {
-                res.status(400).send({message: 'Password incorrect'});
+                return res.status(400).send({message: 'Password incorrect'});
             }
         }else {
             console.log('Can not find')
-            res.status(400).send({message:'User name not found'});
+            return res.status(400).send({message:'User name not found'});
         }
     }catch (err) {
         console.log('login error');
@@ -53,9 +53,9 @@ const signup = async (req, res) => {
         console.log(data)
         const user = await User.create(data);
         if (user !== null) {
-            res.status(200).send({message:"Sign up successfully."});
+            return res.status(200).send({message:"Sign up successfully."});
         } else {
-            res.status(400).send({message:"Details are not correct"});
+            return res.status(400).send({message:"Details are not correct"});
         }
     }catch (err) {
         console.log('signup error');
@@ -74,9 +74,9 @@ const sendEmail = async (req, res) => {
         User.update( data, { where: { email: email}})
         const success = await sendForgetPWEmail(email, token)
         if ( success ){
-            res.status(200).send({message:"Email sent successfully."})
+            return res.status(200).send({message:"Email sent successfully."})
         } else{
-            res.status(400).send({message:"Send email error."})
+            return res.status(400).send({message:"Send email error."})
         }
     } catch (err) {
         console.log('sendEmail error');
@@ -124,9 +124,9 @@ const getMyImage = async (req, res) => {
                 id: user.id
             }});
         if (image) {
-            res.status(200).send({image: image});
+            return res.status(200).send({image: image});
         } else {
-            res.status(400).send({message: 'Error ID'});
+            return res.status(400).send({message: 'Error ID'});
         }
         
     }catch (err) {
@@ -139,10 +139,10 @@ const editCurrentFridge = async (req, res) => {
     try{
         const user = req.user;
         const {fridge} = req.body
-        User.update({
+        await User.update({
             fridge
         },{ where: { id: user.id}})
-        res.status(200).send({message:"Edit fridge successfully."})
+        return res.status(200).send({message:"Edit fridge successfully."})
     } catch (err) {
         console.log('editFridge error');
         console.log(err);
@@ -158,10 +158,10 @@ const keepRecipe = async (req, res) => {
             where: { id: user.id }
         })
         like.push(articleID.toString())
-        User.update({
+        await User.update({
             like
         },{ where: { id: user.id}})
-        res.status(200).send({message:"Keep recipe successfully."})
+        return res.status(200).send({message:"Keep recipe successfully."})
     } catch (err) {
         console.log('keepRecipe error');
         console.log(err);
@@ -190,7 +190,7 @@ const updateCloud = async (req, res) => {
                 photo: "",
                 photoPID: -1
             }
-            User.update({
+            await User.update({
                 photoData
             }, {where: { id: user.id}})
         }
@@ -201,12 +201,12 @@ const updateCloud = async (req, res) => {
             const newPath = await uploaderImage(path)
             url = newPath
             fs.unlinkSync(path)
-            User.update({
+            await User.update({
                 photo: url.url,
                 photoID: url.id
             },{ where: { id: user.id}})
         }
-        res.status(200).send({message:"Update successfully."})
+        return res.status(200).send({message:"Update successfully."})
     } catch (err) {
         console.log('delete cloud error');
         console.log(err)
@@ -222,7 +222,7 @@ const testUpload = async (req, res) => {
         const newPath = await uploader(path)
         url = newPath
         fs.unlinkSync(path)
-        res.status(200).send({url: url})
+        return res.status(200).send({url: url})
     } catch (err) {
         console.log('test error');
         console.log(err);

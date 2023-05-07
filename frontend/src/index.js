@@ -7,10 +7,23 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { LoginContextProvider } from './Context/LoginCnt'
+import { LangContextProvider } from "./Context/LangCnt";
+import { DataContextProvider } from "./Context/useUserData";
+import { GeneralContextProvider } from "./Context/generalTables";
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <LangContextProvider>
+    <LoginContextProvider>
+    <DataContextProvider>
+    <GeneralContextProvider>
+      <App />
+    </GeneralContextProvider>
+    </DataContextProvider>
+    </LoginContextProvider>
+    </LangContextProvider>
   </React.StrictMode>
 );
 

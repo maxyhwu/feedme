@@ -19,8 +19,6 @@ const allIngredient = async (_, res) => {
         res.send({rows})
     } catch (err) {
         console.log(err)
-    } finally {
-        client.end();
     }
 }
 
@@ -36,8 +34,6 @@ const allCategory = async (_,res) => {
         res.send({rows})
     } catch(err) {
         console.log(err)
-    } finally {
-        client.end();
     }
 }
 
@@ -53,8 +49,6 @@ const allLabel = async (_,res) => {
         res.send({rows})
     } catch(err) {
         console.log(err)
-    } finally {
-        client.end();
     }
 }
 

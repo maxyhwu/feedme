@@ -69,14 +69,10 @@ const emailValid = async (req, res, next) => {
 const checkToken = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '')
-        console.log('token=',token)
         const decoded = jwt.verify(token, process.env.secretKey)
-        console.log('decoded id =',decoded.id)
-        console.log('decoded user =', decoded.email)
         const user = await User.findOne({
             where:{
                 id: decoded.id,
-                email: decoded.email,
             }
         });
         if (user!== null) { console.log('find')}

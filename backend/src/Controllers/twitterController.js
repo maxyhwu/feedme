@@ -3,13 +3,15 @@ import TwitterTokenStrategy from 'passport-twitter-token';
 import dotenv from "dotenv-defaults";
 dotenv.config();
 import  request from 'request';
+import db from "../Model"
+const User = db.users;
 
-passport.use(new TwitterTokenStrategy({
+passport.use('twitter-signup',new TwitterTokenStrategy({
     consumerKey: process.env.consumerKey,
     consumerSecret: process.env.consumerSecret,
     includeEmail: true
   },
-  function(token, tokenSecret, profile, done) {
+  async function(token, tokenSecret, profile, done) {
     // This function will be called after the user has authenticated with Twitter.
     // You can use the user's profile information to create or update a user record in your database.
     // Then, call the `done` function to let Passport know that the authentication was successful.
@@ -22,7 +24,30 @@ passport.use(new TwitterTokenStrategy({
     //   }
     //   return done(null, false, { message: 'Could not create user' });
     // });
-    return done(null, profile)
+    const user = await User.findOne({
+      where: {  twitterID: profile.id }
+    })
+    if ( !user ) {
+      const data = {
+        userName: profile.displayName,
+        twitterID: profile.id
+      }
+      await User.create(data);
+    }
+    return done(null, user)
+  }
+));
+
+passport.use('twitter-login',new TwitterTokenStrategy({
+    consumerKey: process.env.consumerKey,
+    consumerSecret: process.env.consumerSecret,
+    includeEmail: true
+  },
+  async function(token, tokenSecret, profile, done) {
+    const user = await User.findOne({
+      where: {  twitterID: profile.id }
+    })
+    return done(null, user)
   }
 ));
 
@@ -41,10 +66,10 @@ const twitterVerified = (req, res, next) => {
       return res.send(500, { message: err.message });
     }
 
-    console.log("body:", body);
+    // console.log("body:", body);
     const bodyString = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
     const parsedBody = JSON.parse(bodyString);
-    console.log("parseBody", parsedBody);
+    // console.log("parseBody", parsedBody);
 
     req.body['oauth_token'] = parsedBody.oauth_token;
     req.body['oauth_token_secret'] = parsedBody.oauth_token_secret;
@@ -54,14 +79,29 @@ const twitterVerified = (req, res, next) => {
   });
 }
 
-const authenticate = (req, res, next) => {
+const authenticateSignup = (req, res, next) => {
   try{
-    passport.authenticate('twitter-token', function(err, user, info) {
+    passport.authenticate('twitter-signup', function(err, user, info) {
+      if (err) {
+        return next(err);
+      }
+      req.user = user;
+      next();
+    })(req, res, next);
+  } catch (err) {
+    console.log("Authenticate Error")
+    console.log(err)
+  }
+}
+
+const authenticateLogin = (req, res, next) => {
+  try{
+    passport.authenticate('twitter-login', function(err, user) {
       if (err) {
         return next(err);
       }
       if (!user) {
-        return res.status(401).json({ message: 'Authentication failed', error: info });
+        return res.status(401).send({ message: 'User not register' });
       }
       req.user = user;
       next();
@@ -74,12 +114,29 @@ const authenticate = (req, res, next) => {
 const login = (req, res, next) => {
   try{
     if (!req.user) {
-      return res.send(401, 'User Not Authenticated');
+      return res.status(401).send({ message: 'User not register' });
     }
     // prepare token for API
     req.auth = {
       id: req.user.id,
-      iat: 1645869827, 
+      userEmail:""
+    };
+
+    return next();
+  } catch (err) {
+    console.log('Failed to authorize Twitter User', err);
+  }
+}
+
+const signup = (req, res, next) => {
+  try{
+    if (req.user) {
+      console.log("user exists")
+      return res.status(401).send({ message: 'User exist.' });
+    }
+    // prepare token for API
+    req.auth = {
+      id: req.user.id,
       userEmail:""
     };
 
@@ -110,7 +167,9 @@ const reverse = (req, res) => {
 
 export {
   twitterVerified,
-  authenticate,
+  authenticateSignup,
+  authenticateLogin,
+  signup,
   login,
   reverse
 };
