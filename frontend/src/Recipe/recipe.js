@@ -7,6 +7,7 @@ import SearchBar from "./Components/SearchBar";
 import { RecipeAddButton } from "./recipeadd";
 import { recipe_data } from "./recipedata";
 import { RecipeDetail } from './detail';
+import { apiAllIngredient } from '../axios/noToken';
 
 
 const RecipeObject = ({ recipe }) => {
@@ -61,9 +62,15 @@ const Recipe = () => {
         navigate('/modal');
     }
 
+    const allIngredients = async() => {
+        const all = await apiAllIngredient();
+        console.log('get all ingredients from recipe', all.data.rows);
+        return all.data.rows;
+    }
+
     return (
     <>
-        <SearchBar/>
+        <SearchBar apiAllIngredient={allIngredients}/>
         <div className="recipe-container">
             <div className="bottom">
                 <div className="section-title">
