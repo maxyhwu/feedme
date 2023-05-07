@@ -82,9 +82,9 @@ const RegisterPage = () => {
             if (response.status === 400){
                 if ( response.data.message === "Details are not correct") {
                     setAlert(false, true, false, false)
-                } else if (response.data.message === 'user already exists') {
+                } else if (response.data.messege === 'user already exists') {
                     setAlert(true, false, false, false)
-                } else if (response.data.message === 'Please provide a valid email address.') {
+                } else if (response.data.messege === 'Please provide a valid email address.') {
                     setAlert(false, false, false, true)
                 }
             }

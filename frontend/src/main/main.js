@@ -27,7 +27,7 @@ import Preference from "../Signup/PreferencePage";
 function Main() {
   // const [isLoggedIn, setIsLoggedIn] = useState(false); // you can play with this and click the user icon on the header
   const [locale, setLocale] = useState(undefined)
-  const {data} = UseDataContext
+  const {data} = UseDataContext()
   const {lang} = UseLangContext()
 
   useEffect(() => {

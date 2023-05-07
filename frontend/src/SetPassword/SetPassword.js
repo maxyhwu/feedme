@@ -22,7 +22,7 @@ const SetLogin = () => {
     const [emailInValid, setEmailInValid] = useState(false);
     const [emailNotExist, setEmailNotExist] = useState(false);
     const [sendEmailError, setSendEmailError] = useState(false);
-    const [code, setCode] = useState('')
+    const [token, setToken] = useState('')
     const [click, setClick] = useState(false);
     const [sendClick, setSendClick] = useState(false);
     const [email, setEmail] = useState('')
@@ -49,11 +49,10 @@ const SetLogin = () => {
 
     useEffect ( () => {
         if (succSend) {
-            toast.success('密碼修改成功 ! ', {
+            toast.success('驗證碼已送出 ! ', {
                 position:toast.POSITION.TOP_CENTER,
                 className: 'toast-success'
             })
-            navigate('/login')
         }
         if (emailInValid) {
             toast.info('信箱不存在 ! ', {
@@ -87,7 +86,6 @@ const SetLogin = () => {
     async function getVerifyCode(credentials) {
         return apiForgetPW(credentials)
         .then(response=> {
-            console.log(response)
             if (response.status === 200) {
                 setCodeAlert(true, false, false, false)
             }
@@ -97,9 +95,9 @@ const SetLogin = () => {
             if (response.status === 400) {
                 if (response.data.message === 'Please provide a valid email address.'){
                     setCodeAlert(false, true, false, false)
-                } else if (response.data.message === 'Email not exists.'){
+                } else if (response.data.messege === 'Email not exists.'){
                     setCodeAlert(false, false, true, false)
-                } else if (response.data.message === 'Send email error.'){
+                } else if (response.data.messege === 'Send email error.'){
                     setCodeAlert(false, false, false, true)
                 }
             }
@@ -116,7 +114,7 @@ const SetLogin = () => {
         .catch((reason) => {
             let response = reason.response
             if (response.status === 400) {
-                if (response.data.message === 'Invalid'){
+                if (response.data.messege === "Invalid"){
                     setAlert(false, true)
                 }
             }
@@ -125,14 +123,14 @@ const SetLogin = () => {
 
     const handleSubmit = async e => {
         e.preventDefault()
-        await setPassword({code, email, password: newPassword})
+        await setPassword({token, email, password: newPassword})
         setClick(!click)
     }
 
     const sendCode = async e => {
         e.preventDefault()
         await getVerifyCode({email})
-        setSendClick(!click)
+        setSendClick(!sendClick)
     }
 
     const { resetToken } = useParams();
@@ -202,7 +200,7 @@ const SetLogin = () => {
 
                     <input type="text" placeholder='Email' className="input infos" autoComplete='off' onChange={e=>setEmail(e.target.value)}/>
                        <div className="d-flex" >
-                        <input type="text" placeholder='Verify Code' className="input infos mr-auto p-2" id="code" autoComplete='off' onChange={e=>setCode(e.target.value)}/>
+                        <input type="text" placeholder='Verify Code' className="input infos mr-auto p-2" id="code" autoComplete='off' onChange={e=>setToken(e.target.value)}/>
                         <button id="send" className="infos" type="button" onClick={e=>{checkEmailValid();sendCode(e)}} ref={emailRef}>Get Verification Code</button>
                     </div>
                     <input type="password" placeholder='New Password' className="input infos" ref={passwordRef} onChange={e=>setNewPassword(e.target.value)}/>
