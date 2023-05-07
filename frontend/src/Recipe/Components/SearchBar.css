@@ -1,5 +1,5 @@
 .searchbar-container {
-    min-width: 60%;
+    width: 70%;
     height: auto;
     padding: 5vw;
     /* background-color: antiquewhite; */
@@ -98,6 +98,7 @@
     border-radius: 0 0 10px 10px;
     border: 1px solid rgba(43, 41, 41, 0.147);
     border-top: none;
+    flex-wrap: wrap;
 }
 
 .ingredient {
