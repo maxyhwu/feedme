@@ -8,6 +8,7 @@ import dataRoutes from './Routes/dataRoutes';
 import generalRoutes from './Routes/generalRoutes';
 import recipeRoutes from './Routes/recipeRoutes';
 import envRoutes from './Routes/envRoutes';
+import path from 'path'
 
 console.log("dotenv = ", process.env.PORT)
 const PORT = process.env.PORT || 8000
@@ -43,9 +44,9 @@ db.sequelize.sync().then(() => {    //drop table if exists
 })
 
 
-// app.use(express.static(path.join(__dirname, "..", "..", "UI", "build")));
+// app.use(express.static(path.join(__dirname, "..", "..", "frontend", "build")));
 // app.get("/*", (_, res) => {
-//   res.sendFile(path.join(__dirname,"..","..", "UI", "build", "index.html"));
+//   res.sendFile(path.join(__dirname,"..","..", "frontend", "build", "index.html"));
 // });
 
 app.listen(PORT, function(err){
