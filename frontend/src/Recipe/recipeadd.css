@@ -59,10 +59,23 @@
     margin: 10px;
 }
 
+.recipeadd-input-invalid {
+    width: 150px;
+    margin: 10px;
+    border-color: red;
+}
+
 .recipeadd-textarea {
     width: 60%;
     height: 100px;
     margin: 10px;
+}
+
+.recipeadd-textarea-invalid {
+    width: 60%;
+    height: 100px;
+    margin: 10px;
+    border-color: red;
 }
 
 .recipeadd-instruction-btn {
@@ -74,4 +87,8 @@
     background-color: #E3DBF0;
     color: black;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.recipeadd-image-invalid{
+    color: red;
 }
