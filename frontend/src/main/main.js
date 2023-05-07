@@ -45,6 +45,7 @@ function Main() {
 
   useEffect(() => {
     console.log(data)
+    // data.then((datas)=>console.log(datas))
   }, [data])
 
   return (

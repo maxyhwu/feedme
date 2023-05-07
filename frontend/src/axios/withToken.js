@@ -2,9 +2,11 @@ import axios from 'axios';
 import { getUserData } from '../Cookies/cookies';
 
 var token = ''
-token = JSON.parse(localStorage.getItem('user')).token
-if ( getUserData().token ){
+if ( (localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') !== null) ){
     token = JSON.parse(localStorage.getItem('user')).token
+}
+if ( (Object.keys(getUserData()).length !== 0) ){
+    token = getUserData().token
 }
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}` 
 
@@ -23,6 +25,7 @@ export const apiUploadImage = formData => userRequest.post('/upload-image', form
 export const apiGetUserImage = () => userRequest.get('/get-myimage');
 export const apiUpdateUserImage = data => userRequest.put('/update-image', data);
 export const apiDeleteUserImage = data => userRequest.delete('/delete-image', data); 
+export const apiGetUserData = () => userRequest.get('/get-userdata');
 
 export const apiQueryRecipeByID = id => recipeRequest.get('/query/id', {params:{ id }});
 export const apiQueryRecipeByName = name => recipeRequest.get('/query/name', {params:{ name }});
