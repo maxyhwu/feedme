@@ -6,7 +6,7 @@ dotenv.config();
 var conString = process.env.url;
 
 const pool = new Pool({
-  max: 10,
+  max: 20,
   // user: process.env.user,
   // host: process.env.host,
   // database: process.env.databaseName,

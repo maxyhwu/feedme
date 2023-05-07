@@ -10,8 +10,7 @@ import { FormattedMessage } from "react-intl";
 import { toast } from "react-toastify";
 import { validateEmail } from "../services/authService";
 import { apiSignUp } from '../axios/noToken';
-
-
+import {Link as MuiLink} from '@mui/material';
 
 const initialState = {
     name: "",
@@ -22,9 +21,9 @@ const initialState = {
 
 
 const RegisterPage = () => {
-    const redirect_uri = process.env?.REACT_APP_GOOGLE_OAUTH_REDIRECT
+    const redirect_uri = process.env?.REACT_APP_GOOGLE_OAUTH_REDIRECT_SIGNUP
     const clientID = process.env?.REACT_APP_GOOGLE_OAUTH_CLIENT_ID
-    const redirect_login = process.env?.REACT_APP_TWITTER_REDIRECT_LOGIN
+    const redirect_signup = process.env?.REACT_APP_TWITTER_REDIRECT_SIGNUP
     const request_token = process.env?.REACT_APP_TWITTER_REQUEST_URL
     const location = useLocation();
     let from = ((location.state)?.from?.pathname) || '/';
@@ -47,10 +46,12 @@ const RegisterPage = () => {
             navigate('/login')
         }
         if (hassignup) {
-            toast.info('此信箱已用過 ! ', {
+            toast.info('此信箱已註冊 ! ', {
                 position:toast.POSITION.TOP_CENTER,
                 className: 'toast-info'
-            })}
+            })
+            // window.location.reload(true)
+        }
         if (incorrect) {
             toast.error('資料有誤 ! ', {
                 position:toast.POSITION.TOP_CENTER,
@@ -70,6 +71,11 @@ const RegisterPage = () => {
         setEmailinValid(invalid)
     }
 
+    const setTwitterAlert = (hassign, succ) => {
+        setHasSignUp(hassign)
+        setSuccess(succ)
+    }
+
     async function signupUser(credentials) {
         return apiSignUp(credentials)
         .then(function(response) {
@@ -82,9 +88,9 @@ const RegisterPage = () => {
             if (response.status === 400){
                 if ( response.data.message === "Details are not correct") {
                     setAlert(false, true, false, false)
-                } else if (response.data.messege === 'user already exists') {
+                } else if (response.data.message === 'user already exists') {
                     setAlert(true, false, false, false)
-                } else if (response.data.messege === 'Please provide a valid email address.') {
+                } else if (response.data.message === 'Please provide a valid email address.') {
                     setAlert(false, false, false, true)
                 }
             }
@@ -97,16 +103,20 @@ const RegisterPage = () => {
     };
     // useEffect(()=>{console.log(lang)}, [lang])
     const onSuccess = (response) => {
-        // window.close()
-        navigate('/')
-        window.location.reload(true)
-        const token = response.headers.get('x-auth-token');
-        console.log('token')
-        response.json().then(user => {
-          if (token) {
-            console.log(user)
-          }
-        });
+        if (response.status === 200) {
+            setTwitterAlert(false, true)
+        } else if (response.status === 401){
+            response.json().then( (response) => {
+                // console.log(response)
+                // console.log(response.message)
+                if (response.message === 'User exist.') {
+                    setTwitterAlert(true, false)
+                }
+                
+                setClick(!click)
+                // window.location.reload(true)
+            })
+        }
       };
 
     const onFailed = (error) => {
@@ -187,13 +197,13 @@ const RegisterPage = () => {
                         onChange={handleInputChange}
                     />
                     <div id="external" className="infos">
-                        <Link 
+                        <MuiLink 
                             href={getGoogleUrl(from, redirect_uri, clientID)}
                             id="google-icon"
                         >
                             <GoogleLogo  id="googlelogo"/>    
-                        </Link> 
-                        <TwitterLogin loginUrl={redirect_login}
+                        </MuiLink> 
+                        <TwitterLogin loginUrl={redirect_signup}
                             onFailure={onFailed} onSuccess={onSuccess}
                             requestTokenUrl={request_token}
                             className="twitter-button"

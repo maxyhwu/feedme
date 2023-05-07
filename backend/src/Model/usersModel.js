@@ -8,7 +8,6 @@ export default (sequelize, DataTypes) => {
         },
         email: {
             type:DataTypes.STRING,
-            allowNull: false,
             unique: true
         },
         password:{
@@ -22,6 +21,11 @@ export default (sequelize, DataTypes) => {
         photoPID:{
             type: DataTypes.INTEGER,
             defaultValue: -1,
+            allowNull: false
+        },
+        twitterID:{
+            type: DataTypes.STRING,
+            defaultValue: '',
             allowNull: false
         },
         secretKey:{

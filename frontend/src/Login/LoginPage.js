@@ -11,7 +11,7 @@ import {
 import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
 import { FormattedMessage } from "react-intl";
-import {UseLoginContext} from '../Context/LoginCnt';
+import { UseLoginContext } from '../Context/LoginCnt';
 import {Link as MuiLink} from '@mui/material';
 import { toast } from 'react-toastify';
 import { apiLogin } from '../axios/noToken';
@@ -50,6 +50,7 @@ export default function LoginPage () {
                 className: 'toast-success'
             })
             navigate('/')
+            // window.location.reload(true)
         }
         if (notfound) {
             toast.info('尚未註冊 ! ', {
@@ -80,17 +81,16 @@ export default function LoginPage () {
         .then(function(response) {
             const [data, token] = response
             console.log('success')
-            changeData({userName: data.userName, email: data.email, token: token, fridge: data.fridge})
+            changeData({userName: data.userName, email: data.email, token: token, fridge: data.fridge, favorite: data.favorite})
             changeLogin(true)
             setAlert(true, false, false)
         })
         .catch((reason) => {
-            console.log(reason)
             let response = reason.response
             if (response.status === 400) {
-                if (response.data.messege === 'Password incorrect'){
+                if (response.data.message === 'Password incorrect'){
                     setAlert(false, false, true)
-                } else if (response.data.messege === 'User name not found'){
+                } else if (response.data.message === 'User name not found'){
                     setAlert(false, true, false)
                 }
             }
@@ -107,15 +107,26 @@ export default function LoginPage () {
         setClick(!click)
     }
 
+    const setTwitterAlert = (succ, notf) => {
+        setSuccess(succ)
+        setNotFound(notf)
+    }
+
     const onSuccess = (response) => {
         // window.close()
-        navigate('/')
-        window.location.reload(true)
+        // navigate('/')
+        // window.location.reload(true)
         const token = response.headers.get('x-auth-token');
         response.json().then(user => {
-        if (token) {
-            console.log(user)
-        }
+            if (token) {
+                changeData({userName: user.userName, email: user.email, token: token, fridge: user.fridge, favorite: user.favorite})
+                changeLogin(true)
+                setTwitterAlert(true, false)
+            } else {
+                if (response.messege === 'User not register'){
+                    setTwitterAlert(false, true)
+                } 
+            }
         });
     };
 

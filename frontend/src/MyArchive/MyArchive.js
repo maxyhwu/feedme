@@ -1,9 +1,11 @@
 import './MyArchive.css';
 import { useState } from "react";
 
+import { UseDataContext } from "../Context/useUserData"
 
 const MyArchive = () => {
-    const [favList, setFavList] = useState([]);
+    const { data } = UseDataContext();
+    const favList = data.favList;
 
     return (
         <div className="favRecipeList">

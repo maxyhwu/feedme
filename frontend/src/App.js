@@ -1,13 +1,12 @@
 // import './App.css';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./Header/Header";
-import Footer from "./Footer/Footer";
+// import Footer from "./Footer/Footer";
 import styled from 'styled-components';
-import {LoginContextProvider} from './Context/LoginCnt'
-import { LangContextProvider } from "./Context/LangCnt";
-import { DataContextProvider } from "./Context/useUserData";
 import Main from "./main/main";
 import { ToastContainer} from 'react-toastify';
+import React, { useEffect } from 'react';
+import { UseGeneralContext } from "./Context/generalTables";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -21,11 +20,18 @@ const Wrapper = styled.div`
 
 function App() {
   // const [isLoggedIn, setIsLoggedIn] = useState(false); // you can play with this and click the user icon on the header
+  const { changeIngredientTable } = UseGeneralContext();
+  const { changeCategoryTable } = UseGeneralContext();
+  const { changeLabelTable } = UseGeneralContext();
+
+  useEffect(() => {
+    changeIngredientTable();
+    changeCategoryTable();
+    changeLabelTable();
+  });
 
   return (
-    <LangContextProvider>
-    <LoginContextProvider>
-      <DataContextProvider>
+    <>
       <ToastContainer />
       <Wrapper id="rootMain">
         <Router>
@@ -36,9 +42,7 @@ function App() {
           {/* <Footer/> */}
         </Router>
       </ Wrapper>
-      </DataContextProvider>
-    </LoginContextProvider>
-    </LangContextProvider>
+    </>
   );
 }
 

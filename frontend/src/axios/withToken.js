@@ -1,7 +1,11 @@
 import axios from 'axios';
+import { getUserData } from '../Cookies/cookies';
 
 var token = ''
 token = JSON.parse(localStorage.getItem('user')).token
+if ( getUserData().token ){
+    token = JSON.parse(localStorage.getItem('user')).token
+}
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}` 
 
 const userRequest = axios.create({

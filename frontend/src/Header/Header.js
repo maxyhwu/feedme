@@ -2,7 +2,6 @@ import "./Header.css";
 import { useNavigate } from "react-router-dom";
 import FeedMe from '../assets/FeedMe.jpg';
 import { BiUserCircle } from 'react-icons/bi'
-import { AiOutlineStar, AiFillStar } from 'react-icons/ai'
 import { UseLoginContext } from "../Context/LoginCnt";
 import { UseLangContext } from "../Context/LangCnt";
 import AccountMenu from "../Components/menu";

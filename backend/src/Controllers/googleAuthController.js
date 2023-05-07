@@ -37,18 +37,13 @@ const googleOauthHandler = async (req,res,next) => {
     const userEmail = await User.findOne({
         where: {
             email: email,
+            provider: "Google"
         },
     });
+    console.log(userEmail)
     if (!userEmail) {
         return next(new AppError("This email haven't sign up", 401));
     }
-
-    const data = {
-        googleName: name,
-        provider: 'Google',
-    };
-
-    User.update(data, {where: {email: email}});
 
     const user = await User.findOne({
         where: {
@@ -58,10 +53,10 @@ const googleOauthHandler = async (req,res,next) => {
     if (!user) {
         return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error`);
     }
-      let token = jwt.sign({ id:user.id, iat: 1645869827, userEmail:user.email}, process.env.secretKey, {   //用jwt來為使用者生成token, secretKey是用來為jtw加密
-        expiresIn: 1 *24 * 60 * 60 * 1000       //expiresIn 是設定有效期限
+      let token = jwt.sign({ id:user.id, email:user.email}, process.env.secretKey, {   //用jwt來為使用者生成token, secretKey是用來為jtw加密
+        expiresIn: '14d'      //expiresIn 是設定有效期限
     })
-    res.cookie('token', token);
+    res.cookie('user', {userName: user.userName, email: user.email, token: user.token, fridge: user.fridge});
     res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}${pathUrl}`);
     } catch (err) {
         console.log('Failed to authorize Google User', err);
@@ -97,7 +92,6 @@ const googleOauthSignupHandler = async (req,res,next) => {
     const userName = await User.findOne({
         where: {
             email: email,
-            verified: 'true'
         },
     });
     if (userName) {
@@ -111,37 +105,17 @@ const googleOauthSignupHandler = async (req,res,next) => {
         provider: 'Google',
     };
 
-    const sameNameUser = await User.findOne({
+    const sameEmailUser = await User.findOne({
         where: {
             // [Op.or]: [{userName: name}, {authorName: name}]
-            userName: name,
             email: email
         }});
-    if ( sameNameUser !== null){
-        console.log('sameuser')
-        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error`);
+    if ( sameEmailUser !== null){
+        console.log('same email')
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error/same-email`);
     }else{
-        const userExist = await User.findOne({
-            where: {
-                email: email,
-                provider: "local"
-            },
-        });
-        if (userExist !== null) {
-            await User.update(data, {where:{email: email}})
-        } else {
-            const emailExist = await User.findOne({
-                where: {
-                    email: email,
-                },
-            });
-            if (emailExist == null) {
-                await User.create(data);
-            } else {
-                return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error`);
-            }
-        }
-        res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}${pathUrl}`);
+        await User.create(data)
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}${pathUrl}`);
     }
 
     } catch (err) {
