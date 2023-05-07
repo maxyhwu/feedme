@@ -1,5 +1,5 @@
 import db from "../Model";
-import {isEmailValid} from '../Services/userService'
+import {isEmailValid} from '../services/userService'
 import dotenv from "dotenv-defaults";
 import jwt from "jsonwebtoken";
 dotenv.config();

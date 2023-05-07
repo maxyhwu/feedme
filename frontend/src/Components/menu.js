@@ -31,7 +31,7 @@ export default function AccountMenu() {
   }
   const handleLogoutClick = () => {
     changeLogin(false)
-    changeData({})
+    localStorage.removeItem('user')
     removeUserData()
   }
   return (

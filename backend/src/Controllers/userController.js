@@ -2,7 +2,7 @@ import dotenv from "dotenv-defaults";
 dotenv.config();
 import db from "../Model"
 import bcrypt from "bcrypt";
-import {sendForgetPWEmail} from "../Services/userService"
+import {sendForgetPWEmail} from "../services/userService"
 import { uploads, destroys } from "../Config/cloudinary";
 import fs from 'fs'
 import { upload } from '../Config/multerConfig'
@@ -139,10 +139,21 @@ const editCurrentFridge = async (req, res) => {
     try{
         const user = req.user;
         const {fridge} = req.body
+        console.log(fridge)
         await User.update({
             fridge
         },{ where: { id: user.id}})
         return res.status(200).send({message:"Edit fridge successfully."})
+    } catch (err) {
+        console.log('editFridge error');
+        console.log(err);
+    }
+}
+
+const getUserData = async (req, res) => {
+    try{
+        const user = req.user;
+        return res.status(200).send({ userName:user.userName, email: user.email, fridge: user.fridge, favorite: user.favorite })
     } catch (err) {
         console.log('editFridge error');
         console.log(err);
@@ -240,4 +251,5 @@ export {
     updateCloud,
     setPassword,
     getMyImage,
+    getUserData
 }

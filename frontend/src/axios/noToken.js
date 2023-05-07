@@ -12,11 +12,17 @@ const generalRequest = axios.create({
     baseURL: 'http://localhost:8000/api/general'
 });
 
+const envRequest = axios.create({
+    baseURL: 'https://post-articles.onrender.com/api/env',
+    // baseURL: 'http://localhost:8080/api/env'
+  });
+
 export const apiLoginTwitter = data => loginRequest.post('/twitter', data);
 export const apiLogin = data => userRequest.post('/login', data);
 export const apiSignUp = data => userRequest.post('/signup', data);
 export const apiForgetPW = data => userRequest.post('/forgotpw', data);
 export const apiSetPW = data => userRequest.post('/setPassword', data);
+export const apiGetEnv = data => envRequest.post('/getenv', data);
 
 export const apiAllIngredient = () => generalRequest.get('/ingredient');
 export const apiAllCategory = () => generalRequest.get('/category');

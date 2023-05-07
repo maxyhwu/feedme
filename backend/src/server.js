@@ -7,6 +7,7 @@ import userRoutes from './Routes/userRoutes';
 import dataRoutes from './Routes/dataRoutes';
 import generalRoutes from './Routes/generalRoutes';
 import recipeRoutes from './Routes/recipeRoutes';
+import envRoutes from './Routes/envRoutes';
 
 console.log("dotenv = ", process.env.PORT)
 const PORT = process.env.PORT || 8000
@@ -31,6 +32,7 @@ app.use('/api/data', dataRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/general', generalRoutes);
 app.use('/api/recipe', recipeRoutes);
+app.use('/api/env', envRoutes)
 
 // db.sequelize.sync({ alter: true }).then(() => {    //drop table if exists
 //     console.log("db has been sync")
@@ -40,6 +42,11 @@ db.sequelize.sync().then(() => {    //drop table if exists
   console.log("db has been sync")
 })
 
+
+app.use(express.static(path.join(__dirname, "..", "..", "UI", "build")));
+app.get("/*", (_, res) => {
+  res.sendFile(path.join(__dirname,"..","..", "UI", "build", "index.html"));
+});
 
 app.listen(PORT, function(err){
   if (err) console.log("Error in server setup")
