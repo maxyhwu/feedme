@@ -6,7 +6,7 @@ import {
 import HomePage from '../HomePage/HomePage';
 import MyFridge from '../MyFridge/myfridge';
 import Settings from '../Settings/Settings';
-import Recipe from '../Recipe/recipe';
+import { Recipe } from '../Recipe/recipe';
 import LoginPage from '../Login/LoginPage';
 // import SignupPage from '../Signup/SignupPage';
 import RegisterPage from "../RegisterPage/RegisterPage";

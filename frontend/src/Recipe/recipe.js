@@ -113,4 +113,4 @@ const Recipe = () => {
     )
 }
 
-export default Recipe;
+export { Recipe, RecipeObject };

@@ -123,7 +123,7 @@ export default function LoginPage () {
                 changeLogin(true)
                 setTwitterAlert(true, false)
             } else {
-                if (response.messege === 'User not register'){
+                if (user.message === 'User not register'){
                     setTwitterAlert(false, true)
                 } 
             }

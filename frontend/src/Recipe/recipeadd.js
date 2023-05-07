@@ -26,7 +26,7 @@ function RecipeAddButton() {
     const handleButtonClick = () => {
         setShowModal(true);
     };
-      
+
     const handleImageChange = (event) => {
         event.preventDefault();
     
@@ -110,10 +110,10 @@ function RecipeAddButton() {
             ingredients: ingredients,
             instructions: instructions
         };
-      
+
         // Add code to save recipe data
         console.log(recipeData);
-      
+
         // Close the modal
         handleCloseModal();
     };
@@ -126,7 +126,7 @@ function RecipeAddButton() {
         setServingSize("");
         setIngredients([{name: "", quantity: ""}]);
         setInstructions([""]);
-      
+
         // Close the modal
         setShowModal(false);
     };

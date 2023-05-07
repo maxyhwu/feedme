@@ -7,9 +7,14 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { BiUserCircle } from 'react-icons/bi'
 import { useNavigate } from "react-router-dom";
+import { UseLoginContext } from "../Context/LoginCnt"
+import { UseDataContext } from "../Context/useUserData"
+import { removeUserData } from "../Cookies/cookies"
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const {changeLogin} = UseLoginContext()
+  const {changeData} = UseDataContext()
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -23,6 +28,11 @@ export default function AccountMenu() {
   }
   const handleSettingClick = () => {
     navigate('/settings')
+  }
+  const handleLogoutClick = () => {
+    changeLogin(false)
+    changeData({})
+    removeUserData()
   }
   return (
     <>
@@ -80,6 +90,9 @@ export default function AccountMenu() {
         </MenuItem>
         <MenuItem onClick={handleSettingClick}>
           <Avatar/> Settings
+        </MenuItem>
+        <MenuItem onClick={handleLogoutClick}>
+          <Avatar/> Logout
         </MenuItem>
       </Menu>
     </>
