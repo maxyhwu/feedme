@@ -20,7 +20,7 @@ const Wrapper = styled.div`
 
 function App() {
   // const [isLoggedIn, setIsLoggedIn] = useState(false); // you can play with this and click the user icon on the header
-  const { changeIngredientTable } = UseGeneralContext();
+  const { changeIngredientTable, ingredientTable } = UseGeneralContext();
   const { changeCategoryTable } = UseGeneralContext();
   const { changeLabelTable } = UseGeneralContext();
 
@@ -28,7 +28,7 @@ function App() {
     changeIngredientTable();
     changeCategoryTable();
     changeLabelTable();
-  });
+  }, []);
 
   return (
     <>
