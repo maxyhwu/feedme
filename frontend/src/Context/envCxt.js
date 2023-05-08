@@ -29,7 +29,7 @@ const EnvContextProvider = (props) => {
         const fetchData = async () => {
             const response = await getEnv();
             if (response.success) {
-                setEnv(response.data)
+                setEnv({google: response.google, twitter: response.twitter})
             }
         }
 
