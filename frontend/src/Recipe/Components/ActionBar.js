@@ -13,7 +13,7 @@ const ActionBar = ({ recipeID }) => {
     }
 
     const shareRecipe = () => {
-        navigator.clipboard.writeText(`http://localhost:3000/detail?recipeID=${recipeID}`);
+        navigator.clipboard.writeText(`http://localhost:3000/detail/${recipeID}`);
         toast.success('Copied to Clipboard!', {
             position: "bottom-center",
             autoClose: 1000,

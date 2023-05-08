@@ -299,9 +299,9 @@ const FridgeRenderButton = ({ ingredient, origData }) => {
                 return acc;
             }, origData);
             // console.log(newData);
-            // const response = apiEditFridge({ fridge: newData });
+            const response = apiEditFridge({ fridge: newData });
             // response.then((value) => {
-            //     console.log(value)
+            //     console.log(value);
             // })
             changeData({ ...data, fridge: newData });
         }
@@ -309,9 +309,9 @@ const FridgeRenderButton = ({ ingredient, origData }) => {
             // remove
             delete origData[curIngredId];
             // console.log(origData);
-            // const response = apiEditFridge({ fridge: origData });
+            const response = apiEditFridge({ fridge: origData });
             // response.then((value) => {
-            //     console.log(value)
+            //     console.log(value);
             // })
             changeData({ ...data, fridge: origData });
         }

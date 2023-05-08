@@ -191,11 +191,13 @@ const SearchBar = () => {
                 <div className="search-filter" onClick={handleFilterToggle}>
                     <div className="default-filter">
                         <IoFilterCircleOutline style={{ height: '1.5em' }}/>
-                        {filter}
+                        <div className="default-filter-text">
+                            {filter}
+                        </div>
                         <IoIosArrowDown />
                     </div>
                     <ul className='filter-list' 
-                        style={ toggle? {maxHeight: '300px'}:{}}
+                        style={ toggle? {maxHeight: '300px', width: '100%'}:{}}
                         ref={dropdownRefFilter}
                     >
                         <li className='options' onClick={handleSelect} value='name'>Name</li>
