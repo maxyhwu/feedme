@@ -13,6 +13,7 @@ import {
   getCommentUserData
 } from "../Controllers/recipeController";
 import { checkToken } from "../Middleware/userAuth";
+import { upload } from "../Config/multerConfig";
 
 const router = Router();
 
@@ -27,7 +28,7 @@ router.get("/query/ingredient", queryByIngredients);
 router.put("/update/likeCount", checkToken, updateLikeCount);
 router.put("/update/recipe", checkToken, updateRecipe);
 
-router.put("/add/new", checkToken, addRecipe);  // postman tested
+router.put("/add/new", checkToken, upload.single("image"), addRecipe);  // postman tested
 router.put("/add/comment", checkToken, addComment);
 
 router.get("/get/comment-data", getCommentUserData)

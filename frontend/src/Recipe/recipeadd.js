@@ -188,7 +188,7 @@ function RecipeAddButton() {
                 overview: '',
                 servingSize: parseInt(servingSize),
                 instructions: instructions.map(row => row.instruction),
-                image: 'recipeImage',
+                image: recipeImage,
                 video: '',
                 labels: [],
                 ingredients: formatIngredients,
@@ -196,9 +196,9 @@ function RecipeAddButton() {
 
             // Add code to save recipe data
             const response = apiAddNew(recipeData);
-            // response.then((value) => {
-            //     console.log(value);
-            // }) 
+            response.then((value) => {
+                console.log(value);
+            }) 
             console.log(recipeData);
 
             // Close the modal

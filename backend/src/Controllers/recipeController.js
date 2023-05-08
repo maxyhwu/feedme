@@ -212,6 +212,8 @@ const addRecipe = async (req, res) => {
 
   const add = req.body; // { title: , overview: }
   const user = req.user;
+  const file = req.file;
+  console.log(file)
   const query =
     'INSERT INTO "Recipes" ("userID", "title", "overview", "servingSize", "instructions", "image", "video", "likeCount", "labels", "ingredients", "comments") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, DEFAULT)';
   const values = [
@@ -233,9 +235,9 @@ const addRecipe = async (req, res) => {
     // await client.query(query, values);
     await pool.query(query, values);
 
-    res.send("success");
+    // res.send("success");
   } catch (err) {
-    res.send("fail");
+    // res.send("fail");
     console.log(err);
   // } finally {
   //   client.end();
