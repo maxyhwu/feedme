@@ -60,3 +60,36 @@
     max-height:100%;
     max-width:100%;
 }
+
+.page-pagination {
+    display: flex;
+    justify-content: center;
+    margin: 100px;
+}
+  
+.page-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0 0.5rem;
+    font-size: 1.4rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+  
+.page-number:hover {
+    background-color: #eee;
+}
+  
+.page-number-active {
+    background-color: #E3DBF0;
+    /* color: #fff; */
+}
+
+.page-number-disabled {
+    opacity: 0.5;
+    cursor: default;
+}
