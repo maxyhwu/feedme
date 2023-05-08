@@ -4,11 +4,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FiHeart, FiBookmark, FiShare } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 import "./ActionBar.css"
+import { apiKeepRecipes, apiRemoveLikeRecipes, apiUpdateAddLikeCount, apiUpdateMinusLikeCount } from "../../axios/withToken"
 
 const ActionBar = ({ recipeID }) => {
     const [activeHeart, setActiveHeart] = useState(false);
-    
+
     const toggleHeart = () => {
+        if (activeHeart === true) {
+            apiUpdateMinusLikeCount({id: recipeID});
+            apiRemoveLikeRecipes({id: recipeID});
+        } else {
+            apiUpdateAddLikeCount({id: recipeID});
+            apiKeepRecipes({id: recipeID})
+        }
         setActiveHeart(!activeHeart);
     }
 

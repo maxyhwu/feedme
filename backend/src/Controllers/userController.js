@@ -165,21 +165,41 @@ const getUserData = async (req, res, next) => {
     }
 }
 
-const keepRecipe = async (req, res) => {
+const keepLikeRecipe = async (req, res) => {
     try{
         const articleID = req.body.id;
         const user = req.user;
         let like = User.findOne({
             attributes: ['like'],
             where: { id: user.id }
-        })
-        like.push(articleID.toString())
+        });
+        like.push(articleID.toString());
         await User.update({
             like
-        },{ where: { id: user.id}})
-        return res.status(200).send({message:"Keep recipe successfully."})
+        },{ where: { id: user.id}});
+        return res.status(200).send({message:"keepLikeRecipe successfully."})
     } catch (err) {
-        console.log('keepRecipe error');
+        console.log('keepLikeRecipe error');
+        console.log(err);
+    }
+}
+
+const removeLikeRecipe = async (req, res) => {
+    try{
+        const articleID = req.body.id;
+        const user = req.user;
+        let like = User.findOne({
+            attributes: ['like'],
+            where: { id: user.id }
+        });
+        const removeIdx = like.indexOf(articleID.toString());
+        like.splice(removeIdx, 1);
+        await User.update({
+            like
+        },{ where: { id: user.id}});
+        return res.status(200).send({message:"removeLikeRecipe successfully."})
+    } catch (err) {
+        console.log('removeLikeRecipe error');
         console.log(err);
     }
 }
@@ -251,7 +271,8 @@ export {
     editCurrentFridge,
     sendEmail,
     editProfile,
-    keepRecipe,
+    keepLikeRecipe,
+    removeLikeRecipe,
     testUpload,
     updateCloud,
     setPassword,

@@ -76,7 +76,7 @@ const queryByIngredients = async (req, res) => {
 
 // recipe update
 const updateAddLikeCount = async (req, res) => {
-  const {id} = req.query;
+  const {id} = req.body;
   const query = 'UPDATE "Recipes" SET "likeCount" = "likeCount" + 1 WHERE id = $1';
   const values = [parseInt(id)];
 
@@ -90,7 +90,7 @@ const updateAddLikeCount = async (req, res) => {
 };
 
 const updateMinusLikeCount = async (req, res) => {
-  const {id} = req.query;
+  const {id} = req.body;
   const query = 'UPDATE "Recipes" SET "likeCount" = "likeCount" - 1 WHERE id = $1';
   const values = [parseInt(id)];
 
