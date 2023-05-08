@@ -3,7 +3,7 @@ import './SearchBar.css';
 import { IoIosArrowDown } from 'react-icons/io';
 import { IoFilterCircleOutline } from 'react-icons/io5';
 import { apiAllIngredient } from '../../axios/noToken';
-// import { apiQueryRecipeByName } from '../../axios/withToken';
+import { apiQueryRecipeByName, apiQueryRecipeByIngredient } from '../../axios/withToken';
 import Spinner from './Spinner';
 
 
@@ -152,14 +152,17 @@ const SearchBar = () => {
     }, []);
 
     const handleSearch = async(filter, input) => {
-        console.log('search by', filter);
         if (filter === 'Name'){
-            // const result = await apiQueryRecipeByName({ input })//非完整有包含嗎
-            // console.log('name search result', result);
+            // console.log('search by', filter);
+            console.log('search recipe', input);
+            const result = await apiQueryRecipeByName(input.toLowerCase())
+            console.log('name search result', result.data.rows);
+            // setRecipeData(result.data.rows);
         } else {
+            // console.log('search by', filter);
             let searchResult = []
             ingredients.forEach((ingred) => {
-                if (ingred.ingredName.toLowerCase().includes(input)) {
+                if (ingred.ingredName.toLowerCase().includes(input.toLowerCase())) {
                     // console.log('searched ingredients: ', ingred.ingredName);
                     searchResult.push(ingred)
                 }
@@ -172,6 +175,11 @@ const SearchBar = () => {
             setSearchedIng(searchResult);
             // console.log('searched', searchedIng);
         }
+    }
+
+    const clickIngredToSearch = async(id) => {
+        const searchResult = await apiQueryRecipeByIngredient(id);
+        console.log('id', id, 'result', searchResult);
     }
 
     return(
@@ -202,7 +210,7 @@ const SearchBar = () => {
                         setSearchedIng([]);
                         handleSearch(filter, e.target.value);}}/>
             </div>
-            <div className="search-dropdown" style={ inputDropdown? {maxHeight: '50vh'}:{maxHeight: '0'}}>
+            <div className="search-dropdown" style={ inputDropdown? {maxHeight: 'fit-content'}:{maxHeight: '0'}}>
                 <div className="search-ingredients" ref={dropdownRefInput}>
                     {loading && <Spinner />}
                     {resultIsEmpty && <EmptyResultDisplay />}
@@ -211,6 +219,7 @@ const SearchBar = () => {
                             return <button type="button"
                                 key={idx} 
                                 className="ingredient" 
+                                onClick={() => clickIngredToSearch(ingred.id)}
                                 style={{ background: ingredientswColor.find(obj => obj.id === ingred.categoryID).color }}>
                                     {ingred.ingredName}
                             </button>
