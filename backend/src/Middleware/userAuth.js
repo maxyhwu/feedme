@@ -47,7 +47,6 @@ const existEmail = async (req, res, next) => {
 
 const emailValid = async (req, res, next) => {
     try {
-        // console.log("body", req.body)
         const {is_valid_format, is_mx_found, is_smtp_valid} = await isEmailValid(req.body.email)
         const valid = is_valid_format.value && is_mx_found.value && is_smtp_valid.value
         if ( valid ) {
@@ -66,6 +65,7 @@ const emailValid = async (req, res, next) => {
 const checkToken = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '')
+        console.log("token",token)
         const decoded = jwt.verify(token, process.env.secretKey)
         const user = await User.findOne({
             where:{
