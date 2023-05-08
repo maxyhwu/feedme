@@ -38,8 +38,7 @@ export default (sequelize, DataTypes) => {
             type: DataTypes.JSON,
         },
         comments:{
-            type: DataTypes.JSON,
-            defaultValue: {}
+            type: DataTypes.ARRAY(DataTypes.JSON),
         },
         createdAt: {
             type: DataTypes.DATE,

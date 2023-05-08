@@ -212,8 +212,8 @@ const addRecipe = async (req, res) => {
 
   const add = req.body; // { title: , overview: }
   const user = req.user;
-  const file = req.file;
-  console.log(file)
+  const file = req.image;
+  console.log("file",file)
   const query =
     'INSERT INTO "Recipes" ("userID", "title", "overview", "servingSize", "instructions", "image", "video", "likeCount", "labels", "ingredients", "comments") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, DEFAULT)';
   const values = [
