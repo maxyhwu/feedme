@@ -104,8 +104,7 @@ const updateMinusLikeCount = async (req, res) => {
 };
 
 const updateRecipe = async (req, res) => {
-  const {title, overview, servingSize, instructions, image, video, labels, ingredients, id} = req.query;
-  console.log(title,overview, servingSize, instructions, image, video, labels, ingredients, id);
+  const {title, overview, servingSize, instructions, image, video, labels, ingredients, id} = req.body;
   const query =
     'UPDATE "Recipes" SET "title" = $1, "overview" = $2, "servingSize" = $3, "instructions" = $4, "image" = $5, "video" = $6, "labels" = $7, "ingredients" = $8 WHERE "id" = $9';
   const values = [

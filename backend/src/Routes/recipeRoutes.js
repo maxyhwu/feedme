@@ -27,7 +27,7 @@ router.get("/query/ingredient", queryByIngredients); //tobecont
 
 router.put("/update/addlikeCount", checkToken, updateAddLikeCount);
 router.put("/update/minuslikeCount", checkToken, updateMinusLikeCount);
-router.put("/update/recipe", checkToken, updateRecipe); //isn't checked yet
+router.put("/update/recipe", checkToken, updateRecipe);
 
 router.put("/add/new", checkToken, addRecipe);
 router.put("/add/comment", checkToken, addComment);
