@@ -150,10 +150,14 @@ const editCurrentFridge = async (req, res) => {
     }
 }
 
-const getUserData = async (req, res) => {
+const getUserData = async (req, res, next) => {
     try{
-        const user = req.user;
-        return res.status(200).send({ userName:user.userName, email: user.email, fridge: user.fridge, favorite: user.favorite })
+        const user = req.user
+        req.auth = {
+            id:user.id,
+            userEmail:user.email
+        }
+        next()
     } catch (err) {
         console.log('editFridge error');
         console.log(err);
