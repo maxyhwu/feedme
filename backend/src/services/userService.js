@@ -1,11 +1,33 @@
-import {validate} from "deep-email-validator"
+// import {validate} from "deep-email-validator"
+// import EmailValidator from 'deep-email-validator'
 import nodemailer from'nodemailer'
+import axios from 'axios';
 import dotenv from "dotenv-defaults";
 dotenv.config();
 
 const isEmailValid = async (email) => {
-    console.log("email: ", email);
-    return validate(email);
+    console.log(process.env.emailAPI)
+    const response = await axios.get(`https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.emailAPI}&email=${email}`)
+                    .then(response => {
+                        return response.data
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+    // const transporter = nodemailer.createTransport({
+    //     host: 'smtp.gmail.com',
+    //     port: 465,
+    //     secure: true,
+    //     auth: {
+    //       user: process.env.gmail,
+    //       pass: process.env.mailPw
+    //     }
+    //   });
+    //   const emailValidator = new EmailValidator(transporter);
+    // console.log("email: ", email);
+    // return emailValidator.validate(email);
+    console.log(response.is_valid_format)
+    return response;
 }
 
 const sendForgetPWEmail = async (email, token) => {

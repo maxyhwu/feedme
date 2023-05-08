@@ -20,8 +20,6 @@ import { UseEnvContext } from '../Context/envCxt';
 
 export default function LoginPage () {
     const {env} = UseEnvContext();
-    console.log(env)
-    console.log(env?.google.redirect_login)
     // const redirect_uri = process.env.REACT_APP_GOOGLE_OAUTH_REDIRECT
     // const clientID = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID
     // const redirect_login = process.env.REACT_APP_TWITTER_REDIRECT_LOGIN

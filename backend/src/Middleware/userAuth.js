@@ -48,16 +48,13 @@ const existEmail = async (req, res, next) => {
 const emailValid = async (req, res, next) => {
     try {
         // console.log("body", req.body)
-        const {valid, reason, validators} = await isEmailValid(req.body.email)
-        console.log("valid", valid)
-        console.log("reason", reason)
-        console.log("validators", validators)
+        const {is_valid_format, is_mx_found, is_smtp_valid} = await isEmailValid(req.body.email)
+        const valid = is_valid_format.value && is_mx_found.value && is_smtp_valid.value
         if ( valid ) {
             next();
         }else{
             res.status(400).send({
                 message: "Please provide a valid email address.",
-                reason: validators[reason].reason
             })
         }
     } catch (error) {
