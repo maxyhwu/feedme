@@ -144,6 +144,7 @@ const Recipe = () => {
         const getRecipeTop = (page) => {
             const promise = apiQueryRecipeByTop(page);
             promise.then((value) => {
+                // console.log(value.data.rows);
                 setApiRecipeData((prevData) => {
                     const newData = [...prevData];
                     const startIndex = (page - 1) * 15;

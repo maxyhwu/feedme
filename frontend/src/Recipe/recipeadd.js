@@ -183,23 +183,37 @@ function RecipeAddButton() {
                 acc[curIngredId] = [cur.quantity]
                 return acc;
             }, {});
-            const recipeData = {
-                title: recipeName,
-                overview: '',
-                servingSize: parseInt(servingSize),
-                instructions: instructions.map(row => row.instruction),
-                image: recipeImage,
-                video: '',
-                labels: [],
-                ingredients: formatIngredients,
-            };
+            // const recipeData = {
+            //     title: recipeName,
+            //     overview: '',
+            //     servingSize: parseInt(servingSize),
+            //     instructions: instructions.map(row => row.instruction),
+            //     image: recipeImage,
+            //     video: '',
+            //     labels: [],
+            //     ingredients: formatIngredients,
+            // };
+            // console.log(recipeData);
+
+            const recipeFormData = new FormData();
+            recipeFormData.append('title', recipeName);
+            recipeFormData.append('overview', '');
+            recipeFormData.append('servingSize', parseInt(servingSize));
+            recipeFormData.append('instructions', instructions.map(row => row.instruction));
+            recipeFormData.append('image', recipeImage);
+            recipeFormData.append('video', '');
+            recipeFormData.append('labels', []);
+            recipeFormData.append('ingredients', formatIngredients);
+            // for (var pair of recipeFormData.entries()) {
+            //     console.log(pair[0]+': '+pair[1]);
+            // }
 
             // Add code to save recipe data
-            const response = apiAddNew(recipeData);
-            response.then((value) => {
-                console.log(value);
-            }) 
-            console.log(recipeData);
+            const response = apiAddNew(recipeFormData);
+            // response.then((value) => {
+            //     console.log(value);
+            // }) 
+            window.location.reload(true);
 
             // Close the modal
             // handleCloseModal();
