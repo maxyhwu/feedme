@@ -18,7 +18,7 @@ const recipeRequest = axios.create({
     baseURL: 'http://localhost:8000/api/recipe'
 });
 
-export const apiEditProfile = data => userRequest.post('/edit-profile', data);
+export const apiEditProfile = data => userRequest.put('/edit-profile', data);
 export const apiEditFridge = data => userRequest.put('/edit-fridge', data);
 export const apiKeepRecipes = data => userRequest.put('/keep-recipes', data);
 export const apiUploadImage = formData => userRequest.post('/upload-image', formData);

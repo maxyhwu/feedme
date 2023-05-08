@@ -13,7 +13,6 @@ const getBackendData = async () => {
         .then(response=> {
             if (response.status === 200) {
                 const token = response.headers.get('x-auth-token');
-                console.log("tokennnnnnn:", token)
                 return [response.data, token]
             }
         })
@@ -43,7 +42,6 @@ const getData = () =>  {
     } else if ( Object.keys(getUserData()).length !== 0){
         userData = getUserData();
     }
-    console.log("getData", userData)
     return userData     
 }
 

@@ -102,8 +102,9 @@ const setPassword = async (req, res) => {
 const editProfile = async (req, res) => {
     try{
         const user = req.user;
-        const {favorite, notiRec, notiIngre} = req.body
+        const {userName, favorite, notiRec, notiIngre} = req.body
         User.update({
+            userName,
             favorite,
             notiRec,
             notiIngre,
