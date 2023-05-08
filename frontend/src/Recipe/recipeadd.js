@@ -183,6 +183,7 @@ function RecipeAddButton() {
                 acc[curIngredId] = [cur.quantity]
                 return acc;
             }, {});
+            console.log("recipeImage:   ",recipeImage)
             const recipeData = {
                 title: recipeName,
                 overview: '',
@@ -193,6 +194,8 @@ function RecipeAddButton() {
                 labels: [],
                 ingredients: formatIngredients,
             };
+
+            console.log(recipeData)
 
             // Add code to save recipe data
             const response = apiAddNew(recipeData);

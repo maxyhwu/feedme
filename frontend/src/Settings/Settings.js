@@ -47,9 +47,10 @@ const Settings = () => {
     LabelValid: true,
   }]);
 
-  const setAlert = (succ, fail) => {
+  const setAlert = (succ, fail, isvalid) => {
     setSaveSuccess(succ)
     setAuthFail(fail)
+    setValid(isvalid)
 }
 
 useEffect ( () => {
@@ -76,7 +77,7 @@ useEffect ( () => {
     return apiEditProfile(credentials)
     .then(response=> {
         if (response.status === 200) {
-            setAlert(true, false)
+            setAlert(true, false, true)
             return response.data
         }
     })
@@ -84,7 +85,7 @@ useEffect ( () => {
         let response = reason.response
         if (response.status === 400) {
             if (response.data.message === 'Please authenticate.'){
-                setAlert(false, true)
+                setAlert(false, true, true)
             }
         }
     })
@@ -177,6 +178,7 @@ useEffect ( () => {
     if (addData.length > 1) {
         const newData = addData.filter(row => row.id !== rowId);
         setData(newData);
+        setFavoritNum(favoritNum-1)
     }
     else {
         resetData();
@@ -188,7 +190,7 @@ useEffect ( () => {
     addData.forEach(data => {
       const label = labelTable.find(label => label.labelName.toLowerCase() === data.label.toLowerCase())
       if (label === undefined){
-        setValid(false)
+        setAlert(false, false, false)
         return null
       }
       const id = label.id
@@ -202,6 +204,7 @@ useEffect ( () => {
     e.preventDefault();
     const newFavorite = updateFavoriteData(addData)
     if (newFavorite !== null ){
+      console.log('newFavorite', newFavorite)
       await saveProfile({userName: data.userName, favorite: newFavorite, notiRec: data.notiRec, notiIngre: data.notiIngre})
     }
     setClick(!click)
