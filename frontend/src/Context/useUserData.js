@@ -33,7 +33,9 @@ const getData = () =>  {
         email:'',
         token:'',
         fridge: null,
-        favorite: []
+        favorite: [],
+        notiRec: true,
+        notiIngre: true
     }
     if (localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') !== null ){
         const dataString = localStorage.getItem('user');
@@ -49,7 +51,7 @@ const DataContextProvider =  (props) => {
     useEffect(() => {
         const fetchData = async () => {
             const [response, token] = await getBackendData()
-            let input = {userName: response.userName, email: response.email, fridge: response.fridge, token: token, favorite: response.favorite}
+            let input = {userName: response.userName, email: response.email, fridge: response.fridge, token: token, favorite: response.favorite, notiRec: response.notiRec, notiIngre: response.notiIngre}
             changeData(input)
         }
         if ( (localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') !== null) || (Object.keys(getUserData()).length !== 0) ){
