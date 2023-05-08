@@ -60,7 +60,7 @@ function Main() {
           {/* <Route path = 'registerr' element = {<Register/>} /> */}
           <Route path='SetPassword' element={ <SetPassword/> } />
           <Route path="modal" element={ <Detail/> }/>
-          <Route path="detail" element={ <RecipeDetailShare/> }/>
+          <Route path="detail/:recipeID" element={ <RecipeDetailShare /> } />
           <Route path='recipe-search-result' element={ <Recipe_search_result/> } />
           <Route path='/myfridge' element={
                   <ProtectedRoutes>

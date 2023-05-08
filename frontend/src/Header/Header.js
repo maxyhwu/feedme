@@ -70,12 +70,12 @@ const Header = () => {
 
                         <NavDropdown title="Recipes" id="basic-nav-dropdown">
                             <NavDropdown.Item onClick={() => {navigate('/recipe')}}>All Recipes</NavDropdown.Item>
-                            <NavDropdown.Item onClick={() => {navigate('/recipe')}}>Suggest For You</NavDropdown.Item>
-                            <NavDropdown.Item onClick={() => {navigate('/recipe')}}>My Recipes</NavDropdown.Item>
+                            {/* {login?<NavDropdown.Item onClick={() => {navigate('/recipe')}}>Suggest For You</NavDropdown.Item>:<></>} */}
+                            {/* {login?<NavDropdown.Item onClick={() => {navigate('/recipe')}}>My Recipes</NavDropdown.Item>:<></>} */}
                             {login?<NavDropdown.Item onClick={() => {navigate('/myArchive')}}>Saved Recipes</NavDropdown.Item>:<></>}
                         </NavDropdown>
 
-                        <Nav.Link onClick={() => {navigate('/myfridge')}}>My Fridge</Nav.Link>
+                        {login?<Nav.Link onClick={() => {navigate('/myfridge')}}>My Fridge</Nav.Link>:<></>}
 
                         {/* Language selector and user icon when expanded */}
                         <div className="ms-auto d-none d-lg-flex">
