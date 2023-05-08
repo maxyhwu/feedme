@@ -1,13 +1,12 @@
 import axios from 'axios';
 import { getUserData } from '../Cookies/cookies';
 
-var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhbnRob255LmhjLnd1QGdtYWlsLmNvbSIsImlhdCI6MTY4MzI5NDI2NiwiZXhwIjoxNjg0NTAzODY2fQ.Ukw_o-KWKQG9rEvqVIlgf4V9SiCpdhLmf3hFEUzOxbs';
-
-if (localStorage.getItem('user')) {
+var token = ''
+if ( (localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') !== null) ){
     token = JSON.parse(localStorage.getItem('user')).token
-    if ( getUserData().token ){
-        token = JSON.parse(localStorage.getItem('user')).token
-    }
+}
+if ( (Object.keys(getUserData()).length !== 0) ){
+    token = getUserData().token
 }
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}` 
 
