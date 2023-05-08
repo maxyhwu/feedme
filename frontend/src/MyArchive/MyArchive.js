@@ -1,8 +1,8 @@
 import './MyArchive.css';
 
 import { UseDataContext } from "../Context/useUserData"
-
 import { RecipeObject } from '../Recipe/recipe';
+import { apiQueryRecipeByID } from '../axios/withToken'
 
 const MyArchive = () => {
     const { data } = UseDataContext();
@@ -12,13 +12,14 @@ const MyArchive = () => {
         <div className="favRecipeList">
             {
                 (favList == null || favList.length === 0)
-                ? <h3 id="nothingText">Nothing here.<br/> Go find some nice recipes.</h3> 
+                ? <h3 id="nothingText">Nothing here.<br/> Go find some mouthwatering recipes.</h3> 
                 : <div className="savedRecipes-container">
-                    {favList.map((recipe) => (
+                    {favList.map(async (recipeID) => {
+                        const recipe = await apiQueryRecipeByID(recipeID);
                         <RecipeObject
                             recipe={recipe}
                         />
-                    ))}
+                    })}
                 </div>
             }
         </div>
