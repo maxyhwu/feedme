@@ -47,14 +47,15 @@ const queryByLabel = async (req, res) => {
 
 const queryTopLikeCount = async (req, res) => {
   const {page} = req.query;
-  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id ORDER BY likeCount DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY';
+  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id ORDER BY "likeCount" DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY';
   const values = [(parseInt(page) - 1) * 15];
 
   try {
     const { rows } = await pool.query(query, values);
     res.send({ rows });
   } catch (err) {
-    res.send("fail");
+    // res.send("fail");
+    res.send(err);
     console.log(err);
   }
 };
@@ -74,9 +75,23 @@ const queryByIngredients = async (req, res) => {
 };
 
 // recipe update
-const updateLikeCount = async (req, res) => {
+const updateAddLikeCount = async (req, res) => {
   const {id} = req.query;
-  const query = 'UPDATE "Recipes" SET likeCount = likeCount + 1 WHERE id = $1';
+  const query = 'UPDATE "Recipes" SET "likeCount" = "likeCount" + 1 WHERE id = $1';
+  const values = [parseInt(id)];
+
+  try {
+    await pool.query(query, values);
+    res.send("success");
+  } catch (err) {
+    res.send("fail");
+    console.log(err);
+  }
+};
+
+const updateMinusLikeCount = async (req, res) => {
+  const {id} = req.query;
+  const query = 'UPDATE "Recipes" SET "likeCount" = "likeCount" - 1 WHERE id = $1';
   const values = [parseInt(id)];
 
   try {
@@ -89,16 +104,17 @@ const updateLikeCount = async (req, res) => {
 };
 
 const updateRecipe = async (req, res) => {
-  const {title,overview, servingSize, instructions, image, video, labels, ingredients, id} = req.query;
+  const {title, overview, servingSize, instructions, image, video, labels, ingredients, id} = req.query;
+  console.log(title,overview, servingSize, instructions, image, video, labels, ingredients, id);
   const query =
-    'UPDATE "Recipes" SET title = $1, overview = $2, servingSize = $3, instructions = $4, image = $5, video = $6, labels = $7, ingredients = $8 WHERE id = $9';
+    'UPDATE "Recipes" SET "title" = $1, "overview" = $2, "servingSize" = $3, "instructions" = $4, "image" = $5, "video" = $6, "labels" = $7, "ingredients" = $8 WHERE "id" = $9';
   const values = [
-    (title).toString(),
-    (overview).toString(),
+    title.toString(),
+    overview.toString(),
     parseInt(servingSize),
-    (instructions).toString(),
-    (image).toString(),
-    (video).toString(),
+    instructions,
+    image.toString(),
+    video.toString(),
     labels,
     ingredients,
     parseInt(id),
@@ -137,7 +153,7 @@ const getCommentUserData = async (req, res) => {
 const addComment = async (req, res) => {
   const {comment, Rid} = req.body;
   const query =
-    'UPDATE "Recipes" SET comment = $1 WHERE id = $2';
+    'UPDATE "Recipes" SET "comments" = $1 WHERE "id" = $2';
   const values = [
     comment,
     parseInt(Rid)
@@ -186,7 +202,8 @@ export {
   queryByLabel,
   queryTopLikeCount,
   queryByIngredients,
-  updateLikeCount,
+  updateAddLikeCount,
+  updateMinusLikeCount,
   updateRecipe,
   addComment,
   addRecipe,
