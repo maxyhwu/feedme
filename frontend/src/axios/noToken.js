@@ -13,8 +13,7 @@ const generalRequest = axios.create({
 });
 
 const envRequest = axios.create({
-    baseURL: 'https://post-articles.onrender.com/api/env',
-    // baseURL: 'http://localhost:8080/api/env'
+    baseURL: 'http://localhost:8000/api/env'
   });
 
 export const apiLoginTwitter = data => loginRequest.post('/twitter', data);

@@ -20,11 +20,16 @@ import { UseEnvContext } from '../Context/envCxt';
 
 export default function LoginPage () {
     const {env} = UseEnvContext();
-
-    const redirect_uri = env?.REACT_APP_GOOGLE_OAUTH_REDIRECT
-    const clientID = env?.REACT_APP_GOOGLE_OAUTH_CLIENT_ID
-    const redirect_login = env?.REACT_APP_TWITTER_REDIRECT_LOGIN
-    const request_token = env?.REACT_APP_TWITTER_REQUEST_URL
+    console.log(env)
+    console.log(env?.google.redirect_login)
+    // const redirect_uri = process.env.REACT_APP_GOOGLE_OAUTH_REDIRECT
+    // const clientID = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID
+    // const redirect_login = process.env.REACT_APP_TWITTER_REDIRECT_LOGIN
+    // const request_token = process.env.REACT_APP_TWITTER_REQUEST_URL
+    const redirect_uri = env?.google.redirect_login
+    const clientID = env?.google.clientID
+    const redirect_login = env?.twitter.redirect_login
+    const request_token = env?.twitter.request_url
     const location = useLocation();
     const [checkbox, setCheckbox] = useState(false);
     let from = ((location.state)?.from?.pathname) || '/';
