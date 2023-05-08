@@ -10,20 +10,23 @@ import {
 import { BsPerson } from "react-icons/bs";
 import { TbBellRinging } from "react-icons/tb";
 import { FormattedMessage } from "react-intl";
+import { UseDataContext } from "../Context/useUserData";
+import { apiEditProfile } from '../axios/withToken';
 
 //import css
 import "./Settings.css";
 
 const Settings = () => {
+  const {data} = UseDataContext()
   // username hook
-  const [UserName, setUserName] = useState("abcdefg");
+  const [UserName, setUserName] = useState(data.userName);
   // interested categories hook
   const [Categories, setCategories] = useState(
-    "Taiwanese Food, Rice, Desserts"
+    data.favorite
   );
   // notification hooks
-  const [RecipeNoti, setRecipeNoti] = useState(false);
-  const [IngredNoti, setIngredNoti] = useState(true);
+  const [RecipeNoti, setRecipeNoti] = useState(data.notiRec);
+  const [IngredNoti, setIngredNoti] = useState(data.notiIngre);
 
   // handleChange function
   const handleChange = (func) => (event) => {
