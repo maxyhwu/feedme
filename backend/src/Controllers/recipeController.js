@@ -219,7 +219,7 @@ const addRecipe = async (req, res) => {
     (add.title).toString(),
     (add.overview).toString(),
     parseInt(add.servingSize),
-    (add.instructions).toString(),
+    (add.instructions),
     // add.instructions,
     (add.image).toString(),
     (add.video).toString(),

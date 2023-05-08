@@ -64,8 +64,8 @@ const FridgeAddIngredientRow = ({ rowId, ingredient, matchingIngredients, quanti
 
 
 const FridgeAddIngredientModal = () => {
-    const {data} = UseDataContext();
-    const {fridge} = data;
+    const { data, changeData } = UseDataContext();
+    const { fridge } = data;
     const [noTokenData, setNoTokenData] = useState({});
     const [allIngredients, setAllIngredients] = useState([]);
     const [ingredient2id, setIngredient2Id] = useState([]);
@@ -99,8 +99,9 @@ const FridgeAddIngredientModal = () => {
     // console.log(noTokenData);
     // console.log(allIngredients);
     // console.log(ingredient2id);
-    // console.log(origData)
-    console.log(fridge)
+    // console.log(origData);
+    // console.log(data);
+    // console.log(fridge);
     
     const handleOpenModal = () => {
         setShowModal(true);
@@ -227,7 +228,9 @@ const FridgeAddIngredientModal = () => {
         }, origData);
 
         apiEditFridge({ fridge: newData });
-        console.log(newData);
+        changeData({ ...data, fridge: newData });
+        // console.log(newData);
+        // console.log(data);
     } 
 
     const handleSave = () => {
@@ -239,7 +242,7 @@ const FridgeAddIngredientModal = () => {
 
         if (handleCheckValidSave(addData, allIngredients)) {
             updateFridgeData(origData, addData, ingredient2id);
-            // window.location.reload(true);
+            window.location.reload(true);
             // handleCloseModal();
         }
     }
