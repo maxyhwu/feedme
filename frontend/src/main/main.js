@@ -62,7 +62,7 @@ function Main() {
           <Route path="modal" element={ <Detail/> }/>
           <Route path="detail" element={ <RecipeDetailShare/> }/>
           <Route path='recipe-search-result' element={ <Recipe_search_result/> } />
-          {/* <Route path='/myfridge' element={
+          <Route path='/myfridge' element={
                   <ProtectedRoutes>
                     <MyFridge/>
                   </ProtectedRoutes>} />
@@ -77,11 +77,15 @@ function Main() {
           <Route path='/mypage' element={
                  <ProtectedRoutes>
                     <MyPage/>
-                  </ProtectedRoutes>}/> */}
-            <Route path='myfridge' element={<MyFridge/>} />
-            <Route path='settings' element={<Settings/>} />
-            <Route path='myArchive' element={<MyArchive/>} />
-            <Route path='mypage' element={<MyPage/>} />
+                  </ProtectedRoutes>}/>
+          <Route path='/preference' element={
+                 <ProtectedRoutes>
+                    <Preference/>
+                  </ProtectedRoutes>}/>
+            {/* <Route path='myfridge' element={<MyFridge/>} /> */}
+            {/* <Route path='settings' element={<Settings/>} /> */}
+            {/* <Route path='myArchive' element={<MyArchive/>} /> */}
+            {/* <Route path='mypage' element={<MyPage/>} /> */}
             <Route path="preference" element={ <Preference/> }/>
         </Routes>
     </IntlProvider>
