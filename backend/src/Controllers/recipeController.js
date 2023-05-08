@@ -1,5 +1,7 @@
 import { pool } from "../Clients/pool";
 import dotenv from "dotenv-defaults";
+import { uploads } from "../Config/cloudinary";
+import fs from 'fs'
 dotenv.config();
 
 // recipe query
@@ -168,33 +170,46 @@ const addComment = async (req, res) => {
   }
 };
 
+const uploaderImage = async(file) => await uploads(file, 'Recipe');
+
 // add recipe
 const addRecipe = async (req, res) => {
   console.log(req.body)
-  const {title, overview, servingSize, instructions, image, video, labels, ingredients} = req.body;
+  const {title, overview, servingSize, instructions, video, labels, ingredients} = req.body;
   const user = req.user;
-  const file = req.image;
-  console.log("file",file)
-  console.log(image)
+  const file = req.file;
+  let url = ''
+  const { path } = file;
+  const newPath = await uploaderImage(path)
+  url = newPath
+  console.log(url)
+  fs.unlinkSync(path)
+  console.log(instructions)
+  // console.log(JSON.stringify(instructions))
+  // console.log(JSON.parse(instructions))
   const query =
-    'INSERT INTO "Recipes" ("userID", "title", "overview", "servingSize", "instructions", "image", "video", "likeCount", "labels", "ingredients", "comments") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, DEFAULT)';
+    'INSERT INTO "Recipes" ("userID", "title", "overview", "servingSize", "instructions", "image", "imagePID", "video", "likeCount", "labels", "ingredients", "comments") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, DEFAULT)';
   const values = [
     user.id,
     title.toString(),
     overview.toString(),
     parseInt(servingSize),
+    // JSON.stringify(instructions).intructions,
     instructions,
-    image.toString(),
+    url.url,
+    url.id,
     video.toString(),
     0,
     labels,
     ingredients,
   ];
+  console.log(values)
   try {
     await pool.query(query, values);
     res.send("success");
   } catch (err) {
-    // res.send("fail");
+    res.send("fail");
+    console.log('add recipe failed')
     console.log(err);
   }
 };

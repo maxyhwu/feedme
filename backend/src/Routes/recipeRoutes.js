@@ -30,8 +30,8 @@ router.put("/update/addlikeCount", checkToken, updateAddLikeCount);
 router.put("/update/minuslikeCount", checkToken, updateMinusLikeCount);
 router.put("/update/recipe", checkToken, updateRecipe);
 
-router.put("/add/new", checkToken, addRecipe);
-router.put("/add/comment", checkToken, upload.single("image"), addComment);
+router.put("/add/new", checkToken, upload.single('image'), upload.array('instructions[]'), addRecipe);
+router.put("/add/comment", checkToken, addComment);
 
 router.get("/get/comment-data", getCommentUserData);
 

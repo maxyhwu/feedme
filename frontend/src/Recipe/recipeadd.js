@@ -199,7 +199,11 @@ function RecipeAddButton() {
             recipeFormData.append('title', recipeName);
             recipeFormData.append('overview', '');
             recipeFormData.append('servingSize', parseInt(servingSize));
-            recipeFormData.append('instructions', instructions.map(row => row.instruction));
+            // recipeFormData.append('instructions', {instructions: instructions.map(row => row.instruction)});
+            // recipeFormData.append('instructions', instructions.map(row => row.instruction))
+            instructions.forEach(value => {
+                recipeFormData.append('instructions[]', value);
+            });
             recipeFormData.append('image', recipeImage);
             recipeFormData.append('video', '');
             recipeFormData.append('labels', []);

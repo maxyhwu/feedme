@@ -21,6 +21,11 @@ export default (sequelize, DataTypes) => {
             defaultValue: '',
             allowNull: false,
         },
+        imagePID:{
+            type: DataTypes.STRING,
+            defaultValue: '',
+            allowNull: false
+        },
         video:{
             type: DataTypes.STRING,
             defaultValue: '',
