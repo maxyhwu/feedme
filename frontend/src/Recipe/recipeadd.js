@@ -188,19 +188,18 @@ function RecipeAddButton() {
                 overview: '',
                 servingSize: parseInt(servingSize),
                 instructions: instructions.map(row => row.instruction),
-                image: 'recipeImage',
+                image: recipeImage,
                 video: '',
                 labels: [],
                 ingredients: formatIngredients,
             };
 
             // Add code to save recipe data
-            // const response = apiAddNew(recipeData);
-            // response.then((value) => {
-            //     console.log(value);
-            // }) 
-            // console.log(recipeData);
-            window.location.reload(true);
+            const response = apiAddNew(recipeData);
+            response.then((value) => {
+                console.log(value);
+            }) 
+            console.log(recipeData);
 
             // Close the modal
             // handleCloseModal();

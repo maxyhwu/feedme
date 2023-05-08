@@ -14,6 +14,7 @@ import {
   getCommentUserData
 } from "../Controllers/recipeController";
 import { checkToken } from "../Middleware/userAuth";
+import { upload } from "../Config/multerConfig";
 
 const router = Router();
 
