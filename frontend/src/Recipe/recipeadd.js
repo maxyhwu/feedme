@@ -195,11 +195,12 @@ function RecipeAddButton() {
             };
 
             // Add code to save recipe data
-            const response = apiAddNew(recipeData);
+            // const response = apiAddNew(recipeData);
             // response.then((value) => {
             //     console.log(value);
             // }) 
-            console.log(recipeData);
+            // console.log(recipeData);
+            window.location.reload(true);
 
             // Close the modal
             // handleCloseModal();
@@ -269,13 +270,13 @@ function RecipeAddButton() {
                                 <td>
                                     {ingredients.map((ingredient, index) => (
                                         <div key={index} className="recipe-add-ingredient">
-                                            <input list='matching-ingredients' type="text" placeholder={`Ingredient ${index + 1}`} value={ingredient.name} onChange={(event) => handleIngredientNameChange(event, index)} className={`${ingredient.nameValid ? 'recipeadd-input' : 'recipeadd-input-invalid'}`} />
+                                            <input list='matching-ingredients' type="text" maxLength="255" placeholder={`Ingredient ${index + 1}`} value={ingredient.name} onChange={(event) => handleIngredientNameChange(event, index)} className={`${ingredient.nameValid ? 'recipeadd-input' : 'recipeadd-input-invalid'}`} />
                                             <datalist id='matching-ingredients'>
                                                 {matchingIngredients.map(ingredient => (
                                                     <option key={ingredient} value={ingredient} />
                                                 ))}
                                             </datalist>
-                                            <input type="text" placeholder="Quantity" value={ingredient.quantity} onChange={(event) => handleIngredientQuantityChange(event, index)} className={`${ingredient.quantityValid ? 'recipeadd-input' : 'recipeadd-input-invalid'}`} />
+                                            <input type="text" placeholder="Quantity" maxLength="255" value={ingredient.quantity} onChange={(event) => handleIngredientQuantityChange(event, index)} className={`${ingredient.quantityValid ? 'recipeadd-input' : 'recipeadd-input-invalid'}`} />
                                             <button type="button" className='btn btn-secondary recipeadd-btn recipeadd-btn' onClick={() => handleRemoveIngredient(index)}><FaTrashAlt /></button>
                                         </div>
                                     ))}
@@ -290,7 +291,7 @@ function RecipeAddButton() {
                                 <td>
                                     {instructions.map((instruction, index) => (
                                         <div key={index} className="recipe-add-instruction">
-                                            <textarea placeholder={`Step ${index + 1}`} value={instruction.instruction} onChange={(event) => handleInstructionChange(event, index)} className={`${instruction.instructionValid ? 'recipeadd-textarea' : 'recipeadd-textarea-invalid'}`} />
+                                            <textarea placeholder={`Step ${index + 1}`} value={instruction.instruction} maxLength="255" onChange={(event) => handleInstructionChange(event, index)} className={`${instruction.instructionValid ? 'recipeadd-textarea' : 'recipeadd-textarea-invalid'}`} />
                                             <button type="button" className='btn btn-secondary recipeadd-instruction-btn' onClick={() => handleRemoveInstruction(index)}><FaTrashAlt /></button>
                                         </div>
                                     ))}

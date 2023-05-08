@@ -1,9 +1,11 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import "./detail.css"
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import ActionBar from "./Components/ActionBar";
-import { useNavigate } from "react-router-dom";
 import { recipe_data } from "../Recipe/recipedata";
-
+import { UseGeneralContext } from '../Context/generalTables'
+import { apiQueryRecipeByID } from '../axios/withToken'
 
 const Detail = () => {
 
@@ -181,8 +183,11 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
 
 
 const RecipeDetailShare = () => {
-    const recipe = recipe_data[2];
-    const { recipeID, recipeName, serving, ingredients, instructions, image_link } = recipe;
+    const { recipeID } = useParams();
+    const { id2ingredient } = UseGeneralContext();
+    const [apiRecipe, setApiRecipe] = useState({ recipeName: '' });
+    const recipe = recipe_data[recipeID];
+    const { recipeName, serving, ingredients, instructions, image_link } = recipe;
     const comments = [
         {
             name: 'Teresa',
@@ -196,8 +201,30 @@ const RecipeDetailShare = () => {
         }
     ]
 
+    useEffect(() => {
+        const response = apiQueryRecipeByID(recipeID);
+        response.then((value) => {
+            // console.log(value);
+            const { id, title, overview, servingSize, instructions, image, video, likeCount, labels, ingredients, comments, createdAt, updatedAt, userName } = value.data.rows[0];
+            const formatIngredients = Object.entries(ingredients).map(([id, amount]) => [id2ingredient[id], ...amount]);
+            setApiRecipe({
+                recipeID: id,
+                recipeName: title,
+                serving: servingSize,
+                ingredients: formatIngredients,
+                instructions: instructions,
+                image_link: image,
+            });
+        })
+    }, [recipeID])
+
+    // console.log(recipeID);
+    // console.log(recipe);
+    // console.log(apiRecipe);
+
     return(
         <>
+            { recipeName !== '' &&
             <div className="modal-container">
                 <div className="modal-left">
                     <div className="top-part">
@@ -234,7 +261,15 @@ const RecipeDetailShare = () => {
                     </div>
                 </div>
             </div>
+            }
 
+            { recipeName === '' &&
+                <div>
+                    <h1>
+                        {/* Some message TBD */}
+                    </h1>
+                </div>
+            }
         </> 
     )
 }

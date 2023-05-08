@@ -5,7 +5,7 @@ dotenv.config();
 // recipe query
 const qeuryByID = async (req, res) => {
   const {id} = req.query;
-  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "userID" = "Users".id and "Recipes".id = $1';
+  const query = 'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "userID" = "Users".id and "Recipes".id = $1';
   const values = [parseInt(id)];
 
   try {
@@ -19,7 +19,7 @@ const qeuryByID = async (req, res) => {
 
 const qeuryByName = async (req, res) => {
   const {title} = req.query;
-  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and "Recipes"."title" = $1';
+  const query = 'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and "Recipes"."title" = $1';
   const values = [title.toString()];
 
   try {
@@ -33,7 +33,7 @@ const qeuryByName = async (req, res) => {
 
 const queryByLabel = async (req, res) => {
   const {label} = req.query;
-  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and $1 = ANY("Recipes"."labels")';
+  const query = 'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and $1 = ANY("Recipes"."labels")';
   const values = [parseInt(label)];
 
   try {
@@ -47,7 +47,7 @@ const queryByLabel = async (req, res) => {
 
 const queryTopLikeCount = async (req, res) => {
   const {page} = req.query;
-  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id ORDER BY "likeCount" DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY';
+  const query = 'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id ORDER BY "likeCount" DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY';
   const values = [(parseInt(page) - 1) * 15];
 
   try {
@@ -62,7 +62,7 @@ const queryTopLikeCount = async (req, res) => {
 
 const queryByIngredients = async (req, res) => {
   const {ingredient} = req.query;
-  const query = 'SELECT title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and AND jsonb_exists(ingredients, $1)';
+  const query = 'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and AND jsonb_exists(ingredients, $1)';
   const values = [parseInt(ingredient)];
 
   try {
