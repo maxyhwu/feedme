@@ -31,7 +31,7 @@ router.put("/update/minuslikeCount", checkToken, updateMinusLikeCount);
 router.put("/update/recipe", checkToken, updateRecipe);
 
 router.put("/add/new", checkToken, addRecipe);
-router.put("/add/comment", checkToken, addComment);
+router.put("/add/comment", checkToken, upload.single("image"), addComment);
 
 router.get("/get/comment-data", getCommentUserData);
 
