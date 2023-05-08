@@ -9,6 +9,7 @@ import '../Recipe/Components/SearchBar.css'
 import { data } from "./fridgedata";
 import { getNoTokenData } from '../utils/useNoTokenApis'
 import { UseDataContext } from "../Context/useUserData";
+import { UseGeneralContext } from "../Context/generalTables"
 import { apiEditFridge } from '../axios/withToken'
 
 Modal.setAppElement('#root');
@@ -134,22 +135,22 @@ const FridgeOrderButton = ({ orderBy, isActive, onClick }) => {
 };
 
 
-const FridgeEditIngredientRow = ({ rowId, quantity, purchaseDate, expirationDate, onInputChange, onDelete }) => {
+const FridgeEditIngredientRow = ({ rowId, quantity, purchaseDate, expirationDate, quantityValid, purchaseDateValid, expirationDateValid, onInputChange, onDelete }) => {
     return (
         <div>
             <div className='d-inline-block'>
                 <div className='d-inline-block fridgeadd-label'>Quantity</div>
-                <input className='fridgeadd-input' type="number" min="0" name="quantity" value={quantity} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                <input className={`${quantityValid ? 'fridgeadd-input' : 'fridgeadd-input-invalid'}`} type="text" name="quantity" value={quantity} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
             </div>
     
             <div className='d-inline-block'>
                 <div className='d-inline-block fridgeadd-label'>Purchase Date</div>
-                <input className='fridgeadd-input' type="date" name="purchaseDate" value={purchaseDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                <input className={`${purchaseDateValid ? 'fridgeadd-input' : 'fridgeadd-input-invalid'}`} type="date" name="purchaseDate" value={purchaseDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
             </div>
     
             <div className='d-inline-block'>
                 <div className='d-inline-block fridgeadd-label'>Expiration Date</div>
-                <input className='fridgeadd-input' type="date" name="expirationDate" value={expirationDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
+                <input className={`${expirationDateValid ? 'fridgeadd-input' : 'fridgeadd-input-invalid'}`} type="date" name="expirationDate" value={expirationDate} onChange={(e) => onInputChange(rowId, e.target.name, e.target.value)} />
             </div>
     
             <div className='d-inline-block'>
@@ -163,11 +164,14 @@ const FridgeEditIngredientRow = ({ rowId, quantity, purchaseDate, expirationDate
 };
 
 
-const FridgeRenderButton = ({ ingredient }) => {
+const FridgeRenderButton = ({ ingredient, origData }) => {
+    const { ingredient2id } = UseGeneralContext();
+    const { data, changeData } = UseDataContext();
     const [modalIsOpen, setModalOpenState] = useState(false);
     const [nextID, setNextID] = useState(20000);
-    const [fridgeData, setFridgeData] = useState(ingredient.raw);
-    const [fridgeDataCopy, setFridgeDataCopy] = useState(ingredient.raw);
+    const [currentIngredient, setCurrentIngredient] = useState(ingredient.name);
+    const [updateData, setUpdateData] = useState(ingredient.raw);
+    const [updateDataCopy, setUpdateDataCopy] = useState(ingredient.raw);
 
     const checkExpirationStatus = (expirationDate) => {
         let expirationStatus = {
@@ -199,30 +203,18 @@ const FridgeRenderButton = ({ ingredient }) => {
     const handleCloseModal = () => {
         // const confirmed = window.confirm('Are you sure you want to discard all changes?');
         // if (confirmed) {
-        //     setFridgeData(fridgeDataCopy);
+        //     setUpdateData(updateDataCopy);
         //     setModalOpenState(false);
         // }
 
-        setFridgeData(fridgeDataCopy);
-        setModalOpenState(false);
-        
-    }
-
-    const handleSave = () => {
-        // const confirmed = window.confirm('Are you sure you want to save all changes?');
-        // if (confirmed) {
-        //     setFridgeDataCopy(fridgeData);
-        //     setModalOpenState(false);
-        // }
-
-        setFridgeDataCopy(fridgeData);
+        setUpdateData(updateDataCopy);
         setModalOpenState(false);
     }
 
     const handleInputChange = (rowId, fieldName, value) => {
         // Modify the data in state based on the input change
-        const newData = fridgeData.map((row) => {
-            if (row.userIngredientID === rowId) {
+        setUpdateData(prevData => prevData.map((row) => {
+            if (row.pseudoId === rowId) {
                 return {
                     ...row,
                     [fieldName]: value,
@@ -230,27 +222,117 @@ const FridgeRenderButton = ({ ingredient }) => {
             } else {
                 return row;
             }
-        });
-
-        setFridgeData(newData);
-    }
-
-    const handleRemoveRow = (rowId) => {
-        const newData = fridgeData.filter(row => row.userIngredientID !== rowId);
-        setFridgeData(newData);
+        }));
     }
 
     const handleAddRow = () => {
         // Add a new row to the data array in state
         const newRow = {
-            userIngredientID: nextID,
-            quantity: 0,
+            pseudoId: nextID,
+            name: currentIngredient,
+            quantity: '',
             purchaseDate: '',
             expirationDate: '',
+            quantityValid: true,
+            purchaseDateValid: true,
+            expirationDateValid: true,
         };
 
-        setFridgeData([...fridgeData, newRow]);
+        setUpdateData([...updateData, newRow]);
         setNextID(nextID + 1);
+    }
+
+    const handleRemoveRow = (rowId) => {
+        const newData = updateData.filter(row => row.pseudoId !== rowId);
+        setUpdateData(newData);
+    }
+
+    const handleCheckValidSave = (newData) => {
+        let valid = true;
+        newData.forEach((row) => {
+            if (row.quantity !== '') {
+                handleInputChange(row.pseudoId, 'quantityValid', true);
+            }
+            else {
+                handleInputChange(row.pseudoId, 'quantityValid', false);
+                valid = false;
+            }
+
+            if (row.purchaseDate !== '') {
+                handleInputChange(row.pseudoId, 'purchaseDateValid', true);
+            }
+            else {
+                handleInputChange(row.pseudoId, 'purchaseDateValid', false);
+                valid = false;
+            }
+
+            if (row.expirationDate !== '' && row.purchaseDate <= row.expirationDate) {
+                handleInputChange(row.pseudoId, 'expirationDateValid', true);
+            }
+            else {
+                handleInputChange(row.pseudoId, 'expirationDateValid', false);
+                valid = false;
+            }
+        });
+
+        return valid;
+    };
+
+    const updateFridgeData = (origData, updateData, ingredient2id) => {
+        const curIngredId = ingredient2id[currentIngredient];
+        // console.log(curIngredId);
+        origData[curIngredId] = [];
+        if (updateData && updateData.length > 0) {
+            // update
+            const newData = updateData.reduce((acc, cur) => {
+                const curEncodedData = {
+                    'count': cur.quantity,
+                    'purchase_date': cur.purchaseDate,
+                    'expire_date': cur.expirationDate,
+                };
+                if (acc.hasOwnProperty(curIngredId)) {
+                    acc[curIngredId].push(curEncodedData)
+                }
+                else {
+                    acc[curIngredId] = [curEncodedData]
+                }
+                return acc;
+            }, origData);
+            // console.log(newData);
+            // const response = apiEditFridge({ fridge: newData });
+            // response.then((value) => {
+            //     console.log(value)
+            // })
+            changeData({ ...data, fridge: newData });
+        }
+        else {
+            // remove
+            delete origData[curIngredId];
+            // console.log(origData);
+            // const response = apiEditFridge({ fridge: origData });
+            // response.then((value) => {
+            //     console.log(value)
+            // })
+            changeData({ ...data, fridge: origData });
+        }
+    } 
+
+    const handleSave = () => {
+        // const confirmed = window.confirm('Are you sure you want to save all changes?');
+        // if (confirmed) {
+        //     setUpdateDataCopy(updateData);
+        //     setModalOpenState(false);
+        // }
+
+        if (handleCheckValidSave(updateData)) {
+            // console.log(origData);
+            // console.log(updateData);
+            // console.log(ingredient2id);
+
+            updateFridgeData(origData, updateData, ingredient2id);
+            window.location.reload(true);
+            // setModalOpenState(false);
+        }
     }
 
     const bgColor = paletteCategory2Color[ingredient.category];
@@ -279,13 +361,16 @@ const FridgeRenderButton = ({ ingredient }) => {
 
                 <div className="modal-body">
                     <div className="recipeadd-table">
-                        {fridgeData.map((row) => (
+                        {updateData.map((row) => (
                             <FridgeEditIngredientRow
-                                key={row.userIngredientID}
-                                rowId={row.userIngredientID}
+                                key={row.pseudoId}
+                                rowId={row.pseudoId}
                                 quantity={row.quantity}
                                 purchaseDate={row.purchaseDate}
                                 expirationDate={row.expirationDate}
+                                quantityValid={row.quantityValid}
+                                purchaseDateValid={row.purchaseDateValid}
+                                expirationDateValid={row.expirationDateValid}
                                 onInputChange={handleInputChange}
                                 onDelete={handleRemoveRow}
                             />
@@ -307,12 +392,12 @@ const FridgeRenderButton = ({ ingredient }) => {
 };
 
 
-const FridgeRenderBlock = ({ title, ingredients }) => {
+const FridgeRenderBlock = ({ title, ingredients, origData }) => {
     return (
         <div className="fridge-render-block">
             <div className="fridge-category-title">{title}</div>
             {ingredients.map((ingredient, index) => (
-                <FridgeRenderButton key={index} ingredient={ingredient} />
+                <FridgeRenderButton key={index} ingredient={ingredient} origData={origData} />
             ))}
             <hr />
         </div>
@@ -320,7 +405,7 @@ const FridgeRenderBlock = ({ title, ingredients }) => {
 };
 
 
-const FridgeRender = ({ fridgeData, renderCondition }) => {
+const FridgeRender = ({ fridgeData, origData, renderCondition }) => {
     const groupDataByRenderOrder = (filteredData) => {
         const { renderOrder } = renderCondition;
         const groupedData = {};
@@ -378,6 +463,7 @@ const FridgeRender = ({ fridgeData, renderCondition }) => {
             key={index}
             title={groupKey}
             ingredients={groupedData[groupKey]}
+            origData={origData}
         />
     ));
   
@@ -390,14 +476,10 @@ const FridgeRender = ({ fridgeData, renderCondition }) => {
 
 
 const MyFridge = () => {
-    // const {data} = UseDataContext();
-    // const {fridge} = data;
-    const [noTokenData, setNoTokenData] = useState({});
-    const [allIngredients, setAllIngredients] = useState([]);
-    const [ingredient2id, setIngredient2Id] = useState([]);
-    const [id2ingredient, setId2Ingredient] = useState([]);
+    const { data } = UseDataContext();
+    const { fridge } = data;
     const [origData, setOrigData] = useState({});
-    const [fridgeData, setFridgeData] = useState([]);
+    const [fridgeData, setUpdateData] = useState([]);
     const [searchBarValue, setSearchBarValue] = useState('');
     const [renderFilter, setRenderFilter] = useState(allCategories);
     const [renderOrder, setRenderOrder] = useState('Category');
@@ -426,46 +508,51 @@ const MyFridge = () => {
     useEffect(() => {
         const promise = getNoTokenData();
         const transformData = (origFridgeData, id2ingredient, ingredient2category) => {
+            var pseudoId = 0;
             const transformedFridgeData = [];
             for (const key in origFridgeData) {
                 const ingredientId = parseInt(key);
-                const ingredientName = id2ingredient[ingredientId];
-                const ingredientCategory = ingredient2category[ingredientName];
-                const content = origFridgeData[key].map((item) => ({
+                const name = id2ingredient[ingredientId];
+                const category = ingredient2category[name];
+                const raw = origFridgeData[key].map((item) => ({
+                    pseudoId: pseudoId++,
+                    name: name,
+                    category: category,
                     quantity: item.count,
                     purchaseDate: item.purchase_date,
                     expirationDate: item.expire_date,
-                }));
+                    quantityValid: true,
+                    purchaseDateValid: true,
+                    expirationDateValid: true,
+                })).sort((a, b) => new Date(a.purchaseDate) - new Date(b.purchaseDate));
                 const earliestExpirationDate = Math.min(...origFridgeData[key].map((item) => new Date(item.expire_date)));
-                const earliestExpirationDateString = new Date(earliestExpirationDate).toISOString().substring(0, 10);
+                const purchaseDate = new Date(earliestExpirationDate).toISOString().substring(0, 10);
                 const earliestPurchasenDate = Math.min(...origFridgeData[key].map((item) => new Date(item.purchase_date)));
-                const earliestPurchasenDateString = new Date(earliestPurchasenDate).toISOString().substring(0, 10);
+                const expirationDate = new Date(earliestPurchasenDate).toISOString().substring(0, 10);
 
                 transformedFridgeData.push({
+                    pseudoId,
                     ingredientId,
-                    ingredientName,
-                    ingredientCategory,
+                    name,
+                    category,
                     earliestExpirationDate,
-                    earliestExpirationDateString,
+                    purchaseDate,
                     earliestPurchasenDate,
-                    earliestPurchasenDateString,
-                    content,
+                    expirationDate,
+                    raw,
                 });
             }
             return transformedFridgeData;
         }
         
         promise.then((value) => {
-            setNoTokenData(value);
-            setAllIngredients(value.ingredientDataWithCateName.map(row => row.ingredName));
-            setIngredient2Id(value.ingredient2id);
-            setId2Ingredient(value.id2ingredient);
-            setFridgeData(transformData(rawData, value.id2ingredient, value.ingredient2category));
+            setUpdateData(transformData(fridge, value.id2ingredient, value.ingredient2category));
+            setOrigData(fridge);
         })
-    }, [])
+    }, [fridge])
 
-    console.log(data)
-    console.log(fridgeData)
+    // console.log(data)
+    // console.log(origData)
 
     const addRenderFilter = (category) => {
         setRenderFilter([...renderFilter, category]);
@@ -513,7 +600,7 @@ const MyFridge = () => {
                 </div>
 
                 <div className="fridge-render-section">
-                    <FridgeRender fridgeData={ data } renderCondition={{ searchBarValue, renderFilter, renderOrder }}/>
+                    <FridgeRender fridgeData={ fridgeData } origData={ origData } renderCondition={{ searchBarValue, renderFilter, renderOrder }}/>
                 </div>
                 </div>
             </div>
