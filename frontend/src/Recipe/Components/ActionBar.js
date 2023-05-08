@@ -46,18 +46,6 @@ const ActionBar = ({ recipeID }) => {
                 </div>
                 <div className="text">Share</div>
             </div>
-            <ToastContainer
-                position="bottom-center"
-                autoClose={1000}
-                hideProgressBar
-                newestOnTop
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover={false}
-                theme="light"
-            />
         </div>
     )
 }

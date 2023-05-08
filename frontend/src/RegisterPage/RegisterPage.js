@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { validateEmail } from "../services/authService";
 import { apiSignUp } from '../axios/noToken';
 import {Link as MuiLink} from '@mui/material';
+import { UseEnvContext } from '../Context/envCxt';
 
 const initialState = {
     name: "",
@@ -21,10 +22,15 @@ const initialState = {
 
 
 const RegisterPage = () => {
-    const redirect_uri = process.env?.REACT_APP_GOOGLE_OAUTH_REDIRECT_SIGNUP
-    const clientID = process.env?.REACT_APP_GOOGLE_OAUTH_CLIENT_ID
-    const redirect_signup = process.env?.REACT_APP_TWITTER_REDIRECT_SIGNUP
-    const request_token = process.env?.REACT_APP_TWITTER_REQUEST_URL
+    const {env} = UseEnvContext()
+    // const redirect_uri = process.env.REACT_APP_GOOGLE_OAUTH_REDIRECT_SIGNUP
+    // const clientID = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID
+    // const redirect_login = process.env.REACT_APP_TWITTER_REDIRECT_SIGNUP
+    // const request_token = process.env.REACT_APP_TWITTER_REQUEST_URL
+    const redirect_uri = env?.google.redirect_signup
+    const clientID = env?.google.clientID
+    const redirect_signup = env?.twitter.redirect_signup
+    const request_token = env?.twitter.request_url
     const location = useLocation();
     let from = ((location.state)?.from?.pathname) || '/';
     const navigate = useNavigate();

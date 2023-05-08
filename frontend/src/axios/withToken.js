@@ -31,6 +31,7 @@ export const apiUploadImage = formData => userRequest.post('/upload-image', form
 export const apiGetUserImage = () => userRequest.get('/get-myimage');
 export const apiUpdateUserImage = data => userRequest.put('/update-image', data);
 export const apiDeleteUserImage = data => userRequest.delete('/delete-image', data); 
+export const apiGetUserData = () => userRequest.get('/get-userdata');
 
 export const apiQueryRecipeByID = id => recipeRequest.get('/query/id', {params:{ id }});
 export const apiQueryRecipeByName = name => recipeRequest.get('/query/name', {params:{ name }});

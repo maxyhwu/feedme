@@ -72,7 +72,7 @@ const Header = () => {
                             <NavDropdown.Item onClick={() => {navigate('/recipe')}}>All Recipes</NavDropdown.Item>
                             <NavDropdown.Item onClick={() => {navigate('/recipe')}}>Suggest For You</NavDropdown.Item>
                             <NavDropdown.Item onClick={() => {navigate('/recipe')}}>My Recipes</NavDropdown.Item>
-                            <NavDropdown.Item onClick={() => {navigate('/myArchive')}}>Saved Recipes</NavDropdown.Item>
+                            {login?<NavDropdown.Item onClick={() => {navigate('/myArchive')}}>Saved Recipes</NavDropdown.Item>:<></>}
                         </NavDropdown>
 
                         <Nav.Link onClick={() => {navigate('/myfridge')}}>My Fridge</Nav.Link>

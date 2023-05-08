@@ -68,15 +68,15 @@ const HomePage = () => {
                     <div className="recipe-content">
                         Ingredients:<br/><br/>
 
-                        {ingredients.map((ingredient) => (
-                            <>{ingredient[0]}: {ingredient[1]}<br/></>
+                        {ingredients.map((ingredient, idx) => (
+                            <div key={idx}>{ingredient[0]}: {ingredient[1]}<br/></div>
                         ))}
                         
                         <br/>
                         Instructions:<br/>
                         <ol className="instructions">
-                            {instructions.map((instruction) => (
-                                <li>{instruction}</li>
+                            {instructions.map((instruction, idx) => (
+                                <li key={idx}>{instruction}</li>
                             ))}
                         </ol>
                     </div>

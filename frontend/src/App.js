@@ -28,7 +28,7 @@ function App() {
     changeIngredientTable();
     changeCategoryTable();
     changeLabelTable();
-  });
+  }, []);
 
   return (
     <>

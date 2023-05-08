@@ -3,7 +3,7 @@ import './SearchBar.css';
 import { IoIosArrowDown } from 'react-icons/io';
 import { IoFilterCircleOutline } from 'react-icons/io5';
 import { apiAllIngredient } from '../../axios/noToken';
-import { apiQueryRecipeByIngredient, apiQueryRecipeByName } from '../../axios/withToken';
+import { apiQueryRecipeByName, apiQueryRecipeByIngredient } from '../../axios/withToken';
 import Spinner from './Spinner';
 
 
@@ -15,14 +15,13 @@ const EmptyResultDisplay = () => {
     )
 }
 
-const SearchBar = ({ setRecipeData }) => {
+const SearchBar = () => {
 
     const [toggle, setToggle] = useState(false);
     const [filter, setFilter] = useState('Name');
     const [inputDropdown, setInputDropdown] = useState(false);
     const [ingredients, setIngredients] = useState([]);
     const [searchedIng, setSearchedIng] = useState([]);
-    const [input, setInput] = useState("");
 
     const [loading, setLoading] = useState(false);
     const [resultIsEmpty, setResultIsEmpty] = useState(false);
@@ -96,12 +95,22 @@ const SearchBar = ({ setRecipeData }) => {
             color: "#C2BBE3"
         }
     ]
+
+    const handleIngSearch = async() => {
+        setLoading(true);
+        const allIngredients = await apiAllIngredient();
+        setLoading(false);
+        // ingredients.push(allIngredients.data.rows);
+        setIngredients(allIngredients.data.rows);
+        setSearchedIng(allIngredients.data.rows);
+        console.log('All ingredients', allIngredients);
+        // categoryColor();
+    }
     
     const handleSelect = (e) => {
         const select = e.target.innerHTML;
         // console.log(select);
         setFilter(select);
-        setInput("");
     }
 
     const handleFilterToggle = () => {
@@ -113,21 +122,8 @@ const SearchBar = ({ setRecipeData }) => {
         // console.log('click input');
         if (filter != 'Name') {
             setInputDropdown(!inputDropdown);
-            setResultIsEmpty(false);
-            setLoading(false);
-        } 
+        }
         handleIngSearch();
-    }
-
-    const handleIngSearch = async() => {
-        setLoading(true);
-        const allIngredients = await apiAllIngredient();
-        setLoading(false);
-        // ingredients.push(allIngredients.data.rows);
-        setIngredients(allIngredients.data.rows);
-        setSearchedIng(allIngredients.data.rows);
-        console.log('All ingredients', allIngredients, 'dropdown?', inputDropdown);
-        // categoryColor();
     }
 
     const handleFilterClickOutside = (event) => {
@@ -157,12 +153,13 @@ const SearchBar = ({ setRecipeData }) => {
 
     const handleSearch = async(filter, input) => {
         if (filter === 'Name'){
-            console.log('search by', filter);
+            // console.log('search by', filter);
+            console.log('search recipe', input);
             const result = await apiQueryRecipeByName(input.toLowerCase())
-            console.log('name search result', result);
-            setRecipeData(result.data.rows);
+            console.log('name search result', result.data.rows);
+            // setRecipeData(result.data.rows);
         } else {
-            console.log('search by', filter);
+            // console.log('search by', filter);
             let searchResult = []
             ingredients.forEach((ingred) => {
                 if (ingred.ingredName.toLowerCase().includes(input.toLowerCase())) {
@@ -209,16 +206,14 @@ const SearchBar = ({ setRecipeData }) => {
                     id='search-bar' 
                     placeholder={'Search recipes by ' + filter} 
                     onClick={handleInputDropdown}
-                    value={input}
                     onChange={(e) => {
                         setSearchedIng([]);
-                        setInput(e.target.value);
                         handleSearch(filter, e.target.value);}}/>
             </div>
             <div className="search-dropdown" style={ inputDropdown? {maxHeight: 'fit-content'}:{maxHeight: '0'}}>
                 <div className="search-ingredients" ref={dropdownRefInput}>
-                    {loading && !resultIsEmpty && <Spinner />}
-                    {resultIsEmpty && !loading && <EmptyResultDisplay />}
+                    {loading && <Spinner />}
+                    {resultIsEmpty && <EmptyResultDisplay />}
                     {
                         searchedIng.map((ingred, idx) => {
                             return <button type="button"
@@ -230,6 +225,21 @@ const SearchBar = ({ setRecipeData }) => {
                             </button>
                         })
                     }
+                    {/* <button type="button" 
+                        className="ingredient" 
+                        style={{ background: paletteCategory2Color['Vegetables'] }}>
+                            Potato
+                    </button>
+                    <button type="button" 
+                        className="ingredient" 
+                        style={{ background: paletteCategory2Color['Vegetables'] }}>
+                            Potato
+                    </button>
+                    <button type="button" 
+                        className="ingredient" 
+                        style={{ background: paletteCategory2Color['Vegetables'] }}>
+                            Potato
+                    </button> */}
                 </div>
             </div>
         </div>
