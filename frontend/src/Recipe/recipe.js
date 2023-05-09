@@ -180,11 +180,11 @@ const Recipe = () => {
 
     const indexOfLastRecipe = currentPage * recipesPerPage;
     const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
-    const currentRecipes = recipe_data.slice(
+    const currentRecipes = apiRecipeData.slice(
         indexOfFirstRecipe,
         indexOfLastRecipe,
     );
-    const totalRecipes = Math.max(recipe_data.length, recipesPerPage * 5);
+    const totalRecipes = Math.max(apiRecipeData.length, recipesPerPage * 5);
   
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
