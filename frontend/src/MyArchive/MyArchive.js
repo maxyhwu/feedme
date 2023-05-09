@@ -3,6 +3,7 @@ import './MyArchive.css';
 import { UseDataContext } from "../Context/useUserData"
 import { RecipeObject } from '../Recipe/recipe';
 import { apiQueryRecipeByID } from '../axios/withToken'
+import { recipe_data } from "../Recipe/recipedata";
 
 const MyArchive = () => {
     const { data } = UseDataContext();
@@ -15,10 +16,11 @@ const MyArchive = () => {
                 ? <h3 id="nothingText">Nothing here.<br/> Go find some mouthwatering recipes.</h3> 
                 : <div className="savedRecipes-container">
                     {favList.map((recipeID) => {
-                        const recipe = apiQueryRecipeByID(recipeID).then((recipe) => {return recipe});
+                        // const recipeAPI = apiQueryRecipeByID(recipeID).then((recipe) => {return recipe});
+                        const recipe = recipe_data[recipeID];
                         return (
                             <RecipeObject
-                                recipe={{recipe}}
+                                recipe={recipe}
                             />
                         )
                     })}

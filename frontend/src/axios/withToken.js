@@ -29,7 +29,7 @@ export const apiDeleteUserImage = data => userRequest.delete('/delete-image', da
 export const apiGetUserData = () => userRequest.get('/get-userdata');
 
 export const apiQueryRecipeByID = id => recipeRequest.get('/query/id', {params:{ id }});
-export const apiQueryRecipeByName = name => recipeRequest.get('/query/name', {params:{ name }});
+export const apiQueryRecipeByName = title => recipeRequest.get('/query/name', {params:{ title }});
 export const apiQueryRecipeByLabel = label => recipeRequest.get('/query/label', {params:{ label }});
 export const apiQueryRecipeByTop = page => recipeRequest.get('/query/top', {params:{ page }});
 export const apiQueryRecipeByIngredient = ingredient => recipeRequest.get('/query/ingredient', {params:{ ingredient }});
