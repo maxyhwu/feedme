@@ -199,21 +199,22 @@ function RecipeAddButton() {
             recipeFormData.append('title', recipeName);
             recipeFormData.append('overview', '');
             recipeFormData.append('servingSize', parseInt(servingSize));
-            recipeFormData.append('instructions', instructions.map(row => row.instruction));
+            recipeFormData.append('instructions', JSON.stringify(instructions.map(row => row.instruction)))
             recipeFormData.append('image', recipeImage);
             recipeFormData.append('video', '');
-            recipeFormData.append('labels', []);
-            recipeFormData.append('ingredients', formatIngredients);
+            recipeFormData.append('labels', JSON.stringify([]));
+            recipeFormData.append('ingredients', JSON.stringify(formatIngredients));
             // for (var pair of recipeFormData.entries()) {
             //     console.log(pair[0]+': '+pair[1]);
             // }
 
+
             // Add code to save recipe data
             const response = apiAddNew(recipeFormData);
-            // response.then((value) => {
-            //     console.log(value);
-            // }) 
-            window.location.reload(true);
+            response.then((value) => {
+                console.log(value);
+            }) 
+            // window.location.reload(true);
 
             // Close the modal
             // handleCloseModal();
