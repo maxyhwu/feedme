@@ -211,15 +211,15 @@ function RecipeAddButton() {
 
 
             // Add code to save recipe data
-            setSubmitSave(true);
-            const response = apiAddNew(recipeFormData);
-            response.then((value) => {
-                console.log(value);
-                window.location.reload(true);
-            }) 
+            // setSubmitSave(true);
+            // const response = apiAddNew(recipeFormData);
+            // response.then((value) => {
+            //     console.log(value);
+            //     window.location.reload(true);
+            // }) 
 
             // Close the modal
-            // handleCloseModal();
+            handleCloseModal();
         }
         
     };
