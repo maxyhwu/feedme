@@ -193,8 +193,10 @@ const removeLikeRecipe = async (req, res) => {
             attributes: ['like'],
             where: { id: user.id }
         });
-        const removeIdx = like.indexOf(articleID.toString());
-        like.splice(removeIdx, 1);
+        // const removeIdx = like.indexOf(articleID.toString());
+        // like.splice(removeIdx, 1);
+        // ad-hoc solution (need to be solved in the future)
+        like = like.filter(item => item !== articleID);
         await User.update({
             like
         },{ where: { id: user.id}});

@@ -66,7 +66,7 @@ const Header = () => {
                 {/* Navbar content */}
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto navbuttonList">
-                        <Nav.Link className="navbutton" onClick={() => {navigate('/')}}>Home</Nav.Link>
+                        <Nav.Link className="navbutton" onClick={() => {navigate('/')}}>Homepage</Nav.Link>
 
                         <NavDropdown title="Recipes" id="basic-nav-dropdown">
                             <NavDropdown.Item onClick={() => {navigate('/recipe')}}>All Recipes</NavDropdown.Item>
