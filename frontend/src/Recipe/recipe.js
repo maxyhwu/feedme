@@ -136,7 +136,7 @@ const Pagination = ({ recipesPerPage, totalRecipes, paginate, currentPage }) => 
 const Recipe = () => {
     const { id2ingredient } = UseGeneralContext();
     const [currentPage, setCurrentPage] = useState(1);
-    const [recipesPerPage, setRecipesPerPage] = useState(3);
+    const [recipesPerPage, setRecipesPerPage] = useState(15);
     const [apiRecipeData, setApiRecipeData] = useState([]);
     // const [rerender, setRerender] = useState(false);
 
