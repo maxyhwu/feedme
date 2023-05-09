@@ -8,6 +8,7 @@ import { RecipeAddButton } from "./recipeadd";
 import { recipe_data } from "./recipedata";
 import { RecipeDetail } from './detail';
 import { UseGeneralContext } from '../Context/generalTables'
+import { UseLoginContext } from "../Context/LoginCnt";
 import { apiAllIngredient } from '../axios/noToken';
 import { apiQueryRecipeByTop } from '../axios/withToken'
 
@@ -58,7 +59,7 @@ const RecipeObject = ({ recipe }) => {
 const Pagination = ({ recipesPerPage, totalRecipes, paginate, currentPage }) => {
     const pageNumbers = [];
     const maxPageNumbers = 5;
-  
+
     for (let i = 1; i <= Math.ceil(totalRecipes / recipesPerPage); i++) {
         pageNumbers.push(i);
     }
@@ -92,7 +93,7 @@ const Pagination = ({ recipesPerPage, totalRecipes, paginate, currentPage }) => 
     const goToLastPage = () => {
         paginate(lastPage);
     };
-  
+
     return (
         <div className="page-pagination">
             <div
@@ -139,6 +140,7 @@ const Recipe = () => {
     const [recipesPerPage, setRecipesPerPage] = useState(3);
     const [apiRecipeData, setApiRecipeData] = useState([]);
     // const [rerender, setRerender] = useState(false);
+    const {login} = UseLoginContext()
 
     useEffect(() => {
         const getRecipeTop = (page) => {
@@ -185,7 +187,7 @@ const Recipe = () => {
         indexOfLastRecipe,
     );
     const totalRecipes = Math.max(recipe_data.length, recipesPerPage * 5);
-  
+
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // console.log(id2ingredient);
@@ -230,7 +232,7 @@ const Recipe = () => {
                         <IoIosArrowForward/>
                     </div> */}
                 </div>
-                <RecipeAddButton />
+                {login ? <RecipeAddButton /> : <></>}
                 <Pagination
                     recipesPerPage={recipesPerPage}
                     totalRecipes={totalRecipes}
