@@ -6,9 +6,9 @@ import ActionBar from "./Components/ActionBar";
 import { recipe_data } from "../Recipe/recipedata";
 import { UseGeneralContext } from '../Context/generalTables'
 import { apiQueryRecipeByID } from '../axios/withToken'
+import { UseLoginContext } from "../Context/LoginCnt";
 
 const Detail = () => {
-
     const navigate = useNavigate();
     const navigateToRecipe = () => {
         navigate('/recipe');
@@ -88,6 +88,7 @@ const Detail = () => {
 
 const RecipeDetail = ({ recipe, handleCloseModal }) => {
     const { recipeID, recipeName, serving, ingredients, instructions, image_link } = recipe
+    const {login} = UseLoginContext()
 
     const comments = [
         {
@@ -168,14 +169,18 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                 }
                 {/* <div className="single-comment-container" style={{width: '100%'}}>This looks soooooo delicious.</div>
                 <div className="single-comment-container" style={{width: '100%'}}>I love curry~</div> */}
-                <div className="comment-input">
-                    <div className="comment-avatar">
-                        <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
-                    </div>
-                    <input classname= "input-text" type = "text" placeholder="leave your comment..."/>
-                    <button className="submit-text"> Submit </button>
-                    {/* <input classname= "submit-text" type = "submit">Submit</input> */}
-                </div>
+                {
+                    login ?
+                    <div className="comment-input">
+                        <div className="comment-avatar">
+                            <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
+                        </div>
+                        <input classname= "input-text" type = "text" placeholder="leave your comment..."/>
+                        <button className="submit-text"> Submit </button>
+                        {/* <input classname= "submit-text" type = "submit">Submit</input> */}
+                    </div> :
+                    <></>
+                }
             </div> 
         </>
     )
