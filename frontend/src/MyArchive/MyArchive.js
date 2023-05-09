@@ -7,7 +7,10 @@ import { recipe_data } from "../Recipe/recipedata";
 
 const MyArchive = () => {
     const { data } = UseDataContext();
-    const favList = data.like;
+    // const favList = data.like;
+
+    // ad-hoc (need to be solved)
+    const favList = Array.from(new Set(data.like));
 
     return (
         <div className="favRecipeList">
