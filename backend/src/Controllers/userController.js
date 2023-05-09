@@ -169,10 +169,11 @@ const keepLikeRecipe = async (req, res) => {
     try{
         const articleID = req.body.id;
         const user = req.user;
-        let like = User.findOne({
+        let {like} = await User.findOne({
             attributes: ['like'],
             where: { id: user.id }
         });
+        console.log(like)
         like.push(articleID.toString());
         await User.update({
             like
@@ -188,7 +189,7 @@ const removeLikeRecipe = async (req, res) => {
     try{
         const articleID = req.body.id;
         const user = req.user;
-        let like = User.findOne({
+        let {like} = await User.findOne({
             attributes: ['like'],
             where: { id: user.id }
         });

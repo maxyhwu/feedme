@@ -49,7 +49,9 @@ export default (sequelize, DataTypes) => {
             allowNull: false,
         },
         like:{
-            type: DataTypes.ARRAY(DataTypes.INTEGER)
+            type: DataTypes.ARRAY(DataTypes.INTEGER),
+            defaultValue: [],
+            allowNull: false,
         },
         fridge:{
             type: DataTypes.JSON,
