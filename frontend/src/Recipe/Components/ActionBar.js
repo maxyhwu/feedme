@@ -8,6 +8,7 @@ import { apiKeepLikeRecipes, apiRemoveLikeRecipes, apiUpdateAddLikeCount, apiUpd
 import { UseLoginContext } from "../../Context/LoginCnt";
 import { UseDataContext } from "../../Context/useUserData";
 
+
 const ActionBar = ({ recipeID }) => {
     const [activeHeart, setActiveHeart] = useState(false);
     const { login } = UseLoginContext()
@@ -22,6 +23,7 @@ const ActionBar = ({ recipeID }) => {
             apiUpdateAddLikeCount({id: recipeID});
             apiKeepLikeRecipes({id: recipeID});
             changeData({ ...data, like: [recipeID, ...data.like] });
+
         }
         setActiveHeart(!activeHeart);
     }

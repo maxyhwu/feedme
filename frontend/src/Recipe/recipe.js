@@ -137,7 +137,7 @@ const Pagination = ({ recipesPerPage, totalRecipes, paginate, currentPage }) => 
 const Recipe = () => {
     const { id2ingredient } = UseGeneralContext();
     const [currentPage, setCurrentPage] = useState(1);
-    const [recipesPerPage, setRecipesPerPage] = useState(3);
+    const [recipesPerPage, setRecipesPerPage] = useState(15);
     const [apiRecipeData, setApiRecipeData] = useState([]);
     // const [rerender, setRerender] = useState(false);
     const {login} = UseLoginContext()
@@ -182,12 +182,12 @@ const Recipe = () => {
 
     const indexOfLastRecipe = currentPage * recipesPerPage;
     const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
-    const currentRecipes = recipe_data.slice(
+    const currentRecipes = apiRecipeData.slice(
         indexOfFirstRecipe,
         indexOfLastRecipe,
     );
-    const totalRecipes = Math.max(recipe_data.length, recipesPerPage * 5);
-
+    const totalRecipes = Math.max(apiRecipeData.length, recipesPerPage * 5);
+  
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // console.log(id2ingredient);

@@ -30,6 +30,7 @@ function RecipeAddButton() {
     const [matchingIngredients, setMatchingIngredients] = useState([]);
     const [instructions, setInstructions] = useState([{instruction: "", instructionValid: true}]);
     const [recipeImageValid, setRecipeImageValid] = useState(true);
+    const [submitSave, setSubmitSave] = useState(false);
 
     useEffect(() => {
         const promise = getNoTokenData();
@@ -210,11 +211,12 @@ function RecipeAddButton() {
 
 
             // Add code to save recipe data
+            setSubmitSave(true);
             const response = apiAddNew(recipeFormData);
             response.then((value) => {
                 console.log(value);
+                window.location.reload(true);
             }) 
-            // window.location.reload(true);
 
             // Close the modal
             // handleCloseModal();
@@ -251,7 +253,7 @@ function RecipeAddButton() {
             >
                 <div className="modal-header">
                     <div className='recipe-add-title'>Add Recipe</div>
-                    <button className="modal-close btn btn-secondary recipeadd-btn" onClick={handleCloseModal}>
+                    <button className={`modal-close btn btn-secondary recipeadd-btn ${submitSave ? 'disabled' : ''}`} onClick={handleCloseModal}>
                         <span>&times;</span>
                     </button>
                 </div>
@@ -328,8 +330,8 @@ function RecipeAddButton() {
                 </div>
 
                 <div className="modal-footer">
-                    <button className='btn btn-secondary recipeadd-btn' onClick={handleSaveRecipe}>Save Recipe</button>
-                    <button className='btn btn-secondary recipeadd-btn' onClick={handleCloseModal}>Cancel</button>
+                    <button className={`btn btn-secondary recipeadd-btn ${submitSave ? 'disabled' : ''}`} onClick={handleSaveRecipe}>Save Recipe</button>
+                    <button className={`btn btn-secondary recipeadd-btn ${submitSave ? 'disabled' : ''}`} onClick={handleCloseModal}>Cancel</button>
                 </div>
             </Modal>
         </>
