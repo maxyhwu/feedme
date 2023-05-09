@@ -182,9 +182,9 @@ const addRecipe = async (req, res) => {
   const { path } = file;
   const newPath = await uploaderImage(path)
   url = newPath
-  console.log(url)
+  // console.log("url",url)
   fs.unlinkSync(path)
-  console.log(instructions)
+  // console.log("instructions",instructions)
   // console.log(JSON.stringify(instructions))
   // console.log(JSON.parse(instructions))
   const query =
@@ -194,14 +194,13 @@ const addRecipe = async (req, res) => {
     title.toString(),
     overview.toString(),
     parseInt(servingSize),
-    // JSON.stringify(instructions).intructions,
-    instructions,
+    JSON.parse(instructions),
     url.url,
     url.id,
     video.toString(),
     0,
-    labels,
-    ingredients,
+    JSON.parse(labels),
+    JSON.parse(ingredients),
   ];
   console.log(values)
   try {
