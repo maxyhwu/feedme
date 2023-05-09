@@ -87,8 +87,236 @@ const recipe_data = [
     instructions: ['In a small bowl, combine the pepper, onion salt, garlic salt and, if desired, paprika. Rub onto both sides of steaks.',
     'Grill, covered, over medium heat until meat reaches desired doneness (for medium-rare, a thermometer should read 135°; medium, 140°; medium-well, 145°), 8-10 minutes on each side.'],
     image_link: 'https://www.tasteofhome.com/wp-content/uploads/2018/01/Grilled-Peppered-Steaks_EXPS_SDJJ19_23980_B02_07_3b-2.jpg?fit=700,1024'},
-    {recipeID: 15,recipeName: 'Thai Style Spicy Chicken',serving: 2,ingredients: [['boneless chicken thighs','4'],['Salt','1/2 tsp'],['Freshly cracked sichuan peppercorn','1/2 tsp'],['Freshly cracked black pepper','1/2 tsp'],['onion thin strips','1'],['freshly cracked sichuan peppercorn','1 tsp'],['garlic minced','5 - 6 cloves'],['cilantro finely minced','2tbsp'],['thai chili seeded and minced','1'],['fish sauce','1 tbsp'],['sugar','1 tbsp'],['lemon juice','1/2']],instructions: ['Sprinkle salt, pepper, and sichuan pepper evenly on the boneless chicken thigh to season the meat for about 10 minutes.','Shred the onion into very thin slices and soak in ice water for about 10 mins and drain','When the skin is golden and crispy, flip over the thigh meat and fry for another 3 minutes to sear the meat.','Add 2 tsp hot oil from the pan to the bowl with minced garlic, Sichuan pepper, chilli, and cilantro to slightly saute these spices to bring out the aroma. Then mix the rest of the [Dressing] ingredients. Slightly adjust the taste to your preference.','Place some shredded onion and sliced crispy chicken on the plate. Then pour the sauce on top. Ready to serve!!'],image_link: 'https://farm1.staticflickr.com/458/20241785060_415d560b2c_z.jpg'}
-
+    {recipeID: 15,recipeName: 'Thai Style Spicy Chicken',serving: 2,ingredients: [['boneless chicken thighs','4'],['Salt','1/2 tsp'],['Freshly cracked sichuan peppercorn','1/2 tsp'],['Freshly cracked black pepper','1/2 tsp'],['onion thin strips','1'],['freshly cracked sichuan peppercorn','1 tsp'],['garlic minced','5 - 6 cloves'],['cilantro finely minced','2tbsp'],['thai chili seeded and minced','1'],['fish sauce','1 tbsp'],['sugar','1 tbsp'],['lemon juice','1/2']],instructions: ['Sprinkle salt, pepper, and sichuan pepper evenly on the boneless chicken thigh to season the meat for about 10 minutes.','Shred the onion into very thin slices and soak in ice water for about 10 mins and drain','When the skin is golden and crispy, flip over the thigh meat and fry for another 3 minutes to sear the meat.','Add 2 tsp hot oil from the pan to the bowl with minced garlic, Sichuan pepper, chilli, and cilantro to slightly saute these spices to bring out the aroma. Then mix the rest of the [Dressing] ingredients. Slightly adjust the taste to your preference.','Place some shredded onion and sliced crispy chicken on the plate. Then pour the sauce on top. Ready to serve!!'],image_link: 'https://farm1.staticflickr.com/458/20241785060_415d560b2c_z.jpg'},
+    {
+        recipeID: 16,
+        recipeName: 'Roast Chicken',
+        serving: 4,
+        ingredients: [
+          ['whole chicken', '1 (about 4 pounds)'],
+          ['lemon', '1'],
+          ['garlic', '1 head'],
+          ['olive oil', '2 tablespoons'],
+          ['salt', '1 teaspoon'],
+          ['black pepper', '1/2 teaspoon'],
+        ],
+        instructions: [
+          'Preheat oven to 425°F. Rinse chicken and pat dry.',
+          'Cut lemon into quarters and place inside the chicken cavity along with garlic cloves.',
+          'Place chicken in a roasting pan and brush with olive oil. Sprinkle with salt and pepper.',
+          'Roast in the oven for 1 hour and 20 minutes, or until the internal temperature of the thickest part of the chicken reaches 165°F.',
+          'Let chicken rest for 10-15 minutes before carving and serving.'
+        ],
+        image_link: 'https://www.allrecipes.com/thmb/ZNARl52mibyF1XHwwIb5A1czmkY=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/83557-juicy-roast-chicken-mfs495-1-3d0f1e3e54104d43b24d4b480d2839ba.jpg'
+      },
+      {
+        recipeID: 17,
+        recipeName: 'Spaghetti Bolognese',
+        serving: 4,
+        ingredients: [
+          ['spaghetti', '1 pound'],
+          ['ground beef', '1 pound'],
+          ['onion', '1'],
+          ['garlic', '3 cloves'],
+          ['canned tomatoes', '1 can (28 ounces)'],
+          ['tomato paste', '2 tablespoons'],
+          ['red wine', '1/2 cup'],
+          ['dried oregano', '1 teaspoon'],
+          ['dried basil', '1 teaspoon'],
+          ['salt', '1 teaspoon'],
+          ['black pepper', '1/2 teaspoon'],
+          ['olive oil', '2 tablespoons']
+        ],
+        instructions: [
+          'Cook spaghetti according to package instructions and set aside.',
+          'In a large pot or Dutch oven, heat olive oil over medium-high heat. Add chopped onions and cook until they are translucent.',
+          'Add minced garlic and cook for another minute.',
+          'Add ground beef and cook until browned.',
+          'Stir in canned tomatoes, tomato paste, red wine, dried oregano, dried basil, salt, and black pepper.',
+          'Simmer for 30-45 minutes, stirring occasionally.',
+          'Serve the sauce over cooked spaghetti.'
+        ],
+        image_link: 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/the-best-spaghetti-bolognese-7e83155.jpg?quality=90&webp=true&resize=440,400'
+      },
+      {
+        recipeID: 18,
+        recipeName: 'Fish Tacos',
+        serving: 4,
+        ingredients: [
+            ['tilapia fillets', '1 pound'],
+            ['taco seasoning', '2 tablespoons'],
+            ['lime juice', '2 tablespoons'],
+            ['olive oil', '2 tablespoons'],
+            ['tortillas', '8'],
+            ['shredded cabbage', '2 cups'],
+            ['sour cream', '1/2 cup'],
+            ['hot sauce', 'to taste']
+        ],
+        instructions: [
+            'Season tilapia fillets with taco seasoning and lime juice.',
+            'Heat olive oil in a large skillet over medium-high heat. Add the seasoned tilapia and cook until golden brown and cooked through, about 3-4 minutes per side.',
+            'Warm the tortillas in the microwave or on a skillet.',
+            'Assemble the tacos with cooked tilapia, shredded cabbage, a dollop of sour cream, and hot sauce to taste.'
+        ],
+        image_link: 'https://www.simplyrecipes.com/thmb/s26SBzKQnBUTBXXot8o68wYBcso=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2004__06__Fish-Tacos-LEAD-6-321ec7a914744339941b6e184ee11fb8.jpg'
+    },
+    {
+        recipeID: 19,
+        recipeName: 'Chicken Caesar Salad',
+        serving: 4,
+        ingredients: [
+            ['romaine lettuce', '1 head'],
+            ['cooked chicken breast', '2'],
+            ['grated Parmesan cheese', '1/2 cup'],
+            ['croutons', '1 cup'],
+            ['Caesar dressing', '1/2 cup'],
+            ['lemon', '1'],
+            ['olive oil', '2 tablespoons'],
+            ['salt', '1/4 teaspoon'],
+            ['black pepper', '1/4 teaspoon']
+        ],
+        instructions: [
+            'Tear the romaine lettuce into bite-sized pieces and place in a large bowl.',
+            'Slice the cooked chicken breast and add to the bowl.',
+            'Add grated Parmesan cheese and croutons to the bowl.',
+            'In a small bowl, whisk together Caesar dressing, lemon juice, olive oil, salt, and black pepper.',
+            'Drizzle the dressing over the salad and toss to combine.'
+        ],
+        image_link: 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/caesar-salad-7a44316.jpg?quality=90&webp=true&resize=440,400'
+    },
+    {
+        recipeID: 20,
+        recipeName: 'Beef Stroganoff',
+        serving: 4,
+        ingredients: [
+            ['beef sirloin', '1 pound'],
+            ['egg noodles', '8 ounces'],
+            ['sour cream', '1/2 cup'],
+            ['onion', '1'],
+            ['garlic', '3 cloves'],
+            ['beef broth', '1 cup'],
+            ['flour', '2 tablespoons'],
+            ['butter', '2 tablespoons'],
+            ['olive oil', '2 tablespoons'],
+            ['salt', '1 teaspoon'],
+            ['black pepper', '1/2 teaspoon'],
+            ['paprika', '1 teaspoon']
+        ],
+        instructions: [
+            'Slice the beef sirloin into thin strips and season with salt, black pepper, and paprika.',
+            'Cook egg noodles according to package instructions.',
+            'In a large skillet, heat butter and olive oil over medium-high heat. Add the sliced onions and minced garlic and cook until the onions are translucent, about 5 minutes.',
+            'Add the seasoned beef sirloin and cook until browned, about 5 minutes.',
+            'Sprinkle flour over the beef and stir to coat. Cook for 1 minute.',
+            'Add beef broth to the skillet and stir to combine. Bring to a simmer and cook until the sauce thickens, about 5 minutes.',
+            'Remove the skillet from heat and stir in sour cream.',
+            'Serve the beef stroganoff over cooked egg noodles.'
+        ],
+        image_link: 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/beefstroganoff-d53f55e.jpg?quality=90&webp=true&resize=440,400'
+    },
+    {
+        recipeID: 21,
+        recipeName: 'Chicken Alfredo Pasta',
+        serving: 4,
+        ingredients: [
+            ['penne pasta', '12 ounces'],
+            ['chicken breast', '2'],
+            ['heavy cream', '1 cup'],
+            ['Parmesan cheese', '1/2 cup'],
+            ['garlic', '3 cloves'],
+            ['butter', '2 tablespoons'],
+            ['olive oil', '2 tablespoons'],
+            ['salt', '1 teaspoon'],
+            ['black pepper', '1/2 teaspoon'],
+            ['fresh parsley', 'for garnish']
+        ],
+        instructions: [
+            'Cook penne pasta according to package instructions.',
+            'Slice the chicken breast into bite-sized pieces and season with salt and black pepper.',
+            'In a large skillet, heat butter and olive oil over medium-high heat. Add minced garlic and cook until fragrant, about 1 minute.',
+            'Add seasoned chicken breast and cook until golden brown and cooked through, about 5-7 minutes.',
+            'Reduce heat to low and add heavy cream and Parmesan cheese. Stir to combine and cook until the sauce thickens, about 5 minutes.',
+            'Add cooked penne pasta to the skillet and toss to coat with the sauce.',
+            'Garnish with fresh parsley and serve.'
+        ],
+        image_link: 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chicken-alfredo-76fc36f.jpg?quality=90&webp=true&resize=440,400'
+    },
+    {
+        recipeID: 22,
+        recipeName: 'Vegetable Stir-Fry',
+        serving: 4,
+        ingredients: [
+            ['broccoli florets', '2 cups'],
+            ['carrots', '2'],
+            ['red bell pepper', '1'],
+            ['yellow onion', '1'],
+            ['garlic', '3 cloves'],
+            ['soy sauce', '1/4 cup'],
+            ['brown sugar', '2 tablespoons'],
+            ['cornstarch', '2 teaspoons'],
+            ['sesame oil', '2 tablespoons'],
+            ['vegetable oil', '2 tablespoons']
+        ],
+        instructions: [
+            'Rinse the rice in a strainer and let it soak in water for 30 minutes.',
+            'In a small bowl, whisk together soy sauce, brown sugar, cornstarch, and 1/4 cup of water to make the sauce.',
+            'Cut broccoli into small florets, slice carrots, red bell pepper, and yellow onion into thin strips.',
+            'Heat vegetable oil and sesame oil in a large skillet over medium-high heat. Add minced garlic and cook until fragrant, about 1 minute.',
+            'Add vegetables to the skillet and stir-fry for 5-7 minutes, until the vegetables are tender but still crisp.',
+            'Pour the sauce into the skillet and stir to combine. Cook for 1-2 minutes until the sauce thickens.',
+            'Serve the vegetable stir-fry over cooked rice.'
+        ],
+        image_link: 'https://images.immediate.co.uk/production/volatile/sites/30/2008/01/Vegetable-stir-fry-b669c05.jpg?quality=90&webp=true&resize=440,400'
+    },
+    {
+        recipeID: 23,
+        recipeName: 'Spaghetti Carbonara',
+        serving: 4,
+        ingredients: [
+            ['spaghetti', '12 ounces'],
+            ['pancetta', '4 ounces'],
+            ['Parmesan cheese', '1 cup'],
+            ['eggs', '2'],
+            ['garlic', '3 cloves'],
+            ['butter', '2 tablespoons'],
+            ['olive oil', '2 tablespoons'],
+            ['salt', '1 teaspoon'],
+            ['black pepper', '1/2 teaspoon'],
+            ['fresh parsley', 'for garnish']
+        ],
+        instructions: [
+            'Cook spaghetti according to package instructions.',
+            'Dice pancetta and cook in a large skillet over medium heat until crispy. Remove pancetta from the skillet and set aside.',
+            'Mince garlic and cook in the same skillet with the pancetta fat until fragrant, about 1 minute.',
+            'In a small bowl, whisk together eggs, Parmesan cheese, salt, and black pepper.',
+            'Add cooked spaghetti to the skillet and toss with pancetta and garlic.',
+            'Remove the skillet from heat and add egg mixture. Toss quickly to coat the spaghetti with the egg mixture.',
+            'Garnish with fresh parsley and serve.'
+        ],
+        image_link: 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/recipe-image-legacy-id-1001491_11-2e0fa5c.jpg?quality=90&webp=true&resize=440,400'
+    },
+    {
+        recipeID: 24,
+        recipeName: 'Honey Garlic Shrimp',
+        serving: 4,
+        ingredients: [
+        ['shrimp', '1 pound'],
+        ['honey', '1/4 cup'],
+        ['soy sauce', '1/4 cup'],
+        ['garlic', '3 cloves'],
+        ['cornstarch', '1 tablespoon'],
+        ['water', '1 tablespoon'],
+        ['green onions', 'for garnish']
+        ],
+        instructions: [
+        'Peel and devein the shrimp.',
+        'In a large skillet over medium heat, add shrimp and cook for 2-3 minutes on each side until pink and cooked through.',
+        'Add garlic to the skillet and cook for 30 seconds, stirring constantly.',
+        'In a small bowl, whisk together cornstarch and water. Pour the mixture into the skillet and stir until the sauce thickens.',
+        'Garnish with sliced green onions and serve over rice or noodles.'
+      ],
+      image_link: 'https://www.eatwell101.com/wp-content/uploads/2021/01/healthy-honey-garlic-shrimp-recipe.jpg'
+    },
 ]
 
 
