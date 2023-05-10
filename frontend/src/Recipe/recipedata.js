@@ -38,7 +38,7 @@ const recipe_data = [
     ['Worcestershire sauce', '1 tbsp'], ['ground mustard', '1 tsp'], ['onion', '1'], ['chicken', '16 ounces']],
     instructions: ['In a shallow bowl, combine butter, Worcestershire sauce and mustard. Place onions in another shallow bowl. Dip chicken in butter mixture, then coat with onions.',
     'Place in a greased 11x7-in. baking dish; drizzle with remaining butter mixture. Bake, uncovered, at 400° for 20-25 minutes or until a thermometer reads 165°.'],
-    image_link:'https://hips.hearstapps.com/hmg-prod/images/delish-190530-french-onion-chicken-039-landscape-pf-1559743661.png'},
+    image_link:'https://www.eatingwell.com/thmb/awUOmJ528TxRnPui8ox_wVC3vnw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/skilletsourcreamandonionchicken-rm-0397-1464de60211d44729f6439933108fdbd.jpg'},
     { recipeID: 5, recipeName: 'Marinated Grilled Flank Steak', serving: 8, ingredients: [['barbecue sauce', '1 cup'],
     ['beef broth', '1/2 cup'], ['lemon juice', '1/4 cup'], ['beef flank steak', '2 pounds']],
     instructions: ['In a small bowl, whisk barbecue sauce, wine and lemon juice until blended. Pour 1 cup marinade into a shallow dish. Add beef and turn to coat. Cover; refrigerate 4 hours or overnight. Cover and refrigerate remaining marinade.',
