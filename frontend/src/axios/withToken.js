@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getUserData } from '../Cookies/cookies';
+import { getUserData } from '../../src/Cookies/cookies';
 
 var token = ''
 if ( (localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') !== null) ){
@@ -48,4 +48,3 @@ export const apiUpdateRecipe = data => recipeRequest.put('/update/recipe', data)
 
 export const apiAddNew = data => recipeRequest.put('/add/new', data);
 export const apiAddComment = data => recipeRequest.put('/add/comment', data);
-
