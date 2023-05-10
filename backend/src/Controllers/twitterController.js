@@ -30,7 +30,8 @@ passport.use('twitter-signup',new TwitterTokenStrategy({
     if ( !user ) {
       const data = {
         userName: profile.displayName,
-        twitterID: profile.id
+        twitterID: profile.id,
+        provider: "twitter"
       }
       await User.create(data);
     }
@@ -133,6 +134,8 @@ const signup = (req, res, next) => {
     if (req.user) {
       console.log("user exists")
       return res.status(401).send({ message: 'User exist.' });
+    } else {
+      return res.status(200).send({ message: 'User exist.' });
     }
     // prepare token for API
     req.auth = {

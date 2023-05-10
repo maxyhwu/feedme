@@ -3,7 +3,7 @@ import { getUserData } from '../Cookies/cookies';
 import { apiGetUserData } from '../axios/withToken';
 
 const DataContext = React.createContext({
-    data: [],
+    data: {},
     changeData: () => {}
     }
 );
@@ -13,7 +13,6 @@ const getBackendData = async () => {
         .then(response=> {
             if (response.status === 200) {
                 const token = response.headers.get('x-auth-token');
-                console.log("tokennnnnnn:", token)
                 return [response.data, token]
             }
         })
@@ -33,7 +32,10 @@ const getData = () =>  {
         email:'',
         token:'',
         fridge: null,
-        favorite: []
+        favorite: [],
+        like: [],
+        notiRec: true,
+        notiIngre: true
     }
     if (localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') !== null ){
         const dataString = localStorage.getItem('user');
@@ -41,7 +43,6 @@ const getData = () =>  {
     } else if ( Object.keys(getUserData()).length !== 0){
         userData = getUserData();
     }
-    console.log("getData", userData)
     return userData     
 }
 
@@ -49,7 +50,7 @@ const DataContextProvider =  (props) => {
     useEffect(() => {
         const fetchData = async () => {
             const [response, token] = await getBackendData()
-            let input = {userName: response.userName, email: response.email, fridge: response.fridge, token: token, favorite: response.favorite}
+            let input = {userName: response.userName, email: response.email, fridge: response.fridge, token: token, favorite: response.favorite, like: response.like, notiRec: response.notiRec, notiIngre: response.notiIngre}
             changeData(input)
         }
         if ( (localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') !== null) || (Object.keys(getUserData()).length !== 0) ){

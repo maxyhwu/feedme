@@ -30,6 +30,7 @@ function RecipeAddButton() {
     const [matchingIngredients, setMatchingIngredients] = useState([]);
     const [instructions, setInstructions] = useState([{instruction: "", instructionValid: true}]);
     const [recipeImageValid, setRecipeImageValid] = useState(true);
+    const [submitSave, setSubmitSave] = useState(false);
 
     useEffect(() => {
         const promise = getNoTokenData();
@@ -183,26 +184,42 @@ function RecipeAddButton() {
                 acc[curIngredId] = [cur.quantity]
                 return acc;
             }, {});
-            const recipeData = {
-                title: recipeName,
-                overview: '',
-                servingSize: parseInt(servingSize),
-                instructions: instructions.map(row => row.instruction),
-                image: 'recipeImage',
-                video: '',
-                labels: [],
-                ingredients: formatIngredients,
-            };
+            // const recipeData = {
+            //     title: recipeName,
+            //     overview: '',
+            //     servingSize: parseInt(servingSize),
+            //     instructions: instructions.map(row => row.instruction),
+            //     image: recipeImage,
+            //     video: '',
+            //     labels: [],
+            //     ingredients: formatIngredients,
+            // };
+            // console.log(recipeData);
+
+            const recipeFormData = new FormData();
+            recipeFormData.append('title', recipeName);
+            recipeFormData.append('overview', '');
+            recipeFormData.append('servingSize', parseInt(servingSize));
+            recipeFormData.append('instructions', JSON.stringify(instructions.map(row => row.instruction)))
+            recipeFormData.append('image', recipeImage);
+            recipeFormData.append('video', '');
+            recipeFormData.append('labels', JSON.stringify([]));
+            recipeFormData.append('ingredients', JSON.stringify(formatIngredients));
+            // for (var pair of recipeFormData.entries()) {
+            //     console.log(pair[0]+': '+pair[1]);
+            // }
+
 
             // Add code to save recipe data
-            const response = apiAddNew(recipeData);
+            // setSubmitSave(true);
+            // const response = apiAddNew(recipeFormData);
             // response.then((value) => {
             //     console.log(value);
+            //     window.location.reload(true);
             // }) 
-            console.log(recipeData);
 
             // Close the modal
-            // handleCloseModal();
+            handleCloseModal();
         }
         
     };
@@ -236,7 +253,7 @@ function RecipeAddButton() {
             >
                 <div className="modal-header">
                     <div className='recipe-add-title'>Add Recipe</div>
-                    <button className="modal-close btn btn-secondary recipeadd-btn" onClick={handleCloseModal}>
+                    <button className={`modal-close btn btn-secondary recipeadd-btn ${submitSave ? 'disabled' : ''}`} onClick={handleCloseModal}>
                         <span>&times;</span>
                     </button>
                 </div>
@@ -269,13 +286,13 @@ function RecipeAddButton() {
                                 <td>
                                     {ingredients.map((ingredient, index) => (
                                         <div key={index} className="recipe-add-ingredient">
-                                            <input list='matching-ingredients' type="text" placeholder={`Ingredient ${index + 1}`} value={ingredient.name} onChange={(event) => handleIngredientNameChange(event, index)} className={`${ingredient.nameValid ? 'recipeadd-input' : 'recipeadd-input-invalid'}`} />
+                                            <input list='matching-ingredients' type="text" maxLength="255" placeholder={`Ingredient ${index + 1}`} value={ingredient.name} onChange={(event) => handleIngredientNameChange(event, index)} className={`${ingredient.nameValid ? 'recipeadd-input' : 'recipeadd-input-invalid'}`} />
                                             <datalist id='matching-ingredients'>
                                                 {matchingIngredients.map(ingredient => (
                                                     <option key={ingredient} value={ingredient} />
                                                 ))}
                                             </datalist>
-                                            <input type="text" placeholder="Quantity" value={ingredient.quantity} onChange={(event) => handleIngredientQuantityChange(event, index)} className={`${ingredient.quantityValid ? 'recipeadd-input' : 'recipeadd-input-invalid'}`} />
+                                            <input type="text" placeholder="Quantity" maxLength="255" value={ingredient.quantity} onChange={(event) => handleIngredientQuantityChange(event, index)} className={`${ingredient.quantityValid ? 'recipeadd-input' : 'recipeadd-input-invalid'}`} />
                                             <button type="button" className='btn btn-secondary recipeadd-btn recipeadd-btn' onClick={() => handleRemoveIngredient(index)}><FaTrashAlt /></button>
                                         </div>
                                     ))}
@@ -290,7 +307,7 @@ function RecipeAddButton() {
                                 <td>
                                     {instructions.map((instruction, index) => (
                                         <div key={index} className="recipe-add-instruction">
-                                            <textarea placeholder={`Step ${index + 1}`} value={instruction.instruction} onChange={(event) => handleInstructionChange(event, index)} className={`${instruction.instructionValid ? 'recipeadd-textarea' : 'recipeadd-textarea-invalid'}`} />
+                                            <textarea placeholder={`Step ${index + 1}`} value={instruction.instruction} maxLength="255" onChange={(event) => handleInstructionChange(event, index)} className={`${instruction.instructionValid ? 'recipeadd-textarea' : 'recipeadd-textarea-invalid'}`} />
                                             <button type="button" className='btn btn-secondary recipeadd-instruction-btn' onClick={() => handleRemoveInstruction(index)}><FaTrashAlt /></button>
                                         </div>
                                     ))}
@@ -313,8 +330,8 @@ function RecipeAddButton() {
                 </div>
 
                 <div className="modal-footer">
-                    <button className='btn btn-secondary recipeadd-btn' onClick={handleSaveRecipe}>Save Recipe</button>
-                    <button className='btn btn-secondary recipeadd-btn' onClick={handleCloseModal}>Cancel</button>
+                    <button className={`btn btn-secondary recipeadd-btn ${submitSave ? 'disabled' : ''}`} onClick={handleSaveRecipe}>Save Recipe</button>
+                    <button className={`btn btn-secondary recipeadd-btn ${submitSave ? 'disabled' : ''}`} onClick={handleCloseModal}>Cancel</button>
                 </div>
             </Modal>
         </>

@@ -299,9 +299,9 @@ const FridgeRenderButton = ({ ingredient, origData }) => {
                 return acc;
             }, origData);
             // console.log(newData);
-            // const response = apiEditFridge({ fridge: newData });
+            const response = apiEditFridge({ fridge: newData });
             // response.then((value) => {
-            //     console.log(value)
+            //     console.log(value);
             // })
             changeData({ ...data, fridge: newData });
         }
@@ -309,9 +309,9 @@ const FridgeRenderButton = ({ ingredient, origData }) => {
             // remove
             delete origData[curIngredId];
             // console.log(origData);
-            // const response = apiEditFridge({ fridge: origData });
+            const response = apiEditFridge({ fridge: origData });
             // response.then((value) => {
-            //     console.log(value)
+            //     console.log(value);
             // })
             changeData({ ...data, fridge: origData });
         }
@@ -525,10 +525,10 @@ const MyFridge = () => {
                     purchaseDateValid: true,
                     expirationDateValid: true,
                 })).sort((a, b) => new Date(a.purchaseDate) - new Date(b.purchaseDate));
-                const earliestExpirationDate = Math.min(...origFridgeData[key].map((item) => new Date(item.expire_date)));
-                const purchaseDate = new Date(earliestExpirationDate).toISOString().substring(0, 10);
                 const earliestPurchasenDate = Math.min(...origFridgeData[key].map((item) => new Date(item.purchase_date)));
-                const expirationDate = new Date(earliestPurchasenDate).toISOString().substring(0, 10);
+                const purchaseDate = new Date(earliestPurchasenDate).toISOString().substring(0, 10);
+                const earliestExpirationDate = Math.min(...origFridgeData[key].map((item) => new Date(item.expire_date)));
+                const expirationDate = new Date(earliestExpirationDate).toISOString().substring(0, 10);
 
                 transformedFridgeData.push({
                     pseudoId,

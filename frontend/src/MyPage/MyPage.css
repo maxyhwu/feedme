@@ -19,7 +19,7 @@
   flex-direction: column;
 }
 .main-mypage .left-section .user-info-container {
-  padding: 4rem;
+  padding: 4rem 1rem 4rem 4rem;
   flex-direction: column;
   width: 100%;
   height: 70%;
@@ -29,6 +29,7 @@
 .main-mypage .left-section .user-info-container .user-middle-container {
   display: flex;
   flex-direction: column;
+  /* max-width: 40%; */
 }
 .main-mypage .left-section .user-info-container .user-pic-container {
   position: relative;
@@ -81,7 +82,7 @@
 }
 .main-mypage .right-section .setting-bar-container .setting-bar {
   justify-content: space-around;
-  font-size: 16px;
+  font-size: 1.5em;
   box-shadow: 3px 3px 6px #d5d5d5;
   flex-direction: row;
   align-items: center;
@@ -89,12 +90,19 @@
   border-radius: 10px;
   width: 40%;
   height: auto;
-  padding: 2%;
+  padding: 1em;
   left: 60vw;
   top: 25vh;
-  margin: 23px;
+  margin: 1em;
   background-color: #c7c7c7;
 }
+
+@media screen and (max-width: 600px){
+  .main-mypage .right-section .setting-bar-container .setting-bar {
+    font-size: 1em;
+  }
+}
+
 .main-mypage .right-section .setting-bar-container .setting-bar:hover {
   background-color: #9b9b9b;
   color: #fff;
@@ -107,12 +115,19 @@
 }
 .main-mypage .right-section .setting-bar-container .setting-bar .setting-bar-icon {
   color: #828282;
-  margin-left: 5%;
-  margin-right: 8%;
+  /* margin-left: 5%; */
+  /* margin-right: 8%; */
 }
+
+@media screen and (max-width: 600px){
+  .setting-bar-icon {
+    display: none;
+  }
+}
+
 .main-mypage .right-section .setting-bar-container .setting-bar .setting-bar-expand {
   color: #828282;
-  margin-left: 30%;
+  /* margin-left: 30%; */
 }
 .main-mypage .right-section .setting-bar-container .setting-bar .setting-bar-expand:hover {
   transform: rotate(359deg);

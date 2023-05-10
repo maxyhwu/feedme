@@ -4,16 +4,32 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FiHeart, FiBookmark, FiShare } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 import "./ActionBar.css"
+import { apiKeepLikeRecipes, apiRemoveLikeRecipes, apiUpdateAddLikeCount, apiUpdateMinusLikeCount } from "../../axios/withToken"
+import { UseLoginContext } from "../../Context/LoginCnt";
+import { UseDataContext } from "../../Context/useUserData";
+
 
 const ActionBar = ({ recipeID }) => {
     const [activeHeart, setActiveHeart] = useState(false);
-    
-    const toggleHeart = () => {
+    const { login } = UseLoginContext()
+    const { data, changeData } = UseDataContext()
+
+    const toggleHeart = () => {  // remove like
+        if (activeHeart === true) {
+            apiUpdateMinusLikeCount({id: recipeID});
+            apiRemoveLikeRecipes({id: recipeID});
+            changeData({ ...data, like: data.like.filter(item => item !== recipeID)});
+        } else {  // add like
+            apiUpdateAddLikeCount({id: recipeID});
+            apiKeepLikeRecipes({id: recipeID});
+            changeData({ ...data, like: [recipeID, ...data.like] });
+
+        }
         setActiveHeart(!activeHeart);
     }
 
     const shareRecipe = () => {
-        navigator.clipboard.writeText(`http://localhost:3000/detail?recipeID=${recipeID}`);
+        navigator.clipboard.writeText(`http://localhost:3000/detail/${recipeID}`);
         toast.success('Copied to Clipboard!', {
             position: "bottom-center",
             autoClose: 1000,
@@ -28,12 +44,16 @@ const ActionBar = ({ recipeID }) => {
 
     return(
         <div className="action-bar">
-            <div className="action" onClick={toggleHeart}>
-                <div className="icon">
-                    {activeHeart ? <FaHeart style={{ color: 'red' }} /> : <FiHeart />}
+            { 
+                login ? 
+                <div className="action" onClick={toggleHeart}>
+                    <div className="icon">
+                        {activeHeart ? <FaHeart style={{ color: 'red' }} /> : <FiHeart />}
+                    </div>
+                    <div className="text">Like</div>
                 </div>
-                <div className="text">Like</div>
-            </div>
+                : <></>
+            }
             {/* <div className="action">
                 <div className="icon">
                     <FiBookmark />

@@ -1,12 +1,14 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import "./detail.css"
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import ActionBar from "./Components/ActionBar";
-import { useNavigate } from "react-router-dom";
 import { recipe_data } from "../Recipe/recipedata";
-
+import { UseGeneralContext } from '../Context/generalTables'
+import { apiQueryRecipeByID } from '../axios/withToken'
+import { UseLoginContext } from "../Context/LoginCnt";
 
 const Detail = () => {
-
     const navigate = useNavigate();
     const navigateToRecipe = () => {
         navigate('/recipe');
@@ -86,6 +88,7 @@ const Detail = () => {
 
 const RecipeDetail = ({ recipe, handleCloseModal }) => {
     const { recipeID, recipeName, serving, ingredients, instructions, image_link } = recipe
+    const {login} = UseLoginContext()
 
     const comments = [
         {
@@ -166,14 +169,18 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                 }
                 {/* <div className="single-comment-container" style={{width: '100%'}}>This looks soooooo delicious.</div>
                 <div className="single-comment-container" style={{width: '100%'}}>I love curry~</div> */}
-                <div className="comment-input">
-                    <div className="comment-avatar">
-                        <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
-                    </div>
-                    <input classname= "input-text" type = "text" placeholder="leave your comment..."/>
-                    <button className="submit-text"> Submit </button>
-                    {/* <input classname= "submit-text" type = "submit">Submit</input> */}
-                </div>
+                {
+                    login ?
+                    <div className="comment-input">
+                        <div className="comment-avatar">
+                            <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
+                        </div>
+                        <input classname= "input-text" type = "text" placeholder="leave your comment..."/>
+                        <button className="submit-text"> Submit </button>
+                        {/* <input classname= "submit-text" type = "submit">Submit</input> */}
+                    </div> :
+                    <></>
+                }
             </div> 
         </>
     )
@@ -181,8 +188,11 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
 
 
 const RecipeDetailShare = () => {
-    const recipe = recipe_data[2];
-    const { recipeID, recipeName, serving, ingredients, instructions, image_link } = recipe;
+    const { recipeID } = useParams();
+    const { id2ingredient } = UseGeneralContext();
+    const [apiRecipe, setApiRecipe] = useState({ recipeName: '' });
+    const recipe = recipe_data[recipeID];
+    const { recipeName, serving, ingredients, instructions, image_link } = recipe;
     const comments = [
         {
             name: 'Teresa',
@@ -196,8 +206,30 @@ const RecipeDetailShare = () => {
         }
     ]
 
+    useEffect(() => {
+        const response = apiQueryRecipeByID(recipeID);
+        response.then((value) => {
+            // console.log(value);
+            const { id, title, overview, servingSize, instructions, image, video, likeCount, labels, ingredients, comments, createdAt, updatedAt, userName } = value.data.rows[0];
+            const formatIngredients = Object.entries(ingredients).map(([id, amount]) => [id2ingredient[id], ...amount]);
+            setApiRecipe({
+                recipeID: id,
+                recipeName: title,
+                serving: servingSize,
+                ingredients: formatIngredients,
+                instructions: instructions,
+                image_link: image,
+            });
+        })
+    }, [recipeID])
+
+    // console.log(recipeID);
+    // console.log(recipe);
+    // console.log(apiRecipe);
+
     return(
         <>
+            { recipeName !== '' &&
             <div className="modal-container">
                 <div className="modal-left">
                     <div className="top-part">
@@ -234,7 +266,15 @@ const RecipeDetailShare = () => {
                     </div>
                 </div>
             </div>
+            }
 
+            { recipeName === '' &&
+                <div>
+                    <h1>
+                        {/* Some message TBD */}
+                    </h1>
+                </div>
+            }
         </> 
     )
 }

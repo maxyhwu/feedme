@@ -150,3 +150,25 @@
     border-style: none;
     margin-top: 5%;
 }
+
+.back-button {
+    background: #1f303a;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
+    width: 8vw;
+    height: 5vh;
+    border-style: none;
+    margin-top: 5%;
+}
+
+.labeladd-input {
+    width: 150px;
+    margin: 3px;
+}
+
+.labeladd-input-invalid {
+    width: 150px;
+    margin: 3px;
+    border-color: red;
+}

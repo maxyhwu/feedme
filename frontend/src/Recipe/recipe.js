@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import "./recipe.css"
 import { IoIosArrowForward } from 'react-icons/io';
@@ -7,7 +7,10 @@ import SearchBar from "./Components/SearchBar";
 import { RecipeAddButton } from "./recipeadd";
 import { recipe_data } from "./recipedata";
 import { RecipeDetail } from './detail';
+import { UseGeneralContext } from '../Context/generalTables'
+import { UseLoginContext } from "../Context/LoginCnt";
 import { apiAllIngredient } from '../axios/noToken';
+import { apiQueryRecipeByTop } from '../axios/withToken'
 
 
 const RecipeObject = ({ recipe }) => {
@@ -53,9 +56,118 @@ const RecipeObject = ({ recipe }) => {
 }
 
 
-const Recipe = () => {
+const Pagination = ({ recipesPerPage, totalRecipes, paginate, currentPage }) => {
+    const pageNumbers = [];
+    const maxPageNumbers = 5;
 
+    for (let i = 1; i <= Math.ceil(totalRecipes / recipesPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
+    const lastPage = pageNumbers[pageNumbers.length - 1];
+    let firstPageInRange;
+    if (lastPage - currentPage < Math.floor(maxPageNumbers / 2)) {
+        firstPageInRange = lastPage - maxPageNumbers + 1;
+    }
+    else {
+        firstPageInRange = Math.max(1, currentPage - Math.floor(maxPageNumbers / 2));
+    }
+    const lastPageInRange = Math.min(lastPage, firstPageInRange + maxPageNumbers - 1);    
+
+    const goToFirstPage = () => {
+        paginate(1);
+    };
+
+    const goToPreviousPage = () => {
+        if (currentPage > 1) {
+        paginate(currentPage - 1);
+        }
+    };
+
+    const goToNextPage = () => {
+        if (currentPage < lastPage) {
+        paginate(currentPage + 1);
+        }
+    };
+
+    const goToLastPage = () => {
+        paginate(lastPage);
+    };
+
+    return (
+        <div className="page-pagination">
+            <div
+                onClick={goToFirstPage}
+                className={`page-number ${currentPage === 1 ? 'page-number-disabled' : ''}`}
+            >
+                {'<<'}
+            </div>
+            <div
+                onClick={goToPreviousPage}
+                className={`page-number ${currentPage === 1 ? 'page-number-disabled' : ''}`}
+            >
+                {'<'}
+            </div>
+            {pageNumbers.slice(firstPageInRange - 1, lastPageInRange).map((number) => (
+                <div
+                    key={number}
+                    onClick={() => paginate(number)}
+                    className={`page-number ${currentPage === number ? 'page-number-active' : ''}`}
+                >
+                    {number}
+                </div>
+            ))}
+            <div
+                onClick={goToNextPage}
+                className={`page-number ${currentPage === lastPage ? 'page-number-disabled' : ''}`}
+            >
+                {'>'}
+            </div>
+            <div
+                onClick={goToLastPage}
+                className={`page-number ${currentPage === lastPage ? 'page-number-disabled' : ''}`}
+            >
+                {'>>'}
+            </div>
+        </div>
+    );
+};
+
+
+const Recipe = () => {
+    const { id2ingredient } = UseGeneralContext();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [recipesPerPage, setRecipesPerPage] = useState(5);
+    const [apiRecipeData, setApiRecipeData] = useState([]);
     // const [rerender, setRerender] = useState(false);
+    const {login} = UseLoginContext()
+
+    useEffect(() => {
+        const getRecipeTop = (page) => {
+            const promise = apiQueryRecipeByTop(page);
+            promise.then((value) => {
+                // console.log(value.data.rows);
+                setApiRecipeData((prevData) => {
+                    const newData = [...prevData];
+                    const startIndex = (page - 1) * 15;
+                    for (let i = 0; i < value.data.rows.length; i++) {
+                        const { id, title, overview, servingSize, instructions, image, video, likeCount, labels, ingredients, comments, createdAt, updatedAt, userName } = value.data.rows[i];
+                        const formatIngredients = Object.entries(ingredients).map(([id, amount]) => [id2ingredient[id], ...amount]);
+                        newData[startIndex + i] = {
+                            recipeID: id,
+                            recipeName: title,
+                            serving: servingSize,
+                            ingredients: formatIngredients,
+                            instructions: instructions,
+                            image_link: image,
+                        }
+                    }
+                    return newData;
+                });
+            })
+        }
+        getRecipeTop(currentPage);
+    }, [currentPage])
 
     const navigate = useNavigate();
     const navigateToDetail = () => {
@@ -68,6 +180,20 @@ const Recipe = () => {
         return all.data.rows;
     }
 
+    const indexOfLastRecipe = currentPage * recipesPerPage;
+    const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
+    const currentRecipes = recipe_data.slice(
+        indexOfFirstRecipe,
+        indexOfLastRecipe,
+    );
+    const totalRecipes = Math.max(recipe_data.length, recipesPerPage * 5);
+  
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    // console.log(id2ingredient);
+    // console.log(recipe_data);
+    // console.log(apiRecipeData);
+
     return (
     <>
         <SearchBar apiAllIngredient={allIngredients}/>
@@ -77,7 +203,7 @@ const Recipe = () => {
                     Our Popular Recipes
                 </div>
                 <div className="popRecipes-container">
-                    {recipe_data.map((recipe) => (
+                    {currentRecipes.map((recipe) => (
                         <RecipeObject
                             recipe={recipe}
                         />
@@ -106,7 +232,13 @@ const Recipe = () => {
                         <IoIosArrowForward/>
                     </div> */}
                 </div>
-                <RecipeAddButton />
+                {login ? <RecipeAddButton /> : <></>}
+                <Pagination
+                    recipesPerPage={recipesPerPage}
+                    totalRecipes={totalRecipes}
+                    paginate={paginate}
+                    currentPage={currentPage}
+                />
             </div>
         </div>
     </>

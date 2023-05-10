@@ -102,8 +102,9 @@ const setPassword = async (req, res) => {
 const editProfile = async (req, res) => {
     try{
         const user = req.user;
-        const {favorite, notiRec, notiIngre} = req.body
+        const {userName, favorite, notiRec, notiIngre} = req.body
         User.update({
+            userName,
             favorite,
             notiRec,
             notiIngre,
@@ -139,6 +140,7 @@ const editCurrentFridge = async (req, res) => {
     try{
         const user = req.user;
         const {fridge} = req.body
+        console.log(fridge)
         await User.update({
             fridge
         },{ where: { id: user.id}})
@@ -149,21 +151,58 @@ const editCurrentFridge = async (req, res) => {
     }
 }
 
-const keepRecipe = async (req, res) => {
+const getUserData = async (req, res, next) => {
+    try{
+        const user = req.user
+        req.auth = {
+            id:user.id,
+            userEmail:user.email
+        }
+        next()
+    } catch (err) {
+        console.log('editFridge error');
+        console.log(err);
+    }
+}
+
+const keepLikeRecipe = async (req, res) => {
     try{
         const articleID = req.body.id;
         const user = req.user;
-        let like = User.findOne({
+        let {like} = await User.findOne({
             attributes: ['like'],
             where: { id: user.id }
-        })
-        like.push(articleID.toString())
+        });
+        console.log(like)
+        like.push(articleID.toString());
         await User.update({
             like
-        },{ where: { id: user.id}})
-        return res.status(200).send({message:"Keep recipe successfully."})
+        },{ where: { id: user.id}});
+        return res.status(200).send({message:"keepLikeRecipe successfully."})
     } catch (err) {
-        console.log('keepRecipe error');
+        console.log('keepLikeRecipe error');
+        console.log(err);
+    }
+}
+
+const removeLikeRecipe = async (req, res) => {
+    try{
+        const articleID = req.body.id;
+        const user = req.user;
+        let {like} = await User.findOne({
+            attributes: ['like'],
+            where: { id: user.id }
+        });
+        // const removeIdx = like.indexOf(articleID.toString());
+        // like.splice(removeIdx, 1);
+        // ad-hoc solution (need to be solved in the future)
+        like = like.filter(item => item !== articleID);
+        await User.update({
+            like
+        },{ where: { id: user.id}});
+        return res.status(200).send({message:"removeLikeRecipe successfully."})
+    } catch (err) {
+        console.log('removeLikeRecipe error');
         console.log(err);
     }
 }
@@ -235,9 +274,11 @@ export {
     editCurrentFridge,
     sendEmail,
     editProfile,
-    keepRecipe,
+    keepLikeRecipe,
+    removeLikeRecipe,
     testUpload,
     updateCloud,
     setPassword,
     getMyImage,
+    getUserData
 }

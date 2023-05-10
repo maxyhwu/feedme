@@ -13,13 +13,18 @@ export default (sequelize, DataTypes) => {
             allowNull: false,
         },
         instructions:{
-            type: DataTypes.STRING,
+            type: DataTypes.ARRAY(DataTypes.STRING),
             allowNull: false,
         },
         image:{
             type: DataTypes.STRING,
             defaultValue: '',
             allowNull: false,
+        },
+        imagePID:{
+            type: DataTypes.STRING,
+            defaultValue: '',
+            allowNull: false
         },
         video:{
             type: DataTypes.STRING,
@@ -38,8 +43,7 @@ export default (sequelize, DataTypes) => {
             type: DataTypes.JSON,
         },
         comments:{
-            type: DataTypes.JSON,
-            defaultValue: {}
+            type: DataTypes.ARRAY(DataTypes.JSON),
         },
         createdAt: {
             type: DataTypes.DATE,
