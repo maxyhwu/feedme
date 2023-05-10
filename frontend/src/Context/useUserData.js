@@ -59,7 +59,6 @@ const DataContextProvider =  (props) => {
     }, [])
     const [data, setData] = useState( getData() )
     const changeData = (input) => {
-        console.log(input)
         localStorage.setItem('user',JSON.stringify(input));
         setData(input)
     }
