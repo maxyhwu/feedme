@@ -7,6 +7,7 @@ import userRoutes from './Routes/userRoutes';
 import dataRoutes from './Routes/dataRoutes';
 import generalRoutes from './Routes/generalRoutes';
 import recipeRoutes from './Routes/recipeRoutes';
+import envRoutes from './Routes/envRoutes';
 
 console.log("dotenv = ", process.env.PORT)
 const PORT = process.env.PORT || 8000
@@ -37,6 +38,7 @@ app.use('/api/data', dataRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/general', generalRoutes);
 app.use('/api/recipe', recipeRoutes);
+app.use('/api/env', envRoutes)
 
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();
