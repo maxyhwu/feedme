@@ -56,7 +56,7 @@ const googleOauthHandler = async (req,res,next) => {
       let token = jwt.sign({ id:user.id, email:user.email}, process.env.secretKey, {   //用jwt來為使用者生成token, secretKey是用來為jtw加密
         expiresIn: '14d'      //expiresIn 是設定有效期限
     })
-    res.cookie('user', {userName: user.userName, email: user.email, token: user.token, fridge: user.fridge});
+    res.cookie('user', {userName: user.userName, email: user.email, token: user.token, fridge: user.fridge, favorite: user.favorite, like: user.like});
     res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}${pathUrl}`);
     } catch (err) {
         console.log('Failed to authorize Google User', err);
