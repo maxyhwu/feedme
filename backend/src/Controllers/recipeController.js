@@ -21,8 +21,8 @@ const qeuryByID = async (req, res) => {
 
 const qeuryByName = async (req, res) => {
   const {title} = req.query;
-  const query = 'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and "Recipes"."title" = $1';
-  const values = [title.toString()];
+  const query = 'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and LOWER("Recipes"."title") LIKE LOWER($1)';
+  const values = [`%${title.toString()}%`];
 
   try {
     const { rows } = await pool.query(query, values);
@@ -56,15 +56,14 @@ const queryTopLikeCount = async (req, res) => {
     const { rows } = await pool.query(query, values);
     res.send({ rows });
   } catch (err) {
-    // res.send("fail");
-    res.send(err);
+    res.send("fail");
     console.log(err);
   }
 };
 
 const queryByIngredients = async (req, res) => {
   const {ingredient} = req.query;
-  const query = 'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id and AND jsonb_exists(ingredients, $1)';
+  const query = 'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes"."userID" = "Users".id AND jsonb_exists(ingredients, $1)';
   const values = [parseInt(ingredient)];
 
   try {
