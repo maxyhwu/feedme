@@ -16,8 +16,8 @@ import { apiQueryRecipeByTop } from '../axios/withToken'
 const RecipeObject = ({ recipe }) => {
     const customModalStyles = {
         content: {
-            width: '80%',
-            transform: 'translate(10%, 0%)', // Translate the modal to the center of the screen
+            width: '70%',
+            transform: 'translate(20%, 0%)', // Translate the modal to the center of the screen
             boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.15)',
             borderRadius: '15px',
         }

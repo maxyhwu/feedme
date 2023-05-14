@@ -26,6 +26,8 @@ const SearchBar = () => {
     const [loading, setLoading] = useState(false);
     const [resultIsEmpty, setResultIsEmpty] = useState(false);
 
+    const [input, setInput] = useState("");
+
     //const ingredients = [];
 
     const dropdownRefFilter = useRef(null);
@@ -151,15 +153,28 @@ const SearchBar = () => {
         };
     }, []);
 
-    const handleSearch = async(filter, input) => {
+    function handleKeyUp(event) {
+        if (event.key === 'Enter') {
+        //   setInput(event.target.value);
+          console.log('Enter clicked', event.target.value);
+        }
+    }
+
+    const handleSearch = async(filter, input, event) => {
         if (filter === 'Name'){
+            setInput(input);
             // console.log('search by', filter);
-            console.log('search recipe', input);
-            const result = await apiQueryRecipeByName(input.toLowerCase())
-            console.log('name search result', result.data.rows);
+            if (event.key === 'Enter' && input.length > 0) {
+                console.log('Enter clicked', input);
+                // console.log('search recipe', input);
+                const result = await apiQueryRecipeByName(input.toLowerCase());
+                console.log('name search result', result.data.rows);
+            }
+            
             // setRecipeData(result.data.rows);
         } else {
             // console.log('search by', filter);
+            setInput(input);
             let searchResult = []
             ingredients.forEach((ingred) => {
                 if (ingred.ingredName.toLowerCase().includes(input.toLowerCase())) {
@@ -208,9 +223,11 @@ const SearchBar = () => {
                     id='search-bar' 
                     placeholder={'Search recipes by ' + filter} 
                     onClick={handleInputDropdown}
+                    onKeyUp={handleKeyUp}
+                    value={input}
                     onChange={(e) => {
                         setSearchedIng([]);
-                        handleSearch(filter, e.target.value);}}/>
+                        handleSearch(filter, e.target.value, e);}}/>
             </div>
             <div className="search-dropdown" style={ inputDropdown? {maxHeight: 'fit-content'}:{maxHeight: '0'}}>
                 <div className="search-ingredients" ref={dropdownRefInput}>
