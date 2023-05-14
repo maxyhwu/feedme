@@ -153,44 +153,46 @@ const RecipeDetailShare = () => {
     return(
         <>
             { recipeName !== '' &&
-            <div className="modal-container">
-                <div className="modal-left">
-                    <div className="top-part">
-                        <div className="image">
-                            <img src={image_link} alt="" />
+            <div className="modal-container-from-data">
+                <div className="modal-container">
+                    <div className="modal-top">
+                        <div className="top-part">
+                            <div className="image">
+                                <img src={image_link} alt="" />
+                            </div>
+                            <div className="description">
+                                <div className="title"> {recipeName} </div>
+                                <div className="serving-size"> For {serving} people </div>
+                            </div>
                         </div>
-                        <div className="description">
-                            <div className="title"> {recipeName} </div>
-                            <div className="serving-size"> For {serving} people </div>
-                        </div>
+                        <ActionBar recipeID={recipeID} />
                     </div>
-                    <ActionBar recipeID={recipeID} />
-                    <div className="ingredients">
-                        <div className="topic">Ingredients</div>
-                        <div className="content">
-                            <ul>
-                                {ingredients.map((ingredient) => (
-                                    <li>{ingredient[0]}: {ingredient[1]}</li>
-                                ))}
-                            </ul>
+                    <div className="modal-content">
+                        <div className="ingredients">
+                                <div className="topic">Ingredients</div>
+                                <div className="content">
+                                    <ul>
+                                        {ingredients.map((ingredient) => (
+                                            <li>{ingredient[0]}: {ingredient[1]}</li>
+                                        ))}
+                                    </ul>
+                                </div>
                         </div>
-                    </div>
-                </div>
-                <div className="modal-right">
-                    <div className="instructions">
-                        <div className="topic">Instructions</div>
-                        <div className="content">
-                            <ol>
-                                {instructions.map((instruction) => (
-                                    <li>{instruction}</li>
-                                ))}
-                            </ol>
+                        <div className="instructions">
+                            <div className="topic">Instructions</div>
+                            <div className="content">
+                                <ol>
+                                    {instructions.map((instruction) => (
+                                        <li>{instruction}</li>
+                                    ))}
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             }
-
+           
             { recipeName === '' &&
                 <div>
                     <h1>
@@ -198,6 +200,7 @@ const RecipeDetailShare = () => {
                     </h1>
                 </div>
             }
+            
         </> 
     )
 }
