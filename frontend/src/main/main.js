@@ -12,7 +12,6 @@ import LoginPage from '../Login/LoginPage';
 import RegisterPage from "../RegisterPage/RegisterPage";
 import Contact from "../Contact/Contact";
 import SetPassword from '../SetPassword/SetPassword';
-import Detail from "../Recipe/detail";
 import {RecipeDetailShare} from "../Recipe/detail";
 import Recipe_search_result from '../Recipe/recipe-search-result';
 import MyArchive from "../MyArchive/MyArchive";
@@ -59,7 +58,6 @@ function Main() {
           {/* <Route path='Signup' element={ <SignupPage/> } /> */}
           {/* <Route path = 'registerr' element = {<Register/>} /> */}
           <Route path='SetPassword' element={ <SetPassword/> } />
-          <Route path="modal" element={ <Detail/> }/>
           <Route path="detail/:recipeID" element={ <RecipeDetailShare /> } />
           <Route path='recipe-search-result' element={ <Recipe_search_result/> } />
           <Route path='/myfridge' element={
