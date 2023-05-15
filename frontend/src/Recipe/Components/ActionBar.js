@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FiHeart, FiBookmark, FiShare } from 'react-icons/fi';
@@ -10,12 +10,12 @@ import { UseDataContext } from "../../Context/useUserData";
 
 
 const ActionBar = ({ recipeID }) => {
-    const [activeHeart, setActiveHeart] = useState(false);
-    const { login } = UseLoginContext()
-    const { data, changeData } = UseDataContext()
+    const { login } = UseLoginContext();
+    const { data, changeData } = UseDataContext();
+    const [activeHeart, setActiveHeart] = useState(data.like.includes(recipeID));
 
-    const toggleHeart = () => {  // remove like
-        if (activeHeart === true) {
+    const toggleHeart = () => {
+        if (activeHeart === true) {  // remove like
             apiUpdateMinusLikeCount({id: recipeID});
             apiRemoveLikeRecipes({id: recipeID});
             changeData({ ...data, like: data.like.filter(item => item !== recipeID)});
@@ -23,7 +23,6 @@ const ActionBar = ({ recipeID }) => {
             apiUpdateAddLikeCount({id: recipeID});
             apiKeepLikeRecipes({id: recipeID});
             changeData({ ...data, like: [recipeID, ...data.like] });
-
         }
         setActiveHeart(!activeHeart);
     }
@@ -41,6 +40,10 @@ const ActionBar = ({ recipeID }) => {
             theme: "light",
         });
     }
+
+    useEffect(() => {
+        setActiveHeart(data.like.includes(recipeID));
+    }, [data]);
 
     return(
         <div className="action-bar">
