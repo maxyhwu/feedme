@@ -1,19 +1,23 @@
 import axios from 'axios';
 
 const userRequest = axios.create({
-    baseURL: 'http://localhost:8000/api/user'
+    // baseURL: 'http://localhost:8000/api/user'
+    baseURL: "https://feedme-72yq.onrender.com/api/user"
 });
 
 const loginRequest = axios.create({
-    baseURL: 'http://localhost:8000/api/oauth/auth'
+    // baseURL: 'http://localhost:8000/api/oauth/auth'
+    baseURL: "https://feedme-72yq.onrender.com/api/oauth/auth"
 });
 
 const generalRequest = axios.create({
-    baseURL: 'http://localhost:8000/api/general'
+    // baseURL: 'http://localhost:8000/api/general'
+    baseURL: "https://feedme-72yq.onrender.com/api/general"
 });
 
 const envRequest = axios.create({
-    baseURL: 'http://localhost:8000/api/env'
+    // baseURL: 'http://localhost:8000/api/env'
+    baseURL: "https://feedme-72yq.onrender.com/api/env"
   });
 
 export const apiLoginTwitter = data => loginRequest.post('/twitter', data);

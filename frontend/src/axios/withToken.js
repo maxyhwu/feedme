@@ -11,11 +11,13 @@ if ( (Object.keys(getUserData()).length !== 0) ){
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}` 
 
 const userRequest = axios.create({
-    baseURL: 'http://localhost:8000/api/user'
+    // baseURL: 'http://localhost:8000/api/user'
+    baseURL: "https://feedme-72yq.onrender.com/api/user"
 });
 
 const recipeRequest = axios.create({
-    baseURL: 'http://localhost:8000/api/recipe'
+    // baseURL: 'http://localhost:8000/api/recipe'
+    baseURL: "https://feedme-72yq.onrender.com/api/recipe"
 });
 
 export const apiEditProfile = data => userRequest.put('/edit-profile', data);
