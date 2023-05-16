@@ -152,7 +152,7 @@ const Recipe = () => {
                     const startIndex = (page - 1) * 15;
                     for (let i = 0; i < value.data.rows.length; i++) {
                         const { id, title, overview, servingSize, instructions, image, video, likeCount, labels, ingredients, comments, createdAt, updatedAt, userName } = value.data.rows[i];
-                        const formatIngredients = Object.entries(ingredients).map(([id, amount]) => [id2ingredient[id], ...amount]);
+                        const formatIngredients = Object.entries(ingredients).map(([id, amount]) => [id2ingredient[id], amount]);  // ...amount => ! amount is not iterable
                         newData[startIndex + i] = {
                             recipeID: id,
                             recipeName: title,
