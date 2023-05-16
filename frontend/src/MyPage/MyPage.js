@@ -2,7 +2,7 @@ import React from 'react'
 import FeedMe from '../assets/FeedMe.jpg';
 import './MyPage.css';
 import { FaSignOutAlt, FaAngleRight, FaUserCog, FaRegStar, FaHeadset } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const MyPage = () => {
 
@@ -27,6 +27,11 @@ const MyPage = () => {
                         </div>
                         <div className="user-name-container">
                             IM Fridge
+                        </div>
+                        <div>
+                            <Link to="/edit-profile">
+                                <button className="--btn --btn-primary">Edit Profile</button>
+                            </Link>
                         </div>
                         <div className="logout-btn">
                             <div className="logout-text">
