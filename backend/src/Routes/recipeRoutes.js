@@ -25,7 +25,7 @@ router.get("/query/name", qeuryByName); //OK
 router.get("/query/label", queryByLabel); //OK
 router.get("/query/top", queryTopLikeCount); //OK
 router.get("/query/ingredient", queryByIngredients); // OK
-router.get("/query/user", queryByUser); //
+router.get("/query/user", checkToken, queryByUser); //
 router.get("/delete/id", checkToken, deleteByID); // OK
 router.get("/query/all", queryAll); // for testing
 

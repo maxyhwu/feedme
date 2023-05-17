@@ -8,7 +8,7 @@ dotenv.config();
 const qeuryByID = async (req, res) => {
   const { id } = req.query;
   const query =
-    'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes".id = $1';
+    `SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes".id = $1`;
   const values = [parseInt(id)];
 
   try {
@@ -23,7 +23,7 @@ const qeuryByID = async (req, res) => {
 const qeuryByName = async (req, res) => {
   const { title } = req.query;
   const query =
-    'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE LOWER("Recipes"."title") LIKE LOWER($1)';
+    `SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE LOWER("Recipes"."title") LIKE LOWER($1)`;
   const values = [`%${title.toString()}%`];
 
   try {
@@ -38,7 +38,7 @@ const qeuryByName = async (req, res) => {
 const queryByLabel = async (req, res) => {
   const { label } = req.query;
   const query =
-    'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE $1 = ANY("Recipes"."labels")';
+    `SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE $1 = ANY("Recipes"."labels")`;
   const values = [parseInt(label)];
 
   try {
@@ -53,7 +53,7 @@ const queryByLabel = async (req, res) => {
 const queryTopLikeCount = async (req, res) => {
   const { page } = req.query;
   const query =
-    'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" ORDER BY "likeCount" DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY';
+    `SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" ORDER BY "likeCount" DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY`;
   const values = [(parseInt(page) - 1) * 15];
 
   try {
@@ -68,7 +68,7 @@ const queryTopLikeCount = async (req, res) => {
 const queryByIngredients = async (req, res) => {
   const { ingredient } = req.query;
   const query =
-    'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE EXISTS (SELECT 1 FROM json_each(ingredients) AS i WHERE (i.key::int)::text IN (SELECT unnest($1::text[]))) ORDER BY (SELECT COUNT(*) FROM json_object_keys(ingredients) AS keys WHERE (keys::int)::text IN (SELECT unnest($1::text[]))) DESC';
+    `SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE EXISTS (SELECT 1 FROM json_each(ingredients) AS i WHERE (i.key::int)::text IN (SELECT unnest($1::text[]))) ORDER BY (SELECT COUNT(*) FROM json_object_keys(ingredients) AS keys WHERE (keys::int)::text IN (SELECT unnest($1::text[]))) DESC`;
   const values = [JSON.parse(ingredient)];
 
   try {
@@ -80,12 +80,10 @@ const queryByIngredients = async (req, res) => {
   }
 };
 
-// user query
 const queryByUser = async (req, res) => {
   const Uid = req.user;
-  console.log(Uid);
   const query =
-    'SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "userID" = $1';
+    `SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "userID" = $1`;
   const values = [parseInt(Uid.id)];
 
   try {
@@ -101,7 +99,7 @@ const queryByUser = async (req, res) => {
 const updateAddLikeCount = async (req, res) => {
   const { Rid } = req.body;
   const query =
-    'UPDATE "Recipes" SET "likeCount" = "likeCount" + 1 WHERE id = $1';
+    `UPDATE "Recipes" SET "likeCount" = "likeCount" + 1 WHERE id = $1`;
   const values = [parseInt(Rid)];
 
   try {
@@ -116,7 +114,7 @@ const updateAddLikeCount = async (req, res) => {
 const updateMinusLikeCount = async (req, res) => {
   const { Rid } = req.body;
   const query =
-    'UPDATE "Recipes" SET "likeCount" = "likeCount" - 1 WHERE id = $1';
+    `UPDATE "Recipes" SET "likeCount" = "likeCount" - 1 WHERE id = $1`;
   const values = [parseInt(Rid)];
 
   try {
@@ -146,7 +144,7 @@ const updateRecipe = async (req, res) => {
   let url = newPath;
   fs.unlinkSync(path);
   const query =
-    'UPDATE "Recipes" SET "title" = $1, "overview" = $2, "servingSize" = $3, "instructions" = $4, "image" = $5, "imagePID" = $6, "video" = $7, "labels" = $8, "ingredients" = $9 WHERE "id" = $10 and "userID" = $11';
+    `UPDATE "Recipes" SET "title" = $1, "overview" = $2, "servingSize" = $3, "instructions" = $4, "image" = $5, "imagePID" = $6, "video" = $7, "labels" = $8, "ingredients" = $9 WHERE "id" = $10 and "userID" = $11`;
   const values = [
     title.toString(),
     overview.toString(),
@@ -170,7 +168,7 @@ const updateRecipe = async (req, res) => {
 };
 
 const getCommentUserData = async (req, res) => {
-  const query = 'SELECT "photo", "userName" FROM "Users" WHERE "id" = $1';
+  const query = `SELECT "photo", "userName" FROM "Users" WHERE "id" = $1`;
   try {
     const { id } = req.query;
     const values = [parseInt(id)];
@@ -188,11 +186,12 @@ const getCommentUserData = async (req, res) => {
 
 const addComment = async (req, res) => {
   const { comment, Rid } = req.body;
-  const user = req.user;
+  const user = req.user.id;
+  console.log(user);
   const query =
     // 'UPDATE "Recipes" SET comments = comments || json_build_array($1::json) WHERE id = $2';
-    'UPDATE "Recipes" SET comments = comments || json_build_object("user_id", $1::text,"comment_str", $2::text,"time", $3::text)::json WHERE id = $4'
-  const values = [user.id, JSON.parse(comment), time(), parseInt(Rid)];
+    `UPDATE "Recipes" SET comments = comments || json_build_array(json_build_object('user_id', $1::text,'comment_str', $2::text,'time', current_timestamp(0))::json) WHERE id = $3`
+  const values = [user, comment.toString(), parseInt(Rid)];
 
   try {
     await pool.query(query, values);
@@ -223,7 +222,7 @@ const addRecipe = async (req, res) => {
   let url = newPath;
   fs.unlinkSync(path);
   const query =
-    'INSERT INTO "Recipes" ("userID", "title", "overview", "servingSize", "instructions", "image", "imagePID", "video", "likeCount", "labels", "ingredients", "comments") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, DEFAULT)';
+    `INSERT INTO "Recipes" ("userID", "title", "overview", "servingSize", "instructions", "image", "imagePID", "video", "likeCount", "labels", "ingredients", "comments") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, DEFAULT)`;
   const values = [
     user.id,
     title.toString(),
@@ -250,7 +249,7 @@ const addRecipe = async (req, res) => {
 
 const deleteByID = async (req, res) => {
   const { id } = req.query;
-  const query = 'DELETE FROM "Recipes" WHERE "id" = $1';
+  const query = `DELETE FROM "Recipes" WHERE "id" = $1`;
   const values = [parseInt(id)];
 
   try {
@@ -263,7 +262,7 @@ const deleteByID = async (req, res) => {
 };
 
 const queryAll = async (req, res) => {
-  const query = 'SELECT * FROM "public"."Recipes" LIMIT 100';
+  const query = `SELECT * FROM "public"."Recipes" LIMIT 100`;
 
   try {
     const result = await pool.query(query);
