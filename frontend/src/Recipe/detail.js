@@ -17,7 +17,12 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
     const [userComment, setUserComment] = useState("");
     const [editMode, setEditMode] = useState(false);
     const [editingInst, setEditingInst] = useState(false);
+    const [editingIng, setEditingIng] = useState(false);
+
+
     const [instruContent, setInstruContent] = useState(instructions);
+    const initIngredCount = ingredients.map((ingred) =>  ingred[1]);
+    const [ingredCount, setIngredCount] = useState(initIngredCount);
 
     const [completeRecipe, setCompleteRecipe] = useState([]);
 
@@ -47,15 +52,23 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
     const editOnClick = async() => {
         setEditMode(!editMode);
         setEditingInst(false);
+        setEditingIng(false);
         //setInstruContent(instructions);
         // console.log('edit mode set');
     }
 
-    const handleEditInstruOnclick= (instruction) => {
+    const handleEditInstruOnclick= () => {
         if (editMode) {
             setEditingInst(true);
             //setInstruContent(instruction);
         }
+    }
+
+    const handleEditIngredOnclick = () => {
+        if (editMode) {
+            setEditingIng(true)
+        }
+        // console.log('ingred', ingredCount);
     }
 
     const handleInstruChange = (event, idx) => {
@@ -65,61 +78,26 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
 
         // Update the state with the modified array
         setInstruContent(newInstru);
-        //console.log('newInstru', idx, newInstru[idx]);
-        //console.log('new instrument content', newInstru[idx]);
-        // if (textareaRef.current) {
-        //     textareaRef.current.style.height = 'auto';
-        //     textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-        // }
     }
 
-    useEffect(() => {
-        async function getCompleteRecipe() {
-            const response = await apiQueryRecipeByID(recipeID);
-            console.log('response', response);
-            response.then((value) => {
-                console.log(value);
-                const { id, title, overview, servingSize, instructions, image, video, likeCount, labels, ingredients, comments, createdAt, updatedAt, userName } = value.data.rows[0];
-                const formatIngredients = Object.entries(ingredients).map(([id, amount]) => [id2ingredient[id], ...amount]);
-                setCompleteRecipe({
-                    recipeID: id,
-                    recipeName: title,
-                    serving: servingSize,
-                    ingredients: formatIngredients,
-                    instructions: instructions,
-                    image_link: image,
-                    overview,
-                    video,
-                    likeCount,
-                    labels
-                });
-            })
-            console.log('raw instruction :', instructions);
-            setInstruContent(instructions);
-        }
-        //getCompleteRecipe();
+    const handleIngredChange = (event, idx) => {
+        const newIngred = [...ingredCount]
+        newIngred[idx] = event.target.value;
+        // console.log('new ingred', newIngred[idx]);
 
-        //console.log('raw instruction :', instructions);
-        setInstruContent(instructions);
+        setIngredCount(newIngred)
+    }
 
-        //setInstruContent(instructions);
-        // instructions.map((instruction, id) => {
-        //     console.log('the ', id, 'instruction :', instruction);
-        //     //setInstruContent((prev) => [...prev, instruction])
-        // })
-        //console.log('instructions', instruContent);
-    }, [recipeID])
-
-    const handleInstruEditSave = async(idx) => {
+    const handleInstruEditSave = async() => {
         const data = {
             title: recipeName,
             overview: completeRecipe.overview,
-            servingSize: completeRecipe.serving,
+            servingSize: serving,
             instructions: instruContent,
-            image: image_link,
+            //image: image_link,
             video: completeRecipe.video,
             labels: completeRecipe.labels,
-            ingredients: completeRecipe.ingredients,
+            ingredients: ingredients,
             id: recipeID
         }
         const updateResult = await apiUpdateRecipe(data);
@@ -128,6 +106,35 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
 
     const handleInstruEditCancel = () => {
         setEditingInst(false);
+    }
+
+    const handleIngredEditSave = async() => {
+
+        function combineIngredCount() {
+            const editedIngredients = []
+            ingredients.map((ingred, idx) => {
+                editedIngredients[idx] = [ingred[0], ingredCount[idx]]
+            })
+            return editedIngredients
+        }
+
+        const data = {
+            title: recipeName,
+            overview: '',
+            servingSize: serving,
+            instructions: instruContent,
+            //image: image_link,
+            video: '',
+            labels: '',
+            ingredients: combineIngredCount(),
+            id: recipeID
+        }
+        const updateResult = await apiUpdateRecipe(data);
+        console.log('update result', updateResult);
+    }
+
+    const handleIngredEditCancel = () => {
+        setEditingIng(false);
     }
 
     useEffect(() => {
@@ -147,7 +154,7 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
 
 
     return(
-        <div style={editMode? {}:{}}>
+        <div className={`${editMode ? 'blur-all' : ''} whole-modal `}>
             <div className="exit">
                 <IoCloseCircleOutline size={25} onClick={handleCloseModal}/>
             </div>
@@ -168,20 +175,40 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                     <ActionBar recipeID={recipeID} />
                 </div>
 
-                <div className="modal-content">
-                    <div className="ingredients">
+                <div className='modal-content'>
+                    <div className={`ingredients ${editingIng ? 'editing-box' : ''}`}>
                         <div className="topic">Ingredients</div>
                         <div className="content">
                             <ul>
                                 {ingredients.map((ingredient, idx) => (
-                                    <li className="hover-effect" key={idx}>{ingredient[0]}: {ingredient[1]}</li>
+                                    editingIng?
+                                    <>
+                                        {ingredient[0]}
+                                        <textarea 
+                                            key={'0-' + idx}
+                                            value={ingredCount[idx]}
+                                            rows={1}
+                                            onChange={(event) => handleIngredChange(event, idx)}
+                                        />
+                                    </>
+                                    :
+                                    <li className="hover-effect" key={idx} onClick={handleEditIngredOnclick}>
+                                        {ingredient[0]}: {ingredient[1]}
+                                    </li>
                                 ))}
                             </ul>
+                            {
+                                editingIng?
+                                (<>
+                                    <button onClick={handleIngredEditSave}>save</button>
+                                    <button onClick={handleIngredEditCancel}>cancel</button>
+                                </>):''
+                            }
                         </div>
                     </div>
-                    <div className="instructions">
+                    <div className={`instructions ${editingInst ? 'editing-box' : ''}`}>
                         <div className="topic">Instructions</div>
-                        <div className="content">
+                        <div className='content'>
                             <ol>
                                 {instructions.map((instruction, idx) => (
                                     editingInst?
@@ -198,15 +225,22 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                                             ref={textareaRef}
                                             //rows={instruction.split('\n').length}
                                             autoFocus/>
-                                        <button onClick={() => handleInstruEditSave(idx)}>save</button>
-                                        <button onClick={handleInstruEditCancel}>cancel</button>
+                                        
                                     </li>
                                     :
-                                    <li className="hover-effect" key={idx} onClick={() => handleEditInstruOnclick(instructions[idx])}>
+                                    <li className="hover-effect" key={idx} onClick={handleEditInstruOnclick}>
                                         {instruction}
                                     </li>
                                 ))}
                             </ol>
+                            {
+                                editingInst?
+                                (<>
+                                    <button onClick={handleInstruEditSave}>save</button>
+                                    <button onClick={handleInstruEditCancel}>cancel</button>
+                                </>):''
+                            }
+                            
                         </div>
                     </div>
                 </div>      
@@ -257,7 +291,10 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
             </div> 
             <button className='btn btn-secondary recipeedit-fixed-button' onClick={editOnClick}>
                 <div className='recipeadd-icon'><FaJournalWhills /></div>
-                    Edit Recipe
+                {
+                    editMode?
+                    <>Finish Edit</> : <>Edit Recipe</>
+                }
             </button>
         </div>
     )

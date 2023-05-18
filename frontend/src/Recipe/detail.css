@@ -256,4 +256,15 @@ ul {
 textarea {
     width: 100%;
     padding: 1em;
+    opacity: 1;
+}
+
+.blur-all {
+    /* opacity: 0.5; */
+    color: rgba(0, 0, 0, 0.514);
+}
+
+.modal-content .editing-box {
+    opacity: 1;
+    color: rgba(0, 0, 0, 1);
 }
