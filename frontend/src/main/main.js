@@ -12,11 +12,11 @@ import LoginPage from '../Login/LoginPage';
 import RegisterPage from "../RegisterPage/RegisterPage";
 import Contact from "../Contact/Contact";
 import SetPassword from '../SetPassword/SetPassword';
-import Detail from "../Recipe/detail";
 import {RecipeDetailShare} from "../Recipe/detail";
 import Recipe_search_result from '../Recipe/recipe-search-result';
 import MyArchive from "../MyArchive/MyArchive";
 import MyPage from '../MyPage/MyPage';
+import EditProfile from "../MyPage/EditProfile";
 import { useState, useEffect } from "react";
 import ProtectedRoutes from "../ProtectedRoutes/ProtectedRoutes";
 import { IntlProvider } from "react-intl";
@@ -59,7 +59,6 @@ function Main() {
           {/* <Route path='Signup' element={ <SignupPage/> } /> */}
           {/* <Route path = 'registerr' element = {<Register/>} /> */}
           <Route path='SetPassword' element={ <SetPassword/> } />
-          <Route path="modal" element={ <Detail/> }/>
           <Route path="detail/:recipeID" element={ <RecipeDetailShare /> } />
           <Route path='recipe-search-result' element={ <Recipe_search_result/> } />
           <Route path='/myfridge' element={
@@ -77,7 +76,13 @@ function Main() {
           <Route path='/mypage' element={
                  <ProtectedRoutes>
                     <MyPage/>
-                  </ProtectedRoutes>}/>
+                  </ProtectedRoutes>
+                  }/>
+          <Route path='/edit-profile' element={
+                 <ProtectedRoutes>
+                    <EditProfile/>
+                  </ProtectedRoutes>
+                  }/>
           <Route path='/preference' element={
                  <ProtectedRoutes>
                     <Preference/>

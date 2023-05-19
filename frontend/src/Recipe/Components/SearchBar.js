@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import './SearchBar.css';
 import { IoIosArrowDown } from 'react-icons/io';
-import { IoFilterCircleOutline } from 'react-icons/io5';
+import { IoFilterCircleOutline, IoClose } from 'react-icons/io5';
 import { apiAllIngredient } from '../../axios/noToken';
 import { apiQueryRecipeByName, apiQueryRecipeByIngredient } from '../../axios/withToken';
 import Spinner from './Spinner';
+import { width } from '@mui/system';
 
 
 const EmptyResultDisplay = () => {
@@ -23,8 +24,12 @@ const SearchBar = () => {
     const [ingredients, setIngredients] = useState([]);
     const [searchedIng, setSearchedIng] = useState([]);
 
+    const [choseIngred, setChoseIngred] = useState([]);
+
     const [loading, setLoading] = useState(false);
     const [resultIsEmpty, setResultIsEmpty] = useState(false);
+
+    const [input, setInput] = useState("");
 
     //const ingredients = [];
 
@@ -151,15 +156,32 @@ const SearchBar = () => {
         };
     }, []);
 
-    const handleSearch = async(filter, input) => {
+    function handleKeyUp(event) {
+        if (event.key === 'Enter') {
+        //   setInput(event.target.value);
+          console.log('Enter clicked', event.target.value);
+        }
+    }
+
+    const handleSearch = async(filter, input, event) => {
         if (filter === 'Name'){
+            setInput(input);
             // console.log('search by', filter);
-            console.log('search recipe', input);
-            const result = await apiQueryRecipeByName(input.toLowerCase())
-            console.log('name search result', result.data.rows);
+            if (event.key === 'Enter' && input.length > 0) {
+                console.log('Enter clicked', input);
+                // console.log('search recipe', input);
+                try {
+                    const result = await apiQueryRecipeByName(input.toLowerCase());
+                    console.log('name search result', result.data.rows);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            
             // setRecipeData(result.data.rows);
         } else {
             // console.log('search by', filter);
+            setInput(input);
             let searchResult = []
             ingredients.forEach((ingred) => {
                 if (ingred.ingredName.toLowerCase().includes(input.toLowerCase())) {
@@ -177,9 +199,22 @@ const SearchBar = () => {
         }
     }
 
-    const clickIngredToSearch = async(id) => {
-        const searchResult = await apiQueryRecipeByIngredient(id);
-        console.log('id', id, 'result', searchResult);
+    const handleClearInput = () => {
+        setInput('');
+    }
+
+    const clickIngredToSearch = async(ingredient) => {
+        const choseIngredId = []
+        choseIngred.map((ing, idx) => choseIngredId[idx] = ing.id)
+        // const searchResult = await apiQueryRecipeByIngredient(choseIngredId);
+        // console.log('ids', choseIngredId, 'result', searchResult);
+        setChoseIngred(prev => [...prev, ingredient]);
+        setSearchedIng((prev) => prev.filter(element => element != ingredient))
+    }
+
+    const handleRemoveOnclick = (removeIngred) => {
+        setChoseIngred((prev) => prev.filter(element => element != removeIngred))
+        setSearchedIng(prev => [...prev, removeIngred])
     }
 
     return(
@@ -204,16 +239,41 @@ const SearchBar = () => {
                         <li className='options' onClick={handleSelect} value='ingredients'>Ingredients</li>
                     </ul>
                 </div>
-                <input type="text" 
-                    id='search-bar' 
-                    placeholder={'Search recipes by ' + filter} 
-                    onClick={handleInputDropdown}
-                    onChange={(e) => {
-                        setSearchedIng([]);
-                        handleSearch(filter, e.target.value);}}/>
+                <div className="inputbar-container" >
+                    <input type="text" 
+                        id='input-bar' 
+                        placeholder={'Search recipes by ' + filter} 
+                        onClick={handleInputDropdown}
+                        onKeyUp={handleKeyUp}
+                        value={input}
+                        onChange={(e) => {
+                            setSearchedIng([]);
+                            handleSearch(filter, e.target.value, e);}}/>
+                    {
+                        input.length != 0 && <IoClose onClick={handleClearInput}/>
+                    }
+                </div>
+                
             </div>
-            <div className="search-dropdown" style={ inputDropdown? {maxHeight: 'fit-content'}:{maxHeight: '0'}}>
-                <div className="search-ingredients" ref={dropdownRefInput}>
+            <div className="search-dropdown" 
+                style={ inputDropdown? {maxHeight: 'fit-content'}:{maxHeight: '0'}}
+                ref={dropdownRefInput}
+                >
+                <div className="choosed-ingred" style={ choseIngred.length === 0? {borderBottom: 'none'}:{} }>
+                    {
+                        choseIngred.length != 0 && choseIngred.map((cIngred, idx) => {
+                            return <button type="button"
+                                key={idx} 
+                                className="ingredient able-cancel" 
+                                onClick={() => handleRemoveOnclick(cIngred)}
+                                style={{ background: ingredientswColor.find(obj => obj.id === cIngred.categoryID).color }}>
+                                    <IoClose style={{ height: '1.2em', width: '1.2em', marginRight: '0.5em' }}/>
+                                    {cIngred.ingredName}
+                            </button>
+                        })
+                    }
+                </div>
+                <div className="search-ingredients">
                     {loading && <Spinner />}
                     {resultIsEmpty && <EmptyResultDisplay />}
                     {
@@ -221,7 +281,7 @@ const SearchBar = () => {
                             return <button type="button"
                                 key={idx} 
                                 className="ingredient" 
-                                onClick={() => clickIngredToSearch(ingred.id)}
+                                onClick={() => clickIngredToSearch(ingred)}
                                 style={{ background: ingredientswColor.find(obj => obj.id === ingred.categoryID).color }}>
                                     {ingred.ingredName}
                             </button>

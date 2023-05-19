@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import "./recipe.css"
 import { IoIosArrowForward } from 'react-icons/io';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import SearchBar from "./Components/SearchBar";
 import { RecipeAddButton } from "./recipeadd";
 import { recipe_data } from "./recipedata";
@@ -16,8 +16,8 @@ import { apiQueryRecipeByTop } from '../axios/withToken'
 const RecipeObject = ({ recipe }) => {
     const customModalStyles = {
         content: {
-            width: '80%',
-            transform: 'translate(10%, 0%)', // Translate the modal to the center of the screen
+            width: '75%',
+            transform: 'translate(15%, 0%)', // Translate the modal to the center of the screen
             boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.15)',
             borderRadius: '15px',
         }
@@ -135,6 +135,7 @@ const Pagination = ({ recipesPerPage, totalRecipes, paginate, currentPage }) => 
 
 
 const Recipe = () => {
+    const location = useLocation();
     const { id2ingredient } = UseGeneralContext();
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage, setRecipesPerPage] = useState(5);
@@ -144,7 +145,15 @@ const Recipe = () => {
 
     useEffect(() => {
         const getRecipeTop = (page) => {
-            const promise = apiQueryRecipeByTop(page);
+            let promise;
+            if (location.pathname === '/recipe') {
+                promise = apiQueryRecipeByTop(page);
+            } else if (location.pathname === '/myrecipe') {
+                console.log('Not implemented');
+            } else if (location.pathname === '/suggestrecipe') {
+                console.log('Not implemented');
+            }
+            
             promise.then((value) => {
                 // console.log(value.data.rows);
                 setApiRecipeData((prevData) => {
@@ -152,7 +161,7 @@ const Recipe = () => {
                     const startIndex = (page - 1) * 15;
                     for (let i = 0; i < value.data.rows.length; i++) {
                         const { id, title, overview, servingSize, instructions, image, video, likeCount, labels, ingredients, comments, createdAt, updatedAt, userName } = value.data.rows[i];
-                        const formatIngredients = Object.entries(ingredients).map(([id, amount]) => [id2ingredient[id], ...amount]);
+                        const formatIngredients = Object.entries(ingredients).map(([id, amount]) => [id2ingredient[id], amount]);  // ...amount => ! amount is not iterable
                         newData[startIndex + i] = {
                             recipeID: id,
                             recipeName: title,

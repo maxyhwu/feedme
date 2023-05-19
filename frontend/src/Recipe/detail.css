@@ -12,7 +12,7 @@
     width: 80%;
     height: fit-content;
     display: flex; 
-    flex-direction: row;
+    flex-direction: column;
     padding: 20px;
     background: #FFFFFF;
     opacity: 0.9;
@@ -23,25 +23,29 @@
 .modal-container-from-data {
     height: fit-content;
     display: flex; 
-    flex-direction: row;
+    flex-direction: column;
     padding: 20px;
+    align-items: center;
 }
 
-.modal-left {
-    width: 50%;
+.modal-top {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    padding: 5%;
+    padding-top: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
 .top-part {
     display: flex;
-    margin-bottom: 2rem;
+    margin-bottom: 2em;
+    justify-content: space-between;
 }
 
 .image {
-    width: 40%;
+    width: 35%;
     /* background-color: aqua; */
 }
 
@@ -57,16 +61,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
 .title {
-    font-size: x-large;
+    font-size: 3em;
     text-align: center;
+    font-weight: 500;
 }
 
 .serving-size {
-    font-size: small;
+    font-size: 1.5em;
     margin: 5px;
 }
 
@@ -85,16 +90,35 @@
     font-weight: 500;
 }
 
-.ingredients {
-    margin-top: 3rem;
+.modal-content {
+    width: 100%;
+    padding: 5%;
+    flex-direction: row;
 }
 
-.modal-right {
-    width: 50%;
-    padding-right: 5%;
-    padding-top: 5%;
-    padding-bottom: 5%;
+.ingredients {
+    /* margin-top: 3rem; */
+    width: 40%;
 }
+
+.instructions {
+    padding-inline-start: 0;
+    width: 58%;
+    margin-left: 2%;
+}
+
+@media screen and (max-width: 600px) {
+    .modal-content {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .ingredients, .instructions {
+        width: 100%;
+    }
+}
+
 
 .exit {
     display: flex;
@@ -112,10 +136,15 @@
 
 .content {
     font-size: small;
+    padding-inline-start: 1em;
 }
 
-ol, ul {
+ol {
     padding-left: 1.2rem;
+}
+
+ul {
+    padding-left: 0;
 }
 
 .comment-container{
@@ -202,6 +231,40 @@ ol, ul {
 }
 
 
+.recipeedit-fixed-button {
+    position: fixed;
+    bottom: 5%;
+    right: 5%;
+    padding: 5px 20px 10px 20px;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0.5rem;
+    background-color: #E3DBF0;
+    color: black;
+    font-size: small;
+    font-weight: 500;
+    cursor: pointer;
+    z-index: 1000;
+}
 
+.hover-effect:hover {
+    background-color: antiquewhite;
+    opacity: 1;
+    cursor: pointer;
+}
 
+textarea {
+    width: 100%;
+    padding: 1em;
+    opacity: 1;
+}
 
+.blur-all {
+    /* opacity: 0.5; */
+    color: rgba(0, 0, 0, 0.514);
+}
+
+.modal-content .editing-box {
+    opacity: 1;
+    color: rgba(0, 0, 0, 1);
+}
