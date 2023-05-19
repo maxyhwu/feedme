@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import './SearchBar.css';
 import { IoIosArrowDown } from 'react-icons/io';
-import { IoFilterCircleOutline } from 'react-icons/io5';
+import { IoFilterCircleOutline, IoClose } from 'react-icons/io5';
+import { GrFormClose } from 'react-icons/gr';
 import { apiAllIngredient } from '../../axios/noToken';
 import { apiQueryRecipeByName, apiQueryRecipeByIngredient } from '../../axios/withToken';
 import Spinner from './Spinner';
+import { width } from '@mui/system';
 
 
 const EmptyResultDisplay = () => {
@@ -22,6 +24,8 @@ const SearchBar = () => {
     const [inputDropdown, setInputDropdown] = useState(false);
     const [ingredients, setIngredients] = useState([]);
     const [searchedIng, setSearchedIng] = useState([]);
+
+    const [choseIngred, setChoseIngred] = useState([]);
 
     const [loading, setLoading] = useState(false);
     const [resultIsEmpty, setResultIsEmpty] = useState(false);
@@ -192,9 +196,18 @@ const SearchBar = () => {
         }
     }
 
-    const clickIngredToSearch = async(id) => {
-        const searchResult = await apiQueryRecipeByIngredient(id);
-        console.log('id', id, 'result', searchResult);
+    const clickIngredToSearch = async(ingredient) => {
+        const choseIngredId = []
+        choseIngred.map((ing, idx) => choseIngredId[idx] = ing.id)
+        const searchResult = await apiQueryRecipeByIngredient(choseIngredId);
+        console.log('ids', choseIngredId, 'result', searchResult);
+        setChoseIngred(prev => [...prev, ingredient]);
+        setSearchedIng((prev) => prev.filter(element => element != ingredient))
+    }
+
+    const handleRemoveOnclick = (removeIngred) => {
+        setChoseIngred((prev) => prev.filter(element => element != removeIngred))
+        setSearchedIng(prev => [...prev, removeIngred])
     }
 
     return(
@@ -229,8 +242,25 @@ const SearchBar = () => {
                         setSearchedIng([]);
                         handleSearch(filter, e.target.value, e);}}/>
             </div>
-            <div className="search-dropdown" style={ inputDropdown? {maxHeight: 'fit-content'}:{maxHeight: '0'}}>
-                <div className="search-ingredients" ref={dropdownRefInput}>
+            <div className="search-dropdown" 
+                style={ inputDropdown? {maxHeight: 'fit-content'}:{maxHeight: '0'}}
+                ref={dropdownRefInput}
+                >
+                <div className="choosed-ingred">
+                    {
+                        choseIngred.length != 0 && choseIngred.map((cIngred, idx) => {
+                            return <button type="button"
+                                key={idx} 
+                                className="ingredient able-cancel" 
+                                onClick={() => handleRemoveOnclick(cIngred)}
+                                style={{ background: ingredientswColor.find(obj => obj.id === cIngred.categoryID).color }}>
+                                    <IoClose style={{ height: '1.2em', width: '1.2em', marginRight: '0.5em' }}/>
+                                    {cIngred.ingredName}
+                            </button>
+                        })
+                    }
+                </div>
+                <div className="search-ingredients">
                     {loading && <Spinner />}
                     {resultIsEmpty && <EmptyResultDisplay />}
                     {
@@ -238,7 +268,7 @@ const SearchBar = () => {
                             return <button type="button"
                                 key={idx} 
                                 className="ingredient" 
-                                onClick={() => clickIngredToSearch(ingred.id)}
+                                onClick={() => clickIngredToSearch(ingred)}
                                 style={{ background: ingredientswColor.find(obj => obj.id === ingred.categoryID).color }}>
                                     {ingred.ingredName}
                             </button>

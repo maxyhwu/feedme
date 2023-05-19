@@ -125,9 +125,20 @@
     height: auto;
     /* background-color: aliceblue; */
     display: flex;
+    flex-direction: column;
     overflow: hidden;
     transition: max-height 0.8s;
     /* border-radius: 10px; */
+}
+
+.choosed-ingred {
+    width: 100%;
+    display: flex;
+    padding-left: 3%;
+    /* border-radius: 0 0 10px 10px; */
+    border: 1px solid rgba(43, 41, 41, 0.147);
+    border-top: none;
+    flex-wrap: wrap;
 }
 
 .search-ingredients {
@@ -149,6 +160,11 @@
     color: white;
     font-weight: 700;
     padding: 2%;
+}
+
+.able-cancel {
+    display: flex;
+    align-items: center;
 }
 
 
