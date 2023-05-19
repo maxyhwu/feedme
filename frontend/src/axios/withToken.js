@@ -34,6 +34,7 @@ export const apiQueryRecipeByLabel = label => recipeRequest.get('/query/label', 
 export const apiQueryRecipeByTop = page => recipeRequest.get('/query/top', {params:{ page }});
 export const apiQueryRecipeByIngredient = ingredient => recipeRequest.get('/query/ingredient', {params:{ ingredient }});
 export const apiQueryRecipeByUser = () => recipeRequest.get('/query/user');
+export const apiDeleteRecipeByID = id => recipeRequest.get('/delete/id', {params:{ id }});
 
 export const apiGetRecipeComment = id => recipeRequest.get('/get/comment-data', {params:{ id }});
 
