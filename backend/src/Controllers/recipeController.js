@@ -248,7 +248,7 @@ const addRecipe = async (req, res) => {
 };
 
 const deleteByID = async (req, res) => {
-  const { id } = req.query;
+  const { id } = req.body;
   const query = `DELETE FROM "Recipes" WHERE "id" = $1`;
   const values = [parseInt(id)];
 
