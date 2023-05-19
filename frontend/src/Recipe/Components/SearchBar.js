@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import './SearchBar.css';
 import { IoIosArrowDown } from 'react-icons/io';
 import { IoFilterCircleOutline, IoClose } from 'react-icons/io5';
-import { GrFormClose } from 'react-icons/gr';
 import { apiAllIngredient } from '../../axios/noToken';
 import { apiQueryRecipeByName, apiQueryRecipeByIngredient } from '../../axios/withToken';
 import Spinner from './Spinner';
@@ -171,8 +170,12 @@ const SearchBar = () => {
             if (event.key === 'Enter' && input.length > 0) {
                 console.log('Enter clicked', input);
                 // console.log('search recipe', input);
-                const result = await apiQueryRecipeByName(input.toLowerCase());
-                console.log('name search result', result.data.rows);
+                try {
+                    const result = await apiQueryRecipeByName(input.toLowerCase());
+                    console.log('name search result', result.data.rows);
+                } catch (error) {
+                    console.error(error);
+                }
             }
             
             // setRecipeData(result.data.rows);
@@ -196,11 +199,15 @@ const SearchBar = () => {
         }
     }
 
+    const handleClearInput = () => {
+        setInput('');
+    }
+
     const clickIngredToSearch = async(ingredient) => {
         const choseIngredId = []
         choseIngred.map((ing, idx) => choseIngredId[idx] = ing.id)
-        const searchResult = await apiQueryRecipeByIngredient(choseIngredId);
-        console.log('ids', choseIngredId, 'result', searchResult);
+        // const searchResult = await apiQueryRecipeByIngredient(choseIngredId);
+        // console.log('ids', choseIngredId, 'result', searchResult);
         setChoseIngred(prev => [...prev, ingredient]);
         setSearchedIng((prev) => prev.filter(element => element != ingredient))
     }
@@ -232,21 +239,27 @@ const SearchBar = () => {
                         <li className='options' onClick={handleSelect} value='ingredients'>Ingredients</li>
                     </ul>
                 </div>
-                <input type="text" 
-                    id='search-bar' 
-                    placeholder={'Search recipes by ' + filter} 
-                    onClick={handleInputDropdown}
-                    onKeyUp={handleKeyUp}
-                    value={input}
-                    onChange={(e) => {
-                        setSearchedIng([]);
-                        handleSearch(filter, e.target.value, e);}}/>
+                <div className="inputbar-container" >
+                    <input type="text" 
+                        id='input-bar' 
+                        placeholder={'Search recipes by ' + filter} 
+                        onClick={handleInputDropdown}
+                        onKeyUp={handleKeyUp}
+                        value={input}
+                        onChange={(e) => {
+                            setSearchedIng([]);
+                            handleSearch(filter, e.target.value, e);}}/>
+                    {
+                        input.length != 0 && <IoClose onClick={handleClearInput}/>
+                    }
+                </div>
+                
             </div>
             <div className="search-dropdown" 
                 style={ inputDropdown? {maxHeight: 'fit-content'}:{maxHeight: '0'}}
                 ref={dropdownRefInput}
                 >
-                <div className="choosed-ingred">
+                <div className="choosed-ingred" style={ choseIngred.length === 0? {borderBottom: 'none'}:{} }>
                     {
                         choseIngred.length != 0 && choseIngred.map((cIngred, idx) => {
                             return <button type="button"
