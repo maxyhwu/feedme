@@ -4,6 +4,7 @@ import { FaTrashAlt, FaJournalWhills } from 'react-icons/fa';
 import './recipeadd.css'
 import { getNoTokenData } from '../utils/useNoTokenApis'
 import { apiAddNew } from '../axios/withToken'
+import { UseGeneralContext } from '../Context/generalTables'
 
 
 const customModalStyles = {
@@ -17,19 +18,26 @@ const customModalStyles = {
 
 
 function RecipeAddButton() {
+    const { labelTable, label2id } = UseGeneralContext();
     const [noTokenData, setNoTokenData] = useState({});
     const [allIngredients, setAllIngredients] = useState([]);
+    const [allCategories, setAllCategories] = useState([]);
     const [ingredient2id, setIngredient2Id] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [recipeVideoLink, setRecipeVideoLink] = useState(null);
+    const [recipeVideoLinkValid, setRecipeVideoLinkValid] = useState(true);
     const [recipeImage, setRecipeImage] = useState(null);
+    const [recipeImageValid, setRecipeImageValid] = useState(true);
     const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
     const [recipeName, setRecipeName] = useState("");
     const [recipeNameValid, setRecipeNameValid] = useState(true);
+    const [recipeCategory, setRecipeCategory] = useState("");
+    const [recipeCategoryValid, setRecipeCategoryValid] = useState(true);
+    const [matchingCategories, setMatchingCategories] = useState([]);
     const [servingSize, setServingSize] = useState(1);
     const [ingredients, setIngredients] = useState([{name: "", quantity: "", nameValid: true, quantityValid: true}]);
     const [matchingIngredients, setMatchingIngredients] = useState([]);
     const [instructions, setInstructions] = useState([{instruction: "", instructionValid: true}]);
-    const [recipeImageValid, setRecipeImageValid] = useState(true);
     const [submitSave, setSubmitSave] = useState(false);
 
     useEffect(() => {
@@ -39,10 +47,15 @@ function RecipeAddButton() {
             setAllIngredients(value.ingredientDataWithCateName.map(row => row.ingredName));
             setIngredient2Id(value.ingredient2id)
         })
+        setAllCategories(labelTable.map(row => row.labelName));
     }, [])
 
     const handleButtonClick = () => {
         setShowModal(true);
+    };
+
+    const handleVideoLinkChange = (event) => {
+        setRecipeVideoLink(event.target.value);
     };
 
     const handleImageChange = (event) => {
@@ -65,6 +78,12 @@ function RecipeAddButton() {
 
     const handleRecipeNameChange = (event) => {
         setRecipeName(event.target.value);
+    };
+
+    const handleRecipeCategoryChange = (event) => {
+        const matched = allCategories.filter(category => category.toLowerCase().startsWith(event.target.value.toLowerCase()));
+        setRecipeCategory(event.target.value);
+        setMatchingCategories(matched);
     };
     
     const handleServingSizeChange = (event) => {
@@ -130,6 +149,22 @@ function RecipeAddButton() {
         }
         else {
             setRecipeNameValid(false);
+            valid = false;
+        }
+
+        if (allCategories.includes(recipeCategory)) {
+             setRecipeCategoryValid(true);
+        }
+        else {
+            setRecipeCategoryValid(false);
+            valid = false;
+        }
+
+        if (recipeVideoLink !== '') {
+            setRecipeVideoLinkValid(true);
+        }
+        else {
+            setRecipeVideoLinkValid(false);
             valid = false;
         }
 
@@ -202,7 +237,7 @@ function RecipeAddButton() {
             recipeFormData.append('servingSize', parseInt(servingSize));
             recipeFormData.append('instructions', JSON.stringify(instructions.map(row => row.instruction)))
             recipeFormData.append('image', recipeImage);
-            recipeFormData.append('video', '');
+            recipeFormData.append('video', recipeVideoLink);
             recipeFormData.append('labels', JSON.stringify([]));
             recipeFormData.append('ingredients', JSON.stringify(formatIngredients));
             // for (var pair of recipeFormData.entries()) {
@@ -226,14 +261,18 @@ function RecipeAddButton() {
 
     const handleCloseModal = () => {
         // Reset the state variables to their initial values
+        setRecipeVideoLink(null);
+        setRecipeVideoLinkValid(true);
         setRecipeImage(null);
+        setRecipeImageValid(true);
         setImagePreviewUrl(null);
+        setRecipeCategory("")
+        setRecipeCategoryValid(true);
         setRecipeName("");
+        setRecipeNameValid(true);
         setServingSize("");
         setIngredients([{name: "", quantity: "", nameValid: true, quantityValid: true}]);
         setInstructions([{instruction: "", instructionValid: true}]);
-        setRecipeNameValid(true);
-        setRecipeImageValid(true);
 
         // Close the modal
         setShowModal(false);
@@ -267,6 +306,20 @@ function RecipeAddButton() {
                                 </th>
                                 <td>
                                     <input type="text" id="recipe-name" value={recipeName} onChange={handleRecipeNameChange} className={`${recipeNameValid ? 'recipeadd-input' : 'recipeadd-input-invalid'}`} />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">
+                                    <label htmlFor="recipe-category">Category</label>
+                                </th>
+                                <td>
+                                    <input list='matching-category' type="text"  id="recipe-category" maxLength="255" value={recipeCategory} onChange={handleRecipeCategoryChange} className={`${recipeCategoryValid ? 'recipeadd-input' : 'recipeadd-input-invalid'}`} />
+                                    <datalist id='matching-category'>
+                                        {matchingCategories.map((category, index) => (
+                                            <option key={index} value={category} />
+                                        ))}
+                                    </datalist>
                                 </td>
                             </tr>
 
@@ -312,6 +365,18 @@ function RecipeAddButton() {
                                         </div>
                                     ))}
                                     <button type="button" className='btn btn-secondary recipeadd-btn' onClick={handleAddInstruction}>Add Step</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">
+                                    <label htmlFor="recipe-video">Recipe Video (YouTube)</label>
+                                </th>
+                                <td>
+                                    <div>
+                                        https://youtu.be/<input type="text" id="recipe-video" onChange={handleVideoLinkChange} className={`${recipeVideoLinkValid ? 'recipeadd-input' : 'recipeadd-input-invalid'}`} />
+                                    </div>
+                                    {recipeVideoLink && <iframe width="560" height="315" src={`https://www.youtube.com/embed/${recipeVideoLink}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>}
                                 </td>
                             </tr>
 
