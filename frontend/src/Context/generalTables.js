@@ -74,6 +74,10 @@ const GeneralContextProvider = (props) => {
         console.log("changeId2Ingredient", id2ingredient);
         changeIngredient2Category();
         console.log("changeIngredient2Category", ingredient2category);
+        changeLabel2Id();
+        console.log("changeLabel2Id", label2id);
+        changeId2Label();
+        console.log("changeId2Label", id2label);
     }, [ingredientTableWithCategoryName])
 
     const [ingredient2id, setIngredient2id] = useState([]);
@@ -116,6 +120,21 @@ const GeneralContextProvider = (props) => {
         }, {}));
     }
     
+    const [label2id, setLabel2Id] = useState([]);
+    const changeLabel2Id = () => {
+        setLabel2Id(labelTable.reduce((acc, cur) => {
+            acc[cur.labelName] = cur.id;
+            return acc;
+        }, {}));
+    }
+
+    const [id2label, setId2Label] = useState([]);
+    const changeId2Label = () => {
+        setId2Label(labelTable.reduce((acc, cur) => {
+            acc[cur.id] = cur.labelName;
+            return acc;
+        }, {}));
+    }
 
     return (
         <GeneralContext.Provider 
@@ -130,7 +149,9 @@ const GeneralContextProvider = (props) => {
                     id2ingredient,
                     ingredient2category,
                     category2id,
-                    id2category}}>
+                    id2category,
+                    label2id,
+                    id2label}}>
             {props.children}
         </GeneralContext.Provider>
     );
