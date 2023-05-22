@@ -52,11 +52,13 @@
 .fridgeadd-input {
     width: 150px;
     margin: 3px;
+    border: revert;
 }
 
 .fridgeadd-input-invalid {
     width: 150px;
     margin: 3px;
+    border: revert;
     border-color: red;
 }
 
