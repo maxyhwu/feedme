@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import "./recipe.css"
 import { IoIosArrowForward } from 'react-icons/io';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import SearchBar from "./Components/SearchBar";
 import { RecipeAddButton } from "./recipeadd";
 import { recipe_data } from "./recipedata";
@@ -135,6 +135,7 @@ const Pagination = ({ recipesPerPage, totalRecipes, paginate, currentPage }) => 
 
 
 const Recipe = () => {
+    const location = useLocation();
     const { id2ingredient } = UseGeneralContext();
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage, setRecipesPerPage] = useState(5);
@@ -144,7 +145,15 @@ const Recipe = () => {
 
     useEffect(() => {
         const getRecipeTop = (page) => {
-            const promise = apiQueryRecipeByTop(page);
+            let promise;
+            if (location.pathname === '/recipe') {
+                promise = apiQueryRecipeByTop(page);
+            } else if (location.pathname === '/myrecipe') {
+                console.log('Not implemented');
+            } else if (location.pathname === '/suggestrecipe') {
+                console.log('Not implemented');
+            }
+            
             promise.then((value) => {
                 // console.log(value.data.rows);
                 setApiRecipeData((prevData) => {

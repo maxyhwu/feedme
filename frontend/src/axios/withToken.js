@@ -25,7 +25,6 @@ export const apiRemoveLikeRecipes = data => userRequest.put('/remove-like-recipe
 export const apiUploadImage = formData => userRequest.post('/upload-image', formData);
 export const apiGetUserImage = () => userRequest.get('/get-myimage');
 export const apiUpdateUserImage = data => userRequest.put('/update-image', data);
-export const apiDeleteUserImage = data => userRequest.delete('/delete-image', data); 
 export const apiGetUserData = () => userRequest.get('/get-userdata');
 
 export const apiQueryRecipeByID = id => recipeRequest.get('/query/id', {params:{ id }});
@@ -33,6 +32,8 @@ export const apiQueryRecipeByName = title => recipeRequest.get('/query/name', {p
 export const apiQueryRecipeByLabel = label => recipeRequest.get('/query/label', {params:{ label }});
 export const apiQueryRecipeByTop = page => recipeRequest.get('/query/top', {params:{ page }});
 export const apiQueryRecipeByIngredient = ingredient => recipeRequest.get('/query/ingredient', {params:{ ingredient }});
+export const apiQueryRecipeByUser = () => recipeRequest.get('/query/user');
+export const apiDeleteRecipeByID = id => recipeRequest.delete('/delete/id', id);
 
 export const apiGetRecipeComment = id => recipeRequest.get('/get/comment-data', {params:{ id }});
 

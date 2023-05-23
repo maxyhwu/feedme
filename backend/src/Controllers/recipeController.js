@@ -8,7 +8,7 @@ dotenv.config();
 const qeuryByID = async (req, res) => {
   const { id } = req.query;
   const query =
-    `SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "Recipes".id = $1`;
+    `SELECT * FROM "Recipes" WHERE "Recipes".id = $1`;
   const values = [parseInt(id)];
 
   try {
@@ -23,7 +23,7 @@ const qeuryByID = async (req, res) => {
 const qeuryByName = async (req, res) => {
   const { title } = req.query;
   const query =
-    `SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE LOWER("Recipes"."title") LIKE LOWER($1)`;
+    `SELECT * FROM "Recipes" WHERE LOWER("Recipes"."title") LIKE LOWER($1)`;
   const values = [`%${title.toString()}%`];
 
   try {
@@ -38,7 +38,7 @@ const qeuryByName = async (req, res) => {
 const queryByLabel = async (req, res) => {
   const { label } = req.query;
   const query =
-    `SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE $1 = ANY("Recipes"."labels")`;
+    `SELECT * FROM "Recipes" WHERE $1 = ANY("Recipes"."labels")`;
   const values = [parseInt(label)];
 
   try {
@@ -53,7 +53,7 @@ const queryByLabel = async (req, res) => {
 const queryTopLikeCount = async (req, res) => {
   const { page } = req.query;
   const query =
-    `SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" ORDER BY "likeCount" DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY`;
+    `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY`;
   const values = [(parseInt(page) - 1) * 15];
 
   try {
@@ -68,7 +68,7 @@ const queryTopLikeCount = async (req, res) => {
 const queryByIngredients = async (req, res) => {
   const { ingredient } = req.query;
   const query =
-    `SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE EXISTS (SELECT 1 FROM json_each(ingredients) AS i WHERE (i.key::int)::text IN (SELECT unnest($1::text[]))) ORDER BY (SELECT COUNT(*) FROM json_object_keys(ingredients) AS keys WHERE (keys::int)::text IN (SELECT unnest($1::text[]))) DESC`;
+    `SELECT * FROM "Recipes" WHERE EXISTS (SELECT 1 FROM json_each(ingredients) AS i WHERE (i.key::int)::text IN (SELECT unnest($1::text[]))) ORDER BY (SELECT COUNT(*) FROM json_object_keys(ingredients) AS keys WHERE (keys::int)::text IN (SELECT unnest($1::text[]))) DESC`;
   const values = [JSON.parse(ingredient)];
 
   try {
@@ -83,7 +83,7 @@ const queryByIngredients = async (req, res) => {
 const queryByUser = async (req, res) => {
   const Uid = req.user;
   const query =
-    `SELECT "Recipes"."id", title, overview, "Recipes"."servingSize", instructions, image, video, "Recipes"."likeCount", labels, ingredients, comments, "Recipes"."createdAt", "Recipes"."updatedAt", "userName" FROM "Recipes", "Users" WHERE "userID" = $1`;
+    `SELECT * FROM "Recipes" WHERE "userID" = $1`;
   const values = [parseInt(Uid.id)];
 
   try {
@@ -248,7 +248,7 @@ const addRecipe = async (req, res) => {
 };
 
 const deleteByID = async (req, res) => {
-  const { id } = req.query;
+  const { id } = req.body;
   const query = `DELETE FROM "Recipes" WHERE "id" = $1`;
   const values = [parseInt(id)];
 
