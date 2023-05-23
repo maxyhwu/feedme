@@ -13,7 +13,7 @@ import { apiAllIngredient } from '../axios/noToken';
 import { apiQueryRecipeByTop } from '../axios/withToken'
 
 
-const RecipeObject = ({ recipe }) => {
+const RecipeObject = ({ recipe, setRecipe, setSearching }) => {
     const customModalStyles = {
         content: {
             width: '75%',
@@ -47,7 +47,7 @@ const RecipeObject = ({ recipe }) => {
                 onRequestClose={handleCloseModal}
                 style={customModalStyles}
             >
-                <RecipeDetail recipe={recipe} handleCloseModal={handleCloseModal} />
+                <RecipeDetail recipe={recipe} handleCloseModal={handleCloseModal}/>
             
             </Modal>
         </>
@@ -194,21 +194,45 @@ const Recipe = () => {
     // console.log(recipe_data);
     // console.log(apiRecipeData);
 
+    const [searching, setSearching] = useState(false);
+    const [searchedRecipe, setSearchedRecipe] = useState([]);
+
     return (
     <>
-        <SearchBar apiAllIngredient={allIngredients}/>
+        <SearchBar setRecipe={setSearchedRecipe} setSearching={setSearching}/>
         <div className="recipe-container">
             <div className="bottom">
                 <div className="section-title">
                     Our Popular Recipes
                 </div>
                 <div className="popRecipes-container">
-                    {currentRecipes.map((recipe) => (
-                        <RecipeObject
-                            recipe={recipe}
-                        />
-                    ))}
-
+                    {/* {
+                        recipe_data.map((recipe) => (
+                            <RecipeObject
+                                recipe={recipe}
+                                setRecipe={setSearchedRecipe}
+                                setSearching={setSearching}
+                            />))
+                    } */}
+                    {
+                        searching ?
+                        (
+                            searchedRecipe.map((recipe) => (
+                                <RecipeObject
+                                    recipe={recipe}
+                                    setRecipe={setSearchedRecipe}
+                                    setSearching={setSearching}
+                                />
+                        ))): (
+                            apiRecipeData.map((recipe) => (
+                                <RecipeObject
+                                    recipe={recipe}
+                                    setRecipe={setSearchedRecipe}
+                                    setSearching={setSearching}
+                                />
+                        )))
+                    }
+                    
                     {/* For comparison between versions */}
                     {/* <div className="popRecipe" onClick={navigateToDetail}>
                         <div className="popImg">
