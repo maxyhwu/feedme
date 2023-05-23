@@ -43,11 +43,20 @@ db.sequelize.sync().then(() => {    //drop table if exists
   console.log("db has been sync")
 })
 
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "../frontend", "build")));
+  app.get("/*", function (req, res) {
+    res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
+  });
+  console.log(33)
+}
 
-app.use(express.static(path.join(__dirname, "..", "..", "frontend", "build")));
-app.get("/*", (_, res) => {
-  res.sendFile(path.join(__dirname,"..","..", "frontend", "build", "index.html"));
-});
+
+// app.use(express.static(path.join(__dirname, "..", "..", "frontend", "build")));
+// app.get("/*", (_, res) => {
+//   res.sendFile(path.join(__dirname,"..","..", "frontend", "build", "index.html"));
+// });
 
 app.listen(PORT, function(err){
   if (err) console.log("Error in server setup")
