@@ -10,7 +10,7 @@ import { RecipeDetail } from './detail';
 import { UseGeneralContext } from '../Context/generalTables'
 import { UseLoginContext } from "../Context/LoginCnt";
 import { apiAllIngredient } from '../axios/noToken';
-import { apiQueryRecipeByTop } from '../axios/withToken'
+import { apiQueryRecipeByTop, apiQueryRecipeByUser } from '../axios/withToken'
 
 
 const RecipeObject = ({ recipe, setRecipe, setSearching }) => {
@@ -32,7 +32,7 @@ const RecipeObject = ({ recipe, setRecipe, setSearching }) => {
         setShowModal(false);
     };
 
-    const { recipeName, image_link } = recipe;
+    const { recipeName, image_link, recipeID } = recipe;
     return (
         <>
             <div className="popRecipe" onClick={handleOpenModal}>
@@ -47,7 +47,7 @@ const RecipeObject = ({ recipe, setRecipe, setSearching }) => {
                 onRequestClose={handleCloseModal}
                 style={customModalStyles}
             >
-                <RecipeDetail recipe={recipe} handleCloseModal={handleCloseModal}/>
+                <RecipeDetail key={recipeID} recipe={recipe} handleCloseModal={handleCloseModal} />
             
             </Modal>
         </>
@@ -136,6 +136,7 @@ const Pagination = ({ recipesPerPage, totalRecipes, paginate, currentPage }) => 
 
 const Recipe = () => {
     const location = useLocation();
+    const [pageTitle, setPageTitle] = useState('');
     const { id2ingredient } = UseGeneralContext();
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage, setRecipesPerPage] = useState(5);
@@ -144,14 +145,17 @@ const Recipe = () => {
     const {login} = UseLoginContext()
 
     useEffect(() => {
-        const getRecipeTop = (page) => {
+        const getRecipe = (page) => {
             let promise;
             if (location.pathname === '/recipe') {
                 promise = apiQueryRecipeByTop(page);
+                setPageTitle('Our Popular Recipes');
             } else if (location.pathname === '/myrecipe') {
-                console.log('Not implemented');
+                promise = apiQueryRecipeByUser();
+                setPageTitle('My Recipes');
             } else if (location.pathname === '/suggestrecipe') {
                 console.log('Not implemented');
+                setPageTitle('Suggest For You');
             }
             
             promise.then((value) => {
@@ -175,8 +179,8 @@ const Recipe = () => {
                 });
             })
         }
-        getRecipeTop(currentPage);
-    }, [currentPage])
+        getRecipe(currentPage);
+    }, [location, currentPage])
 
     const navigate = useNavigate();
     const navigateToDetail = () => {
@@ -212,7 +216,7 @@ const Recipe = () => {
         <div className="recipe-container">
             <div className="bottom">
                 <div className="section-title">
-                    Our Popular Recipes
+                    {pageTitle}
                 </div>
                 <div className="popRecipes-container">
                     {/* {
@@ -223,7 +227,7 @@ const Recipe = () => {
                                 setSearching={setSearching}
                             />))
                     } */}
-                    {
+                    {/* {
                         searching ?
                         (
                             searchedRecipe.map((recipe) => (
@@ -240,7 +244,14 @@ const Recipe = () => {
                                     setSearching={setSearching}
                                 />
                         )))
-                    }
+                    } */}
+                    
+                    {currentRecipes.map((recipe, index) => (
+                        <RecipeObject
+                            key={index}
+                            recipe={recipe}
+                        />
+                    ))}
                     
                     {/* For comparison between versions */}
                     {/* <div className="popRecipe" onClick={navigateToDetail}>
