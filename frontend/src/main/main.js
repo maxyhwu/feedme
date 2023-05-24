@@ -57,7 +57,10 @@ function Main() {
           <Route path='suggestrecipe' element={ <Recipe/> } />
           <Route path='login' element={ <LoginPage/> } />
           <Route path='register' element={ <RegisterPage/> } />
-          <Route path='contactus' element={ <Contact/> } />
+          <Route path='contactus' element={ 
+                  <ProtectedRoutes>
+                    <Contact/> 
+                  </ProtectedRoutes>} />
           {/* <Route path='Signup' element={ <SignupPage/> } /> */}
           {/* <Route path = 'registerr' element = {<Register/>} /> */}
           <Route path='SetPassword' element={ <SetPassword/> } />
