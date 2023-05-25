@@ -13,7 +13,7 @@ import { apiAllIngredient } from '../axios/noToken';
 import { apiQueryRecipeByTop, apiQueryRecipeByUser } from '../axios/withToken'
 
 
-const RecipeObject = ({ recipe }) => {
+const RecipeObject = ({ recipe, setRecipe, setSearching }) => {
     const customModalStyles = {
         content: {
             width: '75%',
@@ -207,22 +207,52 @@ const Recipe = () => {
     // console.log(recipe_data);
     // console.log(apiRecipeData);
 
+    const [searching, setSearching] = useState(false);
+    const [searchedRecipe, setSearchedRecipe] = useState([]);
+
     return (
     <>
-        <SearchBar apiAllIngredient={allIngredients}/>
+        <SearchBar setRecipe={setSearchedRecipe} setSearching={setSearching}/>
         <div className="recipe-container">
             <div className="bottom">
                 <div className="section-title">
                     {pageTitle}
                 </div>
                 <div className="popRecipes-container">
+                    {/* {
+                        recipe_data.map((recipe) => (
+                            <RecipeObject
+                                recipe={recipe}
+                                setRecipe={setSearchedRecipe}
+                                setSearching={setSearching}
+                            />))
+                    } */}
+                    {/* {
+                        searching ?
+                        (
+                            searchedRecipe.map((recipe) => (
+                                <RecipeObject
+                                    recipe={recipe}
+                                    setRecipe={setSearchedRecipe}
+                                    setSearching={setSearching}
+                                />
+                        ))): (
+                            apiRecipeData.map((recipe) => (
+                                <RecipeObject
+                                    recipe={recipe}
+                                    setRecipe={setSearchedRecipe}
+                                    setSearching={setSearching}
+                                />
+                        )))
+                    } */}
+                    
                     {currentRecipes.map((recipe, index) => (
                         <RecipeObject
                             key={index}
                             recipe={recipe}
                         />
                     ))}
-
+                    
                     {/* For comparison between versions */}
                     {/* <div className="popRecipe" onClick={navigateToDetail}>
                         <div className="popImg">

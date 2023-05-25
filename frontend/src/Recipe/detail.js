@@ -8,6 +8,7 @@ import { UseGeneralContext } from '../Context/generalTables'
 import { apiQueryRecipeByID, apiGetRecipeComment, apiAddComment, apiGetUserData, apiUpdateRecipe } from '../axios/withToken'
 import { UseLoginContext } from "../Context/LoginCnt";
 import { FaTrashAlt, FaJournalWhills } from 'react-icons/fa';
+import { getNoTokenData } from '../utils/useNoTokenApis'
 
 const RecipeDetail = ({ recipe, handleCloseModal }) => {
     const { recipeID, recipeName, serving, ingredients, instructions, image_link } = recipe
@@ -23,6 +24,7 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
     const [instruContent, setInstruContent] = useState(instructions);
     const initIngredCount = ingredients.map((ingred) =>  ingred[1]);
     const [ingredCount, setIngredCount] = useState(initIngredCount);
+    const [ingredient2id, setIngredient2Id] = useState([]);
 
     const [completeRecipe, setCompleteRecipe] = useState([]);
 
@@ -43,9 +45,16 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
 
 
     const addComments = async(comment) => {
-        console.log('add content :', comment);
-        const addResult = await apiAddComment(comment)
-        console.log('add result', addResult);
+        const content = {
+            comment: comment,
+            Rid: recipeID
+        }
+        console.log('add content :', content);
+        const addResult = await apiAddComment(content)
+        console.log('add result', addResult.data);
+        if (addResult.data === 'success') {
+            window.alert('comment added!')
+        }
         setUserComment("");
     }
 
@@ -88,20 +97,48 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
         setIngredCount(newIngred)
     }
 
+    useEffect(() => {
+        const promise = getNoTokenData();
+        promise.then((value) => {
+            setIngredient2Id(value.ingredient2id)
+        })
+    }, [])
+
     const handleInstruEditSave = async() => {
-        const data = {
-            title: recipeName,
-            overview: completeRecipe.overview,
-            servingSize: serving,
-            instructions: instruContent,
-            //image: image_link,
-            video: completeRecipe.video,
-            labels: completeRecipe.labels,
-            ingredients: ingredients,
-            id: recipeID
+
+        const formatIngredients = ingredients.reduce((acc, cur) => {
+            var curIngredId = ingredient2id[cur.name];
+            acc[curIngredId] = [cur.quantity]
+            return acc;
+        }, {});
+
+        const recipeFormData = new FormData();
+        recipeFormData.append('title', recipeName);
+        recipeFormData.append('overview', '');
+        recipeFormData.append('servingSize', parseInt(serving));
+        recipeFormData.append('instructions', JSON.stringify(instruContent))
+        // recipeFormData.append('image', recipeImage);
+        recipeFormData.append('video', '');
+        recipeFormData.append('labels', JSON.stringify([]));
+        recipeFormData.append('ingredients', JSON.stringify(formatIngredients));
+
+        for (var pair of recipeFormData.entries()) {
+            console.log(pair[0]+': '+pair[1]);
         }
-        const updateResult = await apiUpdateRecipe(data);
-        console.log('update result', updateResult);
+        
+        // const data = {
+        //     title: recipeName,
+        //     overview: completeRecipe.overview,
+        //     servingSize: serving,
+        //     instructions: instruContent,
+        //     //image: image_link,
+        //     video: completeRecipe.video,
+        //     labels: completeRecipe.labels,
+        //     ingredients: ingredients,
+        //     id: recipeID
+        // }
+        // const updateResult = await apiUpdateRecipe(recipeFormData);
+        // console.log('update result', updateResult);
     }
 
     const handleInstruEditCancel = () => {
@@ -118,18 +155,42 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
             return editedIngredients
         }
 
-        const data = {
-            title: recipeName,
-            overview: '',
-            servingSize: serving,
-            instructions: instruContent,
-            //image: image_link,
-            video: '',
-            labels: '',
-            ingredients: combineIngredCount(),
-            id: recipeID
+        const testIngred = [['Milk', '1 cup'], ['Carrots', '1']]
+
+        const formatIngredients = combineIngredCount().reduce((acc, cur) => {
+            console.log('ingredient2id', ingredient2id);
+            console.log('current value', cur);
+            var curIngredId = ingredient2id[cur[0]]; //id
+            acc[curIngredId] = [cur[1]]
+            return acc;
+        }, {});
+
+        const recipeFormData = new FormData();
+        recipeFormData.append('title', recipeName);
+        recipeFormData.append('overview', '');
+        recipeFormData.append('servingSize', parseInt(serving));
+        recipeFormData.append('instructions', JSON.stringify(instruContent))
+        recipeFormData.append('image', {});
+        recipeFormData.append('video', '');
+        recipeFormData.append('labels', JSON.stringify([]));
+        recipeFormData.append('ingredients', JSON.stringify(formatIngredients));
+
+        for (var pair of recipeFormData.entries()) {
+            console.log(pair[0]+': '+pair[1]);
         }
-        const updateResult = await apiUpdateRecipe(data);
+
+        // const data = {
+        //     title: recipeName,
+        //     overview: '',
+        //     servingSize: serving,
+        //     instructions: instruContent,
+        //     //image: image_link,
+        //     video: '',
+        //     labels: '',
+        //     ingredients: combineIngredCount(),
+        //     id: recipeID
+        // }
+        const updateResult = await apiUpdateRecipe(recipeFormData);
         console.log('update result', updateResult);
     }
 
@@ -138,8 +199,8 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
     }
 
     useEffect(() => {
-        const getComments = async(id) => {
-            comments = await apiGetRecipeComment(id);
+        const getComments = async(id) => { //OK need real data
+            const comments = await apiGetRecipeComment(id);
             console.log('comments in recipe', id, comments.data);
         }
 
@@ -148,8 +209,8 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
             console.log('user data', data);
         }
         //getUserId();
-        //getComments(recipeID);
-    }, [editMode])
+        getComments(recipeID);
+    }, [])
 
 
 
@@ -162,11 +223,11 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                 <div className="modal-top">
                     <div className="top-part">
                         <div className="image">
-                            <img src={image_link} alt="" className="hover-effect"/>
+                            <img src={image_link} alt="" className={`${editMode ? 'hover-effect':''}`}/>
                         </div>
                         <div className="description">
-                            <div className="title hover-effect"> {recipeName} </div>
-                            <div className="serving-size hover-effect"> For {serving} people </div>
+                            <div className={`title ${editMode ? 'hover-effect':''}`}> {recipeName} </div>
+                            <div className={`serving-size ${editMode ? 'hover-effect':''}`}> For {serving} people </div>
                             {/* <div className="change-btn">
                                 <button> Change serving size </button>
                             </div> */}
@@ -192,7 +253,7 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                                         />
                                     </>
                                     :
-                                    <li className="hover-effect" key={idx} onClick={handleEditIngredOnclick}>
+                                    <li className={`${editMode ? 'hover-effect':''}`} key={idx} onClick={handleEditIngredOnclick}>
                                         {ingredient[0]}: {ingredient[1]}
                                     </li>
                                 ))}
@@ -228,7 +289,7 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                                         
                                     </li>
                                     :
-                                    <li className="hover-effect" key={idx} onClick={handleEditInstruOnclick}>
+                                    <li className={`${editMode ? 'hover-effect':''}`} key={idx} onClick={handleEditInstruOnclick}>
                                         {instruction}
                                     </li>
                                 ))}
