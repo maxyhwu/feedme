@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { FaTrashAlt, FaDollyFlatbed } from 'react-icons/fa';
+import { IoCloseCircleOutline } from 'react-icons/io5';
+import "../Recipe/detail.css"
 import './fridgeadd.css';
 import { getNoTokenData } from '../utils/useNoTokenApis'
 import { UseDataContext } from "../Context/useUserData";
@@ -272,9 +274,9 @@ const FridgeAddIngredientModal = () => {
             <Modal isOpen={showModal} onRequestClose={handleCloseModal} style={customModalStyles}>
                 <div className="modal-header">
                     <div className='fridgeadd-title'>Add Ingredients</div>
-                    <button className="modal-close btn btn-secondary fridgeadd-btn" onClick={handleCloseModal}>
-                        <span>&times;</span>
-                    </button>
+                    <div className="exit">
+                        <IoCloseCircleOutline size={25} onClick={handleCloseModal}/>
+                    </div>
                 </div>
 
                 <div className="modal-body">
