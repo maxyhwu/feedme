@@ -223,35 +223,32 @@ const Recipe = () => {
                         recipe_data.map((recipe) => (
                             <RecipeObject
                                 recipe={recipe}
-                                setRecipe={setSearchedRecipe}
-                                setSearching={setSearching}
                             />))
                     } */}
-                    {/* {
+                    {/* try use backend data */}
+                    {
                         searching ?
                         (
-                            searchedRecipe.map((recipe) => (
+                            searchedRecipe.map((recipe, idx) => (
                                 <RecipeObject
+                                    key={idx}
                                     recipe={recipe}
-                                    setRecipe={setSearchedRecipe}
-                                    setSearching={setSearching}
                                 />
                         ))): (
-                            apiRecipeData.map((recipe) => (
+                            apiRecipeData.map((recipe, idx) => (
                                 <RecipeObject
+                                    key={idx}
                                     recipe={recipe}
-                                    setRecipe={setSearchedRecipe}
-                                    setSearching={setSearching}
                                 />
                         )))
-                    } */}
+                    }
                     
-                    {currentRecipes.map((recipe, index) => (
+                    {/* {currentRecipes.map((recipe, index) => (
                         <RecipeObject
                             key={index}
                             recipe={recipe}
                         />
-                    ))}
+                    ))} */}
                     
                     {/* For comparison between versions */}
                     {/* <div className="popRecipe" onClick={navigateToDetail}>

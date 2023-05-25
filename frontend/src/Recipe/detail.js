@@ -20,28 +20,31 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
     const [editingInst, setEditingInst] = useState(false);
     const [editingIng, setEditingIng] = useState(false);
 
-
     const [instruContent, setInstruContent] = useState(instructions);
     const initIngredCount = ingredients.map((ingred) =>  ingred[1]);
     const [ingredCount, setIngredCount] = useState(initIngredCount);
     const [ingredient2id, setIngredient2Id] = useState([]);
 
+    const [titleValue, setTitleValue] = useState(recipeName);
+    const [servingValue, setServingValue] = useState(serving);
+
     const [completeRecipe, setCompleteRecipe] = useState([]);
 
     const textareaRef = useRef(null);
+    const [comments, setComments] = useState([]);
 
-    const comments = [
-        {
-            name: 'Teresa',
-            content: 'Very impressive.',
-            time: '12:00'
-        },
-        {
-            name: 'Bob',
-            content: 'Delicious~',
-            time: '3:12'
-        }
-    ]
+    // const comments = [
+    //     {
+    //         name: 'Teresa',
+    //         content: 'Very impressive.',
+    //         time: '12:00'
+    //     },
+    //     {
+    //         name: 'Bob',
+    //         content: 'Delicious~',
+    //         time: '3:12'
+    //     }
+    // ]
 
 
     const addComments = async(comment) => {
@@ -59,11 +62,17 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
     }
 
     const editOnClick = async() => {
+        // await handleEditSave();
         setEditMode(!editMode);
         setEditingInst(false);
         setEditingIng(false);
         //setInstruContent(instructions);
         // console.log('edit mode set');
+    }
+
+    const editSaveOnclick = async() => {
+        const result = await handleEditSave();
+        console.log('save result', result);
     }
 
     const handleEditInstruOnclick= () => {
@@ -104,20 +113,32 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
         })
     }, [])
 
-    const handleInstruEditSave = async() => {
+    const handleEditSave = async() => {
 
-        const formatIngredients = ingredients.reduce((acc, cur) => {
-            var curIngredId = ingredient2id[cur.name];
-            acc[curIngredId] = [cur.quantity]
+        function combineIngredCount() {
+            const editedIngredients = []
+            ingredients.map((ingred, idx) => {
+                editedIngredients[idx] = [ingred[0], ingredCount[idx]]
+            })
+            return editedIngredients
+        }
+
+        // console.log('combined', combineIngredCount());
+
+        const formatIngredients = combineIngredCount().reduce((acc, cur) => {
+            console.log('ingredient2id', ingredient2id);
+            console.log('current value', cur);
+            var curIngredId = ingredient2id[cur[0]]; //id
+            acc[curIngredId] = [cur[1]]
             return acc;
         }, {});
 
         const recipeFormData = new FormData();
-        recipeFormData.append('title', recipeName);
+        recipeFormData.append('title', titleValue);
         recipeFormData.append('overview', '');
-        recipeFormData.append('servingSize', parseInt(serving));
+        recipeFormData.append('servingSize', parseInt(servingValue));
         recipeFormData.append('instructions', JSON.stringify(instruContent))
-        // recipeFormData.append('image', recipeImage);
+        recipeFormData.append('image', {});
         recipeFormData.append('video', '');
         recipeFormData.append('labels', JSON.stringify([]));
         recipeFormData.append('ingredients', JSON.stringify(formatIngredients));
@@ -125,20 +146,13 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
         for (var pair of recipeFormData.entries()) {
             console.log(pair[0]+': '+pair[1]);
         }
-        
-        // const data = {
-        //     title: recipeName,
-        //     overview: completeRecipe.overview,
-        //     servingSize: serving,
-        //     instructions: instruContent,
-        //     //image: image_link,
-        //     video: completeRecipe.video,
-        //     labels: completeRecipe.labels,
-        //     ingredients: ingredients,
-        //     id: recipeID
-        // }
-        // const updateResult = await apiUpdateRecipe(recipeFormData);
-        // console.log('update result', updateResult);
+
+        const updateResult = await apiUpdateRecipe(recipeFormData);
+        console.log('update result', updateResult);
+    }
+
+    const handleEditCancel = () => {
+        setEditMode(!editMode)
     }
 
     const handleInstruEditCancel = () => {
@@ -178,18 +192,6 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
         for (var pair of recipeFormData.entries()) {
             console.log(pair[0]+': '+pair[1]);
         }
-
-        // const data = {
-        //     title: recipeName,
-        //     overview: '',
-        //     servingSize: serving,
-        //     instructions: instruContent,
-        //     //image: image_link,
-        //     video: '',
-        //     labels: '',
-        //     ingredients: combineIngredCount(),
-        //     id: recipeID
-        // }
         const updateResult = await apiUpdateRecipe(recipeFormData);
         console.log('update result', updateResult);
     }
@@ -198,10 +200,19 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
         setEditingIng(false);
     }
 
+    const handleTitleEdit = (event) => {
+        setTitleValue(event.target.value);
+    }
+
+    const handleServingEdit = (event) => {
+        setServingValue(Number(event.target.value));
+    }
+
     useEffect(() => {
         const getComments = async(id) => { //OK need real data
             const comments = await apiGetRecipeComment(id);
             console.log('comments in recipe', id, comments.data);
+            setComments(comments.data)
         }
 
         const getUserId = async() => {
@@ -215,7 +226,7 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
 
 
     return(
-        <div className={`${editMode ? 'blur-all' : ''} whole-modal `}>
+        <div className='whole-modal'>
             <div className="exit">
                 <IoCloseCircleOutline size={25} onClick={handleCloseModal}/>
             </div>
@@ -224,10 +235,35 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                     <div className="top-part">
                         <div className="image">
                             <img src={image_link} alt="" className={`${editMode ? 'hover-effect':''}`}/>
+
                         </div>
                         <div className="description">
-                            <div className={`title ${editMode ? 'hover-effect':''}`}> {recipeName} </div>
-                            <div className={`serving-size ${editMode ? 'hover-effect':''}`}> For {serving} people </div>
+                            <div className={`title ${editMode ? 'hover-effect':''}`}> 
+                                {
+                                    editMode?
+                                    <textarea value={titleValue} onChange={handleTitleEdit}/>
+                                    : 
+                                    <>
+                                    {recipeName}
+                                    </>
+                                }
+                            </div>
+                            <div className={`serving-size ${editMode ? 'hover-effect':''}`}> 
+                                {
+                                    editMode ?
+                                    <>
+                                        For <input type="number"
+                                                id="serving-input" 
+                                                value={servingValue}
+                                                onChange={handleServingEdit}
+                                            /> people
+                                    </>:
+                                    <>
+                                        For {serving} people
+                                    </>
+                                }
+                                
+                            </div>
                             {/* <div className="change-btn">
                                 <button> Change serving size </button>
                             </div> */}
@@ -242,7 +278,7 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                         <div className="content">
                             <ul>
                                 {ingredients.map((ingredient, idx) => (
-                                    editingIng?
+                                    editMode?
                                     <>
                                         {ingredient[0]}
                                         <textarea 
@@ -261,7 +297,7 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                             {
                                 editingIng?
                                 (<>
-                                    <button onClick={handleIngredEditSave}>save</button>
+                                    <button onClick={handleEditSave}>save</button>
                                     <button onClick={handleIngredEditCancel}>cancel</button>
                                 </>):''
                             }
@@ -272,7 +308,7 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                         <div className='content'>
                             <ol>
                                 {instructions.map((instruction, idx) => (
-                                    editingInst?
+                                    editMode?
                                     <li>
                                         {/* {
                                             //setInstruContent(instruction)
@@ -294,34 +330,40 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                                     </li>
                                 ))}
                             </ol>
-                            {
+                            {/* {
                                 editingInst?
                                 (<>
                                     <button onClick={handleInstruEditSave}>save</button>
                                     <button onClick={handleInstruEditCancel}>cancel</button>
                                 </>):''
-                            }
+                            } */}
                             
                         </div>
                     </div>
                 </div>      
             </div>
 
-            <div className="comment-container">
+            <div className={`comment-container "${editMode ? 'blur-all':''}`}>
                 <div className="comments">Comments</div>
                 {
                     comments.map((comment) => {
                     return <div className="single-comment-container">
                         <div className="comment-avatar">
+                            {
+                                (comment.photo === '') ? 
+                                    <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" />
+                                :
+                                    <img src={comment.photo}/>
+                            }
                             {/* {
                                 comment.photo.length === 0? */}
-                                <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
+                                
                                 {/* :<img src={comment.photo} alt="" />  */}
                             {/* } */}
                         </div>
                         <div className="comment">
                             <div className="nameAndTime">
-                                <div className="commenter">{comment.name}</div>
+                                <div className="commenter">{comment.userName}</div>
                                 <div className="comment-time">{comment.time}</div>
                             </div>
                             <div className="comment-content">{comment.content}</div>
@@ -350,13 +392,21 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                     <></>
                 }
             </div> 
-            <button className='btn btn-secondary recipeedit-fixed-button' onClick={editOnClick}>
-                <div className='recipeadd-icon'><FaJournalWhills /></div>
+            {
+                editMode ?
+                <>
+                    <button className="btn btn-secondary recipeedit-fixed-button" id="cancel-btn" onClick={handleEditCancel}> Cancel </button>
+                    <button className="btn btn-secondary recipeedit-fixed-button" onClick={handleEditSave}> Save </button>
+                </>
+                :
+                <button className="btn btn-secondary recipeedit-fixed-button" id="cancel-btn" onClick={editOnClick}> Edit Recipe </button>
+            }
+            {/* <button className='btn btn-secondary recipeedit-fixed-button' onClick={editOnClick}>
                 {
-                    editMode?
-                    <>Finish Edit</> : <>Edit Recipe</>
+                    editMode ?
+                    <>Save</> : <>Edit Recipe</>
                 }
-            </button>
+            </button> */}
         </div>
     )
 }
