@@ -5,6 +5,8 @@ import './recipeadd.css'
 import { getNoTokenData } from '../utils/useNoTokenApis'
 import { apiAddNew } from '../axios/withToken'
 import { UseGeneralContext } from '../Context/generalTables'
+import { IoCloseCircleOutline } from 'react-icons/io5';
+import "./detail.css"
 
 
 const customModalStyles = {
@@ -307,9 +309,9 @@ function RecipeAddButton() {
             >
                 <div className="modal-header">
                     <div className='recipe-add-title'>Add Recipe</div>
-                    <button className={`modal-close btn btn-secondary recipeadd-btn ${submitSave ? 'disabled' : ''}`} onClick={handleCloseModal}>
-                        <span>&times;</span>
-                    </button>
+                    <div className="exit">
+                        <IoCloseCircleOutline size={25} onClick={handleCloseModal}/>
+                    </div>
                 </div>
 
                 <div className="modal-body">
