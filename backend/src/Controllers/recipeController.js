@@ -231,30 +231,17 @@ const updateMinusLikeCount = async (req, res) => {
 const updateRecipe = async (req, res) => {
   const {
     title,
-    overview,
     servingSize,
     instructions,
-    video,
-    labels,
     ingredients,
     id,
   } = req.body;
   const user = req.user;
-  const file = req.file;
-  const { path } = file;
-  const newPath = await uploaderImage(path);
-  let url = newPath;
-  fs.unlinkSync(path);
-  const query = `UPDATE "Recipes" SET "title" = $1, "overview" = $2, "servingSize" = $3, "instructions" = $4, "image" = $5, "imagePID" = $6, "video" = $7, "labels" = $8, "ingredients" = $9 WHERE "id" = $10 and "userID" = $11`;
+  const query = `UPDATE "Recipes" SET "title" = $1, "servingSize" = $2, "instructions" = $3, "ingredients" = $4 WHERE "id" = $5 and "userID" = $6`;
   const values = [
     title.toString(),
-    overview.toString(),
     parseInt(servingSize),
     JSON.parse(instructions),
-    url.url,
-    url.id,
-    video.toString(),
-    JSON.parse(labels),
     JSON.parse(ingredients),
     parseInt(id),
     user.id,
