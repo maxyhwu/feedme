@@ -13,7 +13,7 @@ import { apiAllIngredient } from '../axios/noToken';
 import { apiQueryRecipeByTop, apiQueryRecipeByUser } from '../axios/withToken'
 
 
-const RecipeObject = ({ recipe, setRecipe, setSearching }) => {
+const RecipeObject = ({ recipe }) => {
     const customModalStyles = {
         content: {
             width: '75%',
@@ -23,6 +23,7 @@ const RecipeObject = ({ recipe, setRecipe, setSearching }) => {
         }
     };
     const [showModal, setShowModal] = useState(false);
+    const [updatedRecipe, setUpdatedRecipe] = useState(recipe);
 
     const handleOpenModal = () => {
         setShowModal(true);
@@ -47,7 +48,11 @@ const RecipeObject = ({ recipe, setRecipe, setSearching }) => {
                 onRequestClose={handleCloseModal}
                 style={customModalStyles}
             >
-                <RecipeDetail key={recipeID} recipe={recipe} handleCloseModal={handleCloseModal} />
+                <RecipeDetail key={recipeID} 
+                    recipe={updatedRecipe} 
+                    handleCloseModal={handleCloseModal}
+                    setUpdatedRecipe={setUpdatedRecipe}
+                />
             
             </Modal>
         </>
@@ -226,7 +231,7 @@ const Recipe = () => {
                             />))
                     } */}
                     {/* try use backend data */}
-                    {
+                    {/* {
                         searching ?
                         (
                             searchedRecipe.map((recipe, idx) => (
@@ -241,14 +246,14 @@ const Recipe = () => {
                                     recipe={recipe}
                                 />
                         )))
-                    }
+                    } */}
                     
-                    {/* {currentRecipes.map((recipe, index) => (
+                    {currentRecipes.map((recipe, index) => (
                         <RecipeObject
                             key={index}
                             recipe={recipe}
                         />
-                    ))} */}
+                    ))}
                     
                     {/* For comparison between versions */}
                     {/* <div className="popRecipe" onClick={navigateToDetail}>

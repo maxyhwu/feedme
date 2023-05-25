@@ -10,7 +10,7 @@ import { UseLoginContext } from "../Context/LoginCnt";
 import { FaTrashAlt, FaJournalWhills } from 'react-icons/fa';
 import { getNoTokenData } from '../utils/useNoTokenApis'
 
-const RecipeDetail = ({ recipe, handleCloseModal }) => {
+const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe }) => {
     const { recipeID, recipeName, serving, ingredients, instructions, image_link } = recipe
     const {login} = UseLoginContext()
     const { id2ingredient } = UseGeneralContext();
@@ -72,7 +72,8 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
 
     const editSaveOnclick = async() => {
         const result = await handleEditSave();
-        console.log('save result', result);
+        // console.log('save result', result);
+        setEditMode(false);
     }
 
     const handleEditInstruOnclick= () => {
@@ -124,8 +125,9 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
         }
 
         // console.log('combined', combineIngredCount());
+        const testIngred = [['Milk', '1 cup'], ['Carrots', '1']]
 
-        const formatIngredients = combineIngredCount().reduce((acc, cur) => {
+        const formatIngredients = testIngred.reduce((acc, cur) => {
             console.log('ingredient2id', ingredient2id);
             console.log('current value', cur);
             var curIngredId = ingredient2id[cur[0]]; //id
@@ -134,66 +136,47 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
         }, {});
 
         const recipeFormData = new FormData();
-        recipeFormData.append('title', titleValue);
-        recipeFormData.append('overview', '');
+        recipeFormData.append('title', JSON.stringify(titleValue));
+        // recipeFormData.append('overview', '');
         recipeFormData.append('servingSize', parseInt(servingValue));
         recipeFormData.append('instructions', JSON.stringify(instruContent))
-        recipeFormData.append('image', {});
-        recipeFormData.append('video', '');
-        recipeFormData.append('labels', JSON.stringify([]));
+        // recipeFormData.append('image', {});
+        // recipeFormData.append('video', '');
+        // recipeFormData.append('labels', JSON.stringify([]));
         recipeFormData.append('ingredients', JSON.stringify(formatIngredients));
+        recipeFormData.append('id', recipeID)
 
         for (var pair of recipeFormData.entries()) {
             console.log(pair[0]+': '+pair[1]);
         }
+        // console.log('recipe from data', recipeFormData);
 
-        const updateResult = await apiUpdateRecipe(recipeFormData);
+        const formDataObject = {};
+        for (const [key, value] of recipeFormData.entries()) {
+            formDataObject[key] = value;
+        }
+          
+        // Print the FormData object as a plain JavaScript object
+        console.log('form data object', formDataObject);
+ 
+        const updateResult = await apiUpdateRecipe(formDataObject);
         console.log('update result', updateResult);
+        if (updateResult.data === 'success') {
+            window.alert('Edit saved!')
+        }
+
+        setUpdatedRecipe({
+            recipeID: recipeID,
+            recipeName: titleValue,
+            serving: servingValue,
+            ingredients: combineIngredCount(),
+            instructions: instruContent,
+            image_link: image_link
+        })
     }
 
     const handleEditCancel = () => {
         setEditMode(!editMode)
-    }
-
-    const handleInstruEditCancel = () => {
-        setEditingInst(false);
-    }
-
-    const handleIngredEditSave = async() => {
-
-        function combineIngredCount() {
-            const editedIngredients = []
-            ingredients.map((ingred, idx) => {
-                editedIngredients[idx] = [ingred[0], ingredCount[idx]]
-            })
-            return editedIngredients
-        }
-
-        const testIngred = [['Milk', '1 cup'], ['Carrots', '1']]
-
-        const formatIngredients = combineIngredCount().reduce((acc, cur) => {
-            console.log('ingredient2id', ingredient2id);
-            console.log('current value', cur);
-            var curIngredId = ingredient2id[cur[0]]; //id
-            acc[curIngredId] = [cur[1]]
-            return acc;
-        }, {});
-
-        const recipeFormData = new FormData();
-        recipeFormData.append('title', recipeName);
-        recipeFormData.append('overview', '');
-        recipeFormData.append('servingSize', parseInt(serving));
-        recipeFormData.append('instructions', JSON.stringify(instruContent))
-        recipeFormData.append('image', {});
-        recipeFormData.append('video', '');
-        recipeFormData.append('labels', JSON.stringify([]));
-        recipeFormData.append('ingredients', JSON.stringify(formatIngredients));
-
-        for (var pair of recipeFormData.entries()) {
-            console.log(pair[0]+': '+pair[1]);
-        }
-        const updateResult = await apiUpdateRecipe(recipeFormData);
-        console.log('update result', updateResult);
     }
 
     const handleIngredEditCancel = () => {
@@ -221,13 +204,14 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
         }
         //getUserId();
         getComments(recipeID);
+        console.log('init recipe', recipe);
     }, [])
 
 
 
     return(
         <div className='whole-modal'>
-            <div className="exit">
+            <div className={`exit ${editMode ? 'disabled-icon' : ''}`}>
                 <IoCloseCircleOutline size={25} onClick={handleCloseModal}/>
             </div>
             <div className="modal-container-from-data">
@@ -289,18 +273,18 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                                         />
                                     </>
                                     :
-                                    <li className={`${editMode ? 'hover-effect':''}`} key={idx} onClick={handleEditIngredOnclick}>
+                                    <li className={`${editMode ? 'hover-effect':''}`} key={idx}>
                                         {ingredient[0]}: {ingredient[1]}
                                     </li>
                                 ))}
                             </ul>
-                            {
+                            {/* {
                                 editingIng?
                                 (<>
                                     <button onClick={handleEditSave}>save</button>
                                     <button onClick={handleIngredEditCancel}>cancel</button>
                                 </>):''
-                            }
+                            } */}
                         </div>
                     </div>
                     <div className={`instructions ${editingInst ? 'editing-box' : ''}`}>
@@ -325,7 +309,7 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                                         
                                     </li>
                                     :
-                                    <li className={`${editMode ? 'hover-effect':''}`} key={idx} onClick={handleEditInstruOnclick}>
+                                    <li className={`${editMode ? 'hover-effect':''}`} key={idx}>
                                         {instruction}
                                     </li>
                                 ))}
@@ -343,7 +327,7 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
                 </div>      
             </div>
 
-            <div className={`comment-container "${editMode ? 'blur-all':''}`}>
+            <div className={`comment-container ${editMode ? 'blur-all':''}`}>
                 <div className="comments">Comments</div>
                 {
                     comments.map((comment) => {
@@ -395,8 +379,11 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
             {
                 editMode ?
                 <>
-                    <button className="btn btn-secondary recipeedit-fixed-button" id="cancel-btn" onClick={handleEditCancel}> Cancel </button>
-                    <button className="btn btn-secondary recipeedit-fixed-button" onClick={handleEditSave}> Save </button>
+                    <button className="btn btn-secondary recipeedit-fixed-button" 
+                        id="cancel-btn" 
+                        onClick={handleEditCancel}> Cancel </button>
+                    <button className="btn btn-secondary recipeedit-fixed-button" 
+                        onClick={editSaveOnclick}> Save </button>
                 </>
                 :
                 <button className="btn btn-secondary recipeedit-fixed-button" id="cancel-btn" onClick={editOnClick}> Edit Recipe </button>
