@@ -6,6 +6,8 @@ import {
   queryTopLikeCount,
   queryByIngredients,
   queryByUser,
+  queryByFridge,
+  queryTotalRecipeNumber,
   updateAddLikeCount,
   updateMinusLikeCount,
   updateRecipe,
@@ -27,10 +29,10 @@ router.get("/query/top", queryTopLikeCount); //OK
 router.get("/query/ingredient", queryByIngredients); // OK
 router.get("/query/user", checkToken, queryByUser); //
 router.get("/query/all", queryAll); // for testing
+router.get("/query/totalCount", queryTotalRecipeNumber) // OK
+router.get("/query/fridge", checkToken, queryByFridge); // OK
 
 router.delete("/delete/id", checkToken, deleteByID); // OK
-
-// router.get("/query/fridge", queryByFridge); //tobecont
 
 router.put("/update/addlikeCount", checkToken, updateAddLikeCount); //OK
 router.put("/update/minuslikeCount", checkToken, updateMinusLikeCount); //OK
