@@ -13,7 +13,7 @@ import { apiQueryRecipeByTop } from '../axios/withToken'
 const HomePage = () => {
 
     function scrollDown() {
-        var div = document.getElementById("middlePart");
+        var div = document.getElementById("bottomPart");
         div.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
@@ -195,7 +195,7 @@ const HomePage = () => {
                         ))}
                     </div>
                 </div> */}
-                <div className="bottom">
+                <div className="bottom" id="bottomPart">
                     <div className="section-title">
                         Our Popular Recipes
                     </div>
