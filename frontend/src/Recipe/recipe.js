@@ -50,13 +50,13 @@ const RecipeObject = ({ recipe, setSearching }) => {
                 onRequestClose={handleCloseModal}
                 style={customModalStyles}
             >
-                <RecipeDetail key={recipeID} 
-                    recipe={updatedRecipe} 
+                <RecipeDetail key={recipeID}
+                    recipe={updatedRecipe}
                     handleCloseModal={handleCloseModal}
                     setUpdatedRecipe={setUpdatedRecipe}
-                    refreshRecipePage={setSearching(false)}
+                    // refreshRecipePage={setSearching(false)}
                 />
-            
+
             </Modal>
         </>
     )
@@ -80,7 +80,7 @@ const Pagination = ({ recipesPerPage, totalRecipes, paginate, currentPage }) => 
     else {
         firstPageInRange = Math.max(1, currentPage - Math.floor(maxPageNumbers / 2));
     }
-    const lastPageInRange = Math.min(lastPage, firstPageInRange + maxPageNumbers - 1);    
+    const lastPageInRange = Math.min(lastPage, firstPageInRange + maxPageNumbers - 1);
 
     const goToFirstPage = () => {
         paginate(1);
@@ -165,7 +165,7 @@ const Recipe = () => {
                 promise = apiQueryRecipebyFridge();
                 setPageTitle('Suggest For You');
             }
-            
+
             promise.then((value) => {
                 // console.log(value.data.rows);
                 setApiRecipeData((prevData) => {
@@ -208,7 +208,7 @@ const Recipe = () => {
         indexOfLastRecipe,
     );
     const totalRecipes = Math.max(recipe_data.length, recipesPerPage * 5);
-  
+
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // console.log(id2ingredient);
@@ -252,14 +252,14 @@ const Recipe = () => {
                                 />
                         )))
                     }
-                    
+
                     {/* {currentRecipes.map((recipe, index) => (
                         <RecipeObject
                             key={index}
                             recipe={recipe}
                         />
                     ))} */}
-                    
+
                     {/* For comparison between versions */}
                     {/* <div className="popRecipe" onClick={navigateToDetail}>
                         <div className="popImg">

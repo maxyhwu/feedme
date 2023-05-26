@@ -12,7 +12,7 @@ import { getNoTokenData } from '../utils/useNoTokenApis'
 import { initiateSocket, subscribeToChat } from "../Context/commentSocketHooks";
 import { BsFillTrashFill } from 'react-icons/bs';
 
-const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe, refreshRecipePage }) => {
+const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe/*, refreshRecipePage*/ }) => {
     const { recipeID, recipeName, serving, ingredients, instructions, image_link } = recipe
     const {login} = UseLoginContext()
     const { id2ingredient } = UseGeneralContext();
@@ -165,10 +165,10 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe, refreshRecip
         for (const [key, value] of recipeFormData.entries()) {
             formDataObject[key] = value;
         }
-          
+
         // Print the FormData object as a plain JavaScript object
         console.log('form data object', formDataObject);
- 
+
         const updateResult = await apiUpdateRecipe(formDataObject);
         console.log('update result', updateResult);
         if (updateResult.data === 'success') {
@@ -192,7 +192,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe, refreshRecip
             window.alert('Successfully remove')
         }
         handleCloseModal();
-        refreshRecipePage();
+        // refreshRecipePage();
     }
 
     const handleEditCancel = () => {
@@ -252,22 +252,22 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe, refreshRecip
 
                         </div>
                         <div className="description">
-                            <div className={`title ${editMode ? 'hover-effect':''}`}> 
+                            <div className={`title ${editMode ? 'hover-effect':''}`}>
                                 {
                                     editMode?
                                     <textarea value={titleValue} onChange={handleTitleEdit}/>
-                                    : 
+                                    :
                                     <>
                                     {recipeName}
                                     </>
                                 }
                             </div>
-                            <div className={`serving-size ${editMode ? 'hover-effect':''}`}> 
+                            <div className={`serving-size ${editMode ? 'hover-effect':''}`}>
                                 {
                                     editMode ?
                                     <>
                                         For <input type="number"
-                                                id="serving-input" 
+                                                id="serving-input"
                                                 value={servingValue}
                                                 onChange={handleServingEdit}
                                             /> people
@@ -276,7 +276,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe, refreshRecip
                                         For {serving} people
                                     </>
                                 }
-                                
+
                             </div>
                             {/* <div className="change-btn">
                                 <button> Change serving size </button>
@@ -295,7 +295,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe, refreshRecip
                                     editMode?
                                     <>
                                         {ingredient[0]}
-                                        <textarea 
+                                        <textarea
                                             key={'0-' + idx}
                                             value={ingredCount[idx]}
                                             rows={1}
@@ -329,14 +329,14 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe, refreshRecip
                                             //console.log('idx :', idx, 'content :', instruContent[idx])
                                             console.log(instruContent[10])
                                         } */}
-                                        <textarea 
+                                        <textarea
                                             key={idx}
-                                            value={instruContent[idx]} 
-                                            onChange={(event) => handleInstruChange(event, idx)} 
+                                            value={instruContent[idx]}
+                                            onChange={(event) => handleInstruChange(event, idx)}
                                             ref={textareaRef}
                                             //rows={instruction.split('\n').length}
                                             autoFocus/>
-                                        
+
                                     </li>
                                     :
                                     <li className={`${editMode ? 'hover-effect':''}`} key={idx}>
@@ -351,10 +351,10 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe, refreshRecip
                                     <button onClick={handleInstruEditCancel}>cancel</button>
                                 </>):''
                             } */}
-                            
+
                         </div>
                     </div>
-                </div>      
+                </div>
             </div>
 
             <div className={`comment-container ${editMode ? 'blur-all':''}`}>
@@ -364,14 +364,14 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe, refreshRecip
                     return <div className="single-comment-container">
                         <div className="comment-avatar">
                             {
-                                (comment.photo === '') ? 
+                                (comment.photo === '') ?
                                     <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" />
                                 :
                                     <img src={comment.photo}/>
                             }
                             {/* {
                                 comment.photo.length === 0? */}
-                                
+
                                 {/* :<img src={comment.photo} alt="" />  */}
                             {/* } */}
                         </div>
@@ -393,38 +393,38 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe, refreshRecip
                         <div className="comment-avatar">
                             <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
                         </div>
-                        <input className= "input-text" 
-                            type = "text" 
+                        <input className= "input-text"
+                            type = "text"
                             placeholder="leave your comment..."
                             value={userComment}
                             onChange={(e) => setUserComment(e.target.value)}/>
-                        <button 
+                        <button
                             className="submit-text"
                             onClick={() => addComments(userComment)}> Submit </button>
                         {/* <input classname= "submit-text" type = "submit">Submit</input> */}
                     </div> :
                     <></>
                 }
-            </div> 
+            </div>
             {
                 editMode ?
                 <>
-                    <button className="btn btn-secondary recipeedit-fixed-button" 
-                        id="cancel-btn" 
+                    <button className="btn btn-secondary recipeedit-fixed-button"
+                        id="cancel-btn"
                         onClick={handleEditCancel}> Cancel </button>
-                    <button className="btn btn-secondary recipeedit-fixed-button" 
+                    <button className="btn btn-secondary recipeedit-fixed-button"
                         onClick={editSaveOnclick}> Save </button>
                 </>
-                : 
+                :
                     isRecipeOwner ?
                     <>
-                        <button className="btn btn-secondary recipeedit-fixed-button" 
-                            id="cancel-btn" 
+                        <button className="btn btn-secondary recipeedit-fixed-button"
+                            id="cancel-btn"
                             onClick={editOnClick}> Edit Recipe </button>
                         <button className="btn btn-secondary recipeedit-delete-button"
                             onClick={handleEditDelete}> <BsFillTrashFill /> </button>
                     </>:''
-                
+
             }
             {/* <button className='btn btn-secondary recipeedit-fixed-button' onClick={editOnClick}>
                 {
@@ -519,7 +519,7 @@ const RecipeDetailShare = () => {
                 </div>
             </div>
             }
-           
+
             { recipeName === '' &&
                 <div>
                     <h1>
@@ -527,8 +527,8 @@ const RecipeDetailShare = () => {
                     </h1>
                 </div>
             }
-            
-        </> 
+
+        </>
     )
 }
 
