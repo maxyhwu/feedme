@@ -5,12 +5,13 @@ import { IoCloseCircleOutline } from 'react-icons/io5';
 import ActionBar from "./Components/ActionBar";
 import { recipe_data } from "../Recipe/recipedata";
 import { UseGeneralContext } from '../Context/generalTables'
-import { apiQueryRecipeByID, apiGetRecipeComment, apiAddComment, apiGetUserData, apiUpdateRecipe } from '../axios/withToken'
+import { apiQueryRecipeByID, apiGetRecipeComment, apiAddComment, apiGetUserData, apiUpdateRecipe, apiDeleteRecipeByID, apiQueryRecipeByUser } from '../axios/withToken'
 import { UseLoginContext } from "../Context/LoginCnt";
 import { FaTrashAlt, FaJournalWhills } from 'react-icons/fa';
 import { getNoTokenData } from '../utils/useNoTokenApis'
+import { BsFillTrashFill } from 'react-icons/bs';
 
-const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe }) => {
+const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe, refreshRecipePage }) => {
     const { recipeID, recipeName, serving, ingredients, instructions, image_link } = recipe
     const {login} = UseLoginContext()
     const { id2ingredient } = UseGeneralContext();
@@ -32,6 +33,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe }) => {
 
     const textareaRef = useRef(null);
     const [comments, setComments] = useState([]);
+    const [isRecipeOwner, setIsRecipeOwner] = useState(false);
 
     // const comments = [
     //     {
@@ -175,6 +177,16 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe }) => {
         })
     }
 
+    const handleEditDelete = async() => {
+        const deleteResult = await apiDeleteRecipeByID(recipeID);
+        console.log('delete result', deleteResult);
+        if (deleteResult.data === 'success') {
+            window.alert('Successfully remove')
+        }
+        handleCloseModal();
+        refreshRecipePage();
+    }
+
     const handleEditCancel = () => {
         setEditMode(!editMode)
     }
@@ -198,13 +210,23 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe }) => {
             setComments(comments.data)
         }
 
-        const getUserId = async() => {
-            const data = await apiGetUserData();
-            console.log('user data', data);
-        }
         //getUserId();
         getComments(recipeID);
         console.log('init recipe', recipe);
+
+        const handleEditAccess = async() => {
+            const recipeByUser = await apiQueryRecipeByUser();
+            console.log('query recipe by user', recipeByUser);
+            const userRecipe = recipeByUser.data.rows;
+            userRecipe.map((recipe) => {
+                if (recipeID === recipe.id) {
+                    setIsRecipeOwner(true);
+                }
+            })
+        }
+
+        // handleEditAccess();
+        setIsRecipeOwner(true);
     }, [])
 
 
@@ -385,8 +407,16 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe }) => {
                     <button className="btn btn-secondary recipeedit-fixed-button" 
                         onClick={editSaveOnclick}> Save </button>
                 </>
-                :
-                <button className="btn btn-secondary recipeedit-fixed-button" id="cancel-btn" onClick={editOnClick}> Edit Recipe </button>
+                : 
+                    isRecipeOwner ?
+                    <>
+                        <button className="btn btn-secondary recipeedit-fixed-button" 
+                            id="cancel-btn" 
+                            onClick={editOnClick}> Edit Recipe </button>
+                        <button className="btn btn-secondary recipeedit-delete-button"
+                            onClick={handleEditDelete}> <BsFillTrashFill /> </button>
+                    </>:''
+                
             }
             {/* <button className='btn btn-secondary recipeedit-fixed-button' onClick={editOnClick}>
                 {
