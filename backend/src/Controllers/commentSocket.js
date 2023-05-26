@@ -1,53 +1,76 @@
-// import { pool } from "../Clients/pool";
-// import dotenv from "dotenv-defaults";
-// import http from "http";
-// import socketIO from "socket.io";
-// dotenv.config();
+// server
+// Import required modules
+import { pool } from "../Clients/pool";
+import http from "http";
+import { Server } from "socket.io";
 
-// // Connect to the PostgreSQL database
-// pool.connect();
-
-// // Create an HTTP server
-// const server = http.createServer();
-
-// // Create a Socket.IO instance
-// const io = socketIO(server);
-
-// // Handle client connections
-// io.on('connection', (socket) => {
-//   console.log('A client connected');
-
-//   // Handle disconnections
-//   socket.on('disconnect', () => {
-//     console.log('A client disconnected');
-//   });
+// Create a PostgreSQL pool
+// const pool = new Pool({
+//   user: 'your_username',
+//   password: 'your_password',
+//   host: 'your_host',
+//   database: 'your_database',
+//   port: 5432, // Change the port if necessary
 // });
 
-// // Listen for PostgreSQL notifications on comment changes for each recipe
-// const fetchRecipesFromDatabase = async() => {
-//     const query = `SELECT * FROM "public"."Recipes"`;
-//     const result = await pool.query(query);
-// };
+const commentSocket = () => {
+  // Create an HTTP server
+  const port = 3001;
+  const httpc = http.createServer().listen(port, () => {
+    console.log(`Server started on port ${port}`);
+  });
+  // Create a Socket.IO instance and attach it to the server
+  const io = new Server (httpc);
+  // var io = require('socket.io').listen(http);
+  
+  io.on('connection', (socket) => {
+    console.log(`Connected: ${socket.id}`);
 
-// (async () => {
-//   const recipes = await fetchRecipesFromDatabase(); // Fetch all recipes from the database
+    socket.on('disconnect', () =>
+      console.log(`Disconnected: ${socket.id}`));
 
-//   for (const recipe of recipes) {
-//     const channel = `comment_change_recipe_${recipe.id}`;
+    socket.on('join', (room) => {
+      console.log(`Socket ${socket.id} joining ${room}`);
+      socket.join(room);
+    });
 
-//     await pool.query(`LISTEN ${channel}`);
+    socket.on('chat', (data) => {
+      const { message, room } = data;
+      console.log(`msg: ${message}, room: ${room}`);
+      io.to(room).emit('chat', message);
+    });
 
-//     pool.on('notification', (notification) => {
-//       const payload = JSON.parse(notification.payload);
+  });
 
-//       // Emit the comment change event to connected clients interested in the recipe
-//       io.to(channel).emit('commentChange', payload);
-//     });
-//   }
-// })();
+  // Listen for incoming socket connections
+  // io.on("connection", (socket) => {
+  //   console.log("A user connected");
 
-// // Start the server
-// const port = 3001;
-// server.listen(port, () => {
-//   console.log(`Server is running on port ${port}`);
-// });
+  //   // Listen for changes in the "comment" table
+  //   const query = "LISTEN comment_changes";
+  //   pool.query(query);
+
+  //   // Handle PostgreSQL notifications
+  //   const handleNotification = (notification) => {
+  //     console.log(notification);
+  //     const payload = notification.payload;
+  //     const comment = JSON.parse(payload);
+  //     console.log(comment);
+
+  //     // Emit the comment change event to the connected client(s)
+  //     socket.emit("commentChange", comment);
+  //   };
+
+  //   // Subscribe to PostgreSQL notifications
+  //   pool.on("notification", handleNotification);
+
+  //   // Handle socket disconnection
+  //   socket.on("disconnect", () => {
+  //     console.log("A user disconnected");
+  //     // Unsubscribe from PostgreSQL notifications
+  //     pool.off("notification", handleNotification);
+  //   });
+  // });
+};
+
+export default commentSocket;
