@@ -10,6 +10,7 @@ import { RecipeDetail } from './detail';
 import { UseGeneralContext } from '../Context/generalTables'
 import { UseLoginContext } from "../Context/LoginCnt";
 import { apiAllIngredient } from '../axios/noToken';
+import { disconnectSocket } from '../Context/commentSocketHooks';
 import { apiQueryRecipeByTop, apiQueryRecipeByUser, apiQueryRecipebyFridge } from '../axios/withToken'
 
 
@@ -30,6 +31,7 @@ const RecipeObject = ({ recipe, setSearching }) => {
     };
 
     const handleCloseModal = () => {
+        disconnectSocket();
         setShowModal(false);
     };
 
