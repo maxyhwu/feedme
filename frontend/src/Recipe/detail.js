@@ -9,6 +9,7 @@ import { apiQueryRecipeByID, apiGetRecipeComment, apiAddComment, apiGetUserData,
 import { UseLoginContext } from "../Context/LoginCnt";
 import { FaTrashAlt, FaJournalWhills } from 'react-icons/fa';
 import { getNoTokenData } from '../utils/useNoTokenApis'
+import { initiateSocket, subscribeToChat } from "../Context/commentSocketHooks";
 
 const RecipeDetail = ({ recipe, handleCloseModal }) => {
     const { recipeID, recipeName, serving, ingredients, instructions, image_link } = recipe
@@ -43,6 +44,13 @@ const RecipeDetail = ({ recipe, handleCloseModal }) => {
         }
     ]
 
+    useEffect(() => {
+        initiateSocket(recipeID);
+        subscribeToChat((err, data) => {
+            if (err) return;
+            comments.append(data);
+        })
+    })
 
     const addComments = async(comment) => {
         const content = {
