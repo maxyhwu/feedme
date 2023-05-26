@@ -68,7 +68,8 @@ const FridgeSearchBar = ({ searchBarValue, setSearchBarValue }) => {
                 </div>
         
                 <input
-                    id="fridge-search-bar"
+                    className="inputbar-container"
+                    // id="fridge-search-bar"
                     type="text"
                     placeholder="Search ingredients"
                     value={searchBarValue}

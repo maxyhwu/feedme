@@ -36,7 +36,7 @@ export const apiQueryRecipeByUser = () => recipeRequest.get('/query/user');
 export const apiQueryRecipeTotalCount = () => recipeRequest.get('/query/totalCount');
 export const apiQueryRecipebyFridge = () => recipeRequest.get('/query/fridge');
 
-export const apiDeleteRecipeByID = id => recipeRequest.delete('/delete/id', id);
+export const apiDeleteRecipeByID = id => recipeRequest.delete('/delete/id', {params:{ id }});
 
 export const apiGetRecipeComment = id => recipeRequest.get('/get/comment-data', {params:{ id }});
 

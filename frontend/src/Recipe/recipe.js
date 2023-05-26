@@ -14,7 +14,7 @@ import { disconnectSocket } from '../Context/commentSocketHooks';
 import { apiQueryRecipeByTop, apiQueryRecipeByUser, apiQueryRecipebyFridge } from '../axios/withToken'
 
 
-const RecipeObject = ({ recipe, setRecipe, setSearching }) => {
+const RecipeObject = ({ recipe, setSearching }) => {
     const customModalStyles = {
         content: {
             width: '75%',
@@ -24,6 +24,7 @@ const RecipeObject = ({ recipe, setRecipe, setSearching }) => {
         }
     };
     const [showModal, setShowModal] = useState(false);
+    const [updatedRecipe, setUpdatedRecipe] = useState(recipe);
 
     const handleOpenModal = () => {
         setShowModal(true);
@@ -49,7 +50,12 @@ const RecipeObject = ({ recipe, setRecipe, setSearching }) => {
                 onRequestClose={handleCloseModal}
                 style={customModalStyles}
             >
-                <RecipeDetail key={recipeID} recipe={recipe} handleCloseModal={handleCloseModal} />
+                <RecipeDetail key={recipeID} 
+                    recipe={updatedRecipe} 
+                    handleCloseModal={handleCloseModal}
+                    setUpdatedRecipe={setUpdatedRecipe}
+                    refreshRecipePage={setSearching(false)}
+                />
             
             </Modal>
         </>
@@ -225,35 +231,34 @@ const Recipe = () => {
                         recipe_data.map((recipe) => (
                             <RecipeObject
                                 recipe={recipe}
-                                setRecipe={setSearchedRecipe}
-                                setSearching={setSearching}
                             />))
                     } */}
-                    {/* {
+                    {/* try use backend data */}
+                    {
                         searching ?
                         (
-                            searchedRecipe.map((recipe) => (
+                            searchedRecipe.map((recipe, idx) => (
                                 <RecipeObject
+                                    key={idx}
                                     recipe={recipe}
-                                    setRecipe={setSearchedRecipe}
                                     setSearching={setSearching}
                                 />
                         ))): (
-                            apiRecipeData.map((recipe) => (
+                            apiRecipeData.map((recipe, idx) => (
                                 <RecipeObject
+                                    key={idx}
                                     recipe={recipe}
-                                    setRecipe={setSearchedRecipe}
                                     setSearching={setSearching}
                                 />
                         )))
-                    } */}
+                    }
                     
-                    {currentRecipes.map((recipe, index) => (
+                    {/* {currentRecipes.map((recipe, index) => (
                         <RecipeObject
                             key={index}
                             recipe={recipe}
                         />
-                    ))}
+                    ))} */}
                     
                     {/* For comparison between versions */}
                     {/* <div className="popRecipe" onClick={navigateToDetail}>
