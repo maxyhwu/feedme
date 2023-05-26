@@ -10,8 +10,8 @@ import { RecipeDetail } from './detail';
 import { UseGeneralContext } from '../Context/generalTables'
 import { UseLoginContext } from "../Context/LoginCnt";
 import { apiAllIngredient } from '../axios/noToken';
-import { apiQueryRecipeByTop, apiQueryRecipeByUser } from '../axios/withToken'
 import { disconnectSocket } from '../Context/commentSocketHooks';
+import { apiQueryRecipeByTop, apiQueryRecipeByUser, apiQueryRecipebyFridge } from '../axios/withToken'
 
 
 const RecipeObject = ({ recipe, setRecipe, setSearching }) => {
@@ -156,7 +156,7 @@ const Recipe = () => {
                 promise = apiQueryRecipeByUser();
                 setPageTitle('My Recipes');
             } else if (location.pathname === '/suggestrecipe') {
-                console.log('Not implemented');
+                promise = apiQueryRecipebyFridge();
                 setPageTitle('Suggest For You');
             }
             
