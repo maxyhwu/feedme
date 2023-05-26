@@ -33,7 +33,8 @@ const RecipeObject = ({ recipe, setSearching }) => {
         setShowModal(false);
     };
 
-    const { recipeName, image_link, recipeID } = recipe;
+    const { recipeName, image_link, recipeID, comments_arr } = recipe;
+    // console.log('recipe object comment', comments_arr); //comment exist
     return (
         <>
             <div className="popRecipe" onClick={handleOpenModal}>
@@ -49,10 +50,11 @@ const RecipeObject = ({ recipe, setSearching }) => {
                 style={customModalStyles}
             >
                 <RecipeDetail key={recipeID} 
-                    recipe={updatedRecipe} 
+                    //recipe={updatedRecipe} 
+                    recipe={recipe}
                     handleCloseModal={handleCloseModal}
                     setUpdatedRecipe={setUpdatedRecipe}
-                    refreshRecipePage={setSearching(false)}
+                    // refreshRecipePage={setSearching(false)}
                 />
             
             </Modal>
@@ -165,7 +167,7 @@ const Recipe = () => {
             }
             
             promise.then((value) => {
-                // console.log(value.data.rows);
+                console.log('apiRecipeData', value.data.rows);
                 setApiRecipeData((prevData) => {
                     const newData = [...prevData];
                     const startIndex = (page - 1) * 15;
@@ -179,7 +181,9 @@ const Recipe = () => {
                             ingredients: formatIngredients,
                             instructions: instructions,
                             image_link: image,
+                            comments_arr: comments
                         }
+                        console.log('set api recipe data comments', value.data.rows[i].comments);
                     }
                     return newData;
                 });
