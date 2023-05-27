@@ -35,7 +35,8 @@ const RecipeObject = ({ recipe, setSearching }) => {
         setShowModal(false);
     };
 
-    const { recipeName, image_link, recipeID } = recipe;
+    const { recipeName, image_link, recipeID, comments_arr } = recipe;
+    // console.log('recipe object comment', comments_arr); //comment exist
     return (
         <>
             <div className="popRecipe" onClick={handleOpenModal}>
@@ -51,10 +52,13 @@ const RecipeObject = ({ recipe, setSearching }) => {
                 style={customModalStyles}
             >
                 <RecipeDetail key={recipeID} 
-                    recipe={updatedRecipe} 
+                    //recipe={updatedRecipe} 
+                    recipe={recipe}
                     handleCloseModal={handleCloseModal}
-                    setUpdatedRecipe={setUpdatedRecipe}
-                    refreshRecipePage={setSearching}
+
+                    // setUpdatedRecipe={setUpdatedRecipe}
+                    // refreshRecipePage={setSearching(false)}
+
                 />
             
             </Modal>
