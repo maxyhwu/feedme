@@ -193,7 +193,9 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             window.alert('Successfully remove')
         }
         handleCloseModal();
+
         // refreshRecipePage();
+
     }
 
     const handleEditCancel = () => {
@@ -476,22 +478,23 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
 
 const RecipeDetailShare = () => {
     const { recipeID } = useParams();
+    const {login} = UseLoginContext();
     const { id2ingredient } = UseGeneralContext();
     const [apiRecipe, setApiRecipe] = useState({ recipeName: '' });
     const recipe = recipe_data[recipeID];
-    const { recipeName, serving, ingredients, instructions, image_link } = recipe;
-    const comments = [
-        {
-            name: 'Teresa',
-            content: 'Very impressive.',
-            time: '12:00'
-        },
-        {
-            name: 'Bob',
-            content: 'Delicious~',
-            time: '3:12'
-        }
-    ]
+    const [userComment, setUserComment] = useState("");
+    // const comments = [
+    //     {
+    //         name: 'Teresa',
+    //         content: 'Very impressive.',
+    //         time: '12:00'
+    //     },
+    //     {
+    //         name: 'Bob',
+    //         content: 'Delicious~',
+    //         time: '3:12'
+    //     }
+    // ]
 
     useEffect(() => {
         const response = apiQueryRecipeByID(recipeID);
@@ -510,13 +513,30 @@ const RecipeDetailShare = () => {
         })
     }, [recipeID])
 
+    const addComments = async(comment) => {
+        const content = {
+            comment: comment,
+            Rid: recipeID
+        }
+        console.log('add content :', content);
+        const addResult = await apiAddComment(content)
+        console.log('add result', addResult.data);
+        if (addResult.data === 'success') {
+            window.alert('comment added!')
+        }
+        setUserComment("");
+    }
+
     // console.log(recipeID);
     // console.log(recipe);
     // console.log(apiRecipe);
 
+    const { recipeName, serving, ingredients, instructions, image_link, comments } = apiRecipe;
+
     return(
-        <>
+        <div className="whole-modal" style={{ width: '80%' }}>
             { recipeName !== '' &&
+            <>
             <div className="modal-container-from-data">
                 <div className="modal-container">
                     <div className="modal-top">
@@ -529,7 +549,7 @@ const RecipeDetailShare = () => {
                                 <div className="serving-size"> For {serving} people </div>
                             </div>
                         </div>
-                        <ActionBar recipeID={recipeID} />
+                        <ActionBar recipeID={parseInt(recipeID)} />
                     </div>
                     <div className="modal-content">
                         <div className="ingredients">
@@ -555,6 +575,50 @@ const RecipeDetailShare = () => {
                     </div>
                 </div>
             </div>
+            <div className={`comment-container`}>
+                <div className="comments">Comments</div>
+                { comments && 
+                    comments.map((comment) => {
+                        return (
+                            <div className="single-comment-container">
+                                <div className="comment-avatar">
+                                    {
+                                        (comment.photo === '') ? 
+                                            <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" />
+                                        :
+                                            <img src={comment.photo}/>
+                                    }
+                                </div>
+                                <div className="comment">
+                                    <div className="nameAndTime">
+                                        <div className="commenter">{comment.userName}</div>
+                                        <div className="comment-time">{comment.time}</div>
+                                    </div>
+                                    <div className="comment-content">{comment.content}</div>
+                                </div>
+                            </div>
+                    )})
+                }
+                {
+                    login ?
+                    <div className="comment-input">
+                        <div className="comment-avatar">
+                            <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
+                        </div>
+                        <input className= "input-text" 
+                            type = "text" 
+                            placeholder="leave your comment..."
+                            value={userComment}
+                            onChange={(e) => setUserComment(e.target.value)}/>
+                        <button 
+                            className="submit-text"
+                            onClick={() => addComments(userComment)}> Submit </button>
+                        {/* <input classname= "submit-text" type = "submit">Submit</input> */}
+                    </div> :
+                    <></>
+                }
+            </div>
+            </>
             }
            
             { recipeName === '' &&
@@ -565,7 +629,7 @@ const RecipeDetailShare = () => {
                 </div>
             }
             
-        </> 
+        </div> 
     )
 }
 
