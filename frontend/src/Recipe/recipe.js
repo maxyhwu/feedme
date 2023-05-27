@@ -55,7 +55,7 @@ const RecipeObject = ({ recipe, setSearching }) => {
                     //recipe={updatedRecipe} 
                     recipe={recipe}
                     handleCloseModal={handleCloseModal}
-                    setUpdatedRecipe={setUpdatedRecipe}
+                    // setUpdatedRecipe={setUpdatedRecipe}
                     // refreshRecipePage={setSearching(false)}
                 />
             
@@ -185,7 +185,7 @@ const Recipe = () => {
                             image_link: image,
                             comments_arr: comments
                         }
-                        console.log('set api recipe data comments', value.data.rows[i].comments);
+                        // console.log('set api recipe data comments', value.data.rows[i].comments); //有東西
                     }
                     return newData;
                 });

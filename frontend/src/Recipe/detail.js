@@ -12,7 +12,7 @@ import { getNoTokenData } from '../utils/useNoTokenApis'
 import { initiateSocket, subscribeToChat } from "../Context/commentSocketHooks";
 import { BsFillTrashFill } from 'react-icons/bs';
 
-const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe }) => {
+const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     const { recipeID, recipeName, serving, ingredients, instructions, image_link, comments_arr } = recipe
     const {login} = UseLoginContext()
     const { id2ingredient } = UseGeneralContext();
@@ -31,10 +31,10 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe }) => {
     const [servingValue, setServingValue] = useState(serving);
 
     const [completeRecipe, setCompleteRecipe] = useState([]);
-    const [completeComments, setCompleteComments] = useState([]);
+    // const [commentUser, setCommentUser] = useState([]);
 
     const textareaRef = useRef(null);
-    const [comments, setComments] = useState(comments_arr);
+    const [comments, setComments] = useState([]);
     const [isRecipeOwner, setIsRecipeOwner] = useState(false);
 
     // const comments = [
@@ -176,14 +176,14 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe }) => {
             window.alert('Edit saved!')
         }
 
-        setUpdatedRecipe({
-            recipeID: recipeID,
-            recipeName: titleValue,
-            serving: servingValue,
-            ingredients: combineIngredCount(),
-            instructions: instruContent,
-            image_link: image_link
-        })
+        // setUpdatedRecipe({
+        //     recipeID: recipeID,
+        //     recipeName: titleValue,
+        //     serving: servingValue,
+        //     ingredients: combineIngredCount(),
+        //     instructions: instruContent,
+        //     image_link: image_link
+        // })
     }
 
     const handleEditDelete = async() => {
@@ -212,35 +212,45 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe }) => {
         setServingValue(Number(event.target.value));
     }
 
-    useEffect(() => {
-        // const getComments = async(id) => { // user name and photo id = userID
-        //     const comments = await apiGetRecipeComment(id);
-        //     console.log('comments in recipe', id, comments.data);
-        //     setComments(comments.data)
-        // }
-
-        //getUserId();
-        // getComments(recipeID);
+    async function gatherComments() {
         console.log('init recipe', recipe);
-        // console.log('init comments', recipe.comments_arr);
-        // comment = { comment_str: "df comment test", time: "2023-05-26T09:09:21+00:00", user_id: "7"}
-
-        const allComments = () => {
-            const completeComments = []
-            comments.map((comment, idx) => {
-                // setCompleteComments((prev) => [...prev, handleCommentDetail(comment.user_id)])
-                completeComments[idx] = handleCommentDetail(comment.user_id)
-            })
-            return completeComments;
-        }
+        const initComments = recipe.comments_arr;
+        const commentUserData = [];
+        let combinedComments = {};
 
         const handleCommentDetail = async(userID) => {
             const commentDetail = await apiGetRecipeComment(userID);
-            console.log('user in comment', userID, commentDetail);
+            // console.log('user in comment', userID, commentDetail.data);
             return commentDetail.data;
         }
 
-        handleCommentDetail(7); //ok
+        const allComments = async(initComments) => {
+            // Map over the initial comments array asynchronously
+            await Promise.all(
+                initComments.map(async (comment, idx) => {
+                const userID = comment[0].user_id;
+                const commentDetail = await handleCommentDetail(parseInt(userID));
+                commentUserData.push(commentDetail[0]);
+                })
+            );
+            // console.log('comment user data', commentUserData, 'init', initComments);
+            combinedComments = commentUserData.map((item, idx) => {
+                return { user: item, content: initComments[idx][0] }
+            })
+            console.log('combined', combinedComments);
+            setComments(combinedComments);
+            // console.log('complete comments', completeComments);
+        }
+
+        allComments(initComments);
+        // setComments(combinedComments);
+        return combinedComments;
+    }
+
+    useEffect(() => {
+
+        gatherComments();
+        console.log('comment', comments);
 
         const handleEditAccess = async() => {
             const recipeByUser = await apiQueryRecipeByUser();
@@ -252,8 +262,6 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe }) => {
                 }
             })
         }
-        console.log('all comment', allComments());
-        allComments();
         // handleEditAccess();
         setIsRecipeOwner(true);
     }, [])
@@ -381,31 +389,35 @@ const RecipeDetail = ({ recipe, handleCloseModal, setUpdatedRecipe }) => {
             <div className={`comment-container ${editMode ? 'blur-all':''}`}>
                 <div className="comments">Comments</div>
                 {
-                    // comment = { comment_str: "df comment test", time: "2023-05-26T09:09:21+00:00", user_id: "7"}
-                    comments !== undefined ? 
-                    comments.map((comment) => {
-                        return <div className="single-comment-container">
-                            <div className="comment-avatar">
-                                {
-                                    (comment.photo === '') ? 
-                                        <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" />
-                                    :
-                                        <img src={comment.photo}/>
-                                }
-                                {/* {
-                                    comment.photo.length === 0? */}
-                                    
-                                    {/* :<img src={comment.photo} alt="" />  */}
-                                {/* } */}
-                            </div>
-                            <div className="comment">
-                                <div className="nameAndTime">
-                                    <div className="commenter">{comment.userName}</div>
-                                    <div className="comment-time">{comment.time}</div>
+                    // content = { comment_str: "df comment test", time: "2023-05-26T09:09:21+00:00", user_id: "7"}
+                    // user = 0: {photo: '', userName: 'Yu'}
+                    comments !== [] ? 
+                    comments.map((comment, idx) => {
+                        const user = comment.user;
+                        const content = comment.content
+                        // console.log('comment data', user, content);
+                            return <div className="single-comment-container">
+                                <div className="comment-avatar">
+                                    {
+                                        (user.photo === '') ? 
+                                            <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" />
+                                        :
+                                            <img src={user.photo}/>
+                                    }
+                                    {/* {
+                                        comment.photo.length === 0? */}
+                                        
+                                        {/* :<img src={comment.photo} alt="" />  */}
+                                    {/* } */}
                                 </div>
-                                <div className="comment-content">{comment.comment_str}</div>
+                                <div className="comment">
+                                    <div className="nameAndTime">
+                                        <div className="commenter">{user.userName}</div>
+                                        <div className="comment-time">{content.time}</div>
+                                    </div>
+                                    <div className="comment-content">{content.comment_str}</div>
+                                </div>
                             </div>
-                        </div>
                         })
                     :
                     <p>Nobody leave comments yet.</p>
