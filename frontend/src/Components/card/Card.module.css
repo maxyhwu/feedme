@@ -1,6 +1,8 @@
 .card {
-  border: 1px solid transparent;
+  border: 15px solid transparent;
   border-radius: 5px;
+  margin: 0 3rem;
+  padding: 0 3rem;
   box-shadow: var(--box-shadow);
   overflow: hidden;
 }/*# sourceMappingURL=Card.module.css.map */

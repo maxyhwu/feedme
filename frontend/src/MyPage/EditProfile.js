@@ -31,6 +31,7 @@ const EditProfile = () => {
   const [profile, setProfile] = useState(initialState);
   const [profileImage, setProfileImage] = useState();
   const [showImage, setShowImage] = useState(profile.photo)
+  console.log("1111111",data);
 
   async function updateImage(credentials) {
     return apiUpdateUserImage(credentials)
@@ -119,10 +120,11 @@ const EditProfile = () => {
           {/* <img src={FeedMe} alt="profilepic" /> */}
           <form>
           <img src={showImage} alt="profilepic" />
-          <div>
-              <button className="--btn --btn-primary" onClick={saveImageProfile}>Edit Profile</button>
-          </div>
+          
           </form>
+          <div className="button-container">
+              <button className="--btn --btn-primary" onClick={saveImageProfile}>Save Image</button>
+          </div>
         </span>
         <form className="--form-control --m" onSubmit={saveProfile}>
           <span className="profile-data">
@@ -146,14 +148,16 @@ const EditProfile = () => {
               <label>Photo:</label>
               <input type="file" name="image" onChange={handleImageChange} />
             </div>
-            <div>
-              <button className="--btn --btn-primary" >Edit Profile</button>
+            <div className="button-container">
+              <button className="--btn --btn-primary" >Save Profile</button>
             </div>
           </span>
         </form>
       </Card>
       <br />
-      <ChangePassword />
+      <span className="button-container">
+          <ChangePassword />
+      </span>
     </div>
   );
 };
