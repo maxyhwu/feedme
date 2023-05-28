@@ -11,6 +11,8 @@ import { FaTrashAlt, FaJournalWhills } from 'react-icons/fa';
 import { getNoTokenData } from '../utils/useNoTokenApis'
 import { initiateSocket, subscribeToChat } from "../Context/commentSocketHooks";
 import { BsFillTrashFill } from 'react-icons/bs';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     const { recipeID, recipeName, serving, ingredients, instructions, image_link, comments_arr } = recipe
@@ -57,6 +59,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         subscribeToChat((err, data) => {
             if (err) return;
             comments.append(data);
+            console.log('comment socket data', data);
         })
     })
 
@@ -69,7 +72,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         const addResult = await apiAddComment(content)
         console.log('add result', addResult.data);
         if (addResult.data === 'success') {
-            window.alert('comment added!')
+            // window.alert('comment added!')
+            toast.success('Comment added!')
         }
         setUserComment("");
     }
@@ -127,6 +131,12 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         })
     }, [])
 
+    const refreshAfterSave = async(rid) => {
+        const result = await apiQueryRecipeByID(rid);
+        const refreshedRecipe = result.data.rows;
+        console.log('refreshed result', refreshedRecipe);
+    }
+
     const handleEditSave = async() => {
 
         function combineIngredCount() {
@@ -140,7 +150,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         // console.log('combined', combineIngredCount());
         const testIngred = [['Milk', '1 cup'], ['Carrots', '1']]
 
-        const formatIngredients = testIngred.reduce((acc, cur) => {
+        const formatIngredients = combineIngredCount().reduce((acc, cur) => {
             console.log('ingredient2id', ingredient2id);
             console.log('current value', cur);
             var curIngredId = ingredient2id[cur[0]]; //id
@@ -175,7 +185,9 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         const updateResult = await apiUpdateRecipe(formDataObject);
         console.log('update result', updateResult);
         if (updateResult.data === 'success') {
-            window.alert('Edit saved!')
+            // window.alert('Edit saved!')
+            toast.success('Recipe updated!')
+            refreshAfterSave(recipeID)
         }
 
         // setUpdatedRecipe({
@@ -192,7 +204,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         const deleteResult = await apiDeleteRecipeByID(recipeID);
         console.log('delete result', deleteResult);
         if (deleteResult.data === 'success') {
-            window.alert('Successfully remove')
+            // window.alert('Successfully remove')
+            toast.success('Successfully remove')
         }
         handleCloseModal();
 
@@ -202,10 +215,6 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
 
     const handleEditCancel = () => {
         setEditMode(!editMode)
-    }
-
-    const handleIngredEditCancel = () => {
-        setEditingIng(false);
     }
 
     const handleTitleEdit = (event) => {
@@ -555,7 +564,8 @@ const RecipeDetailShare = () => {
         const addResult = await apiAddComment(content)
         console.log('add result', addResult.data);
         if (addResult.data === 'success') {
-            window.alert('comment added!')
+            // window.alert('comment added!')
+            toast.success('Comment added!')
         }
         setUserComment("");
     }
