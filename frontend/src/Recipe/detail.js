@@ -244,7 +244,10 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             // console.log('complete comments', completeComments);
         }
 
-        allComments(initComments);
+        if (initComments !== undefined) {
+            allComments(initComments);
+        }
+        
         // setComments(combinedComments);
         return combinedComments;
     }
