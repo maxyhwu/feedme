@@ -98,7 +98,7 @@ function RecipeAddButton() {
     const handleRecipeCategoryChange = (event) => {
         const matched = allCategories.filter(category => category.toLowerCase().startsWith(event.target.value.toLowerCase()));
         setRecipeCategory(event.target.value);
-        setMatchingCategories(matched);
+        setMatchingCategories(matched.slice(0, 5));
     };
     
     const handleServingSizeChange = (event) => {
@@ -110,7 +110,7 @@ function RecipeAddButton() {
         newIngredients[index].name = event.target.value;
         const matchingIngredients = allIngredients.filter(row => row.toLowerCase().startsWith(event.target.value.toLowerCase()));
         setIngredients(newIngredients);
-        setMatchingIngredients(matchingIngredients);
+        setMatchingIngredients(matchingIngredients.slice(0, 5));
     };
     
     const handleIngredientQuantityChange = (event, index) => {
@@ -175,13 +175,14 @@ function RecipeAddButton() {
             valid = false;
         }
 
-        if (recipeVideoLink && recipeVideoLink.startsWith('https://youtu.be/')) {
-            setRecipeVideoLinkValid(true);
-        }
-        else {
-            setRecipeVideoLinkValid(false);
-            valid = false;
-        }
+        // TODO: Video Link
+        // if (recipeVideoLink && recipeVideoLink.startsWith('https://youtu.be/')) {
+        //     setRecipeVideoLinkValid(true);
+        // }
+        // else {
+        //     setRecipeVideoLinkValid(false);
+        //     valid = false;
+        // }
 
         if (imagePreviewUrl) {
             setRecipeImageValid(true);
@@ -261,15 +262,15 @@ function RecipeAddButton() {
 
 
             // Add code to save recipe data
-            // setSubmitSave(true);
-            // const response = apiAddNew(recipeFormData);
-            // response.then((value) => {
-            //     console.log(value);
-            //     window.location.reload(true);
-            // }) 
+            setSubmitSave(true);
+            const response = apiAddNew(recipeFormData);
+            response.then((value) => {
+                console.log(value);
+                window.location.reload(true);
+            }) 
 
             // Close the modal
-            handleCloseModal();
+            // handleCloseModal();
         }
         
     };
@@ -385,7 +386,8 @@ function RecipeAddButton() {
                                 </td>
                             </tr>
 
-                            <tr>
+                            {/* TODO: Video */}
+                            {/* <tr>
                                 <th scope="row">
                                     <label htmlFor="recipe-video">Recipe Video (YouTube)</label>
                                 </th>
@@ -395,7 +397,7 @@ function RecipeAddButton() {
                                     </div>
                                     {recipeVideoLink && video2YoutubeLinkValid && <iframe width="560" height="315" src={video2YoutubeLink} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>}
                                 </td>
-                            </tr>
+                            </tr> */}
 
                             <tr>
                                 <th scope="row">
