@@ -86,7 +86,7 @@ const googleOauthSignupHandler = async (req,res,next) => {
         },
     });
     if (userName) {
-        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error/not-registered`);
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error/no-registered`);
     }
 
     const data = {
