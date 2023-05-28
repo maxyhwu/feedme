@@ -32,35 +32,26 @@ const googleOauthHandler = async (req,res,next) => {
     });
     // Check if user is verified
     if (!verified_email) {
-        return next(new AppError('Google account not verified', 403)); //403
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error/no-verified`);
     }
-    const userEmail = await User.findOne({
+    const user = await User.findOne({
         where: {
             email: email,
             provider: "Google"
         },
     });
-    console.log(userEmail)
-    if (!userEmail) {
-        return next(new AppError("This email haven't sign up", 401));
-    }
-
-    const user = await User.findOne({
-        where: {
-            email: email,
-        },
-    });
+    console.log(user)
     if (!user) {
-        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error`);
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error/no-signup`);
     }
-      let token = jwt.sign({ id:user.id, email:user.email}, process.env.secretKey, {   //用jwt來為使用者生成token, secretKey是用來為jtw加密
+    let token = jwt.sign({ id:user.id, email:user.email}, process.env.secretKey, {   //用jwt來為使用者生成token, secretKey是用來為jtw加密
         expiresIn: '14d'      //expiresIn 是設定有效期限
     })
-    res.cookie('user', {userName: user.userName, email: user.email, token: user.token, fridge: user.fridge, favorite: user.favorite, like: user.like});
+    res.cookie('user', {userName: user.userName, email: user.email, token, fridge: user.fridge, favorite: user.favorite, like: user.like});
     res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}${pathUrl}`);
     } catch (err) {
         console.log('Failed to authorize Google User', err);
-        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error`);
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error/something-wrong`);
     }
 };
 
@@ -86,7 +77,7 @@ const googleOauthSignupHandler = async (req,res,next) => {
     });
     // Check if user is verified
     if (!verified_email) {
-        return next(new AppError('Google account not verified', 403));
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error/no-verified`);
     }
 
     const userName = await User.findOne({
@@ -95,7 +86,7 @@ const googleOauthSignupHandler = async (req,res,next) => {
         },
     });
     if (userName) {
-        return next(new AppError('This email is already registered', 409));
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error/not-registered`);
     }
 
     const data = {
@@ -120,7 +111,7 @@ const googleOauthSignupHandler = async (req,res,next) => {
 
     } catch (err) {
         console.log('Failed to authorize Google User', err);
-        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error`);
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error/something-wrong`);
     }
 };
 

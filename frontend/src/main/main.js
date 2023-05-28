@@ -23,6 +23,7 @@ import { IntlProvider } from "react-intl";
 import { UseLangContext } from "../Context/LangCnt";
 import { UseDataContext } from "../Context/useUserData";
 import Preference from "../Signup/PreferencePage";
+import GoogleError from "../googleError/googleError";
 
 function Main() {
   // const [isLoggedIn, setIsLoggedIn] = useState(false); // you can play with this and click the user icon on the header
@@ -92,10 +93,7 @@ function Main() {
                  <ProtectedRoutes>
                     <Preference/>
                   </ProtectedRoutes>}/>
-            {/* <Route path='myfridge' element={<MyFridge/>} /> */}
-            {/* <Route path='settings' element={<Settings/>} /> */}
-            {/* <Route path='myArchive' element={<MyArchive/>} /> */}
-            {/* <Route path='mypage' element={<MyPage/>} /> */}
+            <Route path='/oauth/error/*' element={<GoogleError/>}/>
             <Route path="preference" element={ <Preference/> }/>
         </Routes>
     </IntlProvider>
