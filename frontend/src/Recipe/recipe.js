@@ -173,7 +173,8 @@ const Recipe = () => {
                 ingredients: formatIngredients,
                 instructions: instructions,
                 image_link: image,
-                comments_arr: comments 
+                comments_arr: comments,
+                likeCnt: likeCount
             }
         }
         return newData;
