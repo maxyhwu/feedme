@@ -9,7 +9,7 @@ import { apiQueryRecipeByID, apiGetRecipeComment, apiAddComment, apiGetUserData,
 import { UseLoginContext } from "../Context/LoginCnt";
 import { FaTrashAlt, FaJournalWhills } from 'react-icons/fa';
 import { getNoTokenData } from '../utils/useNoTokenApis'
-import { initiateSocket, subscribeToChat } from "../Context/commentSocketHooks";
+import { initiateSocket, sendMessage, subscribeToChat } from "../Context/commentSocketHooks";
 import { BsFillTrashFill } from 'react-icons/bs';
 
 const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
@@ -54,17 +54,20 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         initiateSocket(recipeID);
         subscribeToChat((err, data) => {
             if (err) return;
-            comments.append(data);
+            // comments.append(data);
+            setComments([...comments, data]);
         })
     })
 
     const addComments = async(comment) => {
         const content = {
             comment: comment,
-            Rid: recipeID
+            Rid: recipeID,
+            time: "just now"
         }
         console.log('add content :', content);
-        const addResult = await apiAddComment(content)
+        sendMessage(recipeID, content);
+        const addResult = await apiAddComment(content);
         console.log('add result', addResult.data);
         if (addResult.data === 'success') {
             window.alert('comment added!')
