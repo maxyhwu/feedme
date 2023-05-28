@@ -7,7 +7,7 @@ import dataRoutes from './Routes/dataRoutes';
 import generalRoutes from './Routes/generalRoutes';
 import recipeRoutes from './Routes/recipeRoutes';
 import envRoutes from './Routes/envRoutes';
-// import path from 'path'
+import path from 'path'
 import commentSocket from "./Controllers/commentSocket";
 
 console.log("dotenv = ", process.env.PORT)
