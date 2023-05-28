@@ -131,17 +131,24 @@ const SearchBar = ({ setRecipe, setSearching }) => {
 
     const handleInputDropdown = () => {
         // console.log('click input');
-        if (filter != 'Name') {
+        if (filter != 'Name' && choseIngredId.length === 0) {
             setInputDropdown(!inputDropdown);
+            setSearching(false);
+            if (choseIngredId.length === 0) {
+                handleIngSearch();
+            }
         }
-        handleIngSearch();
+        //display all ingredients
+        
     }
 
     const handleFilterClickOutside = (event) => {
         if (dropdownRefFilter.current && !dropdownRefFilter.current.contains(event.target)) {
             //if dropdown is opened and do not click on dropdown content
             // console.log('event target', event.target);
-            setToggle(false);
+            if (choseIngredId.length === 0) {
+                setToggle(false);
+            }
         }
     }
 
@@ -149,7 +156,10 @@ const SearchBar = ({ setRecipe, setSearching }) => {
         if (dropdownRefInput.current && !dropdownRefInput.current.contains(event.target)) {
             //if dropdown is opened and do not click on dropdown content
             // console.log('event target', event.target);
-            setInputDropdown(false);
+            
+            if (choseIngredId.length === 0) {
+                setInputDropdown(false);
+            } 
             // setSearching(false);
         }
     }
@@ -198,21 +208,6 @@ const SearchBar = ({ setRecipe, setSearching }) => {
     const handleSearch = async(filter, input, event) => {
         if (filter === 'Name'){
             setInput(input);
-            // console.log('input for searching', input);
-            // if (event.key === 'Enter') {
-            //     console.log('Enter clicked', input, typeof(input));
-            //     searchByName(input);
-            //     // console.log('search recipe', input);
-            //     const result = await apiQueryRecipeByName(input);
-            //     console.log('name search result', result);
-            //     try {
-            //         console.log('input', input);
-            //         const result = await apiQueryRecipeByName(input);
-            //         console.log('name search result', result);
-            //     } catch (error) {
-            //         console.error(error);
-            //     }
-            // }
             
             // setRecipeData(result.data.rows);
         } else {

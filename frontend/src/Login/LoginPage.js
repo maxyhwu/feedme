@@ -86,7 +86,8 @@ export default function LoginPage () {
         .then(function(response) {
             const [data, token] = response
             console.log('success')
-            changeData({userName: data.userName, email: data.email, token: token, fridge: data.fridge, like: data.like, favorite: data.favorite, notiRec: data.notiRec, notiIngre: data.notiIngre})
+            console.log(data.image)
+            changeData({userName: data.userName, email: data.email, token: token, fridge: data.fridge, like: data.like, favorite: data.favorite, notiRec: data.notiRec, notiIngre: data.notiIngre, image: data.image})
             changeLogin(true)
             setAlert(true, false, false)
         })
@@ -124,7 +125,7 @@ export default function LoginPage () {
         const token = response.headers.get('x-auth-token');
         response.json().then(user => {
             if (token) {
-                changeData({userName: user.userName, email: user.email, token: token, fridge: user.fridge, favorite: user.favorite})
+                changeData({userName: user.userName, email: user.email, token: token, fridge: user.fridge, like: user.like, favorite: user.favorite, notiRec: user.notiRec, notiIngre: user.notiIngre, image: user.image})
                 changeLogin(true)
                 setTwitterAlert(true, false)
             } else {

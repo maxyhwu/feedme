@@ -256,16 +256,16 @@ useEffect ( () => {
           <div className="setting-bar-button">
             <BsPerson className="setting-bar-button-icon" />
             <FormattedMessage
-              id="settings.editprofile"
-              defaultMessage="Edit Profile"
+              id="settings.editpreference"
+              defaultMessage="Edit Preference"
             >
               {(msg) => <div className="setting-bar-button-text">{msg}</div>}
             </FormattedMessage>
             <IoIosArrowForward className="setting-bar-button-expand" />
           </div>
           <div className="keyin">
-            <div className="flex-container">
-              <FormattedMessage
+            {/* <div className="flex-container"> */}
+              {/* <FormattedMessage
                 id="settings.username"
                 defaultMessage="Username"
               >
@@ -284,8 +284,8 @@ useEffect ( () => {
                     onChange={handleChange(setUserName)}
                   />
                 )}
-              </FormattedMessage>
-            </div>
+              </FormattedMessage> */}
+            {/* </div> */}
             <div className="flex-container">
             <FormattedMessage
                     id="settings.interestedLabels"
@@ -336,7 +336,7 @@ useEffect ( () => {
           </div>
         </div>
 
-        {/* Notification Setting */}
+        {/* Notification Setting
         <div className="feild">
           <div className="setting-bar-button">
             <TbBellRinging className="setting-bar-button-icon" />
@@ -419,8 +419,8 @@ useEffect ( () => {
                 </div>
               )}
             </div>
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
 
         {/* Submit */}
         <div className="submit-container">
