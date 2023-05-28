@@ -15,12 +15,12 @@ export default (sequelize, DataTypes) => {
         },
         photo:{
             type: DataTypes.STRING,
-            defaultValue: "https://res.cloudinary.com/dheeudsd6/image/upload/v1685092164/Avatars/svkfxq5orosemnxl9vnl.jpg",
+            defaultValue: "",
             allowNull: false
         },
         photoPID:{
-            type: DataTypes.STRING,
-            defaultValue: '1f7c272fc490868ae52586d49f126796',
+            type: DataTypes.INTEGER,
+            defaultValue: -1,
             allowNull: false
         },
         twitterID:{

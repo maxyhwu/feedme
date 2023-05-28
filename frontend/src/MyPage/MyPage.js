@@ -1,17 +1,10 @@
 import React from 'react'
-// import FeedMe from '../assets/FeedMe.jpg';
+import FeedMe from '../assets/FeedMe.jpg';
 import './MyPage.css';
 import { FaSignOutAlt, FaAngleRight, FaUserCog, FaRegStar, FaHeadset } from "react-icons/fa";
 import { useNavigate, Link } from 'react-router-dom';
-import { UseDataContext } from '../Context/useUserData';
-import { removeUserData } from '../Cookies/cookies';
-import { UseLoginContext } from '../Context/LoginCnt';
 
 const MyPage = () => {
-
-    const {data} = UseDataContext();
-    const {changeLogin} = UseLoginContext();
-    console.log("image = ", data)
 
     const navigate = useNavigate();
     const handleSetting = () => {
@@ -24,22 +17,16 @@ const MyPage = () => {
         navigate('/contactus')
     };
 
-    const handleLogoutClick = () => {
-        changeLogin(false)
-        localStorage.removeItem('user')
-        removeUserData()
-    }
-
     return (
         <div className='main-mypage'>
             <section className='left-section'>
                 <div className='user-info-container'>
                     <div className="user-middle-container">
                         <div className="user-pic-container">
-                            <img className='user-pic' src={data.image} alt='user-pic'/>
+                            <img className='user-pic' src={FeedMe} alt='user-pic'/>
                         </div>
                         <div className="user-name-container">
-                            {data.userName}
+                            IM Fridge
                         </div>
                         <div>
                             <Link to="/edit-profile">
@@ -47,7 +34,7 @@ const MyPage = () => {
                             </Link>
                         </div>
                         <div className="logout-btn">
-                            <div className="logout-text" onClick={handleLogoutClick}>
+                            <div className="logout-text">
                                 Log Out
                             </div>
                             <FaSignOutAlt/>
