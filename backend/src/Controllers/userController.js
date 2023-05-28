@@ -207,45 +207,30 @@ const removeLikeRecipe = async (req, res) => {
     }
 }
 
-const destroyImage = async(id) => await destroys(id);
+// const destroyImage = async(id) => await destroys(id);
 const uploaderImage = async(file) => await uploads(file, 'Avatars');
 
 const updateCloud = async (req, res) => {
     try {
         const user = req.user;
-        const {isDelete} = req.body;
-        const image = await User.findOne({
-            attributes: ['photoPID'],
-            where: {
-                id: user.id
-        }});
-        const noImage = !req.body.has('file')
-        if (!noImage) { // 有 to 新, 沒有 to 新
-            upload.single('file')
-        }
-        if ( image > 0 && noImage && isDelete ){  // 有 to 沒有
-            destroyImage(image.photoPID)
-            photoData = {
-                photo: "",
-                photoPID: -1
-            }
-            await User.update({
-                photoData
-            }, {where: { id: user.id}})
-        }
-        if ( !noImage ){  // 有 to 新, 沒有 to 有
-            const url = ''
-            const file = req.file
-            const { path } = file;
-            const newPath = await uploaderImage(path)
-            url = newPath
-            fs.unlinkSync(path)
-            await User.update({
-                photo: url.url,
-                photoID: url.id
-            },{ where: { id: user.id}})
-        }
-        return res.status(200).send({message:"Update successfully."})
+        // console.log("body", req.file);
+        // const image = await User.findOne({
+        //     attributes: ['photoPID'],
+        //     where: {
+        //         id: user.id
+        // }});
+        // await destroyImage(image.imagePID)
+        let url = ''
+        const file = req.file
+        const { path } = file;
+        const newPath = await uploaderImage(path)
+        url = newPath
+        fs.unlinkSync(path)
+        await User.update({
+            photo: url.url,
+            photoID: url.id
+        },{ where: { id: user.id}})
+        return res.status(200).send({url: url})
     } catch (err) {
         console.log('delete cloud error');
         console.log(err)

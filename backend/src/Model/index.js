@@ -5,28 +5,28 @@ dotenv.config();
 
 console.log("dialect = ", process.env.database)
 // const sequelize = new Sequelize(`postgres://${process.env.user}:${process.env.password}@${process.env.host}:${process.env.dbport}/${process.env.databaseName}`, {dialect: process.env.database})
-const sequelize = new Sequelize({
-    username: process.env.user,
-    password: process.env.password,
-    database: process.env.databaseName,
-    host: process.env.host,
-    dialect: 'postgres',
-    port: process.env.dbport,
+// const sequelize = new Sequelize({
+//     username: process.env.user,
+//     password: process.env.password,
+//     database: process.env.databaseName,
+//     host: process.env.host,
+//     dialect: 'postgres',
+//     port: process.env.dbport,
 
-    // dialect: 'postgres',
-    dialectOptions: {
-        socketPath: null, // Remove this line if present
-    },
-    // dialectOptions: {
-    //     socketPath: `${process.env.host}`,
-    // },
-    // dababase: `${process.env.databaseName}`, 
-    // host: `${process.env.host}`,
-    // // port: `${process.env.dbport}`,
-    // username: `${process.env.user}`,
-    // password: `${process.env.password}`,
-})
-// const sequelize = new Sequelize(process.env.url, {dialect: process.env.database})
+//     // dialect: 'postgres',
+//     dialectOptions: {
+//         socketPath: null, // Remove this line if present
+//     },
+//     // dialectOptions: {
+//     //     socketPath: `${process.env.host}`,
+//     // },
+//     // dababase: `${process.env.databaseName}`, 
+//     // host: `${process.env.host}`,
+//     // // port: `${process.env.dbport}`,
+//     // username: `${process.env.user}`,
+//     // password: `${process.env.password}`,
+// })
+const sequelize = new Sequelize(process.env.url, {dialect: process.env.database})
 // checking if connection is done
     sequelize.authenticate().then(() => {
         console.log(`Database connected to discover`)
