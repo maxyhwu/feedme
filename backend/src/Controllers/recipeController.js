@@ -104,7 +104,7 @@ const queryByFridge = async (req, res) => {
   const sortedIng = [];
 
   // console.log(ingredientArr);
-  if (ingredientArr === null || ingredientArr.length() === 0) {
+  if (ingredientArr == null || ingredientArr.length() === 0) {
     return res.send("fail");
   }
   for (let key in ingredientArr) {
