@@ -135,15 +135,8 @@ const signup = (req, res, next) => {
       console.log("user exists")
       return res.status(401).send({ message: 'User exist.' });
     } else {
-      return res.status(200).send({ message: 'User exist.' });
+      return res.status(200).send({ message: 'Signup success' });
     }
-    // prepare token for API
-    req.auth = {
-      id: req.user.id,
-      userEmail:""
-    };
-
-    return next();
   } catch (err) {
     console.log('Failed to authorize Twitter User', err);
   }
