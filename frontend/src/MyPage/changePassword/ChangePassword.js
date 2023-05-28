@@ -30,7 +30,7 @@ const ChangePassword = () => {
 
     const formData = {
       oldPassword,
-      password,
+      newPassword: password,
     };
 
     const data = await changePassword(formData);
@@ -41,7 +41,7 @@ const ChangePassword = () => {
   return (
     <div className="change-password">
       <Card cardClass={"password-card"}>
-        <h3>Change Password</h3>
+        <h3 className="p-container">Change Password</h3>
         <form onSubmit={changePass} className="--form-control">
           <input
             type="password"
@@ -67,9 +67,11 @@ const ChangePassword = () => {
             value={password2}
             onChange={handleInputChange}
           />
-          <button type="submit" className="--btn --btn-primary">
-            Change Password
-          </button>
+          <div className="button-container">
+            <button type="submit" className="--btn --btn-primary">
+              Change Password
+            </button>
+          </div>
         </form>
       </Card>
     </div>
