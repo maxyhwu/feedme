@@ -55,8 +55,12 @@ const RecipeObject = ({ recipe, setSearching }) => {
                     //recipe={updatedRecipe} 
                     recipe={recipe}
                     handleCloseModal={handleCloseModal}
-                />
 
+                    // setUpdatedRecipe={setUpdatedRecipe}
+                    // refreshRecipePage={setSearching(false)}
+
+                />
+            
             </Modal>
         </>
     )
@@ -80,7 +84,7 @@ const Pagination = ({ recipesPerPage, totalRecipes, paginate, currentPage }) => 
     else {
         firstPageInRange = Math.max(1, currentPage - Math.floor(maxPageNumbers / 2));
     }
-    const lastPageInRange = Math.min(lastPage, firstPageInRange + maxPageNumbers - 1);
+    const lastPageInRange = Math.min(lastPage, firstPageInRange + maxPageNumbers - 1);    
 
     const goToFirstPage = () => {
         paginate(1);
