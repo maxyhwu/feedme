@@ -7,6 +7,21 @@
 .profile .card span.profile-photo {
   text-align: center;
 }
+.profile .card span.profile-photo .button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+.profile .card span.profile-data .button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+span.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
 .profile .card img {
   width: 100%;
   max-width: 350px;
@@ -19,6 +34,10 @@
 .profile .card span.profile-data > * {
   border-top: 1px solid #ccc;
   padding: 5px 0;
+}
+.profile .card span.profile-data .button-container {
+  border-top: none;
+  /* padding: 5px 0; */
 }
 .change-password {
   width: 300px;

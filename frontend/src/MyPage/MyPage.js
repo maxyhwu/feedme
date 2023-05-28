@@ -1,6 +1,7 @@
 import React from 'react'
 // import FeedMe from '../assets/FeedMe.jpg';
 import './MyPage.css';
+import Card from "../Components/card/Card";
 import { FaSignOutAlt, FaAngleRight, FaUserCog, FaRegStar, FaHeadset } from "react-icons/fa";
 import { useNavigate, Link } from 'react-router-dom';
 import { UseDataContext } from '../Context/useUserData';
@@ -34,6 +35,7 @@ const MyPage = () => {
         <div className='main-mypage'>
             <section className='left-section'>
                 <div className='user-info-container'>
+                    <Card className = 'card'>
                     <div className="user-middle-container">
                         <div className="user-pic-container">
                             <img className='user-pic' src={data.image} alt='user-pic'/>
@@ -41,18 +43,21 @@ const MyPage = () => {
                         <div className="user-name-container">
                             {data.userName}
                         </div>
-                        <div>
+                        <div className="user-name-container">
+                        {/* <button className="--btn --btn-primary">Edit Profile</button> */}
                             <Link to="/edit-profile">
                                 <button className="--btn --btn-primary">Edit Profile</button>
                             </Link>
                         </div>
-                        <div className="logout-btn">
+                        {/* <div className="logout-btn">
                             <div className="logout-text" onClick={handleLogoutClick}>
                                 Log Out
                             </div>
                             <FaSignOutAlt/>
-                        </div>
+                        </div> */}
                     </div>
+                    </Card>
+                    
                 </div>
                 
             </section>
@@ -63,7 +68,7 @@ const MyPage = () => {
                             <FaUserCog/>
                         </div>
                         <div className="setting-bar-text">
-                            Setting
+                            My Preference
                         </div>
                         <div className="setting-bar-expand">
                             <FaAngleRight/>

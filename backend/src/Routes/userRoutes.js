@@ -10,7 +10,7 @@ router.post("/login", login, generateToken, sendToken)  // postman tested
 router.post('/signup', emailValid, existUser, signup)  // postman tested
 router.post('/forgotpw', emailValid, existEmail, generateCode, sendEmail)
 router.post('/setPassword', verification, setPassword)
-router.patch('/resetpassword',checkToken, resetPassword);
+router.patch('/changepassword',checkToken, resetPassword);
 router.put('/edit-profile', checkToken, editProfile)
 
 // router.post("/upload-image", checkToken, uploadToCloud)  // single 接收來自名為 file 欄位的「單一」上傳檔案，並將檔案資訊存放在 req.file
