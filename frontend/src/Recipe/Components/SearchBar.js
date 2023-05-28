@@ -113,7 +113,8 @@ const SearchBar = ({ setRecipe, setSearching }) => {
         setLoading(false);
         // ingredients.push(allIngredients.data.rows);
         setIngredients(allIngredients.data.rows);
-        setSearchedIng(allIngredients.data.rows);
+        const slicedSearchedIng = allIngredients.data.rows.slice(0, 23);
+        setSearchedIng(slicedSearchedIng);
         console.log('All ingredients', allIngredients);
         // categoryColor();
     }
@@ -134,21 +135,21 @@ const SearchBar = ({ setRecipe, setSearching }) => {
         if (filter != 'Name' && choseIngredId.length === 0) {
             setInputDropdown(!inputDropdown);
             setSearching(false);
-            if (choseIngredId.length === 0) {
-                handleIngSearch();
-            }
+            // if (choseIngredId.length === 0) {
+                // handleIngSearch();
+            // }
         }
         //display all ingredients
-        
+        handleIngSearch();
     }
 
     const handleFilterClickOutside = (event) => {
         if (dropdownRefFilter.current && !dropdownRefFilter.current.contains(event.target)) {
             //if dropdown is opened and do not click on dropdown content
             // console.log('event target', event.target);
-            if (choseIngredId.length === 0) {
+            // if (choseIngredId.length === 0) {
                 setToggle(false);
-            }
+            // }
         }
     }
 
@@ -157,9 +158,9 @@ const SearchBar = ({ setRecipe, setSearching }) => {
             //if dropdown is opened and do not click on dropdown content
             // console.log('event target', event.target);
             
-            if (choseIngredId.length === 0) {
+            // if (choseIngredId.length === 0) {
                 setInputDropdown(false);
-            } 
+            // } 
             // setSearching(false);
         }
     }
@@ -237,6 +238,7 @@ const SearchBar = ({ setRecipe, setSearching }) => {
     }
 
     const clickIngredToSearch = async(ingredient, type) => {
+        console.log('click ingred to search', ingredient);
         if (type === 'add') {
             // const choseIngredId = []
             choseIngredId.push(ingredient.id)
@@ -248,7 +250,7 @@ const SearchBar = ({ setRecipe, setSearching }) => {
             // })
             // const testArr = [16, 11, 1]
             const searchResult = await apiQueryRecipeByIngredient(JSON.stringify(choseIngredId));
-            console.log('ids', choseIngredId, 'result', searchResult.data.rows);
+            console.log('ids', choseIngredId, 'result', searchResult, 'chosed ing', choseIngred);
             setSearching(true);
             setRecipe(handleDataTraverse(searchResult.data.rows));
             setChoseIngred(prev => [...prev, ingredient]);
