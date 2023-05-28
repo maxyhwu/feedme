@@ -358,7 +358,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                             </div> */}
                         </div>
                     </div>
-                    <ActionBar recipeID={recipeID} likeCnt={likeCount} />
+                    <ActionBar recipeID={recipeID} likeCnt={likeCount} setLikeCnt={setLikeCount} />
                 </div>
 
                 <div className='modal-content'>
