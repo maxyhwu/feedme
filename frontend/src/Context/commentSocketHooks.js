@@ -14,7 +14,7 @@ import { io } from 'socket.io-client';
 // });
 var socket;
 export const initiateSocket = (room) => {
-  socket = io(`ws://feedme.up.railway.app/`, { transports : ['websocket'] });
+  socket = io(`ws:3001`, { transports : ['websocket'] });
   console.log(`Connecting socket...`);
   if (socket && room) socket.emit('join', room);
 }

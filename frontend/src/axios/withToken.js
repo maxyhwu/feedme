@@ -16,6 +16,11 @@ const API_ROOT =
     : `http://localhost:8000/`;
 
 
+const API_ROOT =
+  process.env.NODE_ENV === "production"
+    ? "/"
+    : `http://localhost:8000/`;
+
 const userRequest = axios.create({
     baseURL: API_ROOT + 'api/user'
 });
@@ -23,6 +28,16 @@ const userRequest = axios.create({
 const recipeRequest = axios.create({
     baseURL: API_ROOT + 'api/recipe'
 });
+
+// const userRequest = axios.create({
+//     // baseURL: 'http://localhost:8000/api/user'
+//     baseURL: "https://feedme-72yq.onrender.com/api/user"
+// });
+
+// const recipeRequest = axios.create({
+//     // baseURL: 'http://localhost:8000/api/recipe'
+//     baseURL: "https://feedme-72yq.onrender.com/api/recipe"
+// });
 
 export const apiEditProfile = data => userRequest.put('/edit-profile', data);
 export const apiEditFridge = data => userRequest.put('/edit-fridge', data);
@@ -32,6 +47,7 @@ export const apiUploadImage = formData => userRequest.post('/upload-image', form
 export const apiGetUserImage = () => userRequest.get('/get-myimage');
 export const apiUpdateUserImage = data => userRequest.put('/update-image', data);
 export const apiGetUserData = () => userRequest.get('/get-userdata');
+export const apiResetPassword = data => userRequest.patch('/resetpassword', data);
 
 export const apiQueryRecipeByID = id => recipeRequest.get('/query/id', {params:{ id }});
 export const apiQueryRecipeByName = title => recipeRequest.get('/query/name', {params:{ title }});

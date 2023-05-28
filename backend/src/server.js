@@ -7,7 +7,7 @@ import dataRoutes from './Routes/dataRoutes';
 import generalRoutes from './Routes/generalRoutes';
 import recipeRoutes from './Routes/recipeRoutes';
 import envRoutes from './Routes/envRoutes';
-// import path from 'path'
+import path from 'path'
 import commentSocket from "./Controllers/commentSocket";
 import path from 'path';
 
@@ -53,6 +53,15 @@ if (process.env.NODE_ENV === "production") {
 db.sequelize.sync().then(() => {    //drop table if exists
   console.log("db has been sync")
 })
+
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "../frontend", "build")));
+  app.get("/*", function (req, res) {
+    res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
+  });
+  console.log(33)
+}
 
 
 // app.use(express.static(path.join(__dirname, "..", "..", "frontend", "build")));
