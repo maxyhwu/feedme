@@ -9,7 +9,7 @@ import { UseLoginContext } from "../../Context/LoginCnt";
 import { UseDataContext } from "../../Context/useUserData";
 
 
-const ActionBar = ({ recipeID }) => {
+const ActionBar = ({ recipeID, likeCnt, setLikeCnt }) => {
     const { login } = UseLoginContext();
     const { data, changeData } = UseDataContext();
     const [activeHeart, setActiveHeart] = useState(data.like.includes(recipeID));
@@ -19,10 +19,12 @@ const ActionBar = ({ recipeID }) => {
             apiUpdateMinusLikeCount({id: recipeID});
             apiRemoveLikeRecipes({id: recipeID});
             changeData({ ...data, like: data.like.filter(item => item !== recipeID)});
+            setLikeCnt(prev => prev - 1);
         } else {  // add like
             apiUpdateAddLikeCount({id: recipeID});
             apiKeepLikeRecipes({id: recipeID});
             changeData({ ...data, like: [recipeID, ...data.like] });
+            setLikeCnt(prev => prev + 1);
         }
         setActiveHeart(!activeHeart);
     }
@@ -53,7 +55,7 @@ const ActionBar = ({ recipeID }) => {
                     <div className="icon">
                         {activeHeart ? <FaHeart style={{ color: 'red' }} /> : <FiHeart />}
                     </div>
-                    <div className="text">Like</div>
+                    <div className="text">{likeCnt} Likes</div>
                 </div>
                 : <></>
             }

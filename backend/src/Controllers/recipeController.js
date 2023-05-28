@@ -104,7 +104,9 @@ const queryByFridge = async (req, res) => {
   const sortedIng = [];
 
   // console.log(ingredientArr);
-
+  if (ingredientArr === null || ingredientArr.length() === 0) {
+    return res.send("fail");
+  }
   for (let key in ingredientArr) {
     // query ingredient table get ingredient date
     for (let i = 0; i < ingredientArr[key].length; i++) {
@@ -236,8 +238,10 @@ const updateRecipe = async (req, res) => {
     ingredients,
     id,
   } = req.body;
+  // console.log(req.body);
   const user = req.user;
   const query = `UPDATE "Recipes" SET "title" = $1, "servingSize" = $2, "instructions" = $3, "ingredients" = $4 WHERE "id" = $5 and "userID" = $6`;
+  // UPDATE "Recipes" SET "title" = "Curry Rice", "servingSize" = 4, "instructions" = ["\"Test\" 'test'"], "ingredients" = {55: [['100']]} WHERE "id" = 2 and "userID" = 2
   const values = [
     title.toString(),
     parseInt(servingSize),
@@ -246,6 +250,7 @@ const updateRecipe = async (req, res) => {
     parseInt(id),
     user.id,
   ];
+  console.log("values", values)
   try {
     await pool.query(query, values);
     res.send("success");
@@ -275,7 +280,6 @@ const getCommentUserData = async (req, res) => {
 const addComment = async (req, res) => {
   const { comment, Rid } = req.body;
   const user = req.user.id;
-  console.log(user);
   const query =
     // 'UPDATE "Recipes" SET comments = comments || json_build_array($1::json) WHERE id = $2';
     `UPDATE "Recipes" SET comments = comments || json_build_array(json_build_object('user_id', $1::text,'comment_str', $2::text,'time', current_timestamp(0))::json) WHERE id = $3`;
