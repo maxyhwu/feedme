@@ -34,9 +34,23 @@ const GeneralContextProvider = (props) => {
             setLabelTable(data.rows);
         })
     }
+    // useEffect(() => {
+    //     console.log("ingredientTable:", ingredientTable);
+    //     console.log("categoryTable:", categoryTable);
+    //     if (ingredientTable.length > 0 && categoryTable.length > 0) {
+    //         changeITWCN();
+    //         console.log("changeITWCN", ingredientTableWithCategoryName);
+    //     }
+    //     changeCategory2Id();
+    //     console.log("changeCategory2Id", category2id);
+    //     changeId2Category();
+    //     console.log("changeId2Category", id2category);
+    // }, [ingredientTable, categoryTable]);
+
     useEffect(() => {
         console.log("ingredientTable:", ingredientTable);
         console.log("categoryTable:", categoryTable);
+        console.log("labelTable:", labelTable);
         if (ingredientTable.length > 0 && categoryTable.length > 0) {
             changeITWCN();
             console.log("changeITWCN", ingredientTableWithCategoryName);
@@ -45,10 +59,7 @@ const GeneralContextProvider = (props) => {
         console.log("changeCategory2Id", category2id);
         changeId2Category();
         console.log("changeId2Category", id2category);
-    }, [ingredientTable, categoryTable]);
-    useEffect(() => {
-        console.log("labelTable:", labelTable);
-    }, [labelTable]);
+    }, [ingredientTable, categoryTable, labelTable]);
 
     const [ingredientTableWithCategoryName, setITWCN] = useState([]);
     const changeITWCN = () => {
