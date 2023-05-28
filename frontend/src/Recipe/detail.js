@@ -35,6 +35,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
 
     const textareaRef = useRef(null);
     const [comments, setComments] = useState([]);
+    const [isEmptyComment, setIsEmptyComment] = useState(false);
+    const [commentTransformed, setCommentTransformed] = useState(false);
     const [isRecipeOwner, setIsRecipeOwner] = useState(false);
 
     // const comments = [
@@ -214,6 +216,31 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         setServingValue(Number(event.target.value));
     }
 
+
+    function dateTransformer(inputComments) {
+        const transformed = inputComments.map((comment) => {
+            const newComment = { ...comment }; // Create a new object for each comment
+        
+            const dateString = comment.content.time;
+            const date = new Date(dateString);
+            const formattedDate = date.toLocaleDateString(); // Get the formatted date
+            const formattedTime = date.toLocaleTimeString(); // Get the formatted time
+        
+            console.log('Original date string:', dateString);
+            console.log('Date:', formattedDate);
+            console.log('Time:', formattedTime);
+        
+            newComment.content.time = formattedDate + ' ' + formattedTime;
+        
+            console.log('Transformed new comment:', newComment);
+        
+            return newComment;
+        });
+        
+        console.log('Transformed comments:', transformed);
+        return transformed;
+    }
+
     async function gatherComments() {
         console.log('init recipe', recipe);
         const initComments = recipe.comments_arr;
@@ -240,11 +267,14 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                 return { user: item, content: initComments[idx][0] }
             })
             console.log('combined', combinedComments);
-            setComments(combinedComments);
+            // const transformedComment = dateTransformer(combinedComments);
+            setComments(combinedComments.reverse());
             // console.log('complete comments', completeComments);
         }
 
-        if (initComments !== undefined) {
+        if (initComments === null) {
+            setIsEmptyComment(true);
+        } else {
             allComments(initComments);
         }
         
@@ -396,7 +426,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                 {
                     // content = { comment_str: "df comment test", time: "2023-05-26T09:09:21+00:00", user_id: "7"}
                     // user = 0: {photo: '', userName: 'Yu'}
-                    comments !== [] ? 
+                    !isEmptyComment ? 
                     comments.map((comment, idx) => {
                         const user = comment.user;
                         const content = comment.content
