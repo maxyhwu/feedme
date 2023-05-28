@@ -13,11 +13,13 @@ import { initiateSocket, sendMessage, subscribeToChat } from "../Context/comment
 import { BsFillTrashFill } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { UseDataContext } from "../Context/useUserData";
 
 const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     const { recipeID, recipeName, serving, ingredients, instructions, image_link, comments_arr } = recipe
     const {login} = UseLoginContext()
     const { id2ingredient } = UseGeneralContext();
+    const { data } = UseDataContext()
 
     const [userComment, setUserComment] = useState("");
     const [editMode, setEditMode] = useState(false);
@@ -58,7 +60,15 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         initiateSocket(recipeID);
         subscribeToChat((err, data) => {
             if (err) return;
-            comments.append(data);
+            // data = {content: {
+            //     comment_str: comment,
+            //     time: "just now",
+            //     user_id: "cur"
+            // }, user: {
+            //     photo: data.image,
+            //     userName: data.userName
+            // }}
+            setComments([...comments, data]);
             console.log('comment socket data', data);
         })
     })
@@ -66,17 +76,27 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     const addComments = async(comment) => {
         const content = {
             comment: comment,
-            Rid: recipeID,
-            time: "just now"
+            Rid: recipeID
         }
         console.log('add content :', content);
-        sendMessage(recipeID, content);
         const addResult = await apiAddComment(content);
         console.log('add result', addResult.data);
         if (addResult.data === 'success') {
             // window.alert('comment added!')
             toast.success('Comment added!')
         }
+        const message = {
+            comment_str: comment,
+            time: "just now",
+            user_id: "cur"
+        }
+        const user = {
+            photo: data.image,
+            userName: data.userName
+        }
+        sendMessage(recipeID, {content: message, user: user});
+        setComments([...comments, {content: message, user: user}]);
+
         setUserComment("");
     }
 

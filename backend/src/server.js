@@ -36,7 +36,7 @@ app.use('/api/general', generalRoutes);
 app.use('/api/recipe', recipeRoutes);
 app.use('/api/env', envRoutes)
 
-// db.sequelize.sync({ alter: true }).then(() => {    //drop table if exists
+// db.sequelize.sync({ force: true }).then(() => {    //drop table if exists
 //     console.log("db has been sync")
 // })
 
