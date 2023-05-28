@@ -16,7 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { UseDataContext } from "../Context/useUserData";
 
 const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
-    const { recipeID, recipeName, serving, ingredients, instructions, image_link, comments_arr } = recipe
+    const { recipeID, recipeName, serving, ingredients, instructions, image_link, comments_arr, likeCnt } = recipe
     const {login} = UseLoginContext()
     const { id2ingredient } = UseGeneralContext();
     const { data } = UseDataContext()
@@ -34,7 +34,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     const [titleValue, setTitleValue] = useState(recipeName);
     const [servingValue, setServingValue] = useState(serving);
 
-    const [completeRecipe, setCompleteRecipe] = useState([]);
+    const [likeCount, setLikeCount] = useState(likeCnt);
     // const [commentUser, setCommentUser] = useState([]);
 
     const textareaRef = useRef(null);
@@ -328,8 +328,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                 }
             })
         }
-        // handleEditAccess();
-        setIsRecipeOwner(true);
+        handleEditAccess();
+        // setIsRecipeOwner(true);
     }, [])
 
 
@@ -378,7 +378,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                             </div> */}
                         </div>
                     </div>
-                    <ActionBar recipeID={recipeID} />
+                    <ActionBar recipeID={recipeID} likeCnt={likeCount} />
                 </div>
 
                 <div className='modal-content'>
@@ -519,7 +519,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                         onClick={editSaveOnclick}> Save </button>
                 </>
                 : 
-                    isRecipeOwner ?
+                    login && isRecipeOwner ?
                     <>
                         <button className="btn btn-secondary recipeedit-fixed-button" 
                             id="cancel-btn" 
@@ -640,49 +640,53 @@ const RecipeDetailShare = () => {
                     </div>
                 </div>
             </div>
-            <div className={`comment-container`}>
-                <div className="comments">Comments</div>
                 { comments && 
                     comments.map((comment) => {
                         return (
-                            <div className="single-comment-container">
-                                <div className="comment-avatar">
-                                    {
-                                        (comment.photo === '') ? 
-                                            <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" />
-                                        :
-                                            <img src={comment.photo}/>
-                                    }
-                                </div>
-                                <div className="comment">
-                                    <div className="nameAndTime">
-                                        <div className="commenter">{comment.userName}</div>
-                                        <div className="comment-time">{comment.time}</div>
+                            <div className={`comment-container`}>
+                                <div className="comments">Comments</div>
+                                <div className="single-comment-container">
+                                    <div className="comment-avatar">
+                                        {
+                                            (comment.photo === '') ? 
+                                                <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" />
+                                            :
+                                                <img src={comment.photo}/>
+                                        }
                                     </div>
-                                    <div className="comment-content">{comment.content}</div>
+                                    <div className="comment">
+                                        <div className="nameAndTime">
+                                            <div className="commenter">{comment.userName}</div>
+                                            <div className="comment-time">{comment.time}</div>
+                                        </div>
+                                        <div className="comment-content">{comment.content}</div>
+                                    </div>
                                 </div>
                             </div>
                     )})
                 }
                 {
                     login ?
-                    <div className="comment-input">
-                        <div className="comment-avatar">
-                            <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
-                        </div>
-                        <input className= "input-text" 
-                            type = "text" 
-                            placeholder="leave your comment..."
-                            value={userComment}
-                            onChange={(e) => setUserComment(e.target.value)}/>
-                        <button 
-                            className="submit-text"
-                            onClick={() => addComments(userComment)}> Submit </button>
-                        {/* <input classname= "submit-text" type = "submit">Submit</input> */}
-                    </div> :
+                    <div className={`comment-container`}>
+                        <div className="comments">Comments</div>
+                        <div className="comment-input">
+                            <div className="comment-avatar">
+                                <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
+                            </div>
+                            <input className= "input-text" 
+                                type = "text" 
+                                placeholder="leave your comment..."
+                                value={userComment}
+                                onChange={(e) => setUserComment(e.target.value)}/>
+                            <button 
+                                className="submit-text"
+                                onClick={() => addComments(userComment)}> Submit </button>
+                            {/* <input classname= "submit-text" type = "submit">Submit</input> */}
+                        </div> 
+                    </div>
+                    :
                     <></>
                 }
-            </div>
             </>
             }
            

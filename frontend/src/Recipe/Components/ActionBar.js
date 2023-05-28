@@ -9,7 +9,7 @@ import { UseLoginContext } from "../../Context/LoginCnt";
 import { UseDataContext } from "../../Context/useUserData";
 
 
-const ActionBar = ({ recipeID }) => {
+const ActionBar = ({ recipeID, likeCnt }) => {
     const { login } = UseLoginContext();
     const { data, changeData } = UseDataContext();
     const [activeHeart, setActiveHeart] = useState(data.like.includes(recipeID));
@@ -53,7 +53,7 @@ const ActionBar = ({ recipeID }) => {
                     <div className="icon">
                         {activeHeart ? <FaHeart style={{ color: 'red' }} /> : <FiHeart />}
                     </div>
-                    <div className="text">Like</div>
+                    <div className="text">{likeCnt} Likes</div>
                 </div>
                 : <></>
             }
