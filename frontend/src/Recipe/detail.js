@@ -283,7 +283,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     async function gatherComments() {
         console.log('init recipe', recipe);
         const initComments = recipe.comments_arr;
-        const commentUserData = [];
+        const commentUserData = {};
         let combinedComments = {};
 
         const handleCommentDetail = async(userID) => {
@@ -298,12 +298,13 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                 initComments.map(async (comment, idx) => {
                 const userID = comment[0].user_id;
                 const commentDetail = await handleCommentDetail(parseInt(userID));
-                commentUserData.push(commentDetail[0]);
+                // commentUserData.push(commentDetail[0]);
+                commentUserData[idx] = commentDetail[0];
                 })
             );
             // console.log('comment user data', commentUserData, 'init', initComments);
-            combinedComments = commentUserData.map((item, idx) => {
-                return { user: item, content: initComments[idx][0] }
+            combinedComments = initComments.map((item, idx) => {
+                return { user: commentUserData[idx], content: item[0] }
             })
             console.log('combined', combinedComments);
             // const transformedComment = dateTransformer(combinedComments);

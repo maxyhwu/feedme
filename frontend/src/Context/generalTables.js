@@ -34,17 +34,10 @@ const GeneralContextProvider = (props) => {
             setLabelTable(data.rows);
         })
     }
-
     useEffect(() => {
         console.log("ingredientTable:", ingredientTable);
-        if (categoryTable.length > 0) {
-            changeITWCN();
-            console.log("changeITWCN", ingredientTableWithCategoryName);
-        }
-    }, [ingredientTable]);
-    useEffect(() => {
         console.log("categoryTable:", categoryTable);
-        if (ingredientTable.length > 0) {
+        if (ingredientTable.length > 0 && categoryTable.length > 0) {
             changeITWCN();
             console.log("changeITWCN", ingredientTableWithCategoryName);
         }
@@ -52,7 +45,7 @@ const GeneralContextProvider = (props) => {
         console.log("changeCategory2Id", category2id);
         changeId2Category();
         console.log("changeId2Category", id2category);
-    }, [categoryTable]);
+    }, [ingredientTable, categoryTable]);
     useEffect(() => {
         console.log("labelTable:", labelTable);
     }, [labelTable]);
