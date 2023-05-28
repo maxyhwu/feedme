@@ -125,7 +125,7 @@ export default function LoginPage () {
         const token = response.headers.get('x-auth-token');
         response.json().then(user => {
             if (token) {
-                changeData({userName: user.userName, email: user.email, token: token, fridge: user.fridge, favorite: user.favorite})
+                changeData({userName: user.userName, email: user.email, token: token, fridge: user.fridge, like: user.like, favorite: user.favorite, notiRec: user.notiRec, notiIngre: user.notiIngre, image: user.image})
                 changeLogin(true)
                 setTwitterAlert(true, false)
             } else {
