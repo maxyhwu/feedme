@@ -9,12 +9,14 @@ import SomthinWrong from "./page/somethinWrong";
 
 const GoogleError = () => {
     return (
+        <div>
         <Routes>
-            <Route path='/something-wrong' element={SomthinWrong}/>
-            <Route path='/same-email' element={SameEmail}/>
-            <Route path='/no-verified' element={NoVerified}/>
-            <Route path='/no-signup' element={NoSignup}/>
+            <Route path='something-wrong' element={<SomthinWrong/>}/>
+            <Route path='same-email' element={<SameEmail/>}/>
+            <Route path='no-verified' element={<NoVerified/>}/>
+            <Route path='no-signup' element={<NoSignup/>}/>
         </Routes>
+        </div>
     )
 }
 

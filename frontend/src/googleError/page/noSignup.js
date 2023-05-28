@@ -1,6 +1,8 @@
 const NoSignup = () => {
     return (
-        <h4>User has not signup with google</h4>
+        <div>
+            <h4>User has not signup with google</h4>
+        </div>
     )
 }
 

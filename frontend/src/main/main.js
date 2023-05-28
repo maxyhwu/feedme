@@ -93,8 +93,8 @@ function Main() {
                  <ProtectedRoutes>
                     <Preference/>
                   </ProtectedRoutes>}/>
-            <Route path='/oauth/error/*' element={<GoogleError/>}/>
-            <Route path="preference" element={ <Preference/> }/>
+          <Route path='/oauth/error/*' element={<GoogleError/>}/>
+          <Route path="preference" element={ <Preference/> }/>
         </Routes>
     </IntlProvider>
   );
