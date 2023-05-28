@@ -9,6 +9,7 @@ import recipeRoutes from './Routes/recipeRoutes';
 import envRoutes from './Routes/envRoutes';
 import path from 'path'
 import commentSocket from "./Controllers/commentSocket";
+import path from 'path';
 
 console.log("dotenv = ", process.env.PORT)
 const PORT = process.env.PORT || 8000
@@ -39,6 +40,15 @@ app.use('/api/env', envRoutes)
 // db.sequelize.sync({ alter: true }).then(() => {    //drop table if exists
 //     console.log("db has been sync")
 // })
+
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "../frontend", "build")));
+  app.get("/*", function (req, res) {
+    res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
+  });
+  console.log(33)
+}
 
 db.sequelize.sync().then(() => {    //drop table if exists
   console.log("db has been sync")
