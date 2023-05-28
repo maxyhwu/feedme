@@ -8,13 +8,7 @@ if ( (localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user
 if ( (Object.keys(getUserData()).length !== 0) ){
     token = getUserData().token
 }
-axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-
-const API_ROOT =
-  process.env.NODE_ENV === "production"
-    ? "/"
-    : `http://localhost:8000/`;
-
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}` 
 
 const API_ROOT =
   process.env.NODE_ENV === "production"
