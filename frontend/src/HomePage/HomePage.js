@@ -45,7 +45,8 @@ const HomePage = () => {
                             ingredients: formatIngredients,
                             instructions: instructions,
                             image_link: image,
-                            likeCnt: likeCount
+                            likeCnt: likeCount,
+                            comments_arr: comments
                         }
                     }
                     return newData;

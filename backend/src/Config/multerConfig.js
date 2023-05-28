@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
     // 只接受三種圖片格式
-    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|JPG|PNG)$/)) {
         cb(new Error('Please upload an image'))
     }
     cb(null, true) //當篩選完成時被呼叫 Callback 函式

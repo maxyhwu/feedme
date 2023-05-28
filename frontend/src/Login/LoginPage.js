@@ -55,7 +55,7 @@ export default function LoginPage () {
                 className: 'toast-success'
             })
             navigate('/')
-            // window.location.reload(true)
+            window.location.reload()
         }
         if (notfound) {
             toast.info('尚未註冊 ! ', {
