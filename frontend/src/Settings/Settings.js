@@ -290,6 +290,7 @@ useEffect ( () => {
             <FormattedMessage
                     id="settings.interestedLabels"
                     defaultMessage="Interested Categories"
+                    className = "labell"
                   >
                     {(msg) => <div>{msg}</div>}
                   </FormattedMessage>
