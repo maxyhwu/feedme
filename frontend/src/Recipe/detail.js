@@ -9,7 +9,7 @@ import { apiQueryRecipeByID, apiGetRecipeComment, apiAddComment, apiGetUserData,
 import { UseLoginContext } from "../Context/LoginCnt";
 import { FaTrashAlt, FaJournalWhills } from 'react-icons/fa';
 import { getNoTokenData } from '../utils/useNoTokenApis'
-import { initiateSocket, sendMessage, subscribeToChat } from "../Context/commentSocketHooks";
+import { initiateSocket, sendMessage, subscribeToAddLikeCnt, subscribeToChat, subscribeToMinusLikeCnt } from "../Context/commentSocketHooks";
 import { BsFillTrashFill } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -70,6 +70,14 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             // }}
             setComments([...comments, data]);
             console.log('comment socket data', data);
+        });
+        subscribeToAddLikeCnt((err) => {
+            if (err) return;
+            setLikeCount(prev => prev + 1);
+        })
+        subscribeToMinusLikeCnt((err) => {
+            if (err) return;
+            setLikeCount(prev => prev - 1);
         })
     }, [])
 

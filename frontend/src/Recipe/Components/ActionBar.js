@@ -7,6 +7,7 @@ import "./ActionBar.css"
 import { apiKeepLikeRecipes, apiRemoveLikeRecipes, apiUpdateAddLikeCount, apiUpdateMinusLikeCount } from "../../axios/withToken"
 import { UseLoginContext } from "../../Context/LoginCnt";
 import { UseDataContext } from "../../Context/useUserData";
+import { socketAddLikecnt, socketMinusLikecnt } from "../../Context/commentSocketHooks";
 
 
 const ActionBar = ({ recipeID, likeCnt, setLikeCnt }) => {
@@ -19,12 +20,14 @@ const ActionBar = ({ recipeID, likeCnt, setLikeCnt }) => {
             apiUpdateMinusLikeCount({id: recipeID});
             apiRemoveLikeRecipes({id: recipeID});
             changeData({ ...data, like: data.like.filter(item => item !== recipeID)});
-            setLikeCnt(prev => prev - 1);
+            // setLikeCnt(prev => prev - 1);
+            socketMinusLikecnt(recipeID);
         } else {  // add like
             apiUpdateAddLikeCount({id: recipeID});
             apiKeepLikeRecipes({id: recipeID});
             changeData({ ...data, like: [recipeID, ...data.like] });
-            setLikeCnt(prev => prev + 1);
+            // setLikeCnt(prev => prev + 1);
+            socketAddLikecnt(recipeID);
         }
         setActiveHeart(!activeHeart);
     }
