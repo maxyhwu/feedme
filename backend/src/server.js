@@ -1,4 +1,3 @@
-// require('dotenv').config();
 import dotenv from "dotenv-defaults";
 dotenv.config();
 import db from './Model';
@@ -8,7 +7,8 @@ import dataRoutes from './Routes/dataRoutes';
 import generalRoutes from './Routes/generalRoutes';
 import recipeRoutes from './Routes/recipeRoutes';
 import envRoutes from './Routes/envRoutes';
-import path from 'path'
+// import path from 'path'
+import commentSocket from "./Controllers/commentSocket";
 
 console.log("dotenv = ", process.env.PORT)
 const PORT = process.env.PORT || 8000
@@ -17,6 +17,7 @@ import express, { json, urlencoded } from "express";
 const app = express();
 import cors from 'cors';
 var corsOption = {
+  // origin: "http://localhost:3000",
   origin: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
@@ -67,3 +68,5 @@ app.listen(PORT, function(err){
 // httpServer.listen(PORT, () => {
 //   console.log(`🚀 Server Ready at ${PORT}! 🚀`)
 // });
+
+commentSocket();
