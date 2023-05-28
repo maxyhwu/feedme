@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 // import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Card from "../Components/card/Card";
-import FeedMe from '../assets/FeedMe.jpg';
 // import { selectUser } from "../redux/features/auth/authSlice";
 import "./Profile.css";
 import { toast } from "react-toastify";
-import { updateUser } from "../services/authService";
+// import { updateUser } from "../services/authService";
 import ChangePassword from "./changePassword/ChangePassword";
 import { apiUpdateUserImage } from "../axios/withToken";
 import { UseDataContext } from "../Context/useUserData";
@@ -30,7 +29,8 @@ const EditProfile = () => {
     photo: data?.image,
   };
   const [profile, setProfile] = useState(initialState);
-  const [profileImage, setProfileImage] = useState("");
+  const [profileImage, setProfileImage] = useState();
+  const [showImage, setShowImage] = useState(profile.photo)
 
   async function updateImage(credentials) {
     return apiUpdateUserImage(credentials)
@@ -55,6 +55,8 @@ const EditProfile = () => {
 
   const handleImageChange = (e) => {
     setProfileImage(e.target.files[0]);
+    const file = e.target.files[0]
+    setShowImage(URL.createObjectURL(file));
   };
 
   const saveImageProfile = async (e) => {
@@ -116,7 +118,7 @@ const EditProfile = () => {
         <span className="profile-photo">
           {/* <img src={FeedMe} alt="profilepic" /> */}
           <form>
-          <img src={profile?.photo} alt="profilepic" />
+          <img src={showImage} alt="profilepic" />
           <div>
               <button className="--btn --btn-primary" onClick={saveImageProfile}>Edit Profile</button>
           </div>

@@ -99,6 +99,27 @@ const setPassword = async (req, res) => {
     }
 }
 
+const resetPassword = async (req, res) => {
+    try {
+        const {password, newpassword} = req.body;
+        const user = req.user
+        const isSame = await bcrypt.compare(password, user.password);
+        if (isSame) {
+            const hashedPassword = await bcrypt.hash(newpassword, 10);
+            const data = {
+                password: hashedPassword,
+            };
+            await User.update( data, { where: { id: user.id}})
+            res.status(200).send({message:"Reset Password successfully."})
+        } else {
+            return res.status(400).send({message: 'Password incorrect'});
+        }
+    } catch (err) {
+        console.log('set password error');
+        console.log(err);
+    }
+}
+
 const editProfile = async (req, res) => {
     try{
         const user = req.user;
@@ -265,5 +286,6 @@ export {
     updateCloud,
     setPassword,
     getMyImage,
-    getUserData
+    getUserData,
+    resetPassword,
 }
