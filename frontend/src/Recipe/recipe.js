@@ -10,10 +10,11 @@ import { RecipeDetail } from './detail';
 import { UseGeneralContext } from '../Context/generalTables'
 import { UseLoginContext } from "../Context/LoginCnt";
 import { apiAllIngredient } from '../axios/noToken';
-import { apiQueryRecipeByTop } from '../axios/withToken'
+import { disconnectSocket } from '../Context/commentSocketHooks';
+import { apiQueryRecipeByTop, apiQueryRecipeByUser, apiQueryRecipebyFridge, apiQueryRecipeTotalCount } from '../axios/withToken'
 
 
-const RecipeObject = ({ recipe }) => {
+const RecipeObject = ({ recipe, setSearching }) => {
     const customModalStyles = {
         content: {
             width: '75%',
@@ -23,16 +24,19 @@ const RecipeObject = ({ recipe }) => {
         }
     };
     const [showModal, setShowModal] = useState(false);
+    const [updatedRecipe, setUpdatedRecipe] = useState(recipe);
 
     const handleOpenModal = () => {
         setShowModal(true);
     };
 
     const handleCloseModal = () => {
+        disconnectSocket();
         setShowModal(false);
     };
 
-    const { recipeName, image_link } = recipe;
+    const { recipeName, image_link, recipeID, comments_arr } = recipe;
+    // console.log('recipe object comment', comments_arr); //comment exist
     return (
         <>
             <div className="popRecipe" onClick={handleOpenModal}>
@@ -47,7 +51,15 @@ const RecipeObject = ({ recipe }) => {
                 onRequestClose={handleCloseModal}
                 style={customModalStyles}
             >
-                <RecipeDetail recipe={recipe} handleCloseModal={handleCloseModal} />
+                <RecipeDetail key={recipeID} 
+                    //recipe={updatedRecipe} 
+                    recipe={recipe}
+                    handleCloseModal={handleCloseModal}
+
+                    // setUpdatedRecipe={setUpdatedRecipe}
+                    // refreshRecipePage={setSearching(false)}
+
+                />
             
             </Modal>
         </>
@@ -137,46 +149,100 @@ const Pagination = ({ recipesPerPage, totalRecipes, paginate, currentPage }) => 
 const Recipe = () => {
     const location = useLocation();
     const { id2ingredient } = UseGeneralContext();
+    const [pageTitle, setPageTitle] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage, setRecipesPerPage] = useState(5);
     const [apiRecipeData, setApiRecipeData] = useState([]);
+    const [currentRecipes, setCurrentRecipes] = useState([]);
     // const [rerender, setRerender] = useState(false);
     const {login} = UseLoginContext()
+    const [searching, setSearching] = useState(false);
+    const [searchedRecipe, setSearchedRecipe] = useState([]);
+    const [apiRecipesCount, setApiRecipesCount] = useState(1);
+    const [totalRecipesCount, setTotalRecipesCount] = useState(1);
+
+    const parseData = (dataArray, prevData, startIndex) => {
+        const newData = [...prevData];
+        for (let i = 0; i < dataArray.length; i++) {
+            const { id, title, overview, servingSize, instructions, image, video, likeCount, labels, ingredients, comments, createdAt, updatedAt, userName } = dataArray[i];
+            const formatIngredients = Object.entries(ingredients).map(([id, amount]) => [id2ingredient[id], amount]);  // ...amount => ! amount is not iterable
+            newData[startIndex + i] = {
+                recipeID: id,
+                recipeName: title,
+                serving: servingSize,
+                ingredients: formatIngredients,
+                instructions: instructions,
+                image_link: image,
+            }
+        }
+        return newData;
+    };
 
     useEffect(() => {
-        const getRecipeTop = (page) => {
-            let promise;
-            if (location.pathname === '/recipe') {
-                promise = apiQueryRecipeByTop(page);
-            } else if (location.pathname === '/myrecipe') {
-                console.log('Not implemented');
-            } else if (location.pathname === '/suggestrecipe') {
-                console.log('Not implemented');
-            }
-            
-            promise.then((value) => {
-                // console.log(value.data.rows);
+        setCurrentPage(1);
+        if (location.pathname === '/recipe') {
+            setPageTitle('Our Popular Recipes');
+            apiQueryRecipeByTop(currentPage).then((value) => {
+                const apiData = parseData(value.data.rows, [], 0);
+                setApiRecipeData(apiData);                
+            });
+            apiQueryRecipeTotalCount().then((value) => {
+                setApiRecipesCount(value.data);
+            })
+        } else if (location.pathname === '/myrecipe') {
+            setPageTitle('My Recipes');
+            apiQueryRecipeByUser().then((value) => {
+                const apiData = parseData(value.data.rows, [], 0);
+                setApiRecipeData(apiData);
+                setApiRecipesCount(value.data.rows.length);
+            });
+        } else if (location.pathname === '/suggestrecipe') {
+            setPageTitle('Suggest For You');
+            apiQueryRecipebyFridge().then((value) => {
+                const apiData = parseData(value.data.rows, [], 0);
+                setApiRecipeData(apiData);
+                setApiRecipesCount(value.data.rows.length);
+            });
+        }
+    }, [location]);
+
+    useEffect(() => {
+        if (location.pathname === '/recipe') {
+            apiQueryRecipeByTop(currentPage).then((value) => {
                 setApiRecipeData((prevData) => {
-                    const newData = [...prevData];
-                    const startIndex = (page - 1) * 15;
-                    for (let i = 0; i < value.data.rows.length; i++) {
-                        const { id, title, overview, servingSize, instructions, image, video, likeCount, labels, ingredients, comments, createdAt, updatedAt, userName } = value.data.rows[i];
-                        const formatIngredients = Object.entries(ingredients).map(([id, amount]) => [id2ingredient[id], amount]);  // ...amount => ! amount is not iterable
-                        newData[startIndex + i] = {
-                            recipeID: id,
-                            recipeName: title,
-                            serving: servingSize,
-                            ingredients: formatIngredients,
-                            instructions: instructions,
-                            image_link: image,
-                        }
-                    }
+                    const startIndex = (currentPage - 1) * 15;
+                    const newData = parseData(value.data.rows, prevData, startIndex);
                     return newData;
-                });
+                });                
+            });
+            apiQueryRecipeTotalCount().then((value) => {
+                setApiRecipesCount(value.data);
             })
         }
-        getRecipeTop(currentPage);
-    }, [currentPage])
+    }, [currentPage]);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searching, searchedRecipe]);
+
+    useEffect(() => {
+        const indexOfLastRecipe = currentPage * recipesPerPage;
+        const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
+        if (location.pathname === '/recipe' && searching) {
+            setTotalRecipesCount(searchedRecipe.length);
+            setCurrentRecipes(searchedRecipe.slice(
+                indexOfFirstRecipe,
+                indexOfLastRecipe,
+            ));
+        }
+        else {
+            setTotalRecipesCount(apiRecipesCount);
+            setCurrentRecipes(apiRecipeData.slice(
+                indexOfFirstRecipe,
+                indexOfLastRecipe,
+            ));
+        }
+    }, [location, currentPage, searching, searchedRecipe, apiRecipeData]);
 
     const navigate = useNavigate();
     const navigateToDetail = () => {
@@ -189,35 +255,66 @@ const Recipe = () => {
         return all.data.rows;
     }
 
-    const indexOfLastRecipe = currentPage * recipesPerPage;
-    const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
-    const currentRecipes = recipe_data.slice(
-        indexOfFirstRecipe,
-        indexOfLastRecipe,
-    );
-    const totalRecipes = Math.max(recipe_data.length, recipesPerPage * 5);
+    /* use front-end data */
+    // let currentRecipes = recipe_data.slice(
+    //     indexOfFirstRecipe,
+    //     indexOfLastRecipe,
+    // );
+    // const totalRecipes = Math.max(recipe_data.length, recipesPerPage * 5);
   
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // console.log(id2ingredient);
     // console.log(recipe_data);
     // console.log(apiRecipeData);
+    // console.log(currentRecipes);
+    // console.log(apiRecipesCount);
 
     return (
     <>
-        <SearchBar apiAllIngredient={allIngredients}/>
+        {location.pathname === '/recipe' && (
+            <SearchBar setRecipe={setSearchedRecipe} setSearching={setSearching} />
+        )}
         <div className="recipe-container">
             <div className="bottom">
                 <div className="section-title">
-                    Our Popular Recipes
+                    {pageTitle}
                 </div>
                 <div className="popRecipes-container">
-                    {currentRecipes.map((recipe) => (
+                    {/* {
+                        recipe_data.map((recipe) => (
+                            <RecipeObject
+                                recipe={recipe}
+                            />))
+                    } */}
+                    {/* try use backend data */}
+                    {/* {
+                        searching ?
+                        (
+                            searchedRecipe.map((recipe, idx) => (
+                                <RecipeObject
+                                    key={idx}
+                                    recipe={recipe}
+                                    setSearching={setSearching}
+                                />
+                        ))): (
+                            apiRecipeData.map((recipe, idx) => (
+                                <RecipeObject
+                                    key={idx}
+                                    recipe={recipe}
+                                    setSearching={setSearching}
+                                />
+                        )))
+                    } */}
+                    
+                    {currentRecipes.map((recipe, index) => (
                         <RecipeObject
+                            key={index}
                             recipe={recipe}
+                            setSearching={setSearching}
                         />
                     ))}
-
+                    
                     {/* For comparison between versions */}
                     {/* <div className="popRecipe" onClick={navigateToDetail}>
                         <div className="popImg">
@@ -244,7 +341,7 @@ const Recipe = () => {
                 {login ? <RecipeAddButton /> : <></>}
                 <Pagination
                     recipesPerPage={recipesPerPage}
-                    totalRecipes={totalRecipes}
+                    totalRecipes={totalRecipesCount}
                     paginate={paginate}
                     currentPage={currentPage}
                 />

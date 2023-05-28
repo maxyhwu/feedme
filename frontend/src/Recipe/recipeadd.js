@@ -5,6 +5,8 @@ import './recipeadd.css'
 import { getNoTokenData } from '../utils/useNoTokenApis'
 import { apiAddNew } from '../axios/withToken'
 import { UseGeneralContext } from '../Context/generalTables'
+import { IoCloseCircleOutline } from 'react-icons/io5';
+import "./detail.css"
 
 
 const customModalStyles = {
@@ -26,6 +28,8 @@ function RecipeAddButton() {
     const [showModal, setShowModal] = useState(false);
     const [recipeVideoLink, setRecipeVideoLink] = useState(null);
     const [recipeVideoLinkValid, setRecipeVideoLinkValid] = useState(true);
+    const [video2YoutubeLink, setVideo2YoutubeLink] = useState(null);
+    const [video2YoutubeLinkValid, setVideo2YoutubeLinkValid] = useState(true);
     const [recipeImage, setRecipeImage] = useState(null);
     const [recipeImageValid, setRecipeImageValid] = useState(true);
     const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
@@ -54,8 +58,19 @@ function RecipeAddButton() {
         setShowModal(true);
     };
 
+    const convert2YoutubeLink = (link) => {
+        if (!link.startsWith('https://youtu.be/')) {
+            return setVideo2YoutubeLinkValid(false);
+        } else {
+            const videoId = link.split('/').pop();
+            setVideo2YoutubeLink("https://www.youtube.com/embed/" + videoId);
+            return setVideo2YoutubeLinkValid(true);
+        }
+    };
+
     const handleVideoLinkChange = (event) => {
         setRecipeVideoLink(event.target.value);
+        convert2YoutubeLink(event.target.value);
     };
 
     const handleImageChange = (event) => {
@@ -160,7 +175,7 @@ function RecipeAddButton() {
             valid = false;
         }
 
-        if (recipeVideoLink !== '') {
+        if (recipeVideoLink && recipeVideoLink.startsWith('https://youtu.be/')) {
             setRecipeVideoLinkValid(true);
         }
         else {
@@ -263,6 +278,8 @@ function RecipeAddButton() {
         // Reset the state variables to their initial values
         setRecipeVideoLink(null);
         setRecipeVideoLinkValid(true);
+        setVideo2YoutubeLink(null);
+        setVideo2YoutubeLinkValid(true);
         setRecipeImage(null);
         setRecipeImageValid(true);
         setImagePreviewUrl(null);
@@ -292,9 +309,9 @@ function RecipeAddButton() {
             >
                 <div className="modal-header">
                     <div className='recipe-add-title'>Add Recipe</div>
-                    <button className={`modal-close btn btn-secondary recipeadd-btn ${submitSave ? 'disabled' : ''}`} onClick={handleCloseModal}>
-                        <span>&times;</span>
-                    </button>
+                    <div className="exit">
+                        <IoCloseCircleOutline size={25} onClick={handleCloseModal}/>
+                    </div>
                 </div>
 
                 <div className="modal-body">
@@ -374,9 +391,9 @@ function RecipeAddButton() {
                                 </th>
                                 <td>
                                     <div>
-                                        https://youtu.be/<input type="text" id="recipe-video" onChange={handleVideoLinkChange} className={`${recipeVideoLinkValid ? 'recipeadd-input' : 'recipeadd-input-invalid'}`} />
+                                        <input type="text" id="recipe-video" placeholder='Format: https://youtu.be/...' style={{ width: '50%' }} onChange={handleVideoLinkChange} className={`${recipeVideoLinkValid ? 'recipeadd-input' : 'recipeadd-input-invalid'}`} />
                                     </div>
-                                    {recipeVideoLink && <iframe width="560" height="315" src={`https://www.youtube.com/embed/${recipeVideoLink}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>}
+                                    {recipeVideoLink && video2YoutubeLinkValid && <iframe width="560" height="315" src={video2YoutubeLink} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>}
                                 </td>
                             </tr>
 

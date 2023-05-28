@@ -57,11 +57,13 @@
 .recipeadd-input {
     width: 150px;
     margin: 10px;
+    border: revert;
 }
 
 .recipeadd-input-invalid {
     width: 150px;
     margin: 10px;
+    border: revert;
     border-color: red;
 }
 

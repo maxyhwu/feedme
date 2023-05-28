@@ -70,9 +70,17 @@
 }
 
 .section-title {
-    font-size: x-large;
+    font-size: 2.5em;
     font-weight: 600;
     margin: 3%;
+}
+
+@media screen and (max-width: 600px) {
+    .section-title {
+        font-size: 1.8em;
+        /* font-weight: 600;
+        margin: 3%; */
+    }
 }
 
 /* .heart-active {
@@ -182,10 +190,16 @@
 }
 
 .poptitle {
-    font-size: small;
+    font-size: 1.5em;
     font-weight: 500;
     margin-left: 10%;
     width: 45%;
+}
+
+@media screen and (max-width: 600px) {
+    .poptitle {
+        font-size: 1em;
+    }
 }
 
 .popImg {

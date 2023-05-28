@@ -24,8 +24,6 @@ const EditProfile = () => {
   // const initialState = {
   //   name: user?.name,
   //   email: user?.email,
-  //   phone: user?.phone,
-  //   bio: user?.bio,
   //   photo: user?.photo,
   // };
   const [profile, setProfile] = useState("");
@@ -68,8 +66,6 @@ const EditProfile = () => {
     //     // Save Profile
     //     const formData = {
     //       name: profile.name,
-    //       phone: profile.phone,
-    //       bio: profile.bio,
     //       photo: profileImage ? imageURL : profile.photo,
     //     };
 

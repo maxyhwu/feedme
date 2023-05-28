@@ -13,6 +13,7 @@
 .searchbar {
     width: 100%;
     display: flex;
+    justify-content: center;
     /* justify-content: space-around; */
 }
 
@@ -58,7 +59,7 @@ input {
 }
 
 @media screen and (max-width: 600px) {
-    .default-filter {
+    .default-filter, .inputbar-container {
         font-size: 1em;
     }
 }
