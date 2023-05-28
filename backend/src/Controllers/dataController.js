@@ -22,7 +22,6 @@ const insertCategory = async (_, res) => {
         res.send({rows})
     } catch (e) {
         console.log("insert category error")
-        console.log(e)
     }
 }
 

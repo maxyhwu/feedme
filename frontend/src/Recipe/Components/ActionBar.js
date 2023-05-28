@@ -28,7 +28,7 @@ const ActionBar = ({ recipeID }) => {
     }
 
     const shareRecipe = () => {
-        navigator.clipboard.writeText(`https://feedme.up.railway.app/detail/${recipeID}`);
+        navigator.clipboard.writeText(`http://localhost:3000/detail/${recipeID}`);
         toast.success('Copied to Clipboard!', {
             position: "bottom-center",
             autoClose: 1000,

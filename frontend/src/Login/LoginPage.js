@@ -86,8 +86,7 @@ export default function LoginPage () {
         .then(function(response) {
             const [data, token] = response
             console.log('success')
-            console.log(data.image)
-            changeData({userName: data.userName, email: data.email, token: token, fridge: data.fridge, like: data.like, favorite: data.favorite, notiRec: data.notiRec, notiIngre: data.notiIngre, image: data.image})
+            changeData({userName: data.userName, email: data.email, token: token, fridge: data.fridge, like: data.like, favorite: data.favorite, notiRec: data.notiRec, notiIngre: data.notiIngre})
             changeLogin(true)
             setAlert(true, false, false)
         })
