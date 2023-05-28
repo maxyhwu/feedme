@@ -209,7 +209,7 @@ const updateAddLikeCount = async (req, res) => {
 
   try {
     await pool.query(query, values);
-    return es.send("success");
+    return res.send("success");
   } catch (err) {
     res.send("fail");
     console.log(err);
