@@ -303,3 +303,12 @@ textarea {
     pointer-events: none;
     opacity: 0.5;
 }
+
+.recipe-not-exist {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    align-items: center;
+    justify-content: center;
+}
