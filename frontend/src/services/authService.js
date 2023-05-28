@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export const BACKEND_URL = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:4096/api';
+export const BACKEND_URL = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8000/api';
 
 export const validateEmail = (email) => {
     return email.match(
@@ -149,10 +149,10 @@ export const updateUser = async (formData) => {
 export const changePassword = async (formData) => {
   try {
       const response = await axios.patch(
-          `${BACKEND_URL}/users/changepassword`,
+          `${BACKEND_URL}/user/changepassword`,
           formData
       );
-      return response.data;
+      return response.data.message;
   } catch (error) {
       const message =
           (error.response && error.response.data && error.response.data.message) ||

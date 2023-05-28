@@ -101,21 +101,23 @@ const setPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
     try {
-        const {password, newpassword} = req.body;
+        const {oldPassword, newPassword} = req.body;
+        console.log(req.body)
         const user = req.user
-        const isSame = await bcrypt.compare(password, user.password);
+        console.log("user", user)
+        const isSame = await bcrypt.compare(oldPassword, user.password);
         if (isSame) {
-            const hashedPassword = await bcrypt.hash(newpassword, 10);
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
             const data = {
                 password: hashedPassword,
             };
             await User.update( data, { where: { id: user.id}})
-            res.status(200).send({message:"Reset Password successfully."})
+            res.status(200).send({message:"Reset password successfully."})
         } else {
             return res.status(400).send({message: 'Password incorrect'});
         }
     } catch (err) {
-        console.log('set password error');
+        console.log('reset password error');
         console.log(err);
     }
 }
