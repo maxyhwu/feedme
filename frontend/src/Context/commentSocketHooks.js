@@ -18,7 +18,9 @@ export const initiateSocket = (room) => {
   // socket = io(`ws://localhost:3001`, { transports : ['websocket'] });
   //socket = io(`wss://feedme.company:443`,{transports: ['websocket']});
   //socket = io(`wss://feedme.company:443`);
-  socket = io("http://localhost:8000", {
+  
+  socket = io("https://feedme.company:8000", {
+  // socket = io("http://localhost:8000", {
     extraHeaders: {
       "my-header": "1234"
     }

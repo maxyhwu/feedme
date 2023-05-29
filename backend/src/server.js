@@ -14,8 +14,8 @@ console.log("dotenv = ", process.env.PORT)
 const PORT = process.env.PORT || 8000
 
 import express, { json, urlencoded } from "express";
-import http from "http";
-// import https from "https";
+// import http from "http";
+import https from "https";
 import { Server } from "socket.io";
 import cors from 'cors';
 
@@ -69,8 +69,8 @@ if (process.env.NODE_ENV === "production") {
 //   console.log("Server listening on Port", PORT);
 // })
 
-const httpServer = http.createServer(app);
-// const httpServer = https.createServer(app);
+// const httpServer = http.createServer(app);
+const httpServer = https.createServer(app);
 const io = new Server(httpServer, {
   cors: {
     allowedHeaders: ["my-header"]
