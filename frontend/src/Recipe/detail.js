@@ -108,6 +108,12 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         setUserComment("");
     }
 
+    const handleCommentKeyUp = (event, comments) => {
+        if (event.key === 'Enter') {
+            addComments(comments);
+        }
+    }
+
     const editOnClick = async() => {
         // await handleEditSave();
         setEditMode(!editMode);
@@ -257,11 +263,10 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     }
 
 
-    function dateTransformer(inputComments) {
-        const transformed = inputComments.map((comment) => {
-            const newComment = { ...comment }; // Create a new object for each comment
-        
-            const dateString = comment.content.time;
+    function dateTransformer(dateString) {
+        if (dateString === 'just now') {
+            return "Just Now"
+        } else {
             const date = new Date(dateString);
             const formattedDate = date.toLocaleDateString(); // Get the formatted date
             const formattedTime = date.toLocaleTimeString(); // Get the formatted time
@@ -270,15 +275,12 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             console.log('Date:', formattedDate);
             console.log('Time:', formattedTime);
         
-            newComment.content.time = formattedDate + ' ' + formattedTime;
+            const localizedTime = formattedDate + ' ' + formattedTime;
         
-            console.log('Transformed new comment:', newComment);
+            console.log('Transformed new time:', localizedTime);
         
-            return newComment;
-        });
-        
-        console.log('Transformed comments:', transformed);
-        return transformed;
+            return localizedTime;
+        }
     }
 
     async function gatherComments() {
@@ -489,7 +491,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                                 <div className="comment">
                                     <div className="nameAndTime">
                                         <div className="commenter">{user.userName}</div>
-                                        <div className="comment-time">{content.time}</div>
+                                        <div className="comment-time">{dateTransformer(content.time)}</div>
                                     </div>
                                     <div className="comment-content">{content.comment_str}</div>
                                 </div>
@@ -510,7 +512,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                             type = "text" 
                             placeholder="leave your comment..."
                             value={userComment}
-                            onChange={(e) => setUserComment(e.target.value)}/>
+                            onChange={(e) => setUserComment(e.target.value)}
+                            onKeyUp={(e) => handleCommentKeyUp(e, userComment)}/>
                         <button 
                             className="submit-text"
                             onClick={() => addComments(userComment)}> Submit </button>
