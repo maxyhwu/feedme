@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import './RegisterPage.css';
 import FeedMe from '../assets/FeedMe.jpg';
 import twitterLogo from '../assets/twitterLogo.png';
@@ -12,6 +12,9 @@ import { validateEmail } from "../services/authService";
 import { apiSignUp } from '../axios/noToken';
 import {Link as MuiLink} from '@mui/material';
 import { UseEnvContext } from '../Context/envCxt';
+import { apiSetPW, apiForgetPW } from "../axios/noToken";
+import { resetPassword } from "../services/authService";
+
 
 const initialState = {
     name: "",
@@ -39,7 +42,11 @@ const RegisterPage = () => {
     const [incorrect, setIncorrect] = useState(false);
     const [click, setClick] = useState(false);
     const [emailinValid, setEmailinValid] = useState(false);
-
+    const formRef = useRef()
+    const emailRef = useRef()
+    const passwordRef = useRef()
+    const [token, setToken] = useState('')
+    const [sendClick, setSendClick] = useState(false);
     const [formData, setformData] = useState(initialState);
     const { name, email, password, password2 } = formData;
 
@@ -80,6 +87,11 @@ const RegisterPage = () => {
     const setTwitterAlert = (hassign, succ) => {
         setHasSignUp(hassign)
         setSuccess(succ)
+    }
+    const [succSend, setSuccSend] = useState(false);
+
+    const setCodeAlert = (succ) => {
+        setSuccSend(succ)
     }
 
     async function signupUser(credentials) {
@@ -154,6 +166,68 @@ const RegisterPage = () => {
         await signupUser(userData);
         setClick(!click)
     };
+    async function getVerifyCode(credentials) {
+        return apiForgetPW(credentials)
+        .then(response=> {
+            if (response.status === 200) {
+                setCodeAlert(true, false, false, false)
+            }
+        })
+        .catch((reason) => {
+            let response = reason.response
+            if (response.status === 400) {
+                if (response.data.message === 'Please provide a valid email address.'){
+                    setCodeAlert(false, true, false, false)
+                } else if (response.data.messege === 'Email not exists.'){
+                    setCodeAlert(false, false, true, false)
+                } else if (response.data.messege === 'Send email error.'){
+                    setCodeAlert(false, false, false, true)
+                }
+            }
+        })
+    }
+    async function setPassword(credentials) {
+        return apiSetPW(credentials)
+        .then(response=> {
+            if (response.status === 200) {
+                setAlert(true, false)
+            }
+        })
+        .catch((reason) => {
+            let response = reason.response
+            if (response.status === 400) {
+                if (response.data.messege === "Invalid"){
+                    setAlert(false, true)
+                }
+            }
+        })
+    }
+    const sendCode = async e => {
+        e.preventDefault()
+        await getVerifyCode({email})
+        setSendClick(!sendClick)
+    }
+    const checkEmailValid = () => {
+        if (emailRef.current.value === ''){
+            emailRef.current.setCustomValidity("Email can not be empty."); 
+        } else {
+            emailRef.current.setCustomValidity("")
+        }
+    }
+    const checkValid = () => {
+        if (emailRef.current.value === ''){
+            emailRef.current.setCustomValidity("Email can not be empty."); 
+        } else {
+            emailRef.current.setCustomValidity("")
+        }
+        if (passwordRef.current.value === ''){
+            passwordRef.current.setCustomValidity("Password can not be empty."); 
+        } else if (passwordRef.current.value.length < 6){
+            passwordRef.current.setCustomValidity("Passwords must be up to 6 characters."); 
+        } else {
+            passwordRef.current.setCustomValidity("")
+        }
+    }
 
     return (
         <div className="container">
@@ -184,6 +258,10 @@ const RegisterPage = () => {
                         value={email}
                         onChange={handleInputChange}
                     />
+                    <div className="d-flex" >
+                        <input type="text" placeholder='Verify Code' className="input infos mr-auto p-2" id="code" autoComplete='off' onChange={e=>setToken(e.target.value)}/>
+                        <button id="send" className="infos" type="button" onClick={e=>{checkEmailValid();sendCode(e)}} ref={emailRef}>Get Verification Code</button>
+                    </div>
                     <input
                         type="password"
                         className="input infos" 
