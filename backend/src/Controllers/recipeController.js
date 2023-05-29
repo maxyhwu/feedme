@@ -241,17 +241,17 @@ const updateRecipe = async (req, res) => {
     ingredients,
     id,
   } = req.body;
-  console.log(req.body);
+
   const user = req.user;
   const query = `UPDATE "Recipes" SET "title" = $1, "servingSize" = $2, "instructions" = $3, "ingredients" = $4 WHERE "id" = $5 and "userID" = $6`;
   // UPDATE "Recipes" SET "title" = "Curry Rice", "servingSize" = 4, "instructions" = ["\"Test\" 'test'"], "ingredients" = {55: [['100']]} WHERE "id" = 2 and "userID" = 2
   const values = [
-    title,
+    title.toString(),
     parseInt(servingSize),
     JSON.parse(instructions),
     JSON.parse(ingredients),
     parseInt(id),
-    parseInt(user.id),
+    user.id,
   ];
   console.log("values", values)
   try {
