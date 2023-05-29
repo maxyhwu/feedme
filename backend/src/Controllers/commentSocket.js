@@ -40,6 +40,17 @@ const commentSocket = () => {
       io.to(room).emit('chat', message);
     });
 
+    socket.on('addlikecnt', (data) => {
+      const { room } = data;
+      // console.log(`room: ${room}`);
+      io.to(room).emit('addlikecnt');
+    });
+    
+    socket.on('minuslikecnt', (data) => {
+      const { room } = data;
+      // console.log(`room: ${room}`);
+      io.to(room).emit('minuslikecnt');
+    });
   });
 
   // Listen for incoming socket connections

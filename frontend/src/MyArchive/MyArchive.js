@@ -48,6 +48,8 @@ const MyArchive = () => {
             ingredients: formatIngredients,
             instructions: instructions,
             image_link: image,
+            likeCnt: likeCount,
+            comments_arr: comments
         }
         return parsedData;
     };

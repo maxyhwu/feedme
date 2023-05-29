@@ -35,3 +35,27 @@ export const subscribeToChat = (cb) => {
 export const sendMessage = (room, message) => {
   if (socket) socket.emit('chat', { message, room });
 }
+
+export const socketAddLikecnt = (room) => {
+  if (socket) socket.emit('addlikecnt', { room });
+}
+
+export const subscribeToAddLikeCnt = (cb) => {
+  if (!socket) return(true);
+  socket.on('addlikecnt', () => {
+    console.log('Websocket event received!');
+    return cb(null);
+  });
+}
+
+export const socketMinusLikecnt = (room) => {
+  if (socket) socket.emit('minuslikecnt', { room });
+}
+
+export const subscribeToMinusLikeCnt = (cb) => {
+  if (!socket) return(true);
+  socket.on('minuslikecnt', () => {
+    console.log('Websocket event received!');
+    return cb(null);
+  });
+}
