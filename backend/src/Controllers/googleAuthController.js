@@ -26,7 +26,7 @@ const googleOauthHandler = async (req,res,next) => {
 
 
     // Use the token to get the User
-    const { name, verified_email, email } = await getGoogleUser({
+    const { verified_email, email } = await getGoogleUser({
         id_token,
         access_token,
     });
@@ -37,7 +37,6 @@ const googleOauthHandler = async (req,res,next) => {
     const user = await User.findOne({
         where: {
             email: email,
-            provider: "Google"
         },
     });
     console.log(user)
@@ -80,31 +79,22 @@ const googleOauthSignupHandler = async (req,res,next) => {
         return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error/no-verified`);
     }
 
-    const userName = await User.findOne({
+    const sameEmailUser = await User.findOne({
         where: {
             email: email,
         },
     });
-    if (userName) {
-        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error/has-registed`);
-    }
 
-    const data = {
-        userName: name,
-        email: email,
-        password: '',
-        provider: 'Google',
-    };
-
-    const sameEmailUser = await User.findOne({
-        where: {
-            // [Op.or]: [{userName: name}, {authorName: name}]
-            email: email
-        }});
     if ( sameEmailUser !== null){
         console.log('same email')
-        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error/same-email`);
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/oauth/error/has-registed`);
     }else{
+        const data = {
+            userName: name,
+            email: email,
+            password: '',
+            provider: 'Google',
+        };
         await User.create(data)
         return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}${pathUrl}`);
     }
