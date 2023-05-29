@@ -108,6 +108,12 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         setUserComment("");
     }
 
+    const handleCommentKeyUp = (event, comments) => {
+        if (event.key === 'Enter') {
+            addComments(comments);
+        }
+    }
+
     const editOnClick = async() => {
         // await handleEditSave();
         setEditMode(!editMode);
@@ -258,19 +264,23 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
 
 
     function dateTransformer(dateString) {
-        const date = new Date(dateString);
-        const formattedDate = date.toLocaleDateString(); // Get the formatted date
-        const formattedTime = date.toLocaleTimeString(); // Get the formatted time
-    
-        console.log('Original date string:', dateString);
-        console.log('Date:', formattedDate);
-        console.log('Time:', formattedTime);
-    
-        const localizedTime = formattedDate + ' ' + formattedTime;
-    
-        console.log('Transformed new time:', localizedTime);
-    
-        return localizedTime;
+        if (dateString === 'just now') {
+            return "Just Now"
+        } else {
+            const date = new Date(dateString);
+            const formattedDate = date.toLocaleDateString(); // Get the formatted date
+            const formattedTime = date.toLocaleTimeString(); // Get the formatted time
+        
+            console.log('Original date string:', dateString);
+            console.log('Date:', formattedDate);
+            console.log('Time:', formattedTime);
+        
+            const localizedTime = formattedDate + ' ' + formattedTime;
+        
+            console.log('Transformed new time:', localizedTime);
+        
+            return localizedTime;
+        }
     }
 
     async function gatherComments() {
@@ -502,7 +512,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                             type = "text" 
                             placeholder="leave your comment..."
                             value={userComment}
-                            onChange={(e) => setUserComment(e.target.value)}/>
+                            onChange={(e) => setUserComment(e.target.value)}
+                            onKeyUp={(e) => handleCommentKeyUp(e, userComment)}/>
                         <button 
                             className="submit-text"
                             onClick={() => addComments(userComment)}> Submit </button>
