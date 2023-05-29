@@ -121,6 +121,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         const result = await handleEditSave();
         // console.log('save result', result);
         setEditMode(false);
+        window.location.reload(true);
     }
 
     const handleEditInstruOnclick= () => {
@@ -189,7 +190,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         }, {});
 
         const recipeFormData = new FormData();
-        recipeFormData.append('title', JSON.stringify(titleValue));
+        recipeFormData.append('title', titleValue);
         // recipeFormData.append('overview', '');
         recipeFormData.append('servingSize', parseInt(servingValue));
         recipeFormData.append('instructions', JSON.stringify(instruContent))
@@ -585,11 +586,12 @@ const RecipeDetailShare = () => {
                 likeCnt: likeCount
             });
         })
-    }, [recipeID])
+    }, [recipeID, id2ingredient])
 
     // console.log(recipeID);
     // console.log(recipe);
     // console.log(apiRecipe);
+    // console.log(id2ingredient)
 
     const { recipeName, serving, ingredients, instructions, image_link, comments } = apiRecipe;
 

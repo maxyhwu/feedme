@@ -183,6 +183,8 @@ const Recipe = () => {
 
     useEffect(() => {
         setCurrentPage(1);
+        setApiRecipeData([]);
+        setApiRecipesCount(1);
         if (location.pathname === '/recipe') {
             setPageTitle('Our Popular Recipes');
             apiQueryRecipeByTop(currentPage).then((value) => {
