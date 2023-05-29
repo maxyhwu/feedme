@@ -14,9 +14,12 @@ import { io } from 'socket.io-client';
 // });
 var socket;
 export const initiateSocket = (room) => {
-  socket = io(`ws://localhost:3001`, { transports : ['websocket'] });
-  // socket = io(`wss://feedme.up.railway.app:3001`, { transports : ['websocket'] });
   console.log(`Connecting socket...`);
+  // socket = io(`ws://localhost:3001`, { transports : ['websocket'] });
+  //socket = io(`wss://feedme.company:443`,{transports: ['websocket']});
+  //socket = io(`wss://feedme.company:443`);
+  socket = io(`https://feedme.company:443`);
+  console.log(`Socket Connected`);
   if (socket && room) socket.emit('join', room);
 }
 
