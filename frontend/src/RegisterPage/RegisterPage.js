@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import './RegisterPage.css';
 import FeedMe from '../assets/FeedMe.jpg';
 import twitterLogo from '../assets/twitterLogo.png';
@@ -9,9 +9,11 @@ import { getGoogleUrl } from '../utils/getGoogleUrl';
 import { FormattedMessage } from "react-intl";
 import { toast } from "react-toastify";
 import { validateEmail } from "../services/authService";
-import { apiSignUp } from '../axios/noToken';
+import { apiSignUp, apiValidSignUp } from '../axios/noToken';
 import {Link as MuiLink} from '@mui/material';
 import { UseEnvContext } from '../Context/envCxt';
+// import { resetPassword } from "../services/authService";
+
 
 const initialState = {
     name: "",
@@ -38,9 +40,15 @@ const RegisterPage = () => {
     const [hassignup, setHasSignUp] = useState(false);
     const [incorrect, setIncorrect] = useState(false);
     const [click, setClick] = useState(false);
-    const [emailinValid, setEmailinValid] = useState(false);
-
+    const [emailInValid, setEmailinValid] = useState(false);
+    const [sendEmailError, setSendEmailError] = useState(false);
+    // const formRef = useRef()
+    const emailRef = useRef()
+    // const passwordRef = useRef()
+    const [token, setToken] = useState('')
+    const [sendClick, setSendClick] = useState(false);
     const [formData, setformData] = useState(initialState);
+    const [succSend, setSuccSend] = useState(false);
     const { name, email, password, password2 } = formData;
 
     useEffect ( () => {
@@ -63,41 +71,45 @@ const RegisterPage = () => {
                 position:toast.POSITION.TOP_CENTER,
                 className: 'toast-error'
             })}
-        if (emailinValid) {
-            toast.info('Email有誤 ! ', {
+        if (emailInValid) {
+            toast.error('Email有誤 ! ', {
                 position:toast.POSITION.TOP_CENTER,
                 className: 'toast-info'
             })}
-    }, [success, hassignup, incorrect, click, emailinValid, navigate])
+        if (sendEmailError) {
+            toast.error('傳送失敗 ! ', {
+                position:toast.POSITION.TOP_CENTER,
+                className: 'toast-info'
+            })}
+        if (succSend) {
+            toast.success('驗證碼已送出 ! ', {
+                position:toast.POSITION.TOP_CENTER,
+                className: 'toast-success'
+            })
+        }
+    }, [success, hassignup, incorrect, click, emailInValid, sendEmailError, succSend,  navigate])
     
-    const setAlert = (hassign, incorr, succ, invalid) => {
+    const setAlert = (hassign, incorr, succ, invalid, sendEmailErr, sendSucc) => {
         setHasSignUp(hassign)
         setIncorrect(incorr)
         setSuccess(succ)
         setEmailinValid(invalid)
-    }
-
-    const setTwitterAlert = (hassign, succ) => {
-        setHasSignUp(hassign)
-        setSuccess(succ)
+        setSendEmailError(sendEmailErr)
+        setSuccSend(sendSucc)
     }
 
     async function signupUser(credentials) {
         return apiSignUp(credentials)
         .then(function(response) {
             if (response.status === 200) {
-                setAlert(false, false, true, false)
+                setAlert(false, false, true, false, false, false)
             }
          })
          .catch((reason) => {
             let response = reason.response
             if (response.status === 400){
                 if ( response.data.message === "Details are not correct") {
-                    setAlert(false, true, false, false)
-                } else if (response.data.message === 'user already exists') {
-                    setAlert(true, false, false, false)
-                } else if (response.data.message === 'Please provide a valid email address.') {
-                    setAlert(false, false, false, true)
+                    setAlert(false, true, false, false, false, false)
                 }
             }
          })
@@ -110,13 +122,13 @@ const RegisterPage = () => {
     // useEffect(()=>{console.log(lang)}, [lang])
     const onSuccess = (response) => {
         if (response.status === 200) {
-            setTwitterAlert(false, true)
+            setAlert(false, false, true, false, false, false)
         } else if (response.status === 401){
             response.json().then( (response) => {
                 // console.log(response)
                 // console.log(response.message)
                 if (response.message === 'User exist.') {
-                    setTwitterAlert(true, false)
+                    setAlert(true, false, false, false, false, false)
                 }
                 
                 setClick(!click)
@@ -150,10 +162,57 @@ const RegisterPage = () => {
             userName: name,
             email,
             password,
+            token,
         };
         await signupUser(userData);
         setClick(!click)
     };
+    async function getVerifyCode(credentials) {
+        return apiValidSignUp(credentials)
+        .then(response=> {
+            if (response.status === 200) {
+                setAlert(false, false, false, false, false, true)
+            }
+        })
+        .catch((reason) => {
+            let response = reason.response
+            if (response.status === 400) {
+                if (response.data.message === 'Please provide a valid email address.'){
+                    setAlert(false, false, false, true, false, false)
+                } else if (response.data.message === 'user already exists') {
+                    setAlert(true, false, false, false, false, false)
+                } else if (response.data.messege === 'Send email error.'){
+                    setAlert(false, false, false, true, false)
+                }
+            }
+        })
+    }
+    const sendCode = async e => {
+        e.preventDefault()
+        await getVerifyCode({email})
+        setSendClick(!sendClick)
+    }
+    const checkEmailValid = () => {
+        if (emailRef.current.value === ''){
+            emailRef.current.setCustomValidity("Email can not be empty."); 
+        } else {
+            emailRef.current.setCustomValidity("")
+        }
+    }
+    // const checkValid = () => {
+    //     if (emailRef.current.value === ''){
+    //         emailRef.current.setCustomValidity("Email can not be empty."); 
+    //     } else {
+    //         emailRef.current.setCustomValidity("")
+    //     }
+    //     if (passwordRef.current.value === ''){
+    //         passwordRef.current.setCustomValidity("Password can not be empty."); 
+    //     } else if (passwordRef.current.value.length < 6){
+    //         passwordRef.current.setCustomValidity("Passwords must be up to 6 characters."); 
+    //     } else {
+    //         passwordRef.current.setCustomValidity("")
+    //     }
+    // }
 
     return (
         <div className="container">
@@ -184,6 +243,10 @@ const RegisterPage = () => {
                         value={email}
                         onChange={handleInputChange}
                     />
+                    <div className="d-flex" >
+                        <input type="text" placeholder='Verify Code' className="input infos mr-auto p-2" id="code" autoComplete='off' onChange={e=>setToken(e.target.value)}/>
+                        <button id="send" className="infos" type="button" onClick={e=>{checkEmailValid();sendCode(e)}} ref={emailRef}>Get Verification Code</button>
+                    </div>
                     <input
                         type="password"
                         className="input infos" 

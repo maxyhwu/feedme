@@ -34,3 +34,7 @@
     opacity: 0.5;
     cursor: default;
 }
+
+.recipe-container {
+    width: 100%;
+}

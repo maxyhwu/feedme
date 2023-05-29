@@ -7,8 +7,11 @@ import { upload } from '../Config/multerConfig';
 
 const router = Router();
 router.post("/login", login, generateToken, sendToken)  // postman tested
-router.post('/signup', emailValid, existUser, signup)  // postman tested
-router.post('/forgotpw', emailValid, existEmail, generateCode, sendEmail)
+// router.post('/valid-signup', emailValid, existUser, generateCode, sendEmail) 
+router.post('/valid-signup', existUser, generateCode, sendEmail) 
+router.post('/signup', verification, signup)  // postman tested
+// router.post('/forgotpw', emailValid, existEmail, generateCode, sendEmail)
+router.post('/forgotpw', existEmail, generateCode, sendEmail)
 router.post('/setPassword', verification, setPassword)
 router.patch('/changepassword',checkToken, resetPassword);
 router.put('/edit-profile', checkToken, editProfile)

@@ -161,7 +161,7 @@ const SearchBar = ({ setRecipe, setSearching }) => {
             // if (choseIngredId.length === 0) {
                 setInputDropdown(false);
             // } 
-            // setSearching(false);
+            setSearching(false);
         }
     }
 
@@ -233,7 +233,6 @@ const SearchBar = ({ setRecipe, setSearching }) => {
 
     const handleClearInput = () => {
         setInput('');
-        setSearching(false);
         setSearching(false);
     }
 
