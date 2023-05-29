@@ -43,6 +43,9 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     const [commentTransformed, setCommentTransformed] = useState(false);
     const [isRecipeOwner, setIsRecipeOwner] = useState(false);
 
+    useEffect(() => {
+        console.log('useEffect comment', comments);
+    }, [comments])
     // const comments = [
     //     {
     //         name: 'Teresa',
@@ -68,7 +71,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             //     photo: data.image,
             //     userName: data.userName
             // }}
-            setComments([...comments, data]);
+            setComments([data, ...comments]);
             console.log('comment socket data', data);
         });
         subscribeToAddLikeCnt((err) => {
@@ -102,8 +105,9 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             photo: data.image,
             userName: data.userName
         }
-        sendMessage(recipeID, {content: message, user: user});
-        setComments([...comments, {content: message, user: user}]);
+        const newMessage = {content: message,user: user};
+        sendMessage(recipeID, newMessage);
+        setComments([newMessage, ...comments]);
 
         setUserComment("");
     }
@@ -208,10 +212,10 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         for (const [key, value] of recipeFormData.entries()) {
             formDataObject[key] = value;
         }
-          
+
         // Print the FormData object as a plain JavaScript object
         console.log('form data object', formDataObject);
- 
+
         const updateResult = await apiUpdateRecipe(formDataObject);
         console.log('update result', updateResult);
         if (updateResult.data === 'success') {
@@ -259,23 +263,23 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     function dateTransformer(inputComments) {
         const transformed = inputComments.map((comment) => {
             const newComment = { ...comment }; // Create a new object for each comment
-        
+
             const dateString = comment.content.time;
             const date = new Date(dateString);
             const formattedDate = date.toLocaleDateString(); // Get the formatted date
             const formattedTime = date.toLocaleTimeString(); // Get the formatted time
-        
+
             console.log('Original date string:', dateString);
             console.log('Date:', formattedDate);
             console.log('Time:', formattedTime);
-        
+
             newComment.content.time = formattedDate + ' ' + formattedTime;
-        
+
             console.log('Transformed new comment:', newComment);
-        
+
             return newComment;
         });
-        
+
         console.log('Transformed comments:', transformed);
         return transformed;
     }
@@ -317,7 +321,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         } else {
             allComments(initComments);
         }
-        
+
         // setComments(combinedComments);
         return combinedComments;
     }
@@ -325,7 +329,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     useEffect(() => {
 
         gatherComments();
-        console.log('comment', comments);
+        console.log('gatherComments', comments);
 
         const handleEditAccess = async() => {
             const recipeByUser = await apiQueryRecipeByUser();
@@ -356,22 +360,22 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
 
                         </div>
                         <div className="description">
-                            <div className={`title ${editMode ? 'hover-effect':''}`}> 
+                            <div className={`title ${editMode ? 'hover-effect':''}`}>
                                 {
                                     editMode?
                                     <textarea value={titleValue} onChange={handleTitleEdit}/>
-                                    : 
+                                    :
                                     <>
                                     {recipeName}
                                     </>
                                 }
                             </div>
-                            <div className={`serving-size ${editMode ? 'hover-effect':''}`}> 
+                            <div className={`serving-size ${editMode ? 'hover-effect':''}`}>
                                 {
                                     editMode ?
                                     <>
                                         For <input type="number"
-                                                id="serving-input" 
+                                                id="serving-input"
                                                 value={servingValue}
                                                 onChange={handleServingEdit}
                                             /> people
@@ -380,7 +384,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                                         For {serving} people
                                     </>
                                 }
-                                
+
                             </div>
                             {/* <div className="change-btn">
                                 <button> Change serving size </button>
@@ -399,7 +403,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                                     editMode?
                                     <>
                                         {ingredient[0]}
-                                        <textarea 
+                                        <textarea
                                             key={'0-' + idx}
                                             value={ingredCount[idx]}
                                             rows={1}
@@ -433,14 +437,14 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                                             //console.log('idx :', idx, 'content :', instruContent[idx])
                                             console.log(instruContent[10])
                                         } */}
-                                        <textarea 
+                                        <textarea
                                             key={idx}
-                                            value={instruContent[idx]} 
-                                            onChange={(event) => handleInstruChange(event, idx)} 
+                                            value={instruContent[idx]}
+                                            onChange={(event) => handleInstruChange(event, idx)}
                                             ref={textareaRef}
                                             //rows={instruction.split('\n').length}
                                             autoFocus/>
-                                        
+
                                     </li>
                                     :
                                     <li className={`${editMode ? 'hover-effect':''}`} key={idx}>
@@ -455,10 +459,10 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                                     <button onClick={handleInstruEditCancel}>cancel</button>
                                 </>):''
                             } */}
-                            
+
                         </div>
                     </div>
-                </div>      
+                </div>
             </div>
 
             <div className={`comment-container ${editMode ? 'blur-all':''}`}>
@@ -466,7 +470,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                 {
                     // content = { comment_str: "df comment test", time: "2023-05-26T09:09:21+00:00", user_id: "7"}
                     // user = 0: {photo: '', userName: 'Yu'}
-                    !isEmptyComment ? 
+                    !isEmptyComment ?
                     comments.map((comment, idx) => {
                         const user = comment.user;
                         const content = comment.content
@@ -474,14 +478,14 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                             return <div className="single-comment-container">
                                 <div className="comment-avatar">
                                     {
-                                        (user.photo === '') ? 
+                                        (user.photo === '') ?
                                             <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" />
                                         :
                                             <img src={user.photo}/>
                                     }
                                     {/* {
                                         comment.photo.length === 0? */}
-                                        
+
                                         {/* :<img src={comment.photo} alt="" />  */}
                                     {/* } */}
                                 </div>
@@ -505,38 +509,38 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                         <div className="comment-avatar">
                             <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
                         </div>
-                        <input className= "input-text" 
-                            type = "text" 
+                        <input className= "input-text"
+                            type = "text"
                             placeholder="leave your comment..."
                             value={userComment}
                             onChange={(e) => setUserComment(e.target.value)}/>
-                        <button 
+                        <button
                             className="submit-text"
                             onClick={() => addComments(userComment)}> Submit </button>
                         {/* <input classname= "submit-text" type = "submit">Submit</input> */}
                     </div> :
                     <></>
                 }
-            </div> 
+            </div>
             {
                 editMode ?
                 <>
-                    <button className="btn btn-secondary recipeedit-fixed-button" 
-                        id="cancel-btn" 
+                    <button className="btn btn-secondary recipeedit-fixed-button"
+                        id="cancel-btn"
                         onClick={handleEditCancel}> Cancel </button>
-                    <button className="btn btn-secondary recipeedit-fixed-button" 
+                    <button className="btn btn-secondary recipeedit-fixed-button"
                         onClick={editSaveOnclick}> Save </button>
                 </>
-                : 
+                :
                     login && isRecipeOwner ?
                     <>
-                        <button className="btn btn-secondary recipeedit-fixed-button" 
-                            id="cancel-btn" 
+                        <button className="btn btn-secondary recipeedit-fixed-button"
+                            id="cancel-btn"
                             onClick={editOnClick}> Edit Recipe </button>
                         <button className="btn btn-secondary recipeedit-delete-button"
                             onClick={handleEditDelete}> <BsFillTrashFill /> </button>
                     </>:''
-                
+
             }
             {/* <button className='btn btn-secondary recipeedit-fixed-button' onClick={editOnClick}>
                 {
@@ -637,7 +641,7 @@ const RecipeDetailShare = () => {
             </div>
             </>
             }
-           
+
             { recipeName === '' &&
                 <div className="recipe-not-exist">
                     <h3 style={{ 'text-align': 'center', 'color': 'gray' }}>
@@ -645,8 +649,8 @@ const RecipeDetailShare = () => {
                     </h3>
                 </div>
             }
-            
-        </div> 
+
+        </div>
     )
 }
 

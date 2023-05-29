@@ -47,20 +47,6 @@ const GeneralContextProvider = (props) => {
     //     console.log("changeId2Category", id2category);
     // }, [ingredientTable, categoryTable]);
 
-    useEffect(() => {
-        //console.log("ingredientTable:", ingredientTable);
-        //console.log("categoryTable:", categoryTable);
-        //console.log("labelTable:", labelTable);
-        if (ingredientTable.length > 0 && categoryTable.length > 0) {
-            changeITWCN();
-            //console.log("changeITWCN", ingredientTableWithCategoryName);
-        }
-        changeCategory2Id();
-        //console.log("changeCategory2Id", category2id);
-        changeId2Category();
-        //console.log("changeId2Category", id2category);
-    }, [ingredientTable, categoryTable, labelTable]);
-
     const [ingredientTableWithCategoryName, setITWCN] = useState([]);
     const changeITWCN = () => {
         setITWCN(ingredientTable.map((ingredient) => {
@@ -71,45 +57,6 @@ const GeneralContextProvider = (props) => {
             };
         }));
     }
-    useEffect(() => {
-        changeIngredient2id();
-        //console.log("changeIngredient2id", ingredient2id);
-        changeId2Ingredient();
-        //console.log("changeId2Ingredient", id2ingredient);
-        changeIngredient2Category();
-        //console.log("changeIngredient2Category", ingredient2category);
-        changeLabel2Id();
-        //console.log("changeLabel2Id", label2id);
-        changeId2Label();
-        //console.log("changeId2Label", id2label);
-    }, [ingredientTableWithCategoryName])
-    useEffect(() => {
-        console.log("ingredientTable",ingredientTable);
-    },[ingredientTable])
-    useEffect(() => {
-        console.log("categoryTable",categoryTable);
-    },[categoryTable])
-    useEffect(() => {
-        console.log("labelTable",labelTable);
-    },[labelTable])
-    useEffect(() => {
-        console.log("changeITWCN",ingredientTableWithCategoryName);
-    },[ingredientTableWithCategoryName])
-    useEffect(() => {
-        console.log("changeIngredient2id",ingredient2id);
-    },[ingredient2id])
-    useEffect(() => {
-        console.log("changeId2Ingredient",id2ingredient);
-    },[id2ingredient])
-    useEffect(() => {
-        console.log("changeIngredient2Category",ingredient2category);
-    },[ingredient2category])
-    useEffect(() => {
-        console.log("changeLabel2Id",label2id);
-    },[label2id])
-    useEffect(() => {
-        console.log("changeId2Label",id2label);
-    },[id2label])
 
     const [ingredient2id, setIngredient2id] = useState([]);
     const changeIngredient2id = () => {
@@ -166,6 +113,62 @@ const GeneralContextProvider = (props) => {
             return acc;
         }, {}));
     }
+    useEffect(() => {
+        //console.log("ingredientTable:", ingredientTable);
+        //console.log("categoryTable:", categoryTable);
+        //console.log("labelTable:", labelTable);
+        if(ingredientTable.length > 0 && categoryTable.length > 0) {
+            changeITWCN();
+            //console.log("changeITWCN", ingredientTableWithCategoryName);
+        }
+        if(categoryTable.length > 0) {
+            changeCategory2Id();
+            //console.log("changeCategory2Id", category2id);
+            changeId2Category();
+            //console.log("changeId2Category", id2category);
+        }
+    },[ingredientTable,categoryTable]);
+    useEffect(() => {
+        changeLabel2Id();
+        //console.log("changeLabel2Id", label2id);
+        changeId2Label();
+        //console.log("changeId2Label", id2label);
+    }, [labelTable])
+    useEffect(() => {
+        changeIngredient2id();
+        //console.log("changeIngredient2id", ingredient2id);
+        changeId2Ingredient();
+        //console.log("changeId2Ingredient", id2ingredient);
+        changeIngredient2Category();
+        //console.log("changeIngredient2Category", ingredient2category);
+    },[ingredientTableWithCategoryName])
+    useEffect(() => {
+        console.log("ingredientTable",ingredientTable);
+    },[ingredientTable])
+    useEffect(() => {
+        console.log("categoryTable",categoryTable);
+    },[categoryTable])
+    useEffect(() => {
+        console.log("labelTable",labelTable);
+    },[labelTable])
+    useEffect(() => {
+        console.log("ITWCN",ingredientTableWithCategoryName);
+    },[ingredientTableWithCategoryName])
+    useEffect(() => {
+        console.log("Ingredient2id",ingredient2id);
+    },[ingredient2id])
+    useEffect(() => {
+        console.log("Id2Ingredient",id2ingredient);
+    },[id2ingredient])
+    useEffect(() => {
+        console.log("Ingredient2Category",ingredient2category);
+    },[ingredient2category])
+    useEffect(() => {
+        console.log("Label2Id",label2id);
+    },[label2id])
+    useEffect(() => {
+        console.log("Id2Label",id2label);
+    },[id2label])
 
     return (
         <GeneralContext.Provider
