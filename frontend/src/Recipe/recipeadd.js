@@ -52,13 +52,11 @@ function RecipeAddButton() {
             setAllIngredients(mappedIngredients);
             setMatchingIngredients(mappedIngredients.slice(0, 5));
             setIngredient2Id(value.ingredient2id);
+            const mappedLabel = value.labelData.map(row => row.labelName)
+            setAllCategories(mappedLabel);
+            setMatchingCategories(mappedLabel.slice(0, 5));
         })
     }, []);
-
-    useEffect(() => {
-        setAllCategories(labelTable.map(row => row.labelName));
-        setMatchingCategories(allCategories.slice(0, 5));
-    }, [labelTable])
 
     const handleButtonClick = () => {
         setShowModal(true);
@@ -302,6 +300,7 @@ function RecipeAddButton() {
         setShowModal(false);
     };
     
+    // console.log(noTokenData.labelData)
     // console.log(labelTable);
     // console.log(allCategories);
 

@@ -103,8 +103,7 @@ const queryByFridge = async (req, res) => {
   const queryIng = [];
   const sortedIng = [];
 
-  // console.log(ingredientArr);
-  if (ingredientArr == null || ingredientArr.length === 0) {
+  if (Object.keys(ingredientArr).length == 0) {
     return res.send("fail");
   }
   for (let key in ingredientArr) {
@@ -179,8 +178,12 @@ const queryByFridge = async (req, res) => {
   // get recipe
   const query2 = `SELECT * FROM "Recipes" WHERE EXISTS (SELECT 1 FROM json_each(ingredients) AS i WHERE (i.key::int)::text IN (SELECT unnest($1::text[]))) ORDER BY (SELECT COUNT(*) FROM json_object_keys(ingredients) AS keys WHERE (keys::int)::text IN (SELECT unnest($1::text[]))) DESC`;
   const values2 = [finalIngArr];
+
+  const query3 = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC OFFSET 1 ROWS FETCH NEXT 15 ROWS ONLY`;
   try {
-    const { rows } = await pool.query(query2, values2);
+    const { rows: rows1 } = await pool.query(query2, values2);
+    const { rows: rows2 } = await pool.query(query3);
+    const rows = rows1.concat(rows2);
     res.send({ rows });
   } catch (err) {
     res.send("fail");
@@ -238,7 +241,7 @@ const updateRecipe = async (req, res) => {
     ingredients,
     id,
   } = req.body;
-  // console.log(req.body);
+
   const user = req.user;
   const query = `UPDATE "Recipes" SET "title" = $1, "servingSize" = $2, "instructions" = $3, "ingredients" = $4 WHERE "id" = $5 and "userID" = $6`;
   // UPDATE "Recipes" SET "title" = "Curry Rice", "servingSize" = 4, "instructions" = ["\"Test\" 'test'"], "ingredients" = {55: [['100']]} WHERE "id" = 2 and "userID" = 2

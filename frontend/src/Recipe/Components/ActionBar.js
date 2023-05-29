@@ -14,6 +14,7 @@ const ActionBar = ({ recipeID, likeCnt, setLikeCnt }) => {
     const { login } = UseLoginContext();
     const { data, changeData } = UseDataContext();
     const [activeHeart, setActiveHeart] = useState(data.like.includes(recipeID));
+    const rootPath = window.location.origin;
 
     const toggleHeart = () => {
         if (activeHeart === true) {  // remove like
@@ -25,7 +26,7 @@ const ActionBar = ({ recipeID, likeCnt, setLikeCnt }) => {
         } else {  // add like
             apiUpdateAddLikeCount({Rid: recipeID});
             apiKeepLikeRecipes({id: recipeID});
-            changeData({ ...data, like: [recipeID, ...data.like] });
+            changeData({ ...data, like: [recipeID, ...data.like]});
             // setLikeCnt(prev => prev + 1);
             socketAddLikecnt(recipeID);
         }
@@ -33,7 +34,7 @@ const ActionBar = ({ recipeID, likeCnt, setLikeCnt }) => {
     }
 
     const shareRecipe = () => {
-        navigator.clipboard.writeText(`https://feedme.up.railway.app/detail/${recipeID}`);
+        navigator.clipboard.writeText(`${rootPath}/detail/${recipeID}`);
         toast.success('Copied to Clipboard!', {
             position: "bottom-center",
             autoClose: 1000,

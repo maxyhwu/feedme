@@ -74,18 +74,7 @@ const FridgeAddIngredientModal = () => {
     const [origData, setOrigData] = useState({});
     const [showModal, setShowModal] = useState(false);
     const [nextID, setNextID] = useState(1);
-    const [addData, setData] = useState([{
-        id: 0,
-        ingredient: '',
-        matchingIngredients: [],
-        quantity: '',
-        purchaseDate: '',
-        expirationDate: '',
-        ingredientValid: true,
-        quantityValid: true,
-        purchaseDateValid: true,
-        expirationDateValid: true,
-    }]);
+    const [addData, setData] = useState([]);
 
     useEffect(() => {
         const promise = getNoTokenData();
@@ -97,6 +86,23 @@ const FridgeAddIngredientModal = () => {
 
         setOrigData(fridge);
     }, [fridge])
+
+    useEffect(() => {
+        setData([
+            {
+                id: 0,
+                ingredient: '',
+                matchingIngredients: allIngredients.slice(0, 5),
+                quantity: '',
+                purchaseDate: '',
+                expirationDate: '',
+                ingredientValid: true,
+                quantityValid: true,
+                purchaseDateValid: true,
+                expirationDateValid: true,
+            }
+        ])
+    }, [allIngredients])
 
     // console.log(noTokenData);
     // console.log(allIngredients);
@@ -149,7 +155,7 @@ const FridgeAddIngredientModal = () => {
         const newRow = {
             id: nextID,
             ingredient: '',
-            matchingIngredients: [],
+            matchingIngredients: allIngredients.slice(0, 5),
             quantity: '',
             purchaseDate: '',
             expirationDate: '',
@@ -253,7 +259,7 @@ const FridgeAddIngredientModal = () => {
         setData([{
             id: 0,
             ingredient: '',
-            matchingIngredients: [],
+            matchingIngredients: allIngredients.slice(0, 5),
             quantity: '',
             purchaseDate: '',
             expirationDate: '',
