@@ -7,28 +7,34 @@ import "./ActionBar.css"
 import { apiKeepLikeRecipes, apiRemoveLikeRecipes, apiUpdateAddLikeCount, apiUpdateMinusLikeCount } from "../../axios/withToken"
 import { UseLoginContext } from "../../Context/LoginCnt";
 import { UseDataContext } from "../../Context/useUserData";
+import { socketAddLikecnt, socketMinusLikecnt } from "../../Context/commentSocketHooks";
 
 
-const ActionBar = ({ recipeID }) => {
+const ActionBar = ({ recipeID, likeCnt, setLikeCnt }) => {
     const { login } = UseLoginContext();
     const { data, changeData } = UseDataContext();
     const [activeHeart, setActiveHeart] = useState(data.like.includes(recipeID));
+    const rootPath = window.location.origin;
 
     const toggleHeart = () => {
         if (activeHeart === true) {  // remove like
-            apiUpdateMinusLikeCount({id: recipeID});
+            apiUpdateMinusLikeCount({Rid: recipeID});
             apiRemoveLikeRecipes({id: recipeID});
             changeData({ ...data, like: data.like.filter(item => item !== recipeID)});
+            // setLikeCnt(prev => prev - 1);
+            socketMinusLikecnt(recipeID);
         } else {  // add like
-            apiUpdateAddLikeCount({id: recipeID});
+            apiUpdateAddLikeCount({Rid: recipeID});
             apiKeepLikeRecipes({id: recipeID});
             changeData({ ...data, like: [recipeID, ...data.like] });
+            // setLikeCnt(prev => prev + 1);
+            socketAddLikecnt(recipeID);
         }
         setActiveHeart(!activeHeart);
     }
 
     const shareRecipe = () => {
-        navigator.clipboard.writeText(`https://feedme.up.railway.app/detail/${recipeID}`);
+        navigator.clipboard.writeText(`${rootPath}/detail/${recipeID}`);
         toast.success('Copied to Clipboard!', {
             position: "bottom-center",
             autoClose: 1000,
@@ -53,7 +59,7 @@ const ActionBar = ({ recipeID }) => {
                     <div className="icon">
                         {activeHeart ? <FaHeart style={{ color: 'red' }} /> : <FiHeart />}
                     </div>
-                    <div className="text">Like</div>
+                    <div className="text">{likeCnt} Likes</div>
                 </div>
                 : <></>
             }

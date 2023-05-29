@@ -31,6 +31,7 @@ const allCategory = async (_,res) => {
     try {
         // await client.connect();
         const {rows} = await pool.query(query)
+        console.log(rows);
         res.send({rows})
     } catch(err) {
         console.log(err)

@@ -51,7 +51,7 @@ const Settings = () => {
     setSaveSuccess(succ)
     setAuthFail(fail)
     setValid(isvalid)
-}
+  }
 
 useEffect ( () => {
   if (saveSuccess) {
@@ -185,6 +185,23 @@ useEffect ( () => {
     }
   }
 
+  const checkCategoryValid = (addData) => {
+    let valid = true;
+    const lowerLabelArray = labelTable.map(row => row.labelName);
+    const newAddData = [...addData];
+    addData.forEach((row, index) => {
+      if (lowerLabelArray.includes(row.label)) {
+        newAddData[index].LabelValid = true;
+      }
+      else {
+        newAddData[index].LabelValid = false;
+        valid = false;
+      }
+    });
+    setData(newAddData);
+    return valid;
+  }
+
   const updateFavoriteData = (addData) => {
     let newFavorite = []
     addData.forEach(data => {
@@ -202,12 +219,14 @@ useEffect ( () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const newFavorite = updateFavoriteData(addData)
-    if (newFavorite !== null ){
-      console.log('newFavorite', newFavorite)
-      await saveProfile({userName: data.userName, favorite: newFavorite, notiRec: data.notiRec, notiIngre: data.notiIngre})
+    if (checkCategoryValid(addData)) {
+      const newFavorite = updateFavoriteData(addData)
+      if (newFavorite !== null ){
+        console.log('newFavorite', newFavorite)
+        await saveProfile({userName: data.userName, favorite: newFavorite, notiRec: data.notiRec, notiIngre: data.notiIngre})
+      }
+      setClick(!click)
     }
-    setClick(!click)
   }
 
   // // handleQueryChange function
@@ -290,6 +309,7 @@ useEffect ( () => {
             <FormattedMessage
                     id="settings.interestedLabels"
                     defaultMessage="Interested Categories"
+                    className = "labell"
                   >
                     {(msg) => <div>{msg}</div>}
                   </FormattedMessage>
@@ -311,7 +331,7 @@ useEffect ( () => {
                       )
                     })}
                     <div>
-                        {favoritNum < 3? <button className="btn btn-secondary fridgeadd-btn" onClick={handleAddRow}>Add Labels</button>:<></>}
+                        {favoritNum < 3? <button className="btn btn-secondary fridgeadd-btn" onClick={handleAddRow}>Add Labels</button>:< div ></div>}
                     </div>
               </div>
               {/* <FormattedMessage

@@ -88,9 +88,9 @@ export default function AccountMenu() {
         <MenuItem onClick={handleProfileClick}>
           <Avatar/> Profile
         </MenuItem>
-        <MenuItem onClick={handleSettingClick}>
+        {/* <MenuItem onClick={handleSettingClick}>
           <Avatar/> Settings
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={handleLogoutClick}>
           <Avatar/> Logout
         </MenuItem>

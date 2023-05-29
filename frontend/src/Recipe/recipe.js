@@ -16,12 +16,21 @@ import { apiQueryRecipeByTop, apiQueryRecipeByUser, apiQueryRecipebyFridge, apiQ
 
 const RecipeObject = ({ recipe, setSearching }) => {
     const customModalStyles = {
+        // content: {
+        //     width: '80%',
+        //     transform: 'translate(10%, 0%)', // Translate the modal to the center of the screen
+        //     boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.15)',
+        //     borderRadius: '15px',
+        // }
         content: {
-            width: '75%',
-            transform: 'translate(15%, 0%)', // Translate the modal to the center of the screen
+            width: '80%',
+            height: '80%',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
             boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.15)',
             borderRadius: '15px',
-        }
+        },
     };
     const [showModal, setShowModal] = useState(false);
     const [updatedRecipe, setUpdatedRecipe] = useState(recipe);
@@ -162,6 +171,7 @@ const Recipe = () => {
     const [totalRecipesCount, setTotalRecipesCount] = useState(1);
 
     const parseData = (dataArray, prevData, startIndex) => {
+        // console.log(dataArray);
         const newData = [...prevData];
         for (let i = 0; i < dataArray.length; i++) {
             const { id, title, overview, servingSize, instructions, image, video, likeCount, labels, ingredients, comments, createdAt, updatedAt, userName } = dataArray[i];
@@ -173,7 +183,8 @@ const Recipe = () => {
                 ingredients: formatIngredients,
                 instructions: instructions,
                 image_link: image,
-                comments_arr: comments 
+                comments_arr: comments,
+                likeCnt: likeCount
             }
         }
         return newData;
@@ -181,6 +192,8 @@ const Recipe = () => {
 
     useEffect(() => {
         setCurrentPage(1);
+        setApiRecipeData([]);
+        setApiRecipesCount(1);
         if (location.pathname === '/recipe') {
             setPageTitle('Our Popular Recipes');
             apiQueryRecipeByTop(currentPage).then((value) => {
@@ -205,7 +218,7 @@ const Recipe = () => {
                 setApiRecipesCount(value.data.rows.length);
             });
         }
-    }, [location]);
+    }, [location, id2ingredient]);
 
     useEffect(() => {
         if (location.pathname === '/recipe') {

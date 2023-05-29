@@ -34,10 +34,16 @@
     justify-content: space-around;
     align-items: center;
 }
-
+.submit-button {
+    margin: 0 12px;
+}
+.back-button {
+    margin: 0 12px;
+}
 .setting-bar-button-icon{
     height: 2vh;
     width: 2vh;
+    
 }
 
 .setting-bar-button-expand{
@@ -132,12 +138,12 @@
     width: 90vw;
     bottom: 8vh;
     right: 18vw;
-
+    
     position: relative;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    align-items: center;
+    align-items:self-start;
 }
 
 .submit-button {
@@ -165,10 +171,44 @@
 .labeladd-input {
     width: 150px;
     margin: 3px;
+    border: revert;
 }
 
 .labeladd-input-invalid {
     width: 150px;
     margin: 3px;
+    border: revert;
     border-color: red;
+}
+@media screen and (max-width: 600px){
+    .feild {
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+}
+@media screen and (max-width: 600px){
+    .labeladd-input, .labeladd-input-invalid {
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+}
+@media screen and (max-width: 600px){
+    .flex-container {
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+    }
+}
+@media screen and (max-width: 600px){
+    .submit-container {
+      width: 100vw;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+    }
 }

@@ -48,11 +48,15 @@ function RecipeAddButton() {
         const promise = getNoTokenData();
         promise.then((value) => {
             setNoTokenData(value);
-            setAllIngredients(value.ingredientDataWithCateName.map(row => row.ingredName));
-            setIngredient2Id(value.ingredient2id)
+            const mappedIngredients = value.ingredientDataWithCateName.map(row => row.ingredName);
+            setAllIngredients(mappedIngredients);
+            setMatchingIngredients(mappedIngredients.slice(0, 5));
+            setIngredient2Id(value.ingredient2id);
+            const mappedLabel = value.labelData.map(row => row.labelName)
+            setAllCategories(mappedLabel);
+            setMatchingCategories(mappedLabel.slice(0, 5));
         })
-        setAllCategories(labelTable.map(row => row.labelName));
-    }, [])
+    }, []);
 
     const handleButtonClick = () => {
         setShowModal(true);
@@ -295,6 +299,10 @@ function RecipeAddButton() {
         // Close the modal
         setShowModal(false);
     };
+    
+    // console.log(noTokenData.labelData)
+    // console.log(labelTable);
+    // console.log(allCategories);
 
     return (
         <>
@@ -346,7 +354,7 @@ function RecipeAddButton() {
                                     <label htmlFor="serving-size">Serving Size</label>
                                 </th>
                                 <td>
-                                    <input type="number" id="serving-size" min={1} value={servingSize} onChange={handleServingSizeChange} className='recipeadd-input' />
+                                    <input type="number" id="serving-size" min={1} placeholder={servingSize} value={servingSize} onChange={handleServingSizeChange} className='recipeadd-input' />
                                 </td>
                             </tr>
 
