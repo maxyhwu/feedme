@@ -48,17 +48,17 @@ const GeneralContextProvider = (props) => {
     // }, [ingredientTable, categoryTable]);
 
     useEffect(() => {
-        console.log("ingredientTable:", ingredientTable);
-        console.log("categoryTable:", categoryTable);
-        console.log("labelTable:", labelTable);
+        //console.log("ingredientTable:", ingredientTable);
+        //console.log("categoryTable:", categoryTable);
+        //console.log("labelTable:", labelTable);
         if (ingredientTable.length > 0 && categoryTable.length > 0) {
             changeITWCN();
-            console.log("changeITWCN", ingredientTableWithCategoryName);
+            //console.log("changeITWCN", ingredientTableWithCategoryName);
         }
         changeCategory2Id();
-        console.log("changeCategory2Id", category2id);
+        //console.log("changeCategory2Id", category2id);
         changeId2Category();
-        console.log("changeId2Category", id2category);
+        //console.log("changeId2Category", id2category);
     }, [ingredientTable, categoryTable, labelTable]);
 
     const [ingredientTableWithCategoryName, setITWCN] = useState([]);
@@ -73,16 +73,43 @@ const GeneralContextProvider = (props) => {
     }
     useEffect(() => {
         changeIngredient2id();
-        console.log("changeIngredient2id", ingredient2id);
+        //console.log("changeIngredient2id", ingredient2id);
         changeId2Ingredient();
-        console.log("changeId2Ingredient", id2ingredient);
+        //console.log("changeId2Ingredient", id2ingredient);
         changeIngredient2Category();
-        console.log("changeIngredient2Category", ingredient2category);
+        //console.log("changeIngredient2Category", ingredient2category);
         changeLabel2Id();
-        console.log("changeLabel2Id", label2id);
+        //console.log("changeLabel2Id", label2id);
         changeId2Label();
-        console.log("changeId2Label", id2label);
+        //console.log("changeId2Label", id2label);
     }, [ingredientTableWithCategoryName])
+    useEffect(() => {
+        console.log("ingredientTable",ingredientTable);
+    },[ingredientTable])
+    useEffect(() => {
+        console.log("categoryTable",categoryTable);
+    },[categoryTable])
+    useEffect(() => {
+        console.log("labelTable",labelTable);
+    },[labelTable])
+    useEffect(() => {
+        console.log("changeITWCN",ingredientTableWithCategoryName);
+    },[ingredientTableWithCategoryName])
+    useEffect(() => {
+        console.log("changeIngredient2id",ingredient2id);
+    },[ingredient2id])
+    useEffect(() => {
+        console.log("changeId2Ingredient",id2ingredient);
+    },[id2ingredient])
+    useEffect(() => {
+        console.log("changeIngredient2Category",ingredient2category);
+    },[ingredient2category])
+    useEffect(() => {
+        console.log("changeLabel2Id",label2id);
+    },[label2id])
+    useEffect(() => {
+        console.log("changeId2Label",id2label);
+    },[id2label])
 
     const [ingredient2id, setIngredient2id] = useState([]);
     const changeIngredient2id = () => {
@@ -123,7 +150,7 @@ const GeneralContextProvider = (props) => {
             return acc;
         }, {}));
     }
-    
+
     const [label2id, setLabel2Id] = useState([]);
     const changeLabel2Id = () => {
         setLabel2Id(labelTable.reduce((acc, cur) => {
@@ -141,7 +168,7 @@ const GeneralContextProvider = (props) => {
     }
 
     return (
-        <GeneralContext.Provider 
+        <GeneralContext.Provider
             value={{ingredientTable,
                     categoryTable,
                     labelTable,
