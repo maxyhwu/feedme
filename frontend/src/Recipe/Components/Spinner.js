@@ -4,7 +4,7 @@ import { BeatLoader, PacmanLoader } from 'react-spinners';
 function Spinner() {
   return (
     <div className="spinner-container">
-      <PacmanLoader color={'#db7be0'} loading={true} />
+      <PacmanLoader color={'#E3DBF0'} loading={true} style={{ width: '10%', height: "10%" }} />
     </div>
   );
 }
