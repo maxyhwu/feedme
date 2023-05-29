@@ -81,9 +81,9 @@ const EditProfile = () => {
 // }
 
   const handleInputChange = (e) => {
-    // const { userName, value } = e.target;
-    // setProfile({ ...profile, [userName]: value });
-    setProfile(e.target.value);
+    const { value } = e.target;
+    setProfile({ ...profile, name: value });
+    // setProfile(e.target.value);
     // func(event.target.value);
   };
 
@@ -107,10 +107,9 @@ const EditProfile = () => {
           profileImage.type === "image/png")
       ) {
         const image = new FormData();
-        console.log("imagggee", profileImage)
         image.append("file", profileImage);
         const response = await updateImage(image)
-        changeData({...data, [image]: response.url})
+        changeData({...data, image: response.url})
         navigate("/edit-profile");
         
         // image.append("cloud_name", "auntieyafen");
@@ -146,9 +145,11 @@ const EditProfile = () => {
   const saveProfile = async (e) => {
       e.preventDefault();
       try {
-          const userName = new FormData();
-          const response = await updateProfile(userName)
-          changeData({...data, [userName]: response})
+          const userData = new FormData();
+          userData.append('userName', profile.name)
+          await updateProfile(userData)
+          console.log(profile.name)
+          changeData({...data, userName: profile.name})
           navigate("/edit-profile");
       } catch (error) {
           console.log(error);
