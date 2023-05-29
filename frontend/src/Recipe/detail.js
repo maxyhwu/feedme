@@ -56,33 +56,33 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     //     }
     // ]
 
-    useEffect(() => {
-        initiateSocket(recipeID);
-        subscribeToChat((err, newMessage) => {
-            if (err) return;
-            // newMessage = {content: {
-            //     comment_str: comment,
-            //     time: "just now",
-            //     user_id: "cur"
-            // }, user: {
-            //     photo: data.image,
-            //     userName: data.userName
-            // }}
-            setComments(prev => [newMessage, ...prev]);
-            console.log('comment socket newMessage', newMessage);
-        });
-        subscribeToAddLikeCnt((err) => {
-            if (err) return;
-            setLikeCount(prev => prev + 1);
-        })
-        subscribeToMinusLikeCnt((err) => {
-            if (err) return;
-            setLikeCount(prev => prev - 1);
-        })
-        return () => {
-            disconnectSocket();
-        }
-    }, [])
+    // useEffect(() => {
+    //     initiateSocket(recipeID);
+    //     subscribeToChat((err, newMessage) => {
+    //         if (err) return;
+    //         // newMessage = {content: {
+    //         //     comment_str: comment,
+    //         //     time: "just now",
+    //         //     user_id: "cur"
+    //         // }, user: {
+    //         //     photo: data.image,
+    //         //     userName: data.userName
+    //         // }}
+    //         setComments(prev => [newMessage, ...prev]);
+    //         console.log('comment socket newMessage', newMessage);
+    //     });
+    //     subscribeToAddLikeCnt((err) => {
+    //         if (err) return;
+    //         setLikeCount(prev => prev + 1);
+    //     })
+    //     subscribeToMinusLikeCnt((err) => {
+    //         if (err) return;
+    //         setLikeCount(prev => prev - 1);
+    //     })
+    //     return () => {
+    //         disconnectSocket();
+    //     }
+    // }, [])
 
     const addComments = async(comment) => {
         const content = {
@@ -105,8 +105,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             photo: data.image,
             userName: data.userName
         }
-        const newMessage = {content: message, user: user};
-        sendMessage(recipeID, newMessage);
+        // const newMessage = {content: message, user: user};
+        // sendMessage(recipeID, newMessage);
         // setComments(prev => [newMessage, ...prev]);
 
         setUserComment("");
