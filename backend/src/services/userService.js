@@ -7,6 +7,7 @@ dotenv.config();
 
 const isEmailValid = async (email) => {
     console.log(process.env.emailAPI)
+    console.log(email)
     const response = await axios.get(`https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.emailAPI}&email=${email}`)
                     .then(response => {
                         return response.data
@@ -31,6 +32,9 @@ const isEmailValid = async (email) => {
 }
 
 const sendForgetPWEmail = async (email, token) => {
+    console.log("email",email)
+    console.log(process.env.gmail)
+    console.log(process.env.mailPw)
     var transporter = nodemailer.createTransport({
         service: 'Gmail',
         host: 'smtp.gmail.com',

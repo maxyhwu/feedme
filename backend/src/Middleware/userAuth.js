@@ -11,12 +11,23 @@ const existUser = async (req, res, next) => {
         const user = await User.findOne({
             where: {
                 email: req.body.email,
+                status: 'signed',
             },
         });
         // console.log('user',user)
         if (user !== null) {
             return res.status(400).send({message:"user already exists"});
         }else{
+            console.log('create user')
+            const unsigned_user = await User.findOne({
+                where: {
+                    email: req.body.email,
+                    status: 'unsigned',
+                },
+            });
+            if ( unsigned_user === null) {
+                await User.create({email: req.body.email})
+            }
             next();
         }
     } catch (error) {
@@ -47,9 +58,11 @@ const existEmail = async (req, res, next) => {
 
 const emailValid = async (req, res, next) => {
     try {
-        const {is_valid_format, is_mx_found, is_smtp_valid} = await isEmailValid(req.body.email)
-        const valid = is_valid_format.value && is_mx_found.value && is_smtp_valid.value
+        const {deliverability, is_valid_format, is_mx_found, is_smtp_valid} = await isEmailValid(req.body.email)
+        const isDeliverabel = deliverability === "DELIVERABLE"
+        const valid = isDeliverabel && is_valid_format.value && is_mx_found.value && is_smtp_valid.value
         if ( valid ) {
+            console.log('valid Email')
             next();
         }else{
             res.status(400).send({
