@@ -234,7 +234,6 @@ const SearchBar = ({ setRecipe, setSearching }) => {
     const handleClearInput = () => {
         setInput('');
         setSearching(false);
-        setSearching(false);
     }
 
     const clickIngredToSearch = async(ingredient, type) => {

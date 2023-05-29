@@ -51,7 +51,7 @@ const Settings = () => {
     setSaveSuccess(succ)
     setAuthFail(fail)
     setValid(isvalid)
-}
+  }
 
 useEffect ( () => {
   if (saveSuccess) {
@@ -331,7 +331,7 @@ useEffect ( () => {
                       )
                     })}
                     <div>
-                        {favoritNum < 3? <button className="btn btn-secondary fridgeadd-btn" onClick={handleAddRow}>Add Labels</button>:<></>}
+                        {favoritNum < 3? <button className="btn btn-secondary fridgeadd-btn" onClick={handleAddRow}>Add Labels</button>:< div ></div>}
                     </div>
               </div>
               {/* <FormattedMessage

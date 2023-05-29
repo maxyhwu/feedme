@@ -7,22 +7,16 @@ import "./Profile.css";
 import { toast } from "react-toastify";
 // import { updateUser } from "../services/authService";
 import ChangePassword from "./changePassword/ChangePassword";
+import { apiEditProfile } from '../axios/withToken';
 import { apiUpdateUserImage } from "../axios/withToken";
 import { UseDataContext } from "../Context/useUserData";
 
 const EditProfile = () => {
   const navigate = useNavigate();
-  // // const [isLoading, setIsLoading] = useState(false);
-  // const user = useSelector(selectUser);
-  // const { email } = user;
+
   const {data, changeData} = UseDataContext();
-
-  // useEffect(() => {
-  //   if (!email) {
-  //     navigate("/profile");
-  //   }
-  // }, [email, navigate]);
-
+  // const {UserName, setUserName} = useState(data.userName)
+  
   const initialState = {
     name: data?.userName,
     email: data?.email,
@@ -31,13 +25,13 @@ const EditProfile = () => {
   const [profile, setProfile] = useState(initialState);
   const [profileImage, setProfileImage] = useState();
   const [showImage, setShowImage] = useState(profile.photo)
-  console.log("1111111",data);
+  console.log("User Info: ",data);
 
   async function updateImage(credentials) {
     return apiUpdateUserImage(credentials)
     .then(response=> {
         if (response.status === 200) {
-          toast.success("Image updated");
+          toast.success("Image updated!");
            return response.data;
         }
     })
@@ -45,17 +39,44 @@ const EditProfile = () => {
         let response = reason.response
         if (response.status === 400) {
             console.log("error")
+            toast.error(response);
+        }
+    })
+  }
+
+  async function updateProfile(credentials) {
+    return apiEditProfile(credentials)
+    .then(response=> {
+        if (response.status === 200) {
+            toast.success("Username updated!");
+            return response.data
+        }
+    })
+    .catch((reason) => {
+        let response = reason.response
+        if (response.status === 400) {
+            if (response.data.message === 'Please authenticate.'){
+                toast.error("Please authenticate.")
+            }
         }
     })
 }
+// const handleSubmit = async e => {
+//   e.preventDefault();
+//   await saveProfile({userName: data.userName})
+//   console.log("New name", UserName);
+// }
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProfile({ ...profile, [name]: value });
+    // const { userName, value } = e.target;
+    // setProfile({ ...profile, [userName]: value });
+    setProfile(e.target.value);
+    // func(event.target.value);
   };
 
   const handleImageChange = (e) => {
     setProfileImage(e.target.files[0]);
+    // setProfile(e.target.value);
     const file = e.target.files[0]
     setShowImage(URL.createObjectURL(file));
   };
@@ -109,8 +130,17 @@ const EditProfile = () => {
     }
   };
 
-  const saveProfile = () => {
-
+  const saveProfile = async (e) => {
+      e.preventDefault();
+      try {
+          const userName = new FormData();
+          const response = await updateProfile(userName)
+          changeData({...data, [userName]: response})
+          navigate("/edit-profile");
+      } catch (error) {
+          console.log(error);
+          toast.error(error.message);
+      }
   }
 
   return (
@@ -126,15 +156,15 @@ const EditProfile = () => {
               <button className="--btn --btn-primary" onClick={saveImageProfile}>Save Image</button>
           </div>
         </span>
-        <form className="--form-control --m" onSubmit={saveProfile}>
+        <form className="--form-control --m">
           <span className="profile-data">
             <div>
               <label>Name:</label>
               <input
                 type="text"
                 name="name"
-                value={profile?.name}
-                // value={"user"}
+                placeholder={profile.name}
+                // value={profile.name}
                 onChange={handleInputChange}
               />
             </div>
@@ -149,7 +179,7 @@ const EditProfile = () => {
               <input type="file" name="image" onChange={handleImageChange} />
             </div>
             <div className="button-container">
-              <button className="--btn --btn-primary" >Save Profile</button>
+              <button className="--btn --btn-primary" onClick={saveProfile}>Save Profile</button>
             </div>
           </span>
         </form>
