@@ -106,7 +106,7 @@ export default function LoginPage () {
     const handleLogin = async e => {
         e.preventDefault()
         await loginUser({
-            userData: userData,
+            userEmail: userData,
             password
         });
         
@@ -125,7 +125,7 @@ export default function LoginPage () {
         const token = response.headers.get('x-auth-token');
         response.json().then(user => {
             if (token) {
-                changeData({userName: user.userName, email: user.email, token: token, fridge: user.fridge, like: user.like, favorite: user.favorite, notiRec: user.notiRec, notiIngre: user.notiIngre, image: user.image})
+                changeData({userName: user.userName, email: user.email, token: token, fridge: user.fridge, like: user.like, favorite: user.favorite, notiRec: user.notiRec, notiIngre: user.notiIngre, image: user.image, provider: user.provider})
                 changeLogin(true)
                 setTwitterAlert(true, false)
             } else {
@@ -163,7 +163,7 @@ export default function LoginPage () {
                     <div id="header">
                         <h2 className="infos" style={{margin:"3px"}}>Welcome back!</h2>
                     </div>
-                    <FormattedMessage id="login.email" defaultMessage="Email or User Name" >
+                    <FormattedMessage id="login.email" defaultMessage="Email" >
                         {(msg) => (<input type="text" ref={emailRef} placeholder={msg} className="input infos" autoComplete={checkbox?'email':'off'} onChange={e=>setUserData(e.target.value)} />)}
                     </FormattedMessage>
                     <FormattedMessage id="login.password" defaultMessage="Password" >

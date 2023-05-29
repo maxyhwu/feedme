@@ -13,6 +13,11 @@ const GeneralContext = React.createContext({
 
 const GeneralContextProvider = (props) => {
     const [ingredientTable, setIngredientTable] = useState([])
+    const [ingredient2id, setIngredient2id] = useState([]);
+    const [id2ingredient, setId2Ingredient] = useState([]);
+    const [ingredient2category, setIngredient2Category] = useState([]);
+    const [label2id, setLabel2Id] = useState([]);
+    const [id2label, setId2Label] = useState([]);
     const changeIngredientTable = () => {
         const ingredientPromise = apiAllIngredient();
         ingredientPromise.then(({data}) => {
@@ -111,7 +116,6 @@ const GeneralContextProvider = (props) => {
         console.log("changeId2Label",id2label);
     },[id2label])
 
-    const [ingredient2id, setIngredient2id] = useState([]);
     const changeIngredient2id = () => {
         setIngredient2id(ingredientTableWithCategoryName.reduce((acc, cur) => {
             acc[cur.ingredName] = cur.id;
@@ -119,7 +123,6 @@ const GeneralContextProvider = (props) => {
         }, {}));
     }
 
-    const [id2ingredient, setId2Ingredient] = useState([]);
     const changeId2Ingredient = () => {
         setId2Ingredient(ingredientTableWithCategoryName.reduce((acc, cur) => {
             acc[cur.id] = cur.ingredName;
@@ -127,7 +130,6 @@ const GeneralContextProvider = (props) => {
         }, {}));
     }
 
-    const [ingredient2category, setIngredient2Category] = useState([]);
     const changeIngredient2Category = () => {
         setIngredient2Category(ingredientTableWithCategoryName.reduce((acc, cur) => {
             acc[cur.ingredName] = cur.cateName;
@@ -151,15 +153,12 @@ const GeneralContextProvider = (props) => {
         }, {}));
     }
 
-    const [label2id, setLabel2Id] = useState([]);
     const changeLabel2Id = () => {
         setLabel2Id(labelTable.reduce((acc, cur) => {
             acc[cur.labelName] = cur.id;
             return acc;
         }, {}));
     }
-
-    const [id2label, setId2Label] = useState([]);
     const changeId2Label = () => {
         setId2Label(labelTable.reduce((acc, cur) => {
             acc[cur.id] = cur.labelName;
