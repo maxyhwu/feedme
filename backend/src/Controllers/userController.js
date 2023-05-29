@@ -125,6 +125,7 @@ const resetPassword = async (req, res) => {
 const editProfile = async (req, res) => {
     try{
         const user = req.user;
+        console.log("user",user);
         const {userName, favorite, notiRec, notiIngre} = req.body
         User.update({
             userName,
