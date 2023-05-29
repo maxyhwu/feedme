@@ -162,6 +162,7 @@ const Recipe = () => {
     const [totalRecipesCount, setTotalRecipesCount] = useState(1);
 
     const parseData = (dataArray, prevData, startIndex) => {
+        // console.log(dataArray);
         const newData = [...prevData];
         for (let i = 0; i < dataArray.length; i++) {
             const { id, title, overview, servingSize, instructions, image, video, likeCount, labels, ingredients, comments, createdAt, updatedAt, userName } = dataArray[i];
@@ -173,7 +174,8 @@ const Recipe = () => {
                 ingredients: formatIngredients,
                 instructions: instructions,
                 image_link: image,
-                comments_arr: comments 
+                comments_arr: comments,
+                likeCnt: likeCount
             }
         }
         return newData;
@@ -205,7 +207,7 @@ const Recipe = () => {
                 setApiRecipesCount(value.data.rows.length);
             });
         }
-    }, [location]);
+    }, [location, id2ingredient]);
 
     useEffect(() => {
         if (location.pathname === '/recipe') {

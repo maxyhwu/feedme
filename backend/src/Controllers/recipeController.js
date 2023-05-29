@@ -104,7 +104,7 @@ const queryByFridge = async (req, res) => {
   const sortedIng = [];
 
   // console.log(ingredientArr);
-  if (ingredientArr === null || ingredientArr.length() === 0) {
+  if (ingredientArr == null || ingredientArr.length === 0) {
     return res.send("fail");
   }
   for (let key in ingredientArr) {
@@ -209,7 +209,7 @@ const updateAddLikeCount = async (req, res) => {
 
   try {
     await pool.query(query, values);
-    res.send("success");
+    return res.send("success");
   } catch (err) {
     res.send("fail");
     console.log(err);
@@ -223,7 +223,7 @@ const updateMinusLikeCount = async (req, res) => {
 
   try {
     await pool.query(query, values);
-    res.send("success");
+    return res.send("success");
   } catch (err) {
     res.send("fail");
     console.log(err);

@@ -196,11 +196,10 @@ const keepLikeRecipe = async (req, res) => {
             attributes: ['like'],
             where: { id: user.id }
         });
-        console.log(like)
-        like.push(articleID.toString());
+        like.push(articleID);
         await User.update({
-            like
-        },{ where: { id: user.id}});
+            like: like
+        },{ where: { id: user.id }});
         return res.status(200).send({message:"keepLikeRecipe successfully."})
     } catch (err) {
         console.log('keepLikeRecipe error');
@@ -221,8 +220,8 @@ const removeLikeRecipe = async (req, res) => {
         // ad-hoc solution (need to be solved in the future)
         like = like.filter(item => item !== articleID);
         await User.update({
-            like
-        },{ where: { id: user.id}});
+            like: like
+        },{ where: { id: user.id }});
         return res.status(200).send({message:"removeLikeRecipe successfully."})
     } catch (err) {
         console.log('removeLikeRecipe error');
