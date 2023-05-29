@@ -26,7 +26,7 @@ const ActionBar = ({ recipeID, likeCnt, setLikeCnt }) => {
         } else {  // add like
             apiUpdateAddLikeCount({Rid: recipeID});
             apiKeepLikeRecipes({id: recipeID});
-            changeData({ ...data, like: [recipeID, ...data.like] });
+            changeData({ ...data, like: [recipeID, ...data.like]});
             // setLikeCnt(prev => prev + 1);
             socketAddLikecnt(recipeID);
         }

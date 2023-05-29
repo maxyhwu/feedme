@@ -9,7 +9,7 @@ import { apiQueryRecipeByID, apiGetRecipeComment, apiAddComment, apiGetUserData,
 import { UseLoginContext } from "../Context/LoginCnt";
 import { FaTrashAlt, FaJournalWhills } from 'react-icons/fa';
 import { getNoTokenData } from '../utils/useNoTokenApis'
-import { initiateSocket, sendMessage, subscribeToAddLikeCnt, subscribeToChat, subscribeToMinusLikeCnt } from "../Context/commentSocketHooks";
+import { disconnectSocket, initiateSocket, sendMessage, subscribeToAddLikeCnt, subscribeToChat, subscribeToMinusLikeCnt } from "../Context/commentSocketHooks";
 import { BsFillTrashFill } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -58,9 +58,9 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
 
     useEffect(() => {
         initiateSocket(recipeID);
-        subscribeToChat((err, data) => {
+        subscribeToChat((err, newMessage) => {
             if (err) return;
-            // data = {content: {
+            // newMessage = {content: {
             //     comment_str: comment,
             //     time: "just now",
             //     user_id: "cur"
@@ -68,8 +68,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             //     photo: data.image,
             //     userName: data.userName
             // }}
-            setComments([...comments, data]);
-            console.log('comment socket data', data);
+            setComments(prev => [newMessage, ...prev]);
+            console.log('comment socket newMessage', newMessage);
         });
         subscribeToAddLikeCnt((err) => {
             if (err) return;
@@ -79,6 +79,9 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             if (err) return;
             setLikeCount(prev => prev - 1);
         })
+        return () => {
+            disconnectSocket();
+        }
     }, [])
 
     const addComments = async(comment) => {
@@ -102,8 +105,9 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             photo: data.image,
             userName: data.userName
         }
-        sendMessage(recipeID, {content: message, user: user});
-        setComments([...comments, {content: message, user: user}]);
+        const newMessage = {content: message, user: user};
+        sendMessage(recipeID, newMessage);
+        // setComments(prev => [newMessage, ...prev]);
 
         setUserComment("");
     }
@@ -215,10 +219,10 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         for (const [key, value] of recipeFormData.entries()) {
             formDataObject[key] = value;
         }
-          
+
         // Print the FormData object as a plain JavaScript object
         console.log('form data object', formDataObject);
- 
+
         const updateResult = await apiUpdateRecipe(formDataObject);
         console.log('update result', updateResult);
         if (updateResult.data === 'success') {
@@ -467,6 +471,24 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             <div className={`comment-container ${editMode ? 'blur-all':''}`}>
                 <div className="comments">Comments</div>
                 {
+                    login ?
+                    <div className="comment-input">
+                        <div className="comment-avatar">
+                            <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
+                        </div>
+                        <input className= "input-text" 
+                            type = "text" 
+                            placeholder="leave your comment..."
+                            value={userComment}
+                            onChange={(e) => setUserComment(e.target.value)}/>
+                        <button 
+                            className="submit-text"
+                            onClick={() => addComments(userComment)}> Submit </button>
+                        {/* <input classname= "submit-text" type = "submit">Submit</input> */}
+                    </div> :
+                    <></>
+                }
+                {
                     // content = { comment_str: "df comment test", time: "2023-05-26T09:09:21+00:00", user_id: "7"}
                     // user = 0: {photo: '', userName: 'Yu'}
                     !isEmptyComment ? 
@@ -502,25 +524,6 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                 }
                 {/* <div className="single-comment-container" style={{width: '100%'}}>This looks soooooo delicious.</div>
                 <div className="single-comment-container" style={{width: '100%'}}>I love curry~</div> */}
-                {
-                    login ?
-                    <div className="comment-input">
-                        <div className="comment-avatar">
-                            <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
-                        </div>
-                        <input className= "input-text" 
-                            type = "text" 
-                            placeholder="leave your comment..."
-                            value={userComment}
-                            onChange={(e) => setUserComment(e.target.value)}
-                            onKeyUp={(e) => handleCommentKeyUp(e, userComment)}/>
-                        <button 
-                            className="submit-text"
-                            onClick={() => addComments(userComment)}> Submit </button>
-                        {/* <input classname= "submit-text" type = "submit">Submit</input> */}
-                    </div> :
-                    <></>
-                }
             </div> 
             {
                 editMode ?
@@ -642,7 +645,7 @@ const RecipeDetailShare = () => {
             </div>
             </>
             }
-           
+
             { recipeName === '' &&
                 <div className="recipe-not-exist">
                     <h3 style={{ 'text-align': 'center', 'color': 'gray' }}>

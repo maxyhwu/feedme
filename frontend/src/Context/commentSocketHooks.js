@@ -18,7 +18,11 @@ export const initiateSocket = (room) => {
   // socket = io(`ws://localhost:3001`, { transports : ['websocket'] });
   //socket = io(`wss://feedme.company:443`,{transports: ['websocket']});
   //socket = io(`wss://feedme.company:443`);
-  socket = io(`https://feedme.company:443`);
+  socket = io("http://localhost:8000", {
+    extraHeaders: {
+      "my-header": "1234"
+    }
+  });
   console.log(`Socket Connected`);
   if (socket && room) socket.emit('join', room);
 }
