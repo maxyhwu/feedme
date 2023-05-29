@@ -1,7 +1,7 @@
 // server
 // Import required modules
 import { pool } from "../Clients/pool";
-import http from "http";
+import https from "https";
 import { Server } from "socket.io";
 
 // Create a PostgreSQL pool
@@ -15,8 +15,8 @@ import { Server } from "socket.io";
 
 const commentSocket = () => {
   // Create an HTTP server
-  const port = 3001;
-  const httpc = http.createServer().listen(port, () => {
+  const port = 443;
+  const httpc = https.createServer().listen(port, () => {
     console.log(`Server started on port ${port}`);
   });
   // Create a Socket.IO instance and attach it to the server
