@@ -1,6 +1,6 @@
 const SomthinWrong = () => {
     return (
-        <h4>Somethin went wrong in server!</h4>
+        <h4>Something went wrong in server!</h4>
     )
 }
 

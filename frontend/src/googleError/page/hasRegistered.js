@@ -1,7 +1,7 @@
 const HasRegistered = () => {
     return (
         <div>
-            <h4>User has signup with google</h4>
+            <h4>This email has signup </h4>
         </div>
     )
 }
