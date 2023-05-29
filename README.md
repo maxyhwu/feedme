@@ -5,3 +5,5 @@
 2. To start frontend, simply run script `yarn start` at feedme directory.
 3. To start backend, simply run script `yarn server` at feedme directory.
 4. They will hopefully `yarn` (install packages) for you.
+
+0530
