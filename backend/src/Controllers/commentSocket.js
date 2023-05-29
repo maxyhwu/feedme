@@ -14,7 +14,7 @@ import { Server } from "socket.io";
 // });
 
 const commentSocket = () => {
-  // Create an HTTP server
+  // Create an HTTPS server
   const port = 443;
   const httpc = https.createServer().listen(port, () => {
     console.log(`Server started on port ${port}`);
@@ -22,7 +22,7 @@ const commentSocket = () => {
   // Create a Socket.IO instance and attach it to the server
   const io = new Server (httpc);
   // var io = require('socket.io').listen(http);
-  
+
   io.on('connection', (socket) => {
     console.log(`Connected: ${socket.id}`);
 
@@ -45,7 +45,7 @@ const commentSocket = () => {
       // console.log(`room: ${room}`);
       io.to(room).emit('addlikecnt');
     });
-    
+
     socket.on('minuslikecnt', (data) => {
       const { room } = data;
       // console.log(`room: ${room}`);
