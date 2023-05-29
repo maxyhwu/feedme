@@ -14,16 +14,11 @@ console.log("dotenv = ", process.env.PORT)
 const PORT = process.env.PORT || 8000
 
 import express, { json, urlencoded } from "express";
-// import http from "http";
-import https from "https";
-import { Server } from "socket.io";
 import cors from 'cors';
 
 const app = express();
 
-
 var corsOption = {
-  // origin: "http://localhost:3000",
   origin: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
@@ -64,51 +59,54 @@ if (process.env.NODE_ENV === "production") {
 //   res.sendFile(path.join(__dirname,"..","..", "frontend", "build", "index.html"));
 // });
 
-// app.listen(PORT, function(err){
-//   if (err) console.log("Error in server setup")
-//   console.log("Server listening on Port", PORT);
-// })
+app.listen(PORT, function(err){
+  if (err) console.log("Error in server setup")
+  console.log("Server listening on Port", PORT);
+})
 
+// import http from "http";
+// import https from "https";
+// import { Server } from "socket.io";
 // const httpServer = http.createServer(app);
-const httpServer = https.createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    allowedHeaders: ["my-header"]
-  }
-});
+// const httpServer = https.createServer(app);
+// const io = new Server(httpServer, {
+//   cors: {
+//     allowedHeaders: ["my-header"]
+//   }
+// });
 
-io.on('connection', (socket) => {
-  console.log(`Connected: ${socket.id}`);
+// io.on('connection', (socket) => {
+//   console.log(`Connected: ${socket.id}`);
 
-  socket.on('disconnect', () =>
-    console.log(`Disconnected: ${socket.id}`));
+//   socket.on('disconnect', () =>
+//     console.log(`Disconnected: ${socket.id}`));
 
-  socket.on('join', (room) => {
-    console.log(`Socket ${socket.id} joining ${room}`);
-    socket.join(room);
-  });
+//   socket.on('join', (room) => {
+//     console.log(`Socket ${socket.id} joining ${room}`);
+//     socket.join(room);
+//   });
 
-  socket.on('chat', (data) => {
-    const { message, room } = data;
-    console.log(`msg: ${message}, room: ${room}`);
-    io.to(room).emit('chat', message);
-  });
+//   socket.on('chat', (data) => {
+//     const { message, room } = data;
+//     console.log(`msg: ${message}, room: ${room}`);
+//     io.to(room).emit('chat', message);
+//   });
 
-  socket.on('addlikecnt', (data) => {
-    const { room } = data;
-    // console.log(`room: ${room}`);
-    io.to(room).emit('addlikecnt');
-  });
+//   socket.on('addlikecnt', (data) => {
+//     const { room } = data;
+//     // console.log(`room: ${room}`);
+//     io.to(room).emit('addlikecnt');
+//   });
 
-  socket.on('minuslikecnt', (data) => {
-    const { room } = data;
-    // console.log(`room: ${room}`);
-    io.to(room).emit('minuslikecnt');
-  });
-});
+//   socket.on('minuslikecnt', (data) => {
+//     const { room } = data;
+//     // console.log(`room: ${room}`);
+//     io.to(room).emit('minuslikecnt');
+//   });
+// });
 
-httpServer.listen(PORT, () => {
-  console.log(`🚀 Server Ready at ${PORT}! 🚀`)
-});
+// httpServer.listen(PORT, () => {
+//   console.log(`🚀 Server Ready at ${PORT}! 🚀`)
+// });
 
 // commentSocket();

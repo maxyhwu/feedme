@@ -3,6 +3,12 @@
 // Import the Socket.IO client library
 import { io } from 'socket.io-client';
 
+// import dotenv from "dotenv-defaults";
+// dotenv.config();
+// console.log("dotenv = ", process.env.PORT)
+// const PORT = process.env.PORT || 8000
+const PORT = 8000
+
 // Connect to the Socket.IO server
 // const socket = io('http://localhost:3001'); // Replace with your server's URL
 
@@ -18,9 +24,9 @@ export const initiateSocket = (room) => {
   // socket = io(`ws://localhost:3001`, { transports : ['websocket'] });
   //socket = io(`wss://feedme.company:443`,{transports: ['websocket']});
   //socket = io(`wss://feedme.company:443`);
-  
-  socket = io("https://feedme.company:8000", {
-  // socket = io("http://localhost:8000", {
+
+  socket = io(`https://feedme.company:${PORT}`, {
+  // socket = io(`http://localhost:8000`, {
     extraHeaders: {
       "my-header": "1234"
     }
