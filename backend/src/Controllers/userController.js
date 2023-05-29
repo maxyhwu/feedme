@@ -3,20 +3,17 @@ dotenv.config();
 import db from "../Model"
 import bcrypt from "bcrypt";
 import {sendForgetPWEmail} from "../services/userService"
-import { uploads, destroys } from "../Config/cloudinary";
+import { uploads } from "../Config/cloudinary";
 import fs from 'fs'
-import { upload } from '../Config/multerConfig'
 const User = db.users;
-const Op = db.Sequelize.Op
 
 const login = async (req, res, next) => {
     try {
         console.log(req.body)
-        const {userData, password} = req.body;
+        const {userEmail, password} = req.body;
         const user = await User.findOne({
             where: {
-                // userName: userName
-                [Op.or]: [{userName: userData}, {email: userData}]
+                email: userEmail
             }});
 
         if (user !== null ) {
@@ -125,6 +122,7 @@ const resetPassword = async (req, res) => {
 const editProfile = async (req, res) => {
     try{
         const user = req.user;
+        console.log("user",user);
         const {userName, favorite, notiRec, notiIngre} = req.body
         User.update({
             userName,

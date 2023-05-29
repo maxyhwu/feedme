@@ -1,6 +1,6 @@
 {
     "login.welcome": "Welcome",
-    "login.email": "Email or User Name",
+    "login.email": "Email",
     "login.password": "Password",
     "login.rememberMe": "Remember me",
     "login.forget": "forget password",

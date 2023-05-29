@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Card from "../Components/card/Card";
@@ -21,11 +21,24 @@ const EditProfile = () => {
     name: data?.userName,
     email: data?.email,
     photo: data?.image,
+    provider: data?.provider
   };
   const [profile, setProfile] = useState(initialState);
   const [profileImage, setProfileImage] = useState();
   const [showImage, setShowImage] = useState(profile.photo)
+
   console.log("User Info: ",data);
+
+  const [isShown, setIsShown] = useState(false);
+  console.log(data?.provider);
+
+  useEffect(() => {
+    if(data?.provider === 'local') {
+      setIsShown(true);
+    }
+  }, [isShown])
+
+  console.log(isShown);
 
   async function updateImage(credentials) {
     return apiUpdateUserImage(credentials)
@@ -185,9 +198,11 @@ const EditProfile = () => {
         </form>
       </Card>
       <br />
-      <span className="button-container">
-          <ChangePassword />
-      </span>
+      {isShown && (
+        <span className="button-container">
+            <ChangePassword />
+        </span>
+      )}
     </div>
   );
 };

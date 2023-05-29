@@ -37,6 +37,7 @@ const getData = () =>  {
         notiRec: true,
         notiIngre: true,
         image: 'https://res.cloudinary.com/dheeudsd6/image/upload/v1685092164/Avatars/svkfxq5orosemnxl9vnl.jpg',
+        provider: 'local',
     }
     if (localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') !== null ){
         const dataString = localStorage.getItem('user');
@@ -51,7 +52,7 @@ const DataContextProvider =  (props) => {
     useEffect(() => {
         const fetchData = async () => {
             const [response, token] = await getBackendData()
-            let input = {userName: response.userName, email: response.email, fridge: response.fridge, token: token, favorite: response.favorite, like: response.like, notiRec: response.notiRec, notiIngre: response.notiIngre, image: response.image}
+            let input = {userName: response.userName, email: response.email, fridge: response.fridge, token: token, favorite: response.favorite, like: response.like, notiRec: response.notiRec, notiIngre: response.notiIngre, image: response.image, provider: response.provider}
             changeData(input)
         }
         if ( (localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') !== null) || (Object.keys(getUserData()).length !== 0) ){
