@@ -104,7 +104,16 @@ const queryByFridge = async (req, res) => {
   const sortedIng = [];
 
   if (Object.keys(ingredientArr).length == 0) {
-    return res.send("fail");
+    const queryT = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC OFFSET 1 ROWS FETCH NEXT 15 ROWS ONLY`;
+    try {
+      const { rows: rowsT } = await pool.query(queryT);
+      const rows = rowsT;
+      res.send({ rows });
+    } catch (err) {
+      res.send("fail");
+      console.log(err);
+    }
+    return;
   }
   for (let key in ingredientArr) {
     // query ingredient table get ingredient date
