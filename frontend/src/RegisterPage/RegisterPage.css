@@ -169,3 +169,21 @@ label:hover {
     background:#eee;
     cursor:pointer;
 }
+
+@media screen and (max-width: 750px) {
+    .container {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+}
+@media screen and (max-width: 750px) {
+    #feedmelogo {
+        display: none;
+    }
+}
+@media screen and (max-width: 750px) {
+    .container .body {
+        justify-content: start;
+        width: 100%;
+    }
+}
