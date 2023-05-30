@@ -145,10 +145,10 @@ const EditProfile = () => {
   const saveProfile = async (e) => {
       e.preventDefault();
       try {
-          const userData = new FormData();
-          userData.append('userName', profile.name)
-          await updateProfile(userData)
-          // console.log(profile.name)
+          // const userData = new FormData();
+          // userData.append('userName', profile.name)
+          await updateProfile({userName: profile.name})
+          // console.log("profile", profile.name)
           changeData({...data, userName: profile.name})
           navigate("/edit-profile");
       } catch (error) {
