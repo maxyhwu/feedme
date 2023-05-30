@@ -215,9 +215,9 @@ const RegisterPage = () => {
     // }
 
     return (
-        <div className="container">
+        <div className="container2">
             <div className='logo-container' id='logo'>
-                <img src={FeedMe} alt='feedme' id="feedmelogo"/>
+                <img src={FeedMe} alt='feedme' id="feedmelogo2"/>
             </div>
             <div className="body">
                 
