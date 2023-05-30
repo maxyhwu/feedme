@@ -107,7 +107,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         }
         const newMessage = {content: message, user: user};
         sendMessage(recipeID, newMessage);
-        // setComments(prev => [newMessage, ...prev])s;
+        // setComments(prev => [newMessage, ...prev]);
 
         setUserComment("");
     }
