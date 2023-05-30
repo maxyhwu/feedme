@@ -226,7 +226,7 @@ const Recipe = () => {
 
     useEffect(() => {
         if (location.pathname === '/recipe') {
-            const fetchPage = Math.floor(currentPage / 3) + 1;
+            const fetchPage = Math.ceil(currentPage / 3);
             apiQueryRecipeByTop(fetchPage).then((value) => {
                 setApiRecipeData((prevData) => {
                     const startIndex = (fetchPage - 1) * 15;
@@ -286,7 +286,7 @@ const Recipe = () => {
     // console.log(id2ingredient);
     // console.log(recipe_data);
     // console.log(apiRecipeData);
-    // console.log(currentRecipes);
+    console.log(currentRecipes);
     // console.log(apiRecipesCount);
 
     return (
