@@ -96,35 +96,37 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         const newExpiredIng = [];
         const newExpiringIng = [];
 
-        Object.keys(fridge).map((key) => {
-            const ingredArray = fridge[key];
-            const earliestExpireDate = ingredArray.reduce((earliestDate, ingredient) => {
-                if (!earliestDate || ingredient.expire_date < earliestDate) {
-                    return ingredient.expire_date;
+        if (fridge) {
+            Object.keys(fridge).map((key) => {
+                const ingredArray = fridge[key];
+                const earliestExpireDate = ingredArray.reduce((earliestDate, ingredient) => {
+                    if (!earliestDate || ingredient.expire_date < earliestDate) {
+                        return ingredient.expire_date;
+                    } else {
+                        return earliestDate;
+                    }
+                }, null);
+                fridgeExpInfo[key] = earliestExpireDate;
+            })
+    
+            const today = new Date();
+            Object.entries(fridgeExpInfo).forEach(([key, expirationDate]) => {
+                const timeDiff = new Date(expirationDate).getTime() - today.getTime();
+                const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                const ingredient = id2ingredient[key]
+                if (timeDiff < 0) {
+                    newExpiredIng.push(ingredient);
+                } else if (daysDiff <= 5) {
+                    newExpiringIng.push(ingredient);
                 } else {
-                    return earliestDate;
+                    newNormalIng.push(ingredient);
                 }
-            }, null);
-            fridgeExpInfo[key] = earliestExpireDate;
-        })
+            });
 
-        const today = new Date();
-        Object.entries(fridgeExpInfo).forEach(([key, expirationDate]) => {
-            const timeDiff = new Date(expirationDate).getTime() - today.getTime();
-            const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            const ingredient = id2ingredient[key]
-            if (timeDiff < 0) {
-                newExpiredIng.push(ingredient);
-            } else if (daysDiff <= 5) {
-                newExpiringIng.push(ingredient);
-            } else {
-                newNormalIng.push(ingredient);
-            }
-        });
-
-        setNormalIng(newNormalIng);
-        setExpiredIng(newExpiredIng);
-        setExpiringIng(newExpiringIng);
+            setNormalIng(newNormalIng);
+            setExpiredIng(newExpiredIng);
+            setExpiringIng(newExpiringIng);
+        }
     }, [fridge]);
 
     const addComments = async(comment) => {
@@ -394,6 +396,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     // console.log(data.fridge[49]);
     // console.log(recipe)
     // console.log(fridge);
+    // console.log(id2ingredient);
 
     return(
         <div className='whole-modal'>
