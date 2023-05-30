@@ -153,24 +153,12 @@ const SearchBar = ({ setRecipe, setSearching }) => {
         }
     }
 
-    const handleInputClickOutside = (event) => {
-        if (dropdownRefInput.current && !dropdownRefInput.current.contains(event.target)) {
-            //if dropdown is opened and do not click on dropdown content
-            // console.log('event target', event.target);
-            
-            // if (choseIngredId.length === 0) {
-                setInputDropdown(false);
-            // } 
-            setSearching(false);
-        }
-    }
-
     useEffect(() => {
         document.addEventListener('mousedown', handleFilterClickOutside);
-        document.addEventListener('mousedown', handleInputClickOutside);
+        // document.addEventListener('mousedown', handleInputClickOutside);
         return () => {
           document.removeEventListener('mousedown', handleFilterClickOutside);
-          document.removeEventListener('mousedown', handleInputClickOutside);
+        //   document.removeEventListener('mousedown', handleInputClickOutside);
         };
     }, []);
 
@@ -234,6 +222,9 @@ const SearchBar = ({ setRecipe, setSearching }) => {
     const handleClearInput = () => {
         setInput('');
         setSearching(false);
+        setChoseIngred([]);
+        setChoseIngredId([]);
+        setInputDropdown(false);
     }
 
     const clickIngredToSearch = async(ingredient, type) => {
@@ -316,9 +307,10 @@ const SearchBar = ({ setRecipe, setSearching }) => {
                         onChange={(e) => {
                             setSearchedIng([]);
                             handleSearch(filter, e.target.value, e);}}/>
-                    {
+                    {/* {
                         input.length != 0 && <IoClose onClick={handleClearInput}/>
-                    }
+                    } */}
+                    <IoClose onClick={handleClearInput}/>
                 </div>
                 
             </div>
