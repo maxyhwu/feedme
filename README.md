@@ -1,11 +1,11 @@
 # FeedMe
 
 ## Overview
-Over a third of all food produced ($\approx$ 2.5 billion tons) is lost or wasted each year.(https://greenly.earth/en-us/blog/ecology-news/global-food-waste-in-2022) Take a look at our daily life. Expired foods are thrown away everyday. Those foods and ingredients had been kept in the fridge, been forgotten, and never been used, mostly because we don't know how to use them. 
+FeedMe is a website providing wide categories of recipes and building a powerful recommendation system based on ingredients and user preferences. FeedMe typically presents users with an intuitive and user-friendly interface, allowing them to search and browse through an extensive recipe database and build their own refrigerators. Users can explore recipes based on different criteria such as recipe names and ingredients. To enhance the user experience, the system also incorporates various features and functionalities. These include the ability to save favorite recipes, create personalized recipe collections, leave comments, and even share recipes to other people. 
 
-FeedME -- a revolutionary system, combining both fridge managing system and recipe platform, increases the convenience for users to cook delicious meals with minimum food waste. With FeedME, users can create an account to share extraordinary cuisine, keep track of ingredients in their fridge and explore recommended recipes.
+FeedMe also offers features that enable users to load their refrigerator ingredients into database. Users can browse their auto-organized and categorized ingredients with expiration date notification. Based on the ingredients stored in user's fridge, the recommendation system will suggest recipes that are corresponded with existing and expiring ingredients.
 
-We believe FeedME would bring a better tomorrow for all humankind.
+FeedMe is designed to assist users in discovering new recipes, organizing their culinary preferences, and efficiently utilizing ingredients they already have in their pantry. In the meantime, the development team is aiming to enhance users' cooking experiences, facilitate meal planning, reduce food waste, and foster a community of food enthusiasts. Let's enjoy all kind of fascinating cuisine together!
 
 <!-- ## frontend & backend init
 1. Open two terminals and run the two scripts below respectively.
