@@ -133,39 +133,39 @@ const GeneralContextProvider = (props) => {
         //console.log("changeIngredient2Category", ingredient2category);
     }, [ingredientTableWithCategoryName])
 
-    useEffect(() => {
-        console.log("ingredientTable",ingredientTable);
-    },[ingredientTable])
-    useEffect(() => {
-        console.log("categoryTable",categoryTable);
-    },[categoryTable])
-    useEffect(() => {
-        console.log("labelTable",labelTable);
-    },[labelTable])
-    useEffect(() => {
-        console.log("ITWCN",ingredientTableWithCategoryName);
-    },[ingredientTableWithCategoryName])
-    useEffect(() => {
-        console.log("Ingredient2id",ingredient2id);
-    },[ingredient2id])
-    useEffect(() => {
-        console.log("Id2Ingredient",id2ingredient);
-    },[id2ingredient])
-    useEffect(() => {
-        console.log("category2id", category2id);
-    }, [category2id])
-    useEffect(() => {
-        console.log("id2category", id2category);
-    }, [id2category])
-    useEffect(() => {
-        console.log("Ingredient2Category",ingredient2category);
-    },[ingredient2category])
-    useEffect(() => {
-        console.log("Label2Id",label2id);
-    },[label2id])
-    useEffect(() => {
-        console.log("Id2Label",id2label);
-    },[id2label])
+    // useEffect(() => {
+    //     console.log("ingredientTable",ingredientTable);
+    // },[ingredientTable])
+    // useEffect(() => {
+    //     console.log("categoryTable",categoryTable);
+    // },[categoryTable])
+    // useEffect(() => {
+    //     console.log("labelTable",labelTable);
+    // },[labelTable])
+    // useEffect(() => {
+    //     console.log("ITWCN",ingredientTableWithCategoryName);
+    // },[ingredientTableWithCategoryName])
+    // useEffect(() => {
+    //     console.log("Ingredient2id",ingredient2id);
+    // },[ingredient2id])
+    // useEffect(() => {
+    //     console.log("Id2Ingredient",id2ingredient);
+    // },[id2ingredient])
+    // useEffect(() => {
+    //     console.log("category2id", category2id);
+    // }, [category2id])
+    // useEffect(() => {
+    //     console.log("id2category", id2category);
+    // }, [id2category])
+    // useEffect(() => {
+    //     console.log("Ingredient2Category",ingredient2category);
+    // },[ingredient2category])
+    // useEffect(() => {
+    //     console.log("Label2Id",label2id);
+    // },[label2id])
+    // useEffect(() => {
+    //     console.log("Id2Label",id2label);
+    // },[id2label])
 
     return (
         <GeneralContext.Provider
