@@ -161,7 +161,7 @@ export default function LoginPage () {
             <div className="body">
                 <form id="info" ref={formRef} onSubmit={handleLogin}>
                     <div id="header">
-                        <h2 className="infos" style={{margin:"3px"}}>Welcome back!</h2>
+                        <h2 className="infos" style={{margin:"10px"}}>Welcome back!</h2>
                     </div>
                     <FormattedMessage id="login.email" defaultMessage="Email" >
                         {(msg) => (<input type="text" ref={emailRef} placeholder={msg} className="input infos" autoComplete={checkbox?'email':'off'} onChange={e=>setUserData(e.target.value)} />)}
