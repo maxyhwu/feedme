@@ -1,20 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import './SetPassword.css';
 import FeedMe from '../assets/FeedMe.jpg';
-import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { resetPassword } from "../services/authService";
 import { apiSetPW, apiForgetPW } from "../axios/noToken";
+import { useNavigate } from "react-router-dom";
 
-
-const initialState = {
-    password: "",
-    password2: "",
-};
 
 const SetLogin = () => {
-    const [formData, setformData] = useState(initialState);
-    const { password, password2 } = formData;
 
     const [succReset, setSuccReset] = useState(false);
     const [inValid, setInValid] = useState(false);
@@ -133,36 +125,6 @@ const SetLogin = () => {
         setSendClick(!sendClick)
     }
 
-    const { resetToken } = useParams();
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setformData({ ...formData, [name]: value });
-    };
-
-    const reset = async (e) => {
-        e.preventDefault();
-    
-        if (password.length < 6) {
-            return toast.error("Passwords must be up to 6 characters");
-        }
-        if (password !== password2) {
-            return toast.error("Passwords do not match");
-        }
-    
-        const userData = {
-            password,
-            password2,
-        };
-    
-        try {
-            const data = await resetPassword(userData, resetToken);
-            toast.success(data.message);
-        } catch (error) {
-            console.log(error.message);
-        }
-    };
-
     const checkEmailValid = () => {
         if (emailRef.current.value === ''){
             emailRef.current.setCustomValidity("Email can not be empty."); 
@@ -199,17 +161,14 @@ const SetLogin = () => {
                 </div>
 
                     <input type="text" placeholder='Email' className="input infos" autoComplete='off' onChange={e=>setEmail(e.target.value)}/>
+                    <div className="d-flex" >
+                        <input type="text" placeholder='Code' className="input infos mr-auto p-2" id="code" autoComplete='off' onChange={e=>setToken(e.target.value)}/>
+                        <button id="send" className="infos" type="button" onClick={e=>{checkEmailValid();sendCode(e)}} ref={emailRef}>Get Verification Code</button>
+                    </div>
                     <input type="password" placeholder='New Password' className="input infos" ref={passwordRef} onChange={e=>setNewPassword(e.target.value)}/>
-                    {/* <input type="submit" value="Reset" className="infos" id="reset"/> */}
                     <button type="submit" className="infos" id="reset" onClick={e=>checkValid(e)}>
                         Reset Password
                     </button>
-
-                {/* <input type="text" placeholder='Email' className="input infos" autoComplete='off'/>
-                <button type="submit" className="infos" id="reset">
-                    Sent Reset Email
-                </button> */}
-
                 </form>
             </div>
         </div>
