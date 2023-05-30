@@ -49,7 +49,7 @@ const queryByLabel = async (req, res) => {
 
 const queryTopLikeCount = async (req, res) => {
   const { page } = req.query;
-  const query = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY`;
+  const query = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC, id ASC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY`;
   const values = [(parseInt(page) - 1) * 15];
 
   try {
@@ -106,7 +106,7 @@ const queryByFridge = async (req, res) => {
   // no ingredients
   if (Object.keys(ingredientArr).length == 0) {
     console.log(-1);
-    const queryT = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC OFFSET 1 ROWS FETCH NEXT 15 ROWS ONLY`;
+    const queryT = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC OFFSET 0 ROWS FETCH NEXT 15 ROWS ONLY`;
     try {
       const { rows: rowsT } = await pool.query(queryT);
       const rows = rowsT;
@@ -133,7 +133,7 @@ const queryByFridge = async (req, res) => {
       sortedIng.push({ [key]: { daysDiff: daysDiff, count: count } });
 
       // Check if the difference is smaller than three days
-      if ((daysDiff >= 0) & (daysDiff <= 3)) {
+      if ((daysDiff >= 0) & (daysDiff <= 5)) {
         queryIng.push({ [key]: { daysDiff: daysDiff, count: count } });
       }
     }

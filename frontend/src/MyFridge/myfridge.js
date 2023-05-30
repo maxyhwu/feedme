@@ -23,6 +23,7 @@ const allCategories = [
     "Fruits",
     "Dairy",
     "Nuts and Seeds",
+    "Others"
 ];
 
 
@@ -41,6 +42,7 @@ const paletteCategory2Color = {
     "Fruits": "#C2BBE3",
     "Dairy": "#B4C8E4",
     "Nuts and Seeds": "#DDBFA5",
+    "Others": "#ADBABD",
     "notActive": "#DDDDDD"
 };
 
