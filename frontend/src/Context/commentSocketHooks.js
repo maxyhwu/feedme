@@ -19,7 +19,7 @@ import { io } from 'socket.io-client';
 // });
 var socket;
 export const initiateSocket = (room) => {
-  console.log(`Connecting socket...`);
+  // console.log(`Connecting socket...`);
   // socket = io(`ws://localhost:3001`, { transports : ['websocket'] });
   //socket = io(`wss://feedme.company:443`,{transports: ['websocket']});
   //socket = io(`wss://feedme.company:443`);
@@ -30,19 +30,19 @@ export const initiateSocket = (room) => {
       "my-header": "1234"
     }
   });
-  console.log(`Socket Connected`);
+  // console.log(`Socket Connected`);
   if (socket && room) socket.emit('join', room);
 }
 
 export const disconnectSocket = () => {
-  console.log('Disconnecting socket...');
+  // console.log('Disconnecting socket...');
   if(socket) socket.disconnect();
 }
 
 export const subscribeToChat = (cb) => {
   if (!socket) return(true);
   socket.on('chat', msg => {
-    console.log('Websocket event received!');
+    // console.log('Websocket event received!');
     return cb(null, msg);
   });
 }
@@ -58,7 +58,7 @@ export const socketAddLikecnt = (room) => {
 export const subscribeToAddLikeCnt = (cb) => {
   if (!socket) return(true);
   socket.on('addlikecnt', () => {
-    console.log('Websocket event received!');
+    // console.log('Websocket event received!');
     return cb(null);
   });
 }
@@ -70,7 +70,7 @@ export const socketMinusLikecnt = (room) => {
 export const subscribeToMinusLikeCnt = (cb) => {
   if (!socket) return(true);
   socket.on('minuslikecnt', () => {
-    console.log('Websocket event received!');
+    // console.log('Websocket event received!');
     return cb(null);
   });
 }

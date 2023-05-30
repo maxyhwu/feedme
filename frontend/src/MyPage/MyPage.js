@@ -12,7 +12,7 @@ const MyPage = () => {
 
     const {data} = UseDataContext();
     const {changeLogin} = UseLoginContext();
-    console.log("image = ", data)
+    // console.log("image = ", data)
 
     const navigate = useNavigate();
     const handleSetting = () => {

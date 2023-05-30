@@ -23,10 +23,10 @@ export default function SignupPage () {
     const onSuccess = (response) => {
         // window.close()
         const token = response.headers.get('x-auth-token');
-        console.log('token')
+        // console.log('token')
         response.json().then(user => {
           if (token) {
-            console.log(user)
+            // console.log(user)
           }
         });
       };

@@ -223,7 +223,7 @@ useEffect ( () => {
     if (checkCategoryValid(addData)) {
       const newFavorite = updateFavoriteData(addData)
       if (newFavorite !== null ){
-        console.log('newFavorite', newFavorite)
+        // console.log('newFavorite', newFavorite)
         await saveProfile({userName: data.userName, favorite: newFavorite, notiRec: data.notiRec, notiIngre: data.notiIngre})
       }
       setClick(!click)
