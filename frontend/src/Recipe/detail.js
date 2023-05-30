@@ -575,22 +575,22 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             </div> 
             {
                 editMode ?
-                <>
+                <div className="recipe-owner-btns">
                     <button className="btn btn-secondary recipeedit-fixed-button" 
                         id="cancel-btn" 
                         onClick={handleEditCancel}> Cancel </button>
                     <button className="btn btn-secondary recipeedit-fixed-button" 
                         onClick={editSaveOnclick}> Save </button>
-                </>
+                </div>
                 : 
                     login && isRecipeOwner ?
-                    <>
+                    <div className="recipe-owner-btns">
                         <button className="btn btn-secondary recipeedit-fixed-button" 
                             id="cancel-btn" 
                             onClick={editOnClick}> Edit Recipe </button>
                         <button className="btn btn-secondary recipeedit-delete-button"
                             onClick={handleEditDelete}> <BsFillTrashFill /> </button>
-                    </>:''
+                    </div>:''
                 
             }
             {/* <button className='btn btn-secondary recipeedit-fixed-button' onClick={editOnClick}>
