@@ -199,7 +199,6 @@ const SetLogin = () => {
                 </div>
 
                     <input type="text" placeholder='Email' className="input infos" autoComplete='off' onChange={e=>setEmail(e.target.value)}/>
-                       c
                     <input type="password" placeholder='New Password' className="input infos" ref={passwordRef} onChange={e=>setNewPassword(e.target.value)}/>
                     {/* <input type="submit" value="Reset" className="infos" id="reset"/> */}
                     <button type="submit" className="infos" id="reset" onClick={e=>checkValid(e)}>
