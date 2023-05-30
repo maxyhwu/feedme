@@ -3,20 +3,17 @@ dotenv.config();
 import db from "../Model"
 import bcrypt from "bcrypt";
 import {sendForgetPWEmail} from "../services/userService"
-import { uploads, destroys } from "../Config/cloudinary";
+import { uploads } from "../Config/cloudinary";
 import fs from 'fs'
-import { upload } from '../Config/multerConfig'
 const User = db.users;
-const Op = db.Sequelize.Op
 
 const login = async (req, res, next) => {
     try {
         console.log(req.body)
-        const {userData, password} = req.body;
+        const {userEmail, password} = req.body;
         const user = await User.findOne({
             where: {
-                // userName: userName
-                [Op.or]: [{userName: userData}, {email: userData}]
+                email: userEmail
             }});
 
         if (user !== null ) {
@@ -49,9 +46,10 @@ const signup = async (req, res) => {
             userName,
             email,
             password: hashedPassword,
+            status: 'signed',
         };
         console.log(data)
-        const user = await User.create(data);
+        const user = await User.update(data, {where: {email: email}});
         if (user !== null) {
             return res.status(200).send({message:"Sign up successfully."});
         } else {
@@ -125,12 +123,11 @@ const resetPassword = async (req, res) => {
 const editProfile = async (req, res) => {
     try{
         const user = req.user;
-        const {userName, favorite, notiRec, notiIngre} = req.body
+        // console.log("user",user);
+        const {userName} = req.body
+        console.log(req.body)
         User.update({
             userName,
-            favorite,
-            notiRec,
-            notiIngre,
         },{ where: { id: user.id}})
         res.status(200).send({message:"Edit profile successfully."})
     } catch (err) {

@@ -43,6 +43,7 @@ const envRequest = axios.create({
 
 export const apiLoginTwitter = data => loginRequest.post('/twitter', data);
 export const apiLogin = data => userRequest.post('/login', data);
+export const apiValidSignUp = data => userRequest.post('/valid-signup', data);
 export const apiSignUp = data => userRequest.post('/signup', data);
 export const apiForgetPW = data => userRequest.post('/forgotpw', data);
 export const apiSetPW = data => userRequest.post('/setPassword', data);

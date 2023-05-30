@@ -8,23 +8,23 @@ import generalRoutes from './Routes/generalRoutes';
 import recipeRoutes from './Routes/recipeRoutes';
 import envRoutes from './Routes/envRoutes';
 import path from 'path'
-import commentSocket from "./Controllers/commentSocket";
+// import commentSocket from "./Controllers/commentSocket";
 
 console.log("dotenv = ", process.env.PORT)
 const PORT = process.env.PORT || 8000
 
 import express, { json, urlencoded } from "express";
-const app = express();
 import cors from 'cors';
+
+const app = express();
+
 var corsOption = {
-  // origin: "http://localhost:3000",
   origin: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   exposedHeaders: ['x-auth-token']
 };
 app.use(cors(corsOption));
-
 
 app.use(json());
 app.use(urlencoded());
@@ -34,7 +34,7 @@ app.use('/api/data', dataRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/general', generalRoutes);
 app.use('/api/recipe', recipeRoutes);
-app.use('/api/env', envRoutes)
+app.use('/api/env', envRoutes);
 
 // db.sequelize.sync({ force: true }).then(() => {    //drop table if exists
 //     console.log("db has been sync")
@@ -64,9 +64,49 @@ app.listen(PORT, function(err){
   console.log("Server listening on Port", PORT);
 })
 
+// import http from "http";
+// import https from "https";
+// import { Server } from "socket.io";
 // const httpServer = http.createServer(app);
+// const httpServer = https.createServer(app);
+// const io = new Server(httpServer, {
+//   cors: {
+//     allowedHeaders: ["my-header"]
+//   }
+// });
+
+// io.on('connection', (socket) => {
+//   console.log(`Connected: ${socket.id}`);
+
+//   socket.on('disconnect', () =>
+//     console.log(`Disconnected: ${socket.id}`));
+
+//   socket.on('join', (room) => {
+//     console.log(`Socket ${socket.id} joining ${room}`);
+//     socket.join(room);
+//   });
+
+//   socket.on('chat', (data) => {
+//     const { message, room } = data;
+//     console.log(`msg: ${message}, room: ${room}`);
+//     io.to(room).emit('chat', message);
+//   });
+
+//   socket.on('addlikecnt', (data) => {
+//     const { room } = data;
+//     // console.log(`room: ${room}`);
+//     io.to(room).emit('addlikecnt');
+//   });
+
+//   socket.on('minuslikecnt', (data) => {
+//     const { room } = data;
+//     // console.log(`room: ${room}`);
+//     io.to(room).emit('minuslikecnt');
+//   });
+// });
+
 // httpServer.listen(PORT, () => {
 //   console.log(`🚀 Server Ready at ${PORT}! 🚀`)
 // });
 
-commentSocket();
+// commentSocket();

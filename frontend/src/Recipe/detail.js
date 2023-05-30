@@ -9,7 +9,7 @@ import { apiQueryRecipeByID, apiGetRecipeComment, apiAddComment, apiGetUserData,
 import { UseLoginContext } from "../Context/LoginCnt";
 import { FaTrashAlt, FaJournalWhills } from 'react-icons/fa';
 import { getNoTokenData } from '../utils/useNoTokenApis'
-import { initiateSocket, sendMessage, subscribeToAddLikeCnt, subscribeToChat, subscribeToMinusLikeCnt } from "../Context/commentSocketHooks";
+import { disconnectSocket, initiateSocket, sendMessage, subscribeToAddLikeCnt, subscribeToChat, subscribeToMinusLikeCnt } from "../Context/commentSocketHooks";
 import { BsFillTrashFill } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -56,30 +56,33 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     //     }
     // ]
 
-    useEffect(() => {
-        initiateSocket(recipeID);
-        subscribeToChat((err, data) => {
-            if (err) return;
-            // data = {content: {
-            //     comment_str: comment,
-            //     time: "just now",
-            //     user_id: "cur"
-            // }, user: {
-            //     photo: data.image,
-            //     userName: data.userName
-            // }}
-            setComments([...comments, data]);
-            console.log('comment socket data', data);
-        });
-        subscribeToAddLikeCnt((err) => {
-            if (err) return;
-            setLikeCount(prev => prev + 1);
-        })
-        subscribeToMinusLikeCnt((err) => {
-            if (err) return;
-            setLikeCount(prev => prev - 1);
-        })
-    }, [])
+    // useEffect(() => {
+    //     initiateSocket(recipeID);
+    //     subscribeToChat((err, newMessage) => {
+    //         if (err) return;
+    //         // newMessage = {content: {
+    //         //     comment_str: comment,
+    //         //     time: "just now",
+    //         //     user_id: "cur"
+    //         // }, user: {
+    //         //     photo: data.image,
+    //         //     userName: data.userName
+    //         // }}
+    //         setComments(prev => [newMessage, ...prev]);
+    //         console.log('comment socket newMessage', newMessage);
+    //     });
+    //     subscribeToAddLikeCnt((err) => {
+    //         if (err) return;
+    //         setLikeCount(prev => prev + 1);
+    //     })
+    //     subscribeToMinusLikeCnt((err) => {
+    //         if (err) return;
+    //         setLikeCount(prev => prev - 1);
+    //     })
+    //     return () => {
+    //         disconnectSocket();
+    //     }
+    // }, [])
 
     const addComments = async(comment) => {
         const content = {
@@ -102,10 +105,17 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             photo: data.image,
             userName: data.userName
         }
-        sendMessage(recipeID, {content: message, user: user});
-        setComments([...comments, {content: message, user: user}]);
+        const newMessage = {content: message, user: user};
+        // sendMessage(recipeID, newMessage);
+        setComments(prev => [newMessage, ...prev]);
 
         setUserComment("");
+    }
+
+    const handleCommentKeyUp = (event, comments) => {
+        if (event.key === 'Enter') {
+            addComments(comments);
+        }
     }
 
     const editOnClick = async() => {
@@ -121,6 +131,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         const result = await handleEditSave();
         // console.log('save result', result);
         setEditMode(false);
+        window.location.reload(true);
     }
 
     const handleEditInstruOnclick= () => {
@@ -189,7 +200,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         }, {});
 
         const recipeFormData = new FormData();
-        recipeFormData.append('title', JSON.stringify(titleValue));
+        recipeFormData.append('title', titleValue);
         // recipeFormData.append('overview', '');
         recipeFormData.append('servingSize', parseInt(servingValue));
         recipeFormData.append('instructions', JSON.stringify(instruContent))
@@ -208,10 +219,10 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         for (const [key, value] of recipeFormData.entries()) {
             formDataObject[key] = value;
         }
-          
+
         // Print the FormData object as a plain JavaScript object
         console.log('form data object', formDataObject);
- 
+
         const updateResult = await apiUpdateRecipe(formDataObject);
         console.log('update result', updateResult);
         if (updateResult.data === 'success') {
@@ -256,11 +267,10 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     }
 
 
-    function dateTransformer(inputComments) {
-        const transformed = inputComments.map((comment) => {
-            const newComment = { ...comment }; // Create a new object for each comment
-        
-            const dateString = comment.content.time;
+    function dateTransformer(dateString) {
+        if (dateString === 'just now') {
+            return "Just Now"
+        } else {
             const date = new Date(dateString);
             const formattedDate = date.toLocaleDateString(); // Get the formatted date
             const formattedTime = date.toLocaleTimeString(); // Get the formatted time
@@ -269,15 +279,12 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             console.log('Date:', formattedDate);
             console.log('Time:', formattedTime);
         
-            newComment.content.time = formattedDate + ' ' + formattedTime;
+            const localizedTime = formattedDate + ' ' + formattedTime;
         
-            console.log('Transformed new comment:', newComment);
+            console.log('Transformed new time:', localizedTime);
         
-            return newComment;
-        });
-        
-        console.log('Transformed comments:', transformed);
-        return transformed;
+            return localizedTime;
+        }
     }
 
     async function gatherComments() {
@@ -464,6 +471,24 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             <div className={`comment-container ${editMode ? 'blur-all':''}`}>
                 <div className="comments">Comments</div>
                 {
+                    login ?
+                    <div className="comment-input">
+                        <div className="comment-avatar">
+                            <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
+                        </div>
+                        <input className= "input-text" 
+                            type = "text" 
+                            placeholder="leave your comment..."
+                            value={userComment}
+                            onChange={(e) => setUserComment(e.target.value)}/>
+                        <button 
+                            className="submit-text"
+                            onClick={() => addComments(userComment)}> Submit </button>
+                        {/* <input classname= "submit-text" type = "submit">Submit</input> */}
+                    </div> :
+                    <></>
+                }
+                {
                     // content = { comment_str: "df comment test", time: "2023-05-26T09:09:21+00:00", user_id: "7"}
                     // user = 0: {photo: '', userName: 'Yu'}
                     !isEmptyComment ? 
@@ -488,7 +513,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                                 <div className="comment">
                                     <div className="nameAndTime">
                                         <div className="commenter">{user.userName}</div>
-                                        <div className="comment-time">{content.time}</div>
+                                        <div className="comment-time">{dateTransformer(content.time)}</div>
                                     </div>
                                     <div className="comment-content">{content.comment_str}</div>
                                 </div>
@@ -499,24 +524,6 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                 }
                 {/* <div className="single-comment-container" style={{width: '100%'}}>This looks soooooo delicious.</div>
                 <div className="single-comment-container" style={{width: '100%'}}>I love curry~</div> */}
-                {
-                    login ?
-                    <div className="comment-input">
-                        <div className="comment-avatar">
-                            <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="" />
-                        </div>
-                        <input className= "input-text" 
-                            type = "text" 
-                            placeholder="leave your comment..."
-                            value={userComment}
-                            onChange={(e) => setUserComment(e.target.value)}/>
-                        <button 
-                            className="submit-text"
-                            onClick={() => addComments(userComment)}> Submit </button>
-                        {/* <input classname= "submit-text" type = "submit">Submit</input> */}
-                    </div> :
-                    <></>
-                }
             </div> 
             {
                 editMode ?
@@ -585,11 +592,12 @@ const RecipeDetailShare = () => {
                 likeCnt: likeCount
             });
         })
-    }, [recipeID])
+    }, [recipeID, id2ingredient])
 
     // console.log(recipeID);
     // console.log(recipe);
     // console.log(apiRecipe);
+    // console.log(id2ingredient)
 
     const { recipeName, serving, ingredients, instructions, image_link, comments } = apiRecipe;
 
@@ -637,7 +645,7 @@ const RecipeDetailShare = () => {
             </div>
             </>
             }
-           
+
             { recipeName === '' &&
                 <div className="recipe-not-exist">
                     <h3 style={{ 'text-align': 'center', 'color': 'gray' }}>
