@@ -216,14 +216,14 @@ const RegisterPage = () => {
 
     return (
         <div className="container">
-            <div id='logo'>
+            <div className='logo-container' id='logo'>
                 <img src={FeedMe} alt='feedme' id="feedmelogo"/>
             </div>
             <div className="body">
                 
                 <form onSubmit={register} id="info">
                 <div id="header">
-                    <h2 className="infos" style={{margin:"5px"}}>Welcome, newbie!</h2>
+                    <h2 className="infos" style={{margin:"10px"}}>Welcome, newbie!</h2>
                 </div>
                     <input
                         type="text"
