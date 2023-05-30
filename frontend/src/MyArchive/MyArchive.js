@@ -14,7 +14,7 @@ const MyArchive = () => {
     
     useEffect(() => {
         const likeData = [...new Set(data.like)];
-        console.log(likeData);
+        // console.log(likeData);
         
         const fetchData = async () => {
             const promises = likeData.map((recipeID) =>
@@ -54,7 +54,7 @@ const MyArchive = () => {
         return parsedData;
     };
 
-    console.log(recipeList);
+    // console.log(recipeList);
     
     return (
         <div className="favRecipeList">

@@ -4,15 +4,15 @@ import { apiGetEnv } from '../axios/noToken';
 
 async function getEnv () {
     return apiGetEnv()
-         .then(response=> {
+        .then(response=> {
             if (response.status === 201) {
                 return response.data
             }
             if (!response.ok) {throw new Error(response.status)}
-         })
-         .catch((error) => {
-            console.log('error: ' + error);
-         })
+        })
+        .catch((error) => {
+            // console.log('error: ' + error);
+        })
 }
 
 const EnvContext = React.createContext({

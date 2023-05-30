@@ -75,7 +75,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             // }}
             setComments(prev => [newMessage, ...prev]);
             setIsEmptyComment(false);
-            console.log('comment socket newMessage', newMessage);
+            // console.log('comment socket newMessage', newMessage);
         });
         subscribeToAddLikeCnt((err) => {
             if (err) return;
@@ -134,9 +134,9 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             comment: comment,
             Rid: recipeID
         }
-        console.log('add content :', content);
+        // console.log('add content :', content);
         const addResult = await apiAddComment(content);
-        console.log('add result', addResult.data);
+        // console.log('add result', addResult.data);
         if (addResult.data === 'success') {
             // window.alert('comment added!')
             toast.success('Comment added!')
@@ -220,7 +220,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     const refreshAfterSave = async(rid) => {
         const result = await apiQueryRecipeByID(rid);
         const refreshedRecipe = result.data.rows;
-        console.log('refreshed result', refreshedRecipe);
+        // console.log('refreshed result', refreshedRecipe);
     }
 
     const handleEditSave = async() => {
@@ -237,8 +237,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         const testIngred = [['Milk', '1 cup'], ['Carrots', '1']]
 
         const formatIngredients = combineIngredCount().reduce((acc, cur) => {
-            console.log('ingredient2id', ingredient2id);
-            console.log('current value', cur);
+            // console.log('ingredient2id', ingredient2id);
+            // console.log('current value', cur);
             var curIngredId = ingredient2id[cur[0]]; //id
             acc[curIngredId] = [cur[1]]
             return acc;
@@ -255,9 +255,9 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         recipeFormData.append('ingredients', JSON.stringify(formatIngredients));
         recipeFormData.append('id', recipeID)
 
-        for (var pair of recipeFormData.entries()) {
-            console.log(pair[0]+': '+pair[1]);
-        }
+        // for (var pair of recipeFormData.entries()) {
+        //     console.log(pair[0]+': '+pair[1]);
+        // }
         // console.log('recipe from data', recipeFormData);
 
         const formDataObject = {};
@@ -266,10 +266,10 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         }
 
         // Print the FormData object as a plain JavaScript object
-        console.log('form data object', formDataObject);
+        // console.log('form data object', formDataObject);
 
         const updateResult = await apiUpdateRecipe(formDataObject);
-        console.log('update result', updateResult);
+        // console.log('update result', updateResult);
         if (updateResult.data === 'success') {
             // window.alert('Edit saved!')
             toast.success('Recipe updated!')
@@ -288,7 +288,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
 
     const handleEditDelete = async() => {
         const deleteResult = await apiDeleteRecipeByID(recipeID);
-        console.log('delete result', deleteResult);
+        // console.log('delete result', deleteResult);
         if (deleteResult.data === 'success') {
             // window.alert('Successfully remove')
             toast.success('Successfully remove')
@@ -320,20 +320,20 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             const formattedDate = date.toLocaleDateString(); // Get the formatted date
             const formattedTime = date.toLocaleTimeString(); // Get the formatted time
         
-            console.log('Original date string:', dateString);
-            console.log('Date:', formattedDate);
-            console.log('Time:', formattedTime);
+            // console.log('Original date string:', dateString);
+            // console.log('Date:', formattedDate);
+            // console.log('Time:', formattedTime);
         
             const localizedTime = formattedDate + ' ' + formattedTime;
         
-            console.log('Transformed new time:', localizedTime);
+            // console.log('Transformed new time:', localizedTime);
         
             return localizedTime;
         }
     }
 
     async function gatherComments() {
-        console.log('init recipe', recipe);
+        // console.log('init recipe', recipe);
         const initComments = recipe.comments_arr;
         const commentUserData = {};
         let combinedComments = {};
@@ -358,7 +358,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             combinedComments = initComments.map((item, idx) => {
                 return { user: commentUserData[idx], content: item[0] }
             })
-            console.log('combined', combinedComments);
+            // console.log('combined', combinedComments);
             // const transformedComment = dateTransformer(combinedComments);
             setComments(combinedComments.reverse());
             // console.log('complete comments', completeComments);
@@ -377,11 +377,11 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     useEffect(() => {
 
         gatherComments();
-        console.log('comment', comments);
+        // console.log('comment', comments);
 
         const handleEditAccess = async() => {
             const recipeByUser = await apiQueryRecipeByUser();
-            console.log('query recipe by user', recipeByUser);
+            // console.log('query recipe by user', recipeByUser);
             const userRecipe = recipeByUser.data.rows;
             userRecipe.map((recipe) => {
                 if (recipeID === recipe.id) {

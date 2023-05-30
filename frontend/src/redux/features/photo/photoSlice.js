@@ -28,7 +28,7 @@ export const createPhoto = createAsyncThunk(
                   error.response.data.message) ||
                 error.message ||
                 error.toString();
-            console.log(message);
+            // console.log(message);
             toast.error(message);
             return thunkAPI.rejectWithValue(message);
         }
@@ -48,7 +48,7 @@ export const getPhotos = createAsyncThunk(
                   error.response.data.message) ||
                 error.message ||
                 error.toString();
-            console.log(message);
+            // console.log(message);
             return thunkAPI.rejectWithValue(message);
         }
     }
@@ -67,7 +67,7 @@ export const deletePhoto = createAsyncThunk(
                   error.response.data.message) ||
                 error.message ||
                 error.toString();
-            console.log(message);
+            // console.log(message);
             return thunkAPI.rejectWithValue(message);
         }
     }
@@ -86,7 +86,7 @@ export const getPhoto = createAsyncThunk(
             error.response.data.message) ||
           error.message ||
           error.toString();
-        console.log(message);
+        // console.log(message);
         return thunkAPI.rejectWithValue(message);
       }
     }
@@ -104,7 +104,7 @@ export const updatePhoto = createAsyncThunk(
                 error.response.data.message) ||
               error.message ||
               error.toString();
-            console.log(message);
+            // console.log(message);
             return thunkAPI.rejectWithValue(message);
         }
     }

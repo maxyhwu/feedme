@@ -25,11 +25,11 @@ const Contact = () => {
             '1Y72IV_5TDe1Qay08'
         )
         .then((result) => {
-            console.log(result.text);
+            // console.log(result.text);
             toast.success("Message Send");
             resetForm();
         }, (error) => {
-            console.log(error.text);
+            // console.log(error.text);
             toast.error(error.message);
         });
         e.target.reset();

@@ -44,10 +44,10 @@ function Main() {
     fetchLang()
   }, [lang])
 
-  useEffect(() => {
-    console.log(data)
-    // data.then((datas)=>console.log(datas))
-  }, [data])
+  // useEffect(() => {
+  //   console.log(data)
+  //   // data.then((datas)=>console.log(datas))
+  // }, [data])
 
   return (
       <IntlProvider locale="en" messages={locale}>
