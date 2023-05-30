@@ -45,7 +45,7 @@ const EditProfile = () => {
     .then(response=> {
         if (response.status === 200) {
           toast.success("Image updated!");
-           return response.data;
+          return response.data;
         }
     })
     .catch((reason) => {
