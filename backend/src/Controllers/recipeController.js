@@ -49,7 +49,7 @@ const queryByLabel = async (req, res) => {
 
 const queryTopLikeCount = async (req, res) => {
   const { page } = req.query;
-  const query = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY`;
+  const query = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC, id ASC OFFSET $1 ROWS FETCH NEXT 15 ROWS ONLY`;
   const values = [(parseInt(page) - 1) * 15];
 
   try {
