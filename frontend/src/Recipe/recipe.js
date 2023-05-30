@@ -11,7 +11,7 @@ import { UseGeneralContext } from '../Context/generalTables'
 import { UseLoginContext } from "../Context/LoginCnt";
 import { apiAllIngredient } from '../axios/noToken';
 import { disconnectSocket } from '../Context/commentSocketHooks';
-import { apiQueryRecipeByTop, apiQueryRecipeByUser, apiQueryRecipebyFridge, apiQueryRecipeTotalCount } from '../axios/withToken'
+import { apiQueryRecipeByTop, apiQueryRecipeByUser, apiQueryRecipebyFridge, apiQueryRecipeTotalCount, apiQueryRecipeByID } from '../axios/withToken'
 
 
 const RecipeObject = ({ recipe, setSearching }) => {
@@ -32,8 +32,32 @@ const RecipeObject = ({ recipe, setSearching }) => {
             borderRadius: '15px',
         },
     };
+    const { id2ingredient } = UseGeneralContext();
     const [showModal, setShowModal] = useState(false);
     const [updatedRecipe, setUpdatedRecipe] = useState(recipe);
+
+    const parseData = (apiData) => {
+        const { id, title, overview, servingSize, instructions, image, video, likeCount, labels, ingredients, comments, createdAt, updatedAt, userName } = apiData;
+        const formatIngredients = Object.entries(ingredients).map(([id, amount]) => [id2ingredient[id], amount]);  // ...amount => ! amount is not iterable
+        const newData = {
+            recipeID: id,
+            recipeName: title,
+            serving: servingSize,
+            ingredients: formatIngredients,
+            instructions: instructions,
+            image_link: image,
+            comments_arr: comments,
+            likeCnt: likeCount
+        }
+    
+        return newData;
+    };
+
+    useEffect(() => {
+        apiQueryRecipeByID(recipeID).then((value) => {
+            setUpdatedRecipe(parseData(value.data.rows[0]));
+        });
+    }, [showModal]);
 
     const handleOpenModal = () => {
         setShowModal(true);
@@ -62,7 +86,7 @@ const RecipeObject = ({ recipe, setSearching }) => {
             >
                 <RecipeDetail key={recipeID} 
                     //recipe={updatedRecipe} 
-                    recipe={recipe}
+                    recipe={updatedRecipe}
                     handleCloseModal={handleCloseModal}
 
                     // setUpdatedRecipe={setUpdatedRecipe}

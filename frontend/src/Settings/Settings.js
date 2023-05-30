@@ -219,6 +219,7 @@ useEffect ( () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    // console.log('fuck')
     if (checkCategoryValid(addData)) {
       const newFavorite = updateFavoriteData(addData)
       if (newFavorite !== null ){
