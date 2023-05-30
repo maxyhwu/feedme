@@ -46,9 +46,10 @@ const signup = async (req, res) => {
             userName,
             email,
             password: hashedPassword,
+            status: 'signed',
         };
         console.log(data)
-        const user = await User.create(data);
+        const user = await User.update(data, {where: {email: email}});
         if (user !== null) {
             return res.status(200).send({message:"Sign up successfully."});
         } else {
