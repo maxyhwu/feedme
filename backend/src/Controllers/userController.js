@@ -123,11 +123,11 @@ const resetPassword = async (req, res) => {
 const editProfile = async (req, res) => {
     try{
         const user = req.user;
-        // console.log("user",user);
-        const {userName} = req.body
+        // console.log("us);
+        const {favorite} = req.body
         console.log(req.body)
         User.update({
-            userName,
+            favorite
         },{ where: { id: user.id}})
         res.status(200).send({message:"Edit profile successfully."})
     } catch (err) {
