@@ -338,3 +338,7 @@ textarea {
     align-items: center;
     justify-content: center;
 }
+
+.have-ingre{
+    color: green;
+}

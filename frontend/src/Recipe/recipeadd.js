@@ -85,14 +85,19 @@ function RecipeAddButton() {
     
         // Create a file reader
         const reader = new FileReader();
-    
-        // Set the file reader onload function
-        reader.onload = () => {
-            setImagePreviewUrl(reader.result);
-        };
-    
-        // Read the file as a data URL
-        reader.readAsDataURL(file);
+
+        if (file) {
+            // Check if the file size is less than 1MB (1MB = 1,048,576 bytes)
+            if (file.size < 1048576 * 2) {
+                // Set the file reader onload function
+                reader.onloadend = () => {
+                    setImagePreviewUrl(reader.result);
+                };
+            
+                // Read the file as a data URL
+                reader.readAsDataURL(file);
+            } 
+        }
     }
 
     const handleRecipeNameChange = (event) => {
@@ -409,10 +414,10 @@ function RecipeAddButton() {
 
                             <tr>
                                 <th scope="row">
-                                    <label htmlFor="recipe-image">Recipe Image</label>
+                                    <label htmlFor="recipe-image">{`Recipe Image (< 2MB)`}</label>
                                 </th>
                                 <td>
-                                    <input type="file" id="recipe-image" onChange={handleImageChange} className={`${recipeImageValid ? '' : 'recipeadd-image-invalid'}`} />
+                                    <input type="file" accept="image/png, image/jpg, image/jpeg" id="recipe-image" onChange={handleImageChange} className={`${recipeImageValid ? '' : 'recipeadd-image-invalid'}`} />
                                     {imagePreviewUrl && <div className='recipeadd-preview'><img src={imagePreviewUrl} alt="Preview" className='recipeadd-preview-image' /></div>}
                                 </td>
                             </tr>
