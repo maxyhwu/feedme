@@ -105,9 +105,9 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             photo: data.image,
             userName: data.userName
         }
-        // const newMessage = {content: message, user: user};
+        const newMessage = {content: message, user: user};
         // sendMessage(recipeID, newMessage);
-        // setComments(prev => [newMessage, ...prev]);
+        setComments(prev => [newMessage, ...prev]);
 
         setUserComment("");
     }
