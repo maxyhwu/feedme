@@ -1,153 +1,144 @@
 .main {
     height: 90vh;
     width: 80vw;
-
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     font-family: Poppins;
     font-size: 1.5em;
-}
-
-.feild {
+  }
+  
+  .field {
     height: 45vh;
     width: 60vw;
-
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-}
-
-.setting-bar-button{
+  }
+  
+  .setting-bar-button {
     left: 4vw;
     height: auto;
-    width: 15vw;
+    width: fit-content;
     border-radius: 10px;
     background-color: lightgray;
     padding: 1%;
-
+  
     position: relative;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-}
-.submit-button {
-    margin: 0 12px;
-}
-.back-button {
-    margin: 0 12px;
-}
-.setting-bar-button-icon{
+    flex-wrap: wrap;
+  }
+  
+  .submit-button {
+    width: auto; /* Remove fixed width to allow content-based width */
+    min-width: 80px; /* Add a minimum width to prevent excessive shrinking */
+    white-space: nowrap; /* Prevent button text from wrapping */
+    margin: 0 6px;
+  }
+  
+  .back-button {
+    width: auto; /* Remove fixed width to allow content-based width */
+    min-width: 80px; /* Add a minimum width to prevent excessive shrinking */
+    white-space: nowrap; /* Prevent button text from wrapping */
+    margin: 0 6px;
+  }
+  
+  .setting-bar-button-icon {
     height: 2vh;
     width: 2vh;
-    
-}
-
-.setting-bar-button-expand{
+  }
+  
+  .setting-bar-button-expand {
     height: 2vh;
     width: 2vh;
-}
-
-.keyin {
-    height: 25vh;
+  }
+  
+  .keyin {
+    /* height: 25vh; */
+    height: auto;
+    margin-top: 10%;
+    margin-bottom: 10%;
     width: 80vw;
-
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-content: center;
-}
-
-.flex-container {
+  }
+  
+  .flex-container {
     width: 60vw;
     left: 10vw;
-
     position: relative;
     display: flex;
     flex-direction: row;
-    /* justify-content: flex-start; */
     justify-content: space-between;
-}
-
-#username {
+  }
+  
+  #username {
     width: 40vw;
     border-radius: 15px;
     border: 1px solid gray;
     padding: 1.5%;
-
     position: relative;
     justify-content: flex-start;
-
     height: 6vh;
-}
-
-#categories {
+  }
+  
+  #categories {
     width: 40vw;
     border-radius: 15px;
     border: 1px solid gray;
     padding: 1.5%;
-
     position: relative;
     justify-content: flex-start;
-
     height: 10vh;
-}
-
-#fridge {
+  }
+  
+  #fridge {
     width: 40vw;
     border-radius: 15px;
     border: 1px solid gray;
     padding: 1.5%;
-
     position: relative;
     justify-content: flex-start;
-
     height: 18vh;
-}
-
-#noti {
+  }
+  
+  #noti {
     height: 3vh;
     width: 3vh;
-    /* right: 38vw; */
-
     position: relative;
-}
-
-#hints {
+  }
+  
+  #hints {
     left: 1vw;
-
     position: relative;
-}
-
-.notiBlock{
-        /* right: 24vw; */
-    /* position: relative; */
+  }
+  
+  .notiBlock {
     display: flex;
     flex-direction: row;
-    /* justify-content: flex-start; */
     align-items: flex-start;
     margin-left: 2vw;
-}
-
-.submit-container {
-    height: 4vh;
-    width: 90vw;
-    bottom: 8vh;
-    right: 18vw;
-    
+  }
+  
+  .submit-container {
+    height: auto;
     position: relative;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    align-items:self-start;
-}
-
-.submit-button {
-    background: #59B1E6;
+    align-items: self-start;
+  }
+  
+  .submit-button {
+    background: #59b1e6;
     border-radius: 10px;
     color: white;
     font-weight: 700;
@@ -155,9 +146,9 @@
     height: 5vh;
     border-style: none;
     margin-top: 5%;
-}
-
-.back-button {
+  }
+  
+  .back-button {
     background: #1f303a;
     border-radius: 10px;
     color: white;
@@ -166,49 +157,53 @@
     height: 5vh;
     border-style: none;
     margin-top: 5%;
-}
-
-.labeladd-input {
+  }
+  
+  .labeladd-input {
     width: 150px;
     margin: 3px;
     border: revert;
-}
-
-.labeladd-input-invalid {
+  }
+  
+  .labeladd-input-invalid {
     width: 150px;
     margin: 3px;
     border: revert;
     border-color: red;
-}
-@media screen and (max-width: 600px){
-    .feild {
+  }
+  
+  @media screen and (max-width: 600px) {
+    .main {
+      width: 100vw;
+    }
+  
+    .field {
       width: 100%;
       justify-content: center;
       align-items: center;
     }
-}
-@media screen and (max-width: 600px){
-    .labeladd-input, .labeladd-input-invalid {
+  
+    .labeladd-input,
+    .labeladd-input-invalid {
       width: 100%;
       justify-content: center;
       align-items: center;
     }
-}
-@media screen and (max-width: 600px){
+  
     .flex-container {
       width: 100%;
       justify-content: center;
-      align-items: center;
+      /* align-items: center; */
       display: flex;
       flex-direction: column;
     }
-}
-@media screen and (max-width: 600px){
+  
     .submit-container {
       width: 100vw;
       justify-content: center;
       align-items: center;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
     }
-}
+  }
+  
