@@ -26,8 +26,8 @@ var corsOption = {
 };
 app.use(cors(corsOption));
 
-app.use(express.json({limit: '50mb'}))
-app.use(express.urlencoded());
+app.use(json({limit: '50mb'}))
+app.use(urlencoded());
 
 app.use('/api/oauth', oauthRoutes);
 app.use('/api/data', dataRoutes);
