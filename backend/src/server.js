@@ -26,7 +26,7 @@ var corsOption = {
 };
 app.use(cors(corsOption));
 
-app.use(json());
+app.use(json({limit: '50mb'}))
 app.use(urlencoded());
 
 app.use('/api/oauth', oauthRoutes);
