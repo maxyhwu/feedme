@@ -19,7 +19,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     const { recipeID, recipeName, serving, ingredients, instructions, image_link, comments_arr, likeCnt } = recipe
     const {login} = UseLoginContext()
     const { id2ingredient, ingredient2id } = UseGeneralContext();
-    const { data } = UseDataContext()
+    const { data } = UseDataContext();
+    const { fridge } = data;
 
     const [userComment, setUserComment] = useState("");
     const [editMode, setEditMode] = useState(false);
@@ -42,6 +43,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     const [isEmptyComment, setIsEmptyComment] = useState(false);
     const [commentTransformed, setCommentTransformed] = useState(false);
     const [isRecipeOwner, setIsRecipeOwner] = useState(false);
+
+    const [fridgeArray, setFridgeArray] = useState([])
 
     // const comments = [
     //     {
@@ -84,6 +87,12 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             disconnectSocket();
         }
     }, [])
+
+    useEffect(() => {
+        setFridgeArray(Object.keys(fridge).map((key) => {
+            return id2ingredient[key];
+        }));
+    }, [fridge]);
 
     const addComments = async(comment) => {
         const content = {
@@ -350,6 +359,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     }, [])
 
     // console.log(recipe)
+    // console.log(fridge);
+    // console.log(fridgeArray);
 
     return(
         <div className='whole-modal'>
@@ -415,7 +426,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                                         />
                                     </>
                                     :
-                                    <li className={`${editMode ? 'hover-effect':''}`} key={idx}>
+                                    <li className={`${editMode ? 'hover-effect':''} ${fridgeArray.includes(ingredient[0]) ? 'have-ingre' : '' }`} key={idx}>
                                         {ingredient[0]}: {ingredient[1]}
                                     </li>
                                 ))}
