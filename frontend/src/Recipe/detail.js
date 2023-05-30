@@ -19,7 +19,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     const { recipeID, recipeName, serving, ingredients, instructions, image_link, comments_arr, likeCnt } = recipe
     const {login} = UseLoginContext()
     const { id2ingredient, ingredient2id } = UseGeneralContext();
-    const { data } = UseDataContext()
+    const { data } = UseDataContext();
+    const { fridge } = data;
 
     const [userComment, setUserComment] = useState("");
     const [editMode, setEditMode] = useState(false);
@@ -43,6 +44,10 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     const [commentTransformed, setCommentTransformed] = useState(false);
     const [isRecipeOwner, setIsRecipeOwner] = useState(false);
 
+    const [normalIng, setNormalIng] = useState([]);
+    const [expiredIng, setExpiredIng] = useState([]);
+    const [expiringIng, setExpiringIng] = useState([]);
+
     // const comments = [
     //     {
     //         name: 'Teresa',
@@ -56,33 +61,71 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     //     }
     // ]
 
-    // useEffect(() => {
-    //     initiateSocket(recipeID);
-    //     subscribeToChat((err, newMessage) => {
-    //         if (err) return;
-    //         // newMessage = {content: {
-    //         //     comment_str: comment,
-    //         //     time: "just now",
-    //         //     user_id: "cur"
-    //         // }, user: {
-    //         //     photo: data.image,
-    //         //     userName: data.userName
-    //         // }}
-    //         setComments(prev => [newMessage, ...prev]);
-    //         console.log('comment socket newMessage', newMessage);
-    //     });
-    //     subscribeToAddLikeCnt((err) => {
-    //         if (err) return;
-    //         setLikeCount(prev => prev + 1);
-    //     })
-    //     subscribeToMinusLikeCnt((err) => {
-    //         if (err) return;
-    //         setLikeCount(prev => prev - 1);
-    //     })
-    //     return () => {
-    //         disconnectSocket();
-    //     }
-    // }, [])
+    useEffect(() => {
+        initiateSocket(recipeID);
+        subscribeToChat((err, newMessage) => {
+            if (err) return;
+            // newMessage = {content: {
+            //     comment_str: comment,
+            //     time: "just now",
+            //     user_id: "cur"
+            // }, user: {
+            //     photo: data.image,
+            //     userName: data.userName
+            // }}
+            setComments(prev => [newMessage, ...prev]);
+            setIsEmptyComment(false);
+            console.log('comment socket newMessage', newMessage);
+        });
+        subscribeToAddLikeCnt((err) => {
+            if (err) return;
+            setLikeCount(prev => prev + 1);
+        })
+        subscribeToMinusLikeCnt((err) => {
+            if (err) return;
+            setLikeCount(prev => prev - 1);
+        })
+        return () => {
+            disconnectSocket();
+        }
+    }, [])
+
+    useEffect(() => {
+        const fridgeExpInfo = {};
+        const newNormalIng = [];
+        const newExpiredIng = [];
+        const newExpiringIng = [];
+
+        Object.keys(fridge).map((key) => {
+            const ingredArray = fridge[key];
+            const earliestExpireDate = ingredArray.reduce((earliestDate, ingredient) => {
+                if (!earliestDate || ingredient.expire_date < earliestDate) {
+                    return ingredient.expire_date;
+                } else {
+                    return earliestDate;
+                }
+            }, null);
+            fridgeExpInfo[key] = earliestExpireDate;
+        })
+
+        const today = new Date();
+        Object.entries(fridgeExpInfo).forEach(([key, expirationDate]) => {
+            const timeDiff = new Date(expirationDate).getTime() - today.getTime();
+            const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            const ingredient = id2ingredient[key]
+            if (timeDiff < 0) {
+                newExpiredIng.push(ingredient);
+            } else if (daysDiff <= 5) {
+                newExpiringIng.push(ingredient);
+            } else {
+                newNormalIng.push(ingredient);
+            }
+        });
+
+        setNormalIng(newNormalIng);
+        setExpiredIng(newExpiredIng);
+        setExpiringIng(newExpiringIng);
+    }, [fridge]);
 
     const addComments = async(comment) => {
         const content = {
@@ -105,8 +148,8 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             photo: data.image,
             userName: data.userName
         }
-        // const newMessage = {content: message, user: user};
-        // sendMessage(recipeID, newMessage);
+        const newMessage = {content: message, user: user};
+        sendMessage(recipeID, newMessage);
         // setComments(prev => [newMessage, ...prev]);
 
         setUserComment("");
@@ -348,7 +391,9 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         // setIsRecipeOwner(true);
     }, [])
 
+    // console.log(data.fridge[49]);
     // console.log(recipe)
+    // console.log(fridge);
 
     return(
         <div className='whole-modal'>
@@ -414,7 +459,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                                         />
                                     </>
                                     :
-                                    <li className={`${editMode ? 'hover-effect':''}`} key={idx}>
+                                    <li className={`${editMode ? 'hover-effect':''} ${normalIng.includes(ingredient[0]) ? 'have-ingre' : '' } ${expiredIng.includes(ingredient[0]) ? 'have-ingre-expired' : '' } ${expiringIng.includes(ingredient[0]) ? 'have-ingre-expiring' : '' }`} key={idx}>
                                         {ingredient[0]}: {ingredient[1]}
                                     </li>
                                 ))}

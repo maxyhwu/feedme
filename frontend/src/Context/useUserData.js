@@ -50,22 +50,23 @@ const getData = () =>  {
 
 const DataContextProvider =  (props) => {
     useEffect(() => {
-        const fetchData = async () => {
-            const [response, token] = await getBackendData()
-            let input = {userName: response.userName, email: response.email, fridge: response.fridge, token: token, favorite: response.favorite, like: response.like, notiRec: response.notiRec, notiIngre: response.notiIngre, image: response.image, provider: response.provider}
-            changeData(input)
-        }
         if ( (localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') !== null) || (Object.keys(getUserData()).length !== 0) ){
             fetchData()
         }
     }, [])
     const [data, setData] = useState( getData() )
+    const fetchData = async () => {
+        const [response, token] = await getBackendData()
+        let input = {userName: response.userName, email: response.email, fridge: response.fridge, token: token, favorite: response.favorite, like: response.like, notiRec: response.notiRec, notiIngre: response.notiIngre, image: response.image, provider: response.provider}
+        changeData(input)
+        return input;
+    }
     const changeData = (input) => {
         localStorage.setItem('user',JSON.stringify(input));
         setData(input)
     }
     return (
-        <DataContext.Provider value={{data, changeData}}>
+        <DataContext.Provider value={{data, changeData, fetchData}}>
             {props.children}
         </DataContext.Provider>
     );
