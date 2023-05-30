@@ -15,9 +15,9 @@ import { Server } from "socket.io";
 
 const commentSocket = () => {
   // Create an HTTPS server
-  const port = 443;
+  const port = 3050;
   const httpc = https.createServer().listen(port, () => {
-    console.log(`Server started on port ${port}`);
+    console.log(`WebSocket server started on port ${port}`);
   });
   // Create a Socket.IO instance and attach it to the server
   const io = new Server (httpc);
@@ -42,13 +42,13 @@ const commentSocket = () => {
 
     socket.on('addlikecnt', (data) => {
       const { room } = data;
-      // console.log(`room: ${room}`);
+      console.log(`add like room: ${room}`);
       io.to(room).emit('addlikecnt');
     });
 
     socket.on('minuslikecnt', (data) => {
       const { room } = data;
-      // console.log(`room: ${room}`);
+      console.log(`minus like room: ${room}`);
       io.to(room).emit('minuslikecnt');
     });
   });

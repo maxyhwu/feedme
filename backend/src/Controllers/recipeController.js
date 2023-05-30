@@ -103,9 +103,22 @@ const queryByFridge = async (req, res) => {
   const queryIng = [];
   const sortedIng = [];
 
+  // no ingredients
   if (Object.keys(ingredientArr).length == 0) {
-    return res.send("fail");
+    console.log(-1);
+    const queryT = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC OFFSET 1 ROWS FETCH NEXT 15 ROWS ONLY`;
+    try {
+      const { rows: rowsT } = await pool.query(queryT);
+      const rows = rowsT;
+      res.send({ rows });
+    } catch (err) {
+      res.send("fail");
+      console.log(err);
+    }
+    return;
   }
+
+  // check expire date
   for (let key in ingredientArr) {
     // query ingredient table get ingredient date
     for (let i = 0; i < ingredientArr[key].length; i++) {
@@ -132,13 +145,15 @@ const queryByFridge = async (req, res) => {
 
   if (queryIng.length > 5) {
     // 1-1 sort and select 5
-    // console.log(0);
+    console.log(0);
     queryIng.sort(
       (a, b) => b[Object.keys(b)[0]].daysDiff - a[Object.keys(a)[0]].daysDiff
     );
     // avoid duplicate
     let imax = 5;
     for (let i = 0; i < imax; i++) {
+      if (i >= sortedIng.length) break;
+
       let tempIng = Object.keys(queryIng[i])[0].toString();
       if (!finalIngArr.includes(tempIng)) {
         finalIngArr.push(tempIng);
@@ -148,13 +163,16 @@ const queryByFridge = async (req, res) => {
     }
   } else if (queryIng.length == 0) {
     // 2 query five most amount
-    // console.log(1);
+    console.log(1);
     sortedIng.sort(
       (a, b) => b[Object.keys(b)[0]].count - a[Object.keys(a)[0]].count
     );
-    // avoid duplicate
+    // avoid null
     let imax = 5;
+    // avoid duplicate
     for (let i = 0; i < imax; i++) {
+      if (i >= sortedIng.length) break;
+
       let tempIng = Object.keys(sortedIng[i])[0].toString();
       if (!finalIngArr.includes(tempIng)) {
         finalIngArr.push(tempIng);
@@ -164,7 +182,7 @@ const queryByFridge = async (req, res) => {
     }
   } else {
     // 1-2 if ingredient < 5 use all
-    // console.log(2);
+    console.log(2);
     for (let i in queryIng) {
       let tempIng = Object.keys(queryIng[i])[0].toString();
       if (!finalIngArr.includes(tempIng)) {
@@ -182,8 +200,19 @@ const queryByFridge = async (req, res) => {
   const query3 = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC OFFSET 1 ROWS FETCH NEXT 15 ROWS ONLY`;
   try {
     const { rows: rows1 } = await pool.query(query2, values2);
-    const { rows: rows2 } = await pool.query(query3);
-    const rows = rows1.concat(rows2);
+    if (rows1.length == 0) {
+      try {
+        const { rows: rows2 } = await pool.query(query3);
+        console.log(-5);
+        const rows = rows2;
+        res.send({ rows });
+      } catch (err) {
+        res.send("fail");
+        console.log(err);
+      }
+      return;
+    }
+    const rows = rows1;
     res.send({ rows });
   } catch (err) {
     res.send("fail");
@@ -234,13 +263,7 @@ const updateMinusLikeCount = async (req, res) => {
 };
 
 const updateRecipe = async (req, res) => {
-  const {
-    title,
-    servingSize,
-    instructions,
-    ingredients,
-    id,
-  } = req.body;
+  const { title, servingSize, instructions, ingredients, id } = req.body;
 
   const user = req.user;
   const query = `UPDATE "Recipes" SET "title" = $1, "servingSize" = $2, "instructions" = $3, "ingredients" = $4 WHERE "id" = $5 and "userID" = $6`;
@@ -253,7 +276,7 @@ const updateRecipe = async (req, res) => {
     parseInt(id),
     user.id,
   ];
-  console.log("values", values)
+  console.log("values", values);
   try {
     await pool.query(query, values);
     res.send("success");

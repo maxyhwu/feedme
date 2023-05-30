@@ -77,21 +77,25 @@ const RecipeObject = ({ recipe, setSearching }) => {
 }
 
 
-const Pagination = ({ recipesPerPage, totalRecipes, paginate, currentPage }) => {
+const Pagination = ({ paginate, currentPage, totalPage }) => {
     const pageNumbers = [];
     const maxPageNumbers = 5;
+    const halfMaxPageNumbers = Math.floor(maxPageNumbers / 2);
 
-    for (let i = 1; i <= Math.ceil(totalRecipes / recipesPerPage); i++) {
+    for (let i = 1; i <= totalPage; i++) {
         pageNumbers.push(i);
     }
-
-    const lastPage = pageNumbers[pageNumbers.length - 1];
+    
     let firstPageInRange;
-    if (lastPage - currentPage < Math.floor(maxPageNumbers / 2)) {
-        firstPageInRange = lastPage - maxPageNumbers + 1;
+    const lastPage = pageNumbers[pageNumbers.length - 1];
+    if (currentPage <= 1 + halfMaxPageNumbers) {
+        firstPageInRange = 1;
+    }
+    else if (currentPage >= lastPage - halfMaxPageNumbers) {
+        firstPageInRange = Math.max(1, lastPage - maxPageNumbers + 1)
     }
     else {
-        firstPageInRange = Math.max(1, currentPage - Math.floor(maxPageNumbers / 2));
+        firstPageInRange = Math.max(1, currentPage - halfMaxPageNumbers);
     }
     const lastPageInRange = Math.min(lastPage, firstPageInRange + maxPageNumbers - 1);    
 
@@ -160,7 +164,6 @@ const Recipe = () => {
     const { id2ingredient } = UseGeneralContext();
     const [pageTitle, setPageTitle] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [recipesPerPage, setRecipesPerPage] = useState(5);
     const [apiRecipeData, setApiRecipeData] = useState([]);
     const [currentRecipes, setCurrentRecipes] = useState([]);
     // const [rerender, setRerender] = useState(false);
@@ -168,7 +171,8 @@ const Recipe = () => {
     const [searching, setSearching] = useState(false);
     const [searchedRecipe, setSearchedRecipe] = useState([]);
     const [apiRecipesCount, setApiRecipesCount] = useState(1);
-    const [totalRecipesCount, setTotalRecipesCount] = useState(1);
+    const [totalPage, setTotalPage] = useState(1);
+    const recipesPerPage = 5
 
     const parseData = (dataArray, prevData, startIndex) => {
         // console.log(dataArray);
@@ -196,7 +200,7 @@ const Recipe = () => {
         setApiRecipesCount(1);
         if (location.pathname === '/recipe') {
             setPageTitle('Our Popular Recipes');
-            apiQueryRecipeByTop(currentPage).then((value) => {
+            apiQueryRecipeByTop(1).then((value) => {
                 const apiData = parseData(value.data.rows, [], 0);
                 setApiRecipeData(apiData);                
             });
@@ -222,9 +226,10 @@ const Recipe = () => {
 
     useEffect(() => {
         if (location.pathname === '/recipe') {
-            apiQueryRecipeByTop(currentPage).then((value) => {
+            const fetchPage = Math.floor(currentPage / 3) + 1;
+            apiQueryRecipeByTop(fetchPage).then((value) => {
                 setApiRecipeData((prevData) => {
-                    const startIndex = (currentPage - 1) * 15;
+                    const startIndex = (fetchPage - 1) * 15;
                     const newData = parseData(value.data.rows, prevData, startIndex);
                     return newData;
                 });                
@@ -243,14 +248,14 @@ const Recipe = () => {
         const indexOfLastRecipe = currentPage * recipesPerPage;
         const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
         if (location.pathname === '/recipe' && searching) {
-            setTotalRecipesCount(searchedRecipe.length);
+            setTotalPage(Math.ceil(searchedRecipe.length / recipesPerPage));
             setCurrentRecipes(searchedRecipe.slice(
                 indexOfFirstRecipe,
                 indexOfLastRecipe,
             ));
         }
         else {
-            setTotalRecipesCount(apiRecipesCount);
+            setTotalPage(Math.ceil(apiRecipesCount / recipesPerPage));
             setCurrentRecipes(apiRecipeData.slice(
                 indexOfFirstRecipe,
                 indexOfLastRecipe,
@@ -354,10 +359,9 @@ const Recipe = () => {
                 </div>
                 {login ? <RecipeAddButton /> : <></>}
                 <Pagination
-                    recipesPerPage={recipesPerPage}
-                    totalRecipes={totalRecipesCount}
                     paginate={paginate}
                     currentPage={currentPage}
+                    totalPage={totalPage}
                 />
             </div>
         </div>

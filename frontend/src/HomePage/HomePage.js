@@ -54,7 +54,7 @@ const HomePage = () => {
             })
         }
         getRecipe(1);
-    }, [])
+    }, [id2ingredient])
 
     const toggle = () => {
         setActiveHeart(!activeHeart);
@@ -174,6 +174,7 @@ const HomePage = () => {
     
     const recommendData = apiRecipeData.slice(3, 5);
     const popularData = apiRecipeData.slice(0, 3);
+    console.log(popularData);
 
     return (
         <div className="main-container">

@@ -182,12 +182,12 @@ const EditProfile = () => {
                 onChange={handleInputChange}
               />
             </div>
-            <div>
+            {/* <div>
               <label>Email:</label>
               <input type="text" name="email" value={profile?.email} disabled />
               <br />
               <code>Email cannot be changed.</code>
-            </div>       
+            </div>        */}
             <div>
               <label>Photo:</label>
               <input type="file" name="image" onChange={handleImageChange} />
