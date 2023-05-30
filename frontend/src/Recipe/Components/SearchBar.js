@@ -174,6 +174,7 @@ const SearchBar = ({ setRecipe, setSearching }) => {
                 ingredients: formatIngredients,
                 instructions: instructions,
                 image_link: image,
+                comments_arr: comments
             })
         })
         console.log('orig recipe', recipes, 'new recipe', newRecipes);
