@@ -69,6 +69,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             //     userName: data.userName
             // }}
             setComments(prev => [newMessage, ...prev]);
+            setIsEmptyComment(false);
             console.log('comment socket newMessage', newMessage);
         });
         subscribeToAddLikeCnt((err) => {
@@ -316,7 +317,6 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             console.log('combined', combinedComments);
             // const transformedComment = dateTransformer(combinedComments);
             setComments(combinedComments.reverse());
-            setIsEmptyComment(false);
             // console.log('complete comments', completeComments);
         }
 
