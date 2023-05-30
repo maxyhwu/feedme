@@ -140,6 +140,14 @@ textarea:focus, input:focus{
     justify-content: center;
 }
 
+.container2 {
+    /* position:fixed; */
+    width:80%;
+    height:80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 #googlelogo {
     margin:3%;
     padding:20%;
@@ -169,3 +177,4 @@ textarea:focus, input:focus{
     background:#eee;
     cursor:pointer;
    }
+   

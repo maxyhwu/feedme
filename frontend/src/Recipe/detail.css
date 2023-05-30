@@ -251,18 +251,25 @@ ul {
     border-radius: 10px;
     padding: 5px;
     border-style: none;
-    width: 10%;
+    width: 55px;
     /* height: 10%; */
     margin-left: 1em;
 }
 
-
-.recipeedit-fixed-button {
-    /* position: fixed; */
+.recipe-owner-btns {
     position: sticky;
     bottom: 3%;
-    /* right: 5%; */
     left: 77%;
+    z-index: 1000;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+}
+
+.recipeedit-fixed-button {
+    position: sticky;
+    /* bottom: 3%;
+    left: 77%; */
     padding: 0.7em;
     border: none;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -276,11 +283,9 @@ ul {
 }
 
 .recipeedit-delete-button {
-    /* position: fixed; */
     position: sticky;
-    bottom: 3%;
-    /* right: 5%; */
-    left: 80%;
+    /* bottom: 3%;
+    left: 80%; */
     padding: 0.7em;
     border: none;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -291,6 +296,7 @@ ul {
     font-weight: 500;
     cursor: pointer;
     z-index: 1000;
+    margin-right: 1em;
 }
 
 .hover-effect:hover {
@@ -322,7 +328,8 @@ textarea {
 }
 
 #cancel-btn {
-    left: 85%
+    /* left: 85% */
+    margin-left: 1em;
 }
 
 .disabled-icon {

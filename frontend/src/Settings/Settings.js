@@ -267,7 +267,7 @@ useEffect ( () => {
   // }, []);
 
   return (
-    <div>
+    <div className="container">
       {/* Main Frame */}
       <div className="main">
         {/* Edit Profile */}
