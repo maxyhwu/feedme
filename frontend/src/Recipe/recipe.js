@@ -42,6 +42,7 @@ const RecipeObject = ({ recipe, setSearching }) => {
     const handleCloseModal = () => {
         disconnectSocket();
         setShowModal(false);
+        window.location.reload(true);
     };
 
     const { recipeName, image_link, recipeID, comments_arr } = recipe;
