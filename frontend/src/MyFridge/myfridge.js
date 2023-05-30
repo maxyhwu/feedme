@@ -167,7 +167,7 @@ const FridgeEditIngredientRow = ({ rowId, quantity, purchaseDate, expirationDate
 
 const FridgeRenderButton = ({ ingredient, origData }) => {
     const { ingredient2id } = UseGeneralContext();
-    const { data, changeData } = UseDataContext();
+    const { data, changeData, fetchData } = UseDataContext();
     const [modalIsOpen, setModalOpenState] = useState(false);
     const [nextID, setNextID] = useState(20000);
     const [currentIngredient, setCurrentIngredient] = useState(ingredient.name);
@@ -208,8 +208,9 @@ const FridgeRenderButton = ({ ingredient, origData }) => {
         //     setModalOpenState(false);
         // }
 
-        setUpdateData(updateDataCopy);
-        setModalOpenState(false);
+        // setUpdateData(updateDataCopy);
+        // setModalOpenState(false);
+        window.location.reload(true);
     }
 
     const handleInputChange = (rowId, fieldName, value) => {
@@ -330,8 +331,10 @@ const FridgeRenderButton = ({ ingredient, origData }) => {
             // console.log(updateData);
             // console.log(ingredient2id);
 
-            updateFridgeData(origData, updateData, ingredient2id);
-            window.location.reload(true);
+            fetchData().then(value => {
+                updateFridgeData(value.fridge, updateData, ingredient2id)
+                window.location.reload(true);
+            }); 
             // setModalOpenState(false);
         }
     }
@@ -477,8 +480,7 @@ const FridgeRender = ({ fridgeData, origData, renderCondition }) => {
 
 
 const MyFridge = () => {
-    const { data } = UseDataContext();
-    const { fridge } = data;
+    const { data, fetchData } = UseDataContext();
     const [origData, setOrigData] = useState({});
     const [fridgeData, setUpdateData] = useState([]);
     const [searchBarValue, setSearchBarValue] = useState('');
@@ -507,7 +509,6 @@ const MyFridge = () => {
     }
 
     useEffect(() => {
-        const promise = getNoTokenData();
         const transformData = (origFridgeData, id2ingredient, ingredient2category) => {
             var pseudoId = 0;
             const transformedFridgeData = [];
@@ -546,11 +547,12 @@ const MyFridge = () => {
             return transformedFridgeData;
         }
         
-        promise.then((value) => {
-            setUpdateData(transformData(fridge, value.id2ingredient, value.ingredient2category));
-            setOrigData(fridge);
+        Promise.all([getNoTokenData(), fetchData()]).then((responses) => {
+            const [noTokenDataResponse, fetchDataResponse] = responses;
+            setUpdateData(transformData(fetchDataResponse.fridge, noTokenDataResponse.id2ingredient, noTokenDataResponse.ingredient2category));
+            setOrigData(fetchDataResponse.fridge);
         })
-    }, [fridge])
+    }, [])
 
     // console.log(data)
     // console.log(origData)

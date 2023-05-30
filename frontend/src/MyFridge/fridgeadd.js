@@ -66,8 +66,7 @@ const FridgeAddIngredientRow = ({ rowId, ingredient, matchingIngredients, quanti
 
 
 const FridgeAddIngredientModal = () => {
-    const { data, changeData } = UseDataContext();
-    const { fridge } = data;
+    const { data, changeData, fetchData } = UseDataContext();
     const [noTokenData, setNoTokenData] = useState({});
     const [allIngredients, setAllIngredients] = useState([]);
     const [ingredient2id, setIngredient2Id] = useState([]);
@@ -84,8 +83,10 @@ const FridgeAddIngredientModal = () => {
             setIngredient2Id(value.ingredient2id)
         })
 
-        setOrigData(fridge);
-    }, [fridge])
+        fetchData().then((value) => {
+            setOrigData(value.fridge);
+        })
+    }, [])
 
     useEffect(() => {
         setData([
@@ -249,8 +250,10 @@ const FridgeAddIngredientModal = () => {
         // }
 
         if (handleCheckValidSave(addData, allIngredients)) {
-            updateFridgeData(origData, addData, ingredient2id);
-            window.location.reload(true);
+            fetchData().then(value => {
+                updateFridgeData(value.fridge, addData, ingredient2id)
+                window.location.reload(true);
+            });            
             // handleCloseModal();
         }
     }
