@@ -26,8 +26,8 @@ var corsOption = {
 };
 app.use(cors(corsOption));
 
-app.use(json({limit: '50mb'}))
-app.use(urlencoded());
+app.use(express.json({limit: '50mb'}))
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 app.use('/api/oauth', oauthRoutes);
 app.use('/api/data', dataRoutes);
@@ -63,50 +63,3 @@ app.listen(PORT, function(err){
   if (err) console.log("Error in server setup")
   console.log("Server listening on Port", PORT);
 })
-
-// import http from "http";
-// import https from "https";
-// import { Server } from "socket.io";
-// const httpServer = http.createServer(app);
-// const httpServer = https.createServer(app);
-// const io = new Server(httpServer, {
-//   cors: {
-//     allowedHeaders: ["my-header"]
-//   }
-// });
-
-// io.on('connection', (socket) => {
-//   console.log(`Connected: ${socket.id}`);
-
-//   socket.on('disconnect', () =>
-//     console.log(`Disconnected: ${socket.id}`));
-
-//   socket.on('join', (room) => {
-//     console.log(`Socket ${socket.id} joining ${room}`);
-//     socket.join(room);
-//   });
-
-//   socket.on('chat', (data) => {
-//     const { message, room } = data;
-//     console.log(`msg: ${message}, room: ${room}`);
-//     io.to(room).emit('chat', message);
-//   });
-
-//   socket.on('addlikecnt', (data) => {
-//     const { room } = data;
-//     // console.log(`room: ${room}`);
-//     io.to(room).emit('addlikecnt');
-//   });
-
-//   socket.on('minuslikecnt', (data) => {
-//     const { room } = data;
-//     // console.log(`room: ${room}`);
-//     io.to(room).emit('minuslikecnt');
-//   });
-// });
-
-// httpServer.listen(PORT, () => {
-//   console.log(`🚀 Server Ready at ${PORT}! 🚀`)
-// });
-
-// commentSocket();

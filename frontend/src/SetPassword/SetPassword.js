@@ -85,7 +85,7 @@ const SetLogin = () => {
         .catch((reason) => {
             let response = reason.response
             if (response.status === 400) {
-                console.log("message: ",response.data.message === 'Email not exists.')
+                // console.log("message: ",response.data.message === 'Email not exists.')
                 if (response.data.message === 'Email not exists.'){
                     setCodeAlert(false, false, true, false)
                 } else if (response.data.messege === 'Send email error.'){

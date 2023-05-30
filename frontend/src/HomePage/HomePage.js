@@ -174,7 +174,7 @@ const HomePage = () => {
     
     const recommendData = apiRecipeData.slice(3, 5);
     const popularData = apiRecipeData.slice(0, 3);
-    console.log(popularData);
+    // console.log(popularData);
 
     return (
         <div className="main-container">

@@ -115,7 +115,7 @@ const SearchBar = ({ setRecipe, setSearching }) => {
         setIngredients(allIngredients.data.rows);
         const slicedSearchedIng = allIngredients.data.rows.slice(0, 23);
         setSearchedIng(slicedSearchedIng);
-        console.log('All ingredients', allIngredients);
+        // console.log('All ingredients', allIngredients);
         // categoryColor();
     }
     
@@ -157,7 +157,7 @@ const SearchBar = ({ setRecipe, setSearching }) => {
         document.addEventListener('mousedown', handleFilterClickOutside);
         // document.addEventListener('mousedown', handleInputClickOutside);
         return () => {
-          document.removeEventListener('mousedown', handleFilterClickOutside);
+            document.removeEventListener('mousedown', handleFilterClickOutside);
         //   document.removeEventListener('mousedown', handleInputClickOutside);
         };
     }, []);
@@ -177,18 +177,18 @@ const SearchBar = ({ setRecipe, setSearching }) => {
                 comments_arr: comments
             })
         })
-        console.log('orig recipe', recipes, 'new recipe', newRecipes);
+        // console.log('orig recipe', recipes, 'new recipe', newRecipes);
         return newRecipes;
     }
 
     async function handleKeyUp(event) {
         if (event.key === 'Enter') {
             setInput(event.target.value);
-            console.log('handle key up', event.target.value);
+            // console.log('handle key up', event.target.value);
             //console.log('handle curr input value', input); //curry
             
             const result = await apiQueryRecipeByName(input);
-            console.log('name search result', result.data.rows);
+            // console.log('name search result', result.data.rows);
             setSearching(true)
             setRecipe(handleDataTraverse(result.data.rows));
             return true
@@ -229,7 +229,7 @@ const SearchBar = ({ setRecipe, setSearching }) => {
     }
 
     const clickIngredToSearch = async(ingredient, type) => {
-        console.log('click ingred to search', ingredient);
+        // console.log('click ingred to search', ingredient);
         if (type === 'add') {
             // const choseIngredId = []
             choseIngredId.push(ingredient.id)
@@ -241,7 +241,7 @@ const SearchBar = ({ setRecipe, setSearching }) => {
             // })
             // const testArr = [16, 11, 1]
             const searchResult = await apiQueryRecipeByIngredient(JSON.stringify(choseIngredId));
-            console.log('ids', choseIngredId, 'result', searchResult, 'chosed ing', choseIngred);
+            // console.log('ids', choseIngredId, 'result', searchResult, 'chosed ing', choseIngred);
             setSearching(true);
             setRecipe(handleDataTraverse(searchResult.data.rows));
             setChoseIngred(prev => [...prev, ingredient]);
@@ -251,7 +251,7 @@ const SearchBar = ({ setRecipe, setSearching }) => {
             // setChoseIngredId((prev) => prev.filter(element => element != ingredient.id))
 
             const intChoseIngredId = choseIngredId.map((element) => parseInt(element))
-            console.log('choosed ingredient ids', intChoseIngredId);
+            // console.log('choosed ingredient ids', intChoseIngredId);
 
             // choseIngredId.map(async(id) => {
             //     const searchResult = await apiQueryRecipeByIngredient(parseInt(id));
@@ -260,7 +260,7 @@ const SearchBar = ({ setRecipe, setSearching }) => {
             // const testArr = [16, 11, 1]
 
             const searchResult = await apiQueryRecipeByIngredient(JSON.stringify(removeSearchId));
-            console.log('ids', removeSearchId, 'result', searchResult.data.rows);
+            // console.log('ids', removeSearchId, 'result', searchResult.data.rows);
             setSearching(true);
             setRecipe(handleDataTraverse(searchResult.data.rows));
             setChoseIngred(prev => prev.filter(element => element !== ingredient));

@@ -21,7 +21,7 @@ const upload = multer({
     storage: storage,
     limits: {
         // 限制上傳檔案的大小為 1MB
-        fileSize: 1000000
+        fileSize: 50000000
     },
     fileFilter: fileFilter
 })

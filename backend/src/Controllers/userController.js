@@ -124,10 +124,13 @@ const editProfile = async (req, res) => {
     try{
         const user = req.user;
         // console.log("us);
-        const {favorite} = req.body
+        console.log("req",req.body)
+        const {userName, favorite} = req.body
         console.log(req.body)
+        const newfavorite = favorite === undefined ? user.favorite : favorite
         User.update({
-            favorite
+            userName,
+            favorite: newfavorite
         },{ where: { id: user.id}})
         res.status(200).send({message:"Edit profile successfully."})
     } catch (err) {

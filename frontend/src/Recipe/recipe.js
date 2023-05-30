@@ -49,15 +49,15 @@ const RecipeObject = ({ recipe, setSearching }) => {
             comments_arr: comments,
             likeCnt: likeCount
         }
-    
+
         return newData;
     };
 
     useEffect(() => {
-        apiQueryRecipeByID(recipeID).then((value) => {
+        apiQueryRecipeByID(recipe.recipeID).then((value) => {
             setUpdatedRecipe(parseData(value.data.rows[0]));
         });
-    }, [showModal]);
+    }, [showModal, recipe.recipeID]);
 
     const handleOpenModal = () => {
         setShowModal(true);
@@ -294,7 +294,7 @@ const Recipe = () => {
 
     const allIngredients = async() => {
         const all = await apiAllIngredient();
-        console.log('get all ingredients from recipe', all.data.rows);
+        // console.log('get all ingredients from recipe', all.data.rows);
         return all.data.rows;
     }
 
@@ -304,13 +304,13 @@ const Recipe = () => {
     //     indexOfLastRecipe,
     // );
     // const totalRecipes = Math.max(recipe_data.length, recipesPerPage * 5);
-  
+
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // console.log(id2ingredient);
     // console.log(recipe_data);
     // console.log(apiRecipeData);
-    console.log(currentRecipes);
+    // console.log(currentRecipes);
     // console.log(apiRecipesCount);
 
     return (

@@ -106,7 +106,7 @@ const queryByFridge = async (req, res) => {
   // no ingredients
   if (Object.keys(ingredientArr).length == 0) {
     console.log(-1);
-    const queryT = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC OFFSET 1 ROWS FETCH NEXT 15 ROWS ONLY`;
+    const queryT = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC OFFSET 0 ROWS FETCH NEXT 15 ROWS ONLY`;
     try {
       const { rows: rowsT } = await pool.query(queryT);
       const rows = rowsT;

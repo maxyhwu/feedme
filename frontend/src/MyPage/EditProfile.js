@@ -27,10 +27,10 @@ const EditProfile = () => {
   const [profileImage, setProfileImage] = useState();
   const [showImage, setShowImage] = useState(profile.photo)
 
-  console.log("User Info: ",data);
+  // console.log("User Info: ",data);
 
   const [isShown, setIsShown] = useState(false);
-  console.log(data?.provider);
+  // console.log(data?.provider);
 
   useEffect(() => {
     if(data?.provider === 'local') {
@@ -38,20 +38,20 @@ const EditProfile = () => {
     }
   }, [isShown])
 
-  console.log(isShown);
+  // console.log(isShown);
 
   async function updateImage(credentials) {
     return apiUpdateUserImage(credentials)
     .then(response=> {
         if (response.status === 200) {
           toast.success("Image updated!");
-           return response.data;
+          return response.data;
         }
     })
     .catch((reason) => {
         let response = reason.response
         if (response.status === 400) {
-            console.log("error")
+            // console.log("error")
             toast.error(response);
         }
     })
@@ -136,7 +136,7 @@ const EditProfile = () => {
         // setIsLoading(false);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       // setIsLoading(false);
       toast.error(error.message);
     }
@@ -145,14 +145,14 @@ const EditProfile = () => {
   const saveProfile = async (e) => {
       e.preventDefault();
       try {
-          const userData = new FormData();
-          userData.append('userName', profile.name)
-          await updateProfile(userData)
-          console.log(profile.name)
+          // const userData = new FormData();
+          // userData.append('userName', profile.name)
+          await updateProfile({userName: profile.name})
+          // console.log("profile", profile.name)
           changeData({...data, userName: profile.name})
           navigate("/edit-profile");
       } catch (error) {
-          console.log(error);
+          // console.log(error);
           toast.error(error.message);
       }
   }

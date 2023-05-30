@@ -6,7 +6,7 @@ export const setUserData = (data) => {
     cookies.set('user', data, 
     { path: '/',secure: true,sameSite :true}
     );
-    console.log(cookies.get('user'));
+    // console.log(cookies.get('user'));
 };
 
 export const getUserData = () => {

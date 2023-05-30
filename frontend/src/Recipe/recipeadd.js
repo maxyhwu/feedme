@@ -274,7 +274,7 @@ function RecipeAddButton() {
             setSubmitSave(true);
             const response = apiAddNew(recipeFormData);
             response.then((value) => {
-                console.log(value);
+                // console.log(value);
                 window.location.reload(true);
             }) 
 
