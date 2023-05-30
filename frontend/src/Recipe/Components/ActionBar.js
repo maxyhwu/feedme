@@ -21,13 +21,13 @@ const ActionBar = ({ recipeID, likeCnt, setLikeCnt }) => {
             apiUpdateMinusLikeCount({Rid: recipeID});
             apiRemoveLikeRecipes({id: recipeID});
             changeData({ ...data, like: data.like.filter(item => item !== recipeID)});
-            // setLikeCnt(prev => prev - 1);
+            setLikeCnt(prev => prev - 1);
             // socketMinusLikecnt(recipeID);
         } else {  // add like
             apiUpdateAddLikeCount({Rid: recipeID});
             apiKeepLikeRecipes({id: recipeID});
             changeData({ ...data, like: [recipeID, ...data.like]});
-            // setLikeCnt(prev => prev + 1);
+            setLikeCnt(prev => prev + 1);
             // socketAddLikecnt(recipeID);
         }
         setActiveHeart(!activeHeart);
