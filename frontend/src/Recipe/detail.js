@@ -316,6 +316,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
             console.log('combined', combinedComments);
             // const transformedComment = dateTransformer(combinedComments);
             setComments(combinedComments.reverse());
+            setIsEmptyComment(false);
             // console.log('complete comments', completeComments);
         }
 
