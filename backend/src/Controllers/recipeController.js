@@ -133,7 +133,7 @@ const queryByFridge = async (req, res) => {
       sortedIng.push({ [key]: { daysDiff: daysDiff, count: count } });
 
       // Check if the difference is smaller than three days
-      if ((daysDiff >= 0) & (daysDiff <= 3)) {
+      if ((daysDiff >= 0) & (daysDiff <= 5)) {
         queryIng.push({ [key]: { daysDiff: daysDiff, count: count } });
       }
     }
