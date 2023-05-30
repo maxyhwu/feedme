@@ -7,7 +7,7 @@ import { io } from 'socket.io-client';
 // dotenv.config();
 // console.log("dotenv = ", process.env.PORT)
 // const PORT = process.env.PORT || 8000
-const PORT = 7096
+const PORT = 7184
 
 // Connect to the Socket.IO server
 // const socket = io('http://localhost:3001'); // Replace with your server's URL
