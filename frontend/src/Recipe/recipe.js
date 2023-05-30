@@ -54,10 +54,10 @@ const RecipeObject = ({ recipe, setSearching }) => {
     };
 
     useEffect(() => {
-        apiQueryRecipeByID(recipeID).then((value) => {
+        apiQueryRecipeByID(recipe.recipeID).then((value) => {
             setUpdatedRecipe(parseData(value.data.rows[0]));
         });
-    }, [showModal]);
+    }, [showModal, recipe.recipeID]);
 
     const handleOpenModal = () => {
         setShowModal(true);
