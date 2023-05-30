@@ -44,7 +44,9 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     const [commentTransformed, setCommentTransformed] = useState(false);
     const [isRecipeOwner, setIsRecipeOwner] = useState(false);
 
-    const [fridgeArray, setFridgeArray] = useState([])
+    const [normalIng, setNormalIng] = useState([]);
+    const [expiredIng, setExpiredIng] = useState([]);
+    const [expiringIng, setExpiringIng] = useState([]);
 
     // const comments = [
     //     {
@@ -89,9 +91,40 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
     }, [])
 
     useEffect(() => {
-        setFridgeArray(Object.keys(fridge).map((key) => {
-            return id2ingredient[key];
-        }));
+        const fridgeExpInfo = {};
+        const newNormalIng = [];
+        const newExpiredIng = [];
+        const newExpiringIng = [];
+
+        Object.keys(fridge).map((key) => {
+            const ingredArray = fridge[key];
+            const earliestExpireDate = ingredArray.reduce((earliestDate, ingredient) => {
+                if (!earliestDate || ingredient.expire_date < earliestDate) {
+                    return ingredient.expire_date;
+                } else {
+                    return earliestDate;
+                }
+            }, null);
+            fridgeExpInfo[key] = earliestExpireDate;
+        })
+
+        const today = new Date();
+        Object.entries(fridgeExpInfo).forEach(([key, expirationDate]) => {
+            const timeDiff = new Date(expirationDate).getTime() - today.getTime();
+            const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            const ingredient = id2ingredient[key]
+            if (timeDiff < 0) {
+                newExpiredIng.push(ingredient);
+            } else if (daysDiff <= 5) {
+                newExpiringIng.push(ingredient);
+            } else {
+                newNormalIng.push(ingredient);
+            }
+        });
+
+        setNormalIng(newNormalIng);
+        setExpiredIng(newExpiredIng);
+        setExpiringIng(newExpiringIng);
     }, [fridge]);
 
     const addComments = async(comment) => {
@@ -358,9 +391,9 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
         // setIsRecipeOwner(true);
     }, [])
 
+    // console.log(data.fridge[49]);
     // console.log(recipe)
     // console.log(fridge);
-    // console.log(fridgeArray);
 
     return(
         <div className='whole-modal'>
@@ -426,7 +459,7 @@ const RecipeDetail = ({ recipe, handleCloseModal, /*setUpdatedRecipe*/ }) => {
                                         />
                                     </>
                                     :
-                                    <li className={`${editMode ? 'hover-effect':''} ${fridgeArray.includes(ingredient[0]) ? 'have-ingre' : '' }`} key={idx}>
+                                    <li className={`${editMode ? 'hover-effect':''} ${normalIng.includes(ingredient[0]) ? 'have-ingre' : '' } ${expiredIng.includes(ingredient[0]) ? 'have-ingre-expired' : '' } ${expiringIng.includes(ingredient[0]) ? 'have-ingre-expiring' : '' }`} key={idx}>
                                         {ingredient[0]}: {ingredient[1]}
                                     </li>
                                 ))}

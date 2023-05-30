@@ -342,3 +342,11 @@ textarea {
 .have-ingre{
     color: green;
 }
+
+.have-ingre-expired{
+    color: #FF0000;
+}
+
+.have-ingre-expiring{
+    color: #FF860D;
+}
