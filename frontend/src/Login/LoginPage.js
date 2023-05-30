@@ -154,9 +154,9 @@ export default function LoginPage () {
     }
 
     return (
-        <div className="container">
+        <div className="container2">
             <div id='logo'>
-                <img src={FeedMe} alt='feedme' id="feedmelogo"/>
+                <img src={FeedMe} alt='feedme' id="feedmelogo2"/>
             </div>
             <div className="body">
                 <form id="info" ref={formRef} onSubmit={handleLogin}>
