@@ -106,7 +106,7 @@ const queryByFridge = async (req, res) => {
   // no ingredients
   if (Object.keys(ingredientArr).length == 0) {
     console.log(-1);
-    const queryT = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC OFFSET 0 ROWS FETCH NEXT 15 ROWS ONLY`;
+    const queryT = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC, id ASC OFFSET 0 ROWS FETCH NEXT 15 ROWS ONLY`;
     try {
       const { rows: rowsT } = await pool.query(queryT);
       const rows = rowsT;
@@ -197,7 +197,7 @@ const queryByFridge = async (req, res) => {
   const query2 = `SELECT * FROM "Recipes" WHERE EXISTS (SELECT 1 FROM json_each(ingredients) AS i WHERE (i.key::int)::text IN (SELECT unnest($1::text[]))) ORDER BY (SELECT COUNT(*) FROM json_object_keys(ingredients) AS keys WHERE (keys::int)::text IN (SELECT unnest($1::text[]))) DESC`;
   const values2 = [finalIngArr];
 
-  const query3 = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC OFFSET 1 ROWS FETCH NEXT 15 ROWS ONLY`;
+  const query3 = `SELECT * FROM "Recipes" ORDER BY "likeCount" DESC, id ASC OFFSET 0 ROWS FETCH NEXT 15 ROWS ONLY`;
   try {
     const { rows: rows1 } = await pool.query(query2, values2);
     if (rows1.length == 0) {
